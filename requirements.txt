@@ -1,0 +1,12 @@
+appdirs
+blinker
+bsdiff4
+jms-utils
+pycrypto
+git+git://github.com/pyinstaller/pyinstaller.git@develop#egg=pyinstaller
+PyiUpdater-s3-Plugin
+PyiUpdater-scp-Plugin
+requests
+simple-crypt
+six
+stevedore

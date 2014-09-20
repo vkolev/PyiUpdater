@@ -1,0 +1,12 @@
+asciinema
+coverage
+line_profiler==1.0b3
+memory_profiler
+nose
+psutil
+sphinx
+sphinx-better-theme
+sphinx-bootstrap-theme
+stevedore
+twine
+wheel

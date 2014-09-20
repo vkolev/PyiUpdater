@@ -1,0 +1,70 @@
+{
+  "latest": {
+    "Not So TUF": {
+      "arm": "0.5.5",
+      "mac": "0.5.5",
+      "nix": "0.5.5",
+      "nix64": "0.5.5",
+      "win": "0.5.5"
+    }
+  },
+  "sig": "31af6c058727dfc43056bf72e65691c49e2b2a95a9bc32469105b26b93f1a5607666402ca142badf5ba9ced33b8e48b77c33d775ec35cb474a4265b25b61681c6250fe4b77b6285913a3a4ce4af4686007791b10c63bf7d041ca91dc0d85157bbb07b3c59e80fa75338f5e991972d90bbe31fce414c1719e725b0e4fcd0e9bcbafad2934704b39c622c8aa6d2c663449195a193bf9f5da7d510a6a8959a9a2f2a0f688a3e0c35cc3374b274e4fc63c4c97f7b572c89521d09a22c690ac9dbbb52f3ec3b15858c4ccdd8615e541cc17e6f95a51a5edc374ba889b03d988fe7e71536a643fa10909f3cd0bc62bf9bce8d903a6debb937c443d71ed85ca6e31da83",
+  "updates": {
+    "Not So TUF": {
+      "0.5.4": {
+        "arm": {
+          "file_hash": "0be0703227f44a85fac282f5992220c1a11b72e93d73c00239d7ea8ec123edbd",
+          "filename": "Not So TUF-arm-0.5.4.zip"
+        },
+        "mac": {
+          "file_hash": "39e145fed386e8e2d6f4e2aee52009d705ba66fb78726b2177cdc096345071c2",
+          "filename": "Not So TUF-mac-0.5.4.zip"
+        },
+        "nix": {
+          "file_hash": "081f83ec752334f7ac9f8bde4ae26d876d33690ff535b4537062bfbf08cb4d5e",
+          "filename": "Not So TUF-nix-0.5.4.zip"
+        },
+        "nix64": {
+          "file_hash": "7bb353ef60f7ad06e1aebcf17f70ae2d593f7bb3d16319ff5f991520e4517b1a",
+          "filename": "Not So TUF-nix64-0.5.4.zip"
+        },
+        "win": {
+          "file_hash": "64cab419be50924b44b28da3badbf20bf36d78473847bf77a3a4f79e7ff8e056",
+          "filename": "Not So TUF-win-0.5.4.zip"
+        }
+      },
+      "0.5.5": {
+        "arm": {
+          "file_hash": "c909d8823135121209c68099007efcd8a2544196016c1ee0042e9a3a89454a63",
+          "filename": "Not So TUF-arm-0.5.5.zip",
+          "patch_hash": "21437cfe1b4de47afcdd04ae4b517a8ebb42051b3e910901966224902917638b",
+          "patch_name": "Not So TUF-arm-2"
+        },
+        "mac": {
+          "file_hash": "b32a4592cf6013ba1118d1f9ed0ff17db82fc0cc5c9a7c340ce4b7386d40e47a",
+          "filename": "Not So TUF-mac-0.5.5.zip",
+          "patch_hash": "ed196b82bf59a848be45f46432defc34e14fb63fb97c1ae6dc0df3ce0db2259e",
+          "patch_name": "Not So TUF-mac-2"
+        },
+        "nix": {
+          "file_hash": "be0c123c8ce9dd94a0cd2ed2ea421ddc16097f81e26de3da98af9bea2d350c92",
+          "filename": "Not So TUF-nix-0.5.5.zip",
+          "patch_hash": "7acda6156629eea0d7f54af566b8a53830418e37f3ccb3302f88359722a243de",
+          "patch_name": "Not So TUF-nix-2"
+        },
+        "nix64": {
+          "file_hash": "0fd8f54be195abf0a2d125dfa328a7ddef972920065f2538a34388df3b72ac02",
+          "filename": "Not So TUF-nix64-0.5.5.zip",
+          "patch_hash": "70682473bb39b991b5a8dca12ec7f133eca37666497e597a7f135870f2fe7866",
+          "patch_name": "Not So TUF-nix64-2"
+        },
+        "win": {
+          "file_hash": "1749cc648c1426ca2658eb999c5f6beead94ea8407f404b04699a8bfaadff320",
+          "filename": "Not So TUF-win-0.5.5.zip",
+          "patch_hash": "03f0d8ba8c0b19d7feafe31e81be003959223e1134f2b222efc5d238cf423a82",
+          "patch_name": "Not So TUF-win-2"
+        }
+      }
+    }
+  }
+}
