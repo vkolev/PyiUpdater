@@ -1,11 +1,8 @@
 =========================================
              ***  ToDo's ***
 =========================================
-# Archiver
-  - Add support for archiving Mac.app
-
 # Client
-  - Add support for unpacking Mac GUI apps
+  - Make into package
 
 # Test Suite
   - Focus on client auto update tests
@@ -21,15 +18,19 @@
 =========================================
 v0.9.0 - DEV
 -------------------
+* Added
+  - Auto generated client config
+
 * Updated
   - Client updater
-    - Enable launching Mac GUI app bundles
+    - Support Mac GUI app bundles
     - Better error handling
-    - Try to bomb out less with failed
-      execution.
+    - Less failed application execution
+      when updater has errors
   - Https verification
     - on by default
     - Can disable in config file
+    - VERIFY_SERVER_CERT
   - Archive Extraction
     - More reliable
   - Archive creator

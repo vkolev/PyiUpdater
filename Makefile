@@ -31,10 +31,7 @@ test:
 	nosetests -v
 
 test-cover:
-	nosetests -v --with-coverage --cover-package=pyi_updater
-
-test-cover-all:
-	nosetests -v --with-coverage --cover-package=pyi_updater --cover-package=cli --cover-html
+	nosetests -v --with-coverage --cover-package=pyi_updater --cover-html
 
 upload:
 	twine upload dist/*

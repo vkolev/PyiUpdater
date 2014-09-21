@@ -15,8 +15,8 @@ from pyi_updater.config import Config
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.patcher import Patcher
-from pyi_updater.utils import (DotAccessDict, FROZEN, rsa_verify, get_version_number,
-                               version_string_to_tuple)
+from pyi_updater.utils import (DotAccessDict, FROZEN, rsa_verify,
+                               get_version_number, version_string_to_tuple)
 
 log = logging.getLogger(__name__)
 
