@@ -9,11 +9,12 @@ So how do you get all that on your computer quickly?
 
 Install from pip::
 
-    home$ pip install PyiUpdater
+    $ pip install PyiUpdater
 
-Install from source::
+Built in support for AWS S3. SCP is available with::
 
-    home$ python setup.py install
+    $ pip install PyiUpdater[scp]
 
-Pip will be the easiest way to install & upgrade to the latest stable
-version of this framework. If you want the bleeding edge download from github `dev branch <https://github.com/JohnyMoSwag/PyiUpdater/archive/dev.zip>`_. You will need Python 2.7 to get started, so be sure to have an up-to-date Python 2.7 installation.
+If you want the bleeding edge download a pre-release version::
+
+    $ pip install PyiUpdater --pre

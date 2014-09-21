@@ -19,10 +19,6 @@ From Pip::
 
     $ pyi-cli
 
-From Source::
-
-    $ python start_cli.py
-
 Initial Setup
 -------------
 You'll first be greeted with a Setup Assistant.
@@ -47,6 +43,12 @@ What you should see::
 
     Enter password
     -->
+
+    Enter passoword again
+    -->
+
+    Enter password
+
 
 After setup is complete you'll be greeted with the screen below::
 

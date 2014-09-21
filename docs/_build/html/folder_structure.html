@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Folder Structure &mdash; PyiUpdater 0.8.0 documentation</title>
+    <title>Folder Structure &mdash; PyiUpdater 0.9-dev1411281552 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.8.0',
+        VERSION:     '0.9-dev1411281552',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.8.0 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9-dev1411281552 documentation" href="index.html" />
     <link rel="next" title="API" href="api.html" />
     <link rel="prev" title="Usage" href="usage.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.8.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1411281552</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -140,34 +140,29 @@
       
   <div class="section" id="folder-structure">
 <h1>Folder Structure<a class="headerlink" href="#folder-structure" title="Permalink to this headline">¶</a></h1>
-<ul>
-<li><p class="first">Program Src Directory</p>
-<dl class="docutils">
-<dt>- pyi-data</dt>
-<dd><dl class="first docutils">
-<dt>- files</dt>
-<dd><dl class="first last docutils">
-<dt>- Update Name</dt>
-<dd><p class="first last">- Version number</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p>- new</p>
+<p>Program Src Directory</p>
+<blockquote>
+<div><p>- pyi-data</p>
+<blockquote>
+<div><p>- new</p>
 <p>- deploy</p>
-<p class="last">- keys</p>
-</dd>
-</dl>
-</li>
-</ul>
+<p>- keys</p>
+<p>- files</p>
+<blockquote>
+<div><p>- update name</p>
+<blockquote>
+<div>- version number</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
 <div class="section" id="folder-explanations">
 <h2>Folder Explanations<a class="headerlink" href="#folder-explanations" title="Permalink to this headline">¶</a></h2>
-<p>Files: Every update file will be placed inside here</p>
-<p>Update Name: Where all the updates with the same name will be placed.</p>
-<p>Version Number: Updates with same name &amp; version number but will differ in platform</p>
 <p>New: Where you place newly compiled programs ready for signing</p>
 <p>Deploy: After updates have been signed, they&#8217;ll be moved here with an updated version file</p>
 <p>Keys: Your public and private keys</p>
+<p>Files: Every update file will be placed inside here</p>
+<p>Update Name: Where all the updates with the same name will be placed.</p>
+<p>Version Number: Updates with same name &amp; version number but will differ in platform</p>
 </div>
 </div>
 
@@ -184,7 +179,7 @@
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.3.<br/>
     </p>
   </div>
 </footer>

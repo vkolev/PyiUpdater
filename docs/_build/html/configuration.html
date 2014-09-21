@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Configuration &mdash; PyiUpdater 0.8.0 documentation</title>
+    <title>Configuration &mdash; PyiUpdater 0.9-dev1411281552 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.8.0',
+        VERSION:     '0.9-dev1411281552',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.8.0 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9-dev1411281552 documentation" href="index.html" />
     <link rel="next" title="Usage" href="usage.html" />
     <link rel="prev" title="Installation" href="installation.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.8.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1411281552</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -139,65 +139,48 @@
 <span id="id1"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
 <table border="1" class="docutils">
 <colgroup>
-<col width="40%" />
-<col width="60%" />
+<col width="45%" />
+<col width="55%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">APP_DATA_DIR</span></tt></td>
-<td>Directory where updates of app &amp; libs are
-cached. Created dynamically.</td>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">APP_NAME</span></tt></td>
+<td>Name of your app. Used with COMPANY_NAME
+to create an update cache dir on end user
+system.</td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">APP_NAME</span></tt></td>
-<td>Name of your app. Excluding the &#8221;.exe&#8221;
-on windows. Used to create APP_DATA_DIR</td>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">COMPANY_NAME</span></tt></td>
+<td>Company or your name.  Used with APP_NAME
+to create an update cache dir on end user
+system.</td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">COMPANY_NAME</span></tt></td>
-<td>Company or your name.  Used to create
-APP_DATA_DIR</td>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">KEY_LENGTH</span></tt></td>
+<td>Length of Key Pair. Must be a multiple of
+256. Default 2048. In 2014 you should not
+use a key length less then 2048.</td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">DEBUG</span></tt></td>
-<td>enable/disable debug mode</td>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PUBLIC_KEY</span></tt></td>
+<td>Used on client side for authentication</td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">DEV_DATA_DIR</span></tt></td>
-<td>Directory on dev machine for PyiUpdater to
-do its work. Defaults to Current Working Directory</td>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">UPDATE_URL</span></tt></td>
+<td>Where clients search for updates</td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">KEY_LENGTH</span></tt></td>
-<td>Length of Key Pair. Must be a multipule
-of 256. Default 2048. In 2014 you should
-not use a key length less then 2048.</td>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">UPDATE_PATCHES</span></tt></td>
+<td>nable/disable creation of patch updates</td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PRIVATE_KEY_NAME</span></tt></td>
-<td>Name given to your private key. Defaults
-to APP_NAME.pem</td>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">REMOTE_DIR</span></tt></td>
+<td>Remote directory/Bucket name to place
+update files</td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PUBLIC_KEY_NAME</span></tt></td>
-<td>Name given to your public key. Defaults
-to APP_NAME.pub</td>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">HOST</span></tt></td>
+<td>Remote host to connect to for server
+uploads</td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PUBLIC_KEY</span></tt></td>
-<td>Public key.  Used on client side</td>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">USERNAME</span></tt></td>
+<td>Username/API Key for uploading updates</td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">UPDATE_URL</span></tt></td>
-<td>Where clients looks for updates</td>
-</tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">UPDATE_PATCHES</span></tt></td>
-<td>enable/disable creation of patches</td>
-</tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">REMOTE_DIR</span></tt></td>
-<td>Remote directory/Bucket Name</td>
-</tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">HOST</span></tt></td>
-<td>Remote host to connect to for ssh</td>
-</tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">USERNAME</span></tt></td>
-<td>Username/API Key</td>
-</tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PASSWORD</span></tt></td>
-<td>Password/API Secret</td>
-</tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">SSH_KEY_PATH</span></tt></td>
-<td>Path to ssh private key</td>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PASSWORD</span></tt></td>
+<td>Password/API Secret/Path to ssh private
+key or uploading updates</td>
 </tr>
 </tbody>
 </table>
@@ -216,7 +199,7 @@ to APP_NAME.pub</td>
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.3.<br/>
     </p>
   </div>
 </footer>

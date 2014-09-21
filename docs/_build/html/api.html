@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.8.0 documentation</title>
+    <title>API &mdash; PyiUpdater 0.9-dev1411281552 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.8.0',
+        VERSION:     '0.9-dev1411281552',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.8.0 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9-dev1411281552 documentation" href="index.html" />
     <link rel="next" title="Release History" href="release_history.html" />
     <link rel="prev" title="Folder Structure" href="folder_structure.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.8.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1411281552</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -140,7 +140,7 @@
 <p>If you want to dive into their documentation, scroll down:</p>
 <span class="target" id="module-pyi_updater"></span><dl class="class">
 <dt id="pyi_updater.PyiUpdater">
-<em class="property">class </em><tt class="descclassname">pyi_updater.</tt><tt class="descname">PyiUpdater</tt><big>(</big><em>import_name=None</em>, <em>cfg_obj=None</em><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pyi_updater.</tt><tt class="descname">PyiUpdater</tt><big>(</big><em>cfg_obj=None</em><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater" title="Permalink to this definition">¶</a></dt>
 <dd><p>There are 2 ways to load config.  The first was is during
 object initialization. The second way is later with <a class="reference internal" href="#pyi_updater.PyiUpdater.update_config" title="pyi_updater.PyiUpdater.update_config"><tt class="xref py py-meth docutils literal"><span class="pre">update_config()</span></tt></a></p>
 <p>Examples are shown below:</p>
@@ -224,7 +224,7 @@ False - Update Failed
 <dl class="method">
 <dt id="pyi_updater.client.Client.download">
 <tt class="descname">download</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.download" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will securely download the package update that was called
+<dd><p>Will download the package update that was referenced
 with check update.</p>
 <p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_patch_update()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_full_update()</span></tt>.</p>
 </dd></dl>
@@ -234,16 +234,20 @@ with check update.</p>
 <tt class="descname">install_restart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.install_restart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Will install (unzip) the update, overwrite the current app,
 then restart the app using the updated binary.</p>
-<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_unzip_file()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_move_restart()</span></tt></p>
+<p>On windows Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_extract_update()</span></tt> &amp;
+<tt class="xref py py-meth docutils literal"><span class="pre">_win_overwrite_app_restart()</span></tt></p>
+<p>On unix Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_extract_update()</span></tt>,
+<tt class="xref py py-meth docutils literal"><span class="pre">_overwrite_app()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_restart()</span></tt></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyi_updater.client.Client.install">
 <tt class="descname">install</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.install" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will intall (unzip) the update.  If updating a lib you can
-take over from there. If updating an app this call should be
-followed by <a class="reference internal" href="#pyi_updater.client.Client.restart" title="pyi_updater.client.Client.restart"><tt class="xref py py-meth docutils literal"><span class="pre">restart()</span></tt></a> to complete update.</p>
-<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_unzip_file()</span></tt>.</p>
+<dd><p>Will extract archived update and leave in update folder.
+If updating a lib you can take over from there. If updating
+an app this call should be followed by <a class="reference internal" href="#pyi_updater.client.Client.restart" title="pyi_updater.client.Client.restart"><tt class="xref py py-meth docutils literal"><span class="pre">restart()</span></tt></a> to
+complete update.</p>
+<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_extract_update()</span></tt>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -251,7 +255,7 @@ followed by <a class="reference internal" href="#pyi_updater.client.Client.resta
 <tt class="descname">restart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.restart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Will overwrite old binary with updated binary and
 restart using the updated binary.</p>
-<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_move_restart()</span></tt>.</p>
+<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_overwrite_app()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_restart()</span></tt>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -291,7 +295,7 @@ Example usage:</p>
 
 <span class="target" id="module-pyi_updater.downloader"></span><dl class="class">
 <dt id="pyi_updater.downloader.FileDownloader">
-<em class="property">class </em><tt class="descclassname">pyi_updater.downloader.</tt><tt class="descname">FileDownloader</tt><big>(</big><em>filename</em>, <em>url</em>, <em>hexdigest</em>, <em>verify=False</em><big>)</big><a class="headerlink" href="#pyi_updater.downloader.FileDownloader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pyi_updater.downloader.</tt><tt class="descname">FileDownloader</tt><big>(</big><em>filename</em>, <em>url</em>, <em>hexdigest</em>, <em>verify=True</em><big>)</big><a class="headerlink" href="#pyi_updater.downloader.FileDownloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>The FileDownloader object downloads files to memory and
 verifies their hash.  If hash is verified data is either
 written to disk to returned to calling object</p>
@@ -743,7 +747,7 @@ False - Upload Failed
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.3.<br/>
     </p>
   </div>
 </footer>
