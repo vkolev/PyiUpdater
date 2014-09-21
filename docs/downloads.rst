@@ -6,4 +6,5 @@ Downloads
 
 Source Downloads:
 ~~~~~~~~~~~~~~~~~
-`Src <https://github.com/JohnyMoSwag/Not-So-TUF/archive/master.zip>`_
+`zip <https://github.com/JohnyMoSwag/PyiUpdater/zipball/master>`_
+`tarball <https://github.com/JohnyMoSwag/PyiUpdater/tarball/master>`_
