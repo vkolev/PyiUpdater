@@ -33,8 +33,9 @@ def test_directory_fixer():
     assert u'/home/jms' == _directory_fixer(u'/home/jms')
 
 
-def test_directory_fixer_spelled_out():
-    assert os.getcwd() == _directory_fixer(u'Current Working Directory')
+def test_directory_fixer_home_shortcut():
+    assert os.path.join(os.path.expanduser(u'~'),
+                        u'Downloads') == _directory_fixer(u'~/Downloads')
 
 
 def test_directory_fixer_home_direcotry_symbol():

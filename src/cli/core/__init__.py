@@ -11,7 +11,7 @@ from cli.core import keys, settings, sign, upload
 from cli.core.common import CommonLogic
 from cli.ui.menu import Menu
 from cli.ui.menu_utils import (ask_yes_no, get_correct_answer,
-                               path_fixer, _directory_fixer)
+                               _directory_fixer)
 from pyi_updater import (FileCrypt, KeyHandler, PyiUpdater,
                          PackageHandler, Uploader)
 from pyi_updater.config import SetupConfig
@@ -139,6 +139,7 @@ class Worker(Menu, CommonLogic):
 
             key_path = get_correct_answer(u'Enter path to ssh key',
                                           required=True)
+            # Path to private key
             self.config.PASSWORD = _directory_fixer(key_path)
 
         if answer2:

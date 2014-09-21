@@ -1,8 +1,8 @@
 from __future__ import print_function
 import logging
+import os
 import sys
-# If i didn't check for platform before
-# importing i'd get an ImportError
+# Widows specific import
 if sys.platform == u'win32':
     import msvcrt
 else:
@@ -10,6 +10,8 @@ else:
     import tty
 
 from six.moves import input
+
+from pyi_updater.utils import cwd_
 
 log = logging.getLogger(__name__)
 
@@ -90,6 +92,15 @@ def get_correct_answer(question, default=None, required=False,
             answer = None
 
 
+# Makes inputting directory more like shell
+def _directory_fixer(_dir):
+    if _dir.startswith(u'~'):
+        log.debug(u'Expanding ~ to full user path')
+        _dir = _dir[2:]
+        _dir = os.path.join(os.path.expanduser(u'~'), _dir)
+    return _dir
+
+
 # Fixed path to work without quotes
 def path_fixer(path):
     # Removing ' & " in case user used them
@@ -97,8 +108,7 @@ def path_fixer(path):
     path.replace(u"'", u"")
     path.replace(u'"', u'')
 
-    # Correcting the path to work without
-    # quotes
+    # Escaping spaces in path
     return path.replace(' ', '\ ')
 
 
