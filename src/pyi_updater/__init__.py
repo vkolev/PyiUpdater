@@ -1,14 +1,12 @@
 import logging
-import os
+import time
 
 logger = logging.getLogger(__name__)
 
 from pyi_updater.config import Config
-from pyi_updater.exceptions import PyiUpdaterError
-from pyi_updater.utils import cwd_, time_in_seconds
 
 
-VERSION = (0, 9, 0, u'dev', time_in_seconds())
+VERSION = (0, 9, 0, u'dev', int(time.time()))
 
 
 def get_version():
@@ -47,7 +45,6 @@ class PyiUpdater(object):
     """
     def __init__(self, cfg_obj=None):
         self.config = Config()
-        self.config['DEV_DATA_DIR'] = cwd_
         if cfg_obj:
             self.update_config(cfg_obj)
 

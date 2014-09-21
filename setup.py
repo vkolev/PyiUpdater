@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
 from setuptools import setup, find_packages
+import sys
+
+sys.path.insert(0, 'src')
 
 from pyi_updater import get_version
 
@@ -16,6 +19,9 @@ setup(
     license='Apache License 2.0',
     dependency_links=['https://github.com/pyinstaller/pyinstaller/archive/de'
                       'velop.zip#egg=pyinstaller-2.1.1'],
+    extras_require = {
+        'scp': 'PyiUpdater-scp-Plugin',
+        },
     install_requires=[
         'appdirs',
         'blinker',
@@ -24,7 +30,6 @@ setup(
         'pycrypto',
         'pyinstaller',
         'PyiUpdater-s3-Plugin',
-        'PyiUpdater-scp-Plugin',
         'requests',
         'six',
         'simple-crypt',

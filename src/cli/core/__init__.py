@@ -29,7 +29,7 @@ class Worker(Menu, CommonLogic):
     def __init__(self):
         self.file_crypt = FileCrypt()
         self.config = self.load_config()
-        self.pyi_updater = PyiUpdater(__name__, self.config)
+        self.pyi_updater = PyiUpdater(self.config)
         self.key_handler = KeyHandler()
         self.package_handler = PackageHandler()
         self.uploader = Uploader()

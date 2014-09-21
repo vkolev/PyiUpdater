@@ -11,7 +11,9 @@ from pyi_updater.utils import cwd_
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 fmt_str = jms_utils.log_format_string()
-
+nh = logging.NullHandler()
+nh.setLevel(logging.DEBUG)
+log.addHandler(nh)
 
 if os.path.exists(os.path.join(cwd_, u'pyi.log')):
     ch = logging.FileHandler(cwd_, u'pyi.log')

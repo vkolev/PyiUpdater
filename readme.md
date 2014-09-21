@@ -1,9 +1,14 @@
 [![PyPI version](https://badge.fury.io/py/PyiUpdater.svg)](http://badge.fury.io/py/PyiUpdater) [![Build Status](https://travis-ci.org/JohnyMoSwag/PyiUpdater.svg?branch=master)](https://travis-ci.org/JohnyMoSwag/PyiUpdater) [![Coverage Status](https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.png?branch=master)](https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master)
 
 # PyiUpdater
-##### This framework does most of the heavy lifting regarding updating your app or library.  PyiUpdater will scan your update archive, grab meta-data from filename, get checksums, make patches, get patch checksums, update version file, sign version file with private key, backs up packages to files folder then moves all packages to deploy folder ready for upload.  All from the cli or programmatically.  PyiUpdater also handles the creation of your public and private keys.  Keys are used for update manifest verification. PyiUpdater also includes a client module you can import into your app to check for updates, download, install & restart your app. The client module also cleans up old updates on the end users computer.
+##### An update framework for managing, signing & uploading your app updates
+[Documentation](http://pyiupdater.johnymoswag.com)
 
-######[Change Log](https://github.com/JohnyMoSwag/PyiUpdater/blob/master/changelog.txt "Change Log")
+[Full changelog](https://github.com/JohnyMoSwag/PyiUpdater/blob/master/changelog.txt)
+
+#### Supported Freezers
+* [Pyinstaller](http://www.pyinstaller.org) >= 2.1.1
+
 
 ## To Install
 
@@ -15,6 +20,10 @@
 
     $ python setup.py install
 
+###### Built in support for AWS S3. SCP is available with
+
+    $ pip install PyiUpdater[scp]
+
 ## Usage:
 
 #### Start guided setup with pip or setup.py install
@@ -25,27 +34,25 @@
 
     $ python start_cli.py
 
-#### Archive maker utility usage
-The filename for an update must include mac, win, arm, nix or nix64. For example, FILE1 could be myapp-mac & FILE2 mylib-nix.
-
-    $ pyi-archiver -h
-    Usage: pyi-archive -n "My App" -v 1.0.1 FILE [FILE...]
-    Usage: pyi-archive -i gzip -n "My App" -v 1.0.1 FILE [FILE...]
-
-    Options:
-      -h, --help            show this help message and exit
-      -c ARCHIVER, --archiver=ARCHIVER
-                            Type of archive compression to use
-      -n NAME, --name=NAME  Name of update
-      -v VERSION, --version=VERSION
-                            Version # of update. Must have Major.Minor.Patch even if it's 0 eg. 1.1.0
-      --keep                Do not delete source file
-
 #### Can also be used programmatically
 ######[Click Here To See Example Dev Script](https://github.com/JohnyMoSwag/PyiUpdater/blob/master/examples/programtically.py "Example Usage")
 
 
-#### How to use client to update your app or a libary your app depends on:
+#### Config Options
+| ConfigClass Attribute | Description |
+| --------------------- | ----------- |
+|APP_NAME         | Name of your app. Used with COMPANY_NAME to create an update cache dir on end user system.|
+|COMPANY_NAME     | Company or your name.  Used with APP_NAME to create an update cache dir on end user system.|
+|KEY_LENGTH       | Length of Key Pair. Must be a multiple of 256. Default 2048. In 2014 you should not use a key length less then 2048.|
+|PUBLIC_KEY       | Used on client side for authentication
+|UPDATE_URL       | Where clients search for updates|
+|UPDATE_PATCHES   | enable/disable creation of patch updates|
+|REMOTE_DIR       | Remote directory/Bucket name to place update files|
+|HOST             | Remote host to connect to for scp uploads|
+|USERNAME         | Username/API Key for uploading updates|
+|PASSWORD         | Password/API Secret/Path to ssh private key for uploading updates|
+
+#### How to use client to update your app or a library your app depends on:
 
     # You can update your apps and libs or binaries you app relies on.
     from threading import Thread
@@ -112,8 +119,24 @@ The filename for an update must include mac, win, arm, nix or nix64. For example
 ## Support Archive Formats
 ###### Only zip and gzipped for now.  Constraints being on patch size.
 
+#### Archive maker utility usage
+The filename for an update must include system version in form of mac, win, arm, nix or nix64. For example, FILE1 could be myapp-mac & FILE2 could be mylib-nix.
+
+    $ pyi-archiver -h
+    Usage: pyi-archive -n "My App" -v 1.0.1 FILE [FILE...]
+    Usage: pyi-archive -i gzip -n "My App" -v 1.0.1 FILE [FILE...]
+
+    Options:
+      -h, --help            show this help message and exit
+      -c ARCHIVER, --archiver=ARCHIVER
+                            Type of archive compression to use
+      -n NAME, --name=NAME  Name of update
+      -v VERSION, --version=VERSION
+                            Version # of update. Must have Major.Minor.Patch even if it's 0 eg. 1.1.0
+      --keep                Do not delete source file
+
 #### Archive Patch Tests:
-Format  -  Source  -  Dest  -  Patch
+Format  -  Src  -  Dst  -  Patch
 
 7z - 6.5mb - 6.8mb -  6.8mb
 
