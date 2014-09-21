@@ -3,6 +3,8 @@
 # PyiUpdater
 ##### An update framework for managing, signing & uploading your app updates
 [Documentation](http://pyiupdater.jmsapps.net)
+[Dev Documentation](http://pyiupdater-dev.jmsapps.net)
+
 
 [Full changelog](https://github.com/JohnyMoSwag/PyiUpdater/blob/master/changelog.txt)
 
