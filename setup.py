@@ -13,7 +13,7 @@ setup(
     description='Simple App update framwork',
     author='Johny Mo Swag',
     author_email='johnymoswag@gmail.com',
-    url='pyiupdater.johnymoswag.com',
+    url='pyiupdater.jmsapps.net',
     download_url=('https://github.com/JohnyMoSwag/Pyi'
                   'Updater/archive/master.zip'),
     license='Apache License 2.0',
