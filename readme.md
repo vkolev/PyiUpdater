@@ -12,13 +12,13 @@
 
 ## To Install
 
-#### From pip:
+#### Stable:
 
     $ pip install PyiUpdater
 
-#### From source:
+#### Dev:
 
-    $ python setup.py install
+    $ pip install PyiUpdater --pre
 
 ###### Built in support for AWS S3. SCP is available with
 
@@ -29,10 +29,6 @@
 #### Start guided setup with pip or setup.py install
 
     $ pyi-cli
-
-#### Start guided setup without installation
-
-    $ python start_cli.py
 
 #### Can also be used programmatically
 ######[Click Here To See Example Dev Script](https://github.com/JohnyMoSwag/PyiUpdater/blob/master/examples/programtically.py "Example Usage")
