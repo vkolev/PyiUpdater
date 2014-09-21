@@ -6,7 +6,8 @@ from nose import with_setup
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pyi_updater import Client, PyiUpdater
+from pyi_updater import PyiUpdater
+from pyi_updater.client import Client
 from tconfig import TConfig
 
 client = Client(TConfig(), test=True)
@@ -24,7 +25,7 @@ def test_data_dir():
 
 def test_original_init():
     config = TConfig()
-    updater = PyiUpdater(__name__, config)
+    updater = PyiUpdater(config)
     client = Client(updater, test=True)
     assert client.app_name == u'jms'
     assert client.update_url == (u'https://s3-us-west-1.amazon'

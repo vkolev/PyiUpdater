@@ -1,6 +1,9 @@
 import sys
 
-from pyi_updater import PyiUpdater, Client, KeyHandler, PackageHandler
+from pyi_updater import PyiUpdater
+from pyi_updater.client import Client
+from pyi_updater.key_handler import KeyHandler
+from pyi_updater.package_handler import PackageHandler
 
 
 # Not So TUF handles configuration with simple
@@ -75,7 +78,7 @@ class ClientConfig(object):
 def client_update():
     # Old way to configure client
     client_config = DefaultConfig()
-    pyi = PyiUpdater(__name__, client_config)
+    pyi = PyiUpdater(client_config)
     client = Client(pyi)
 
     # New way to configure client
@@ -116,7 +119,7 @@ def setup():
 
     # Initilizing Main object and configuring
     # in one step
-    pyi = PyiUpdater(__name__, default_config)
+    pyi = PyiUpdater(default_config)
 
     # Can also update config later
     pyi.update_config(default_config)
@@ -155,7 +158,7 @@ def setup():
 
 def make_keys():
     default_config = DefaultConfig()
-    pyi = PyiUpdater(__name__, default_config)
+    pyi = PyiUpdater(default_config)
     key_handler = KeyHandler(pyi)
     # Making a new set of keys
     # Keys will be place in the keys

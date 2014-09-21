@@ -122,11 +122,12 @@ class Client(object):
         # processing data contained in the version file.
         # This was done by self._get_update_manifest()
         if not self.verified:
+            log.debug('Failed version file verification')
             return False
         log.info(u'Checking for {} updates...'.format(name))
 
         # If None is returned self._get_highest_version could
-        # not find the supplied name in the version
+        # not find the supplied name in the version file
         latest = self._get_highest_version(name)
         if latest is None:
             return False
@@ -142,7 +143,7 @@ class Client(object):
         return True
 
     def download(self):
-        """Will securely download the package update that was called
+        """Will download the package update that was referenced
         with check update.
 
         Proxy method for :meth:`_patch_update` & :meth:`_full_update`.

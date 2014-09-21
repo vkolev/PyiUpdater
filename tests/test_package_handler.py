@@ -15,7 +15,7 @@ from tconfig import TConfig
 
 def setup_func():
     config = TConfig()
-    updater = PyiUpdater(__name__, config)
+    updater = PyiUpdater(config)
     ph = PackageHandler(updater)
     ph.setup()
 

@@ -3,15 +3,23 @@ import os
 
 logger = logging.getLogger(__name__)
 
-from pyi_updater.client import Client
 from pyi_updater.config import Config
-from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import PyiUpdaterError
-from pyi_updater.filecrypt import FileCrypt
-from pyi_updater.key_handler import KeyHandler
-from pyi_updater.package_handler import PackageHandler
-from pyi_updater.patcher import Patcher
-from pyi_updater.uploader import Uploader
+from pyi_updater.utils import cwd_, time_in_seconds
+
+
+VERSION = (0, 9, 0, u'dev', time_in_seconds())
+
+
+def get_version():
+    version = '{}.{}'.format(VERSION[0], VERSION[1])
+    if VERSION[2]:
+        version = '{}.{}'.format(version, VERSION[2])
+    if len(VERSION) >= 4 and VERSION[3]:
+        version = '{}-{}'.format(version, VERSION[3])
+        if VERSION[3] == 'dev' and len(VERSION) >= 5 and VERSION[4] > 0:
+            version = '{}{}'.format(version, VERSION[4])
+    return version
 
 
 class PyiUpdater(object):
@@ -37,14 +45,9 @@ class PyiUpdater(object):
 
         cfg_obj (instance): object with config attributes
     """
-    def __init__(self, import_name=None, cfg_obj=None):
-        if import_name is None:
-            raise PyiUpdaterError(u'You have to pass __name__ to '
-                                  'NotSoTuf(__name__)', expected=True)
-        self.import_name = import_name
-        self.real_path = os.path.dirname(os.path.abspath(self.import_name))
+    def __init__(self, cfg_obj=None):
         self.config = Config()
-        self.config['DEV_DATA_DIR'] = self.real_path
+        self.config['DEV_DATA_DIR'] = cwd_
         if cfg_obj:
             self.update_config(cfg_obj)
 
@@ -56,4 +59,4 @@ class PyiUpdater(object):
         """
         self.config.from_object(obj)
         if self.config.get(u'APP_NAME', None) is None:
-            self.config[u'APP_NAME'] = u'Pyi Updater App'
+            self.config[u'APP_NAME'] = u'PyiUpdater App'

@@ -11,8 +11,6 @@ else:
 
 from six.moves import input
 
-from pyi_updater.utils import cwd_
-
 log = logging.getLogger(__name__)
 
 

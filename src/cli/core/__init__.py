@@ -12,9 +12,13 @@ from cli.core.common import CommonLogic
 from cli.ui.menu import Menu
 from cli.ui.menu_utils import (ask_yes_no, get_correct_answer,
                                _directory_fixer)
-from pyi_updater import (FileCrypt, KeyHandler, PyiUpdater,
-                         PackageHandler, Uploader)
+
+from pyi_updater import PyiUpdater
 from pyi_updater.config import SetupConfig
+from pyi_updater.filecrypt import FileCrypt
+from pyi_updater.key_handler import KeyHandler
+from pyi_updater.package_handler import PackageHandler
+from pyi_updater.uploader import Uploader
 from pyi_updater.utils import cwd_, verify_password
 
 log = logging.getLogger(__name__)

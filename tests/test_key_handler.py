@@ -30,7 +30,7 @@ def setup_func():
     global test_data_dir
 
     config = TConfig()
-    updater = PyiUpdater(__name__, config)
+    updater = PyiUpdater(config)
     ph = PackageHandler(updater)
     kh = KeyHandler(updater)
     kh.test = True
@@ -48,7 +48,7 @@ def setup_func2():
     global test_data_dir
 
     config = TConfig()
-    updater = PyiUpdater(__name__, config)
+    updater = PyiUpdater(config)
     ph = PackageHandler(updater)
     kh = KeyHandler(updater)
 

@@ -7,7 +7,7 @@ from jms_utils import get_terminal_size
 from six.moves import xrange
 
 from cli.ui.menu_utils import _Getch
-from pyi_updater.version import __version__
+from pyi_updater import get_version
 
 if sys.platform == u'win32':
     clear = u'cls'
@@ -50,7 +50,7 @@ class Menu(object):
         window_size = get_terminal_size()[0]
 
         def add_style():
-            app = u'PyiUpdater v{}'.format(__version__)
+            app = u'PyiUpdater v{}'.format(get_version())
             top = u'*' * window_size + u'\n'
             bottom = u'\n' + u'*' * window_size + u'\n'
             if page_name is not None:

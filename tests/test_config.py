@@ -3,7 +3,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pyi_updater import Config
+from pyi_updater.config import Config
 
 
 class DevConfig(object):

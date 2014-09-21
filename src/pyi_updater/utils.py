@@ -5,6 +5,7 @@ import os
 import re
 import struct
 import sys
+import time
 
 from six.moves import input
 
@@ -20,6 +21,11 @@ if FROZEN:  # pragma: no cover
 else:
     # we are running in a normal Python environment
     cwd_ = os.getcwd()
+
+
+def time_in_seconds():
+    # we don't need to decimal
+    return int(time.time())
 
 
 class DotAccessDict(object):

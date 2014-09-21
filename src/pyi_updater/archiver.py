@@ -10,7 +10,7 @@ from pyi_updater.exceptions import ArchiverError
 from pyi_updater.utils import (get_version_number,
                                parse_platform,
                                version_string_to_tuple)
-from pyi_updater.version import __version__
+from pyi_updater import get_version
 
 max_help_position = 80
 max_width = get_terminal_size()[0]
@@ -20,7 +20,7 @@ fmt = terminal_formatter()
 usage = ('usage: pyi-archive -n "My App" -v 1.0.1 FILE [FILE...]\n'
          'Usage: pyi-archive -i gzip -n "My App" -v 1.0.1 FILE [FILE...]')
 kw = {
-    'version': __version__,
+    'version': get_version(),
     'usage': usage,
     'formatter': fmt,
     'conflict_handler': 'resolve',

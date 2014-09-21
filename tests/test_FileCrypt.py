@@ -5,7 +5,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pyi_updater import FileCrypt
+from pyi_updater.filecrypt import FileCrypt
 
 PASSWORD = u'This is my password'
 FILENAME = u'test.txt'

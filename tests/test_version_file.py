@@ -4,7 +4,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__name__))))
 
-from pyi_updater import KeyHandler
+from pyi_updater.key_handler import KeyHandler
 from pyi_updater.utils import rsa_verify
 
 

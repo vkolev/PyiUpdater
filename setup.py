@@ -2,13 +2,11 @@
 
 from setuptools import setup, find_packages
 
-# Copied from: https://github.com/rg3/youtube-dl/blob/master/setup.py
-exec(compile(open('src/pyi_updater/version.py').read(),
-             'src/pyi_updater/version.py', 'exec'))
+from pyi_updater import get_version
 
 setup(
     name='PyiUpdater',
-    version=__version__,
+    version=get_version(),
     description='Simple App update framwork',
     author='Johny Mo Swag',
     author_email='johnymoswag@gmail.com',
@@ -16,7 +14,8 @@ setup(
     download_url=('https://github.com/JohnyMoSwag/Pyi'
                   'Updater/archive/master.zip'),
     license='Apache License 2.0',
-    dependency_links=['https://github.com/pyinstaller/pyinstaller/archive/develop.zip#egg=pyinstaller-2.1.1'],
+    dependency_links=['https://github.com/pyinstaller/pyinstaller/archive/de'
+                      'velop.zip#egg=pyinstaller-2.1.1'],
     install_requires=[
         'appdirs',
         'blinker',
@@ -34,8 +33,11 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
     # py_modules=['archiver'],
-    entry_points={'console_scripts': ['pyi-cli = cli:main',
-                                      'pyi-archiver = pyi_updater.archiver:main']},
+    entry_points="""
+    [console_scripts]
+    pyi-cli=cli:main
+    pyi-archiver = pyi_updater.archiver:main
+    """,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Operating System :: OS Independent',
