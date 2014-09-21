@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Usage</title>
+    
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="folder_structure.html" title="Folder Structure"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="Configuration"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Not So TUF 0.5.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="usage">
+<span id="id1"></span><h1>Usage</h1>
+<p>After compiling your program with pyinstaller.</p>
+<p>Zip the program. Name the zipfile ProgramName-platform-version.zip</p>
+<p>Supported platform names: mac, nix, nix64, win</p>
+<p>Version numbers are in the form of: x.x.x</p>
+<p>Check <a class="reference external" href="http://semver.org/">Semantic Versioning</a><span class="link-target"> [http://semver.org/]</span> for more info</p>
+<p>The easiest way to get started quickly is to use to command line tool.</p>
+<p>From Pip:</p>
+<div class="highlight-python"><div class="highlight"><pre>home$ nst-cli
+</pre></div>
+</div>
+<p>From Binary</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Mac:</dt>
+<dd>Double click</dd>
+<dt>Windows:</dt>
+<dd>Double click</dd>
+</dl>
+<p>Linux:</p>
+<div class="highlight-python"><div class="highlight"><pre>home$ ./Not\ So\ TUF
+</pre></div>
+</div>
+</div></blockquote>
+<p>From Source:</p>
+<div class="highlight-python"><div class="highlight"><pre>home$ python -m cli
+</pre></div>
+</div>
+<div class="section" id="initial-setup">
+<h2>Initial Setup</h2>
+<p>You&#8217;ll first be prompted to create a password.  Passwords are used on a per folder basis to encourage a different password for each project.</p>
+<p>What you should see:</p>
+<div class="highlight-python"><div class="highlight"><pre>Create a new password.
+
+
+Enter password
+--&gt;
+Enter
+</pre></div>
+</div>
+<p>After initial setup follow press 1. to sign updates, then press 1. again
+to start signing.</p>
+<p>Check out the examples folder to see how to use the framework programmatically, to easily integrate Not-So-TUF into your existing setup.</p>
+<p>The cli tool uses the framework almost exactly the same as the dev script but is easier for beginners. A guided setup example is also provided.</p>
+<p>If your using the Not So TUF binary then the not_so_tuf package will be created automatically for you in the same directory as the binary.</p>
+<p>Below is an example of how you can easily add the client updater to your app.</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">not_so_tuf</span> <span class="kn">import</span> <span class="n">NotSoTuf</span><span class="p">,</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">not_so_tuf.client_config</span> <span class="kn">import</span> <span class="n">ClientConfig</span>
+
+
+<span class="k">def</span> <span class="nf">update</span><span class="p">():</span>
+    <span class="c"># Old way to configure client.</span>
+    <span class="n">client_config</span> <span class="o">=</span> <span class="n">ClientConfig</span><span class="p">()</span>
+    <span class="n">nst</span> <span class="o">=</span> <span class="n">NotSoTuf</span><span class="p">(</span><span class="n">__name__</span><span class="p">,</span> <span class="n">client_config</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">nst</span><span class="p">)</span>
+
+    <span class="c"># New way to configure client.</span>
+    <span class="c"># No need to import NotSoTuf</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">client_config</span><span class="p">)</span>
+
+    <span class="c"># Supply the name and current version #</span>
+    <span class="c"># of the resource you want to check for</span>
+    <span class="c"># an update</span>
+    <span class="n">update_available</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_check</span><span class="p">(</span><span class="s">&#39;gist&#39;</span><span class="p">,</span> <span class="s">&#39;0.10.6&#39;</span><span class="p">)</span>
+    <span class="c"># If update installed and client not already up to date</span>
+    <span class="c"># intall_restart does exactly what you think :)</span>
+    <span class="k">if</span> <span class="n">update_available</span><span class="p">:</span>
+        <span class="n">downloaded</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">downloaded</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">client</span><span class="o">.</span><span class="n">up_to_date</span><span class="p">:</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">install_restart</span><span class="p">()</span>
+
+   <span class="c"># Say you want to install but get user consent</span>
+   <span class="c"># before you restart. Then call install and</span>
+   <span class="c"># later call restart</span>
+    <span class="n">update_available</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_check</span><span class="p">(</span><span class="s">&#39;cpuz&#39;</span><span class="p">,</span> <span class="s">&#39;1.68.27&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">update_available</span><span class="p">:</span>
+        <span class="n">downloaded</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">downloaded</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">client</span><span class="o">.</span><span class="n">up_to_date</span><span class="p">:</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+
+    <span class="n">answer</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&#39;Would you like to install update now?&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s">&#39;y&#39;</span> <span class="ow">in</span> <span class="n">answer</span><span class="p">:</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">restart</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">update</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2014, JohnyMoSwag.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

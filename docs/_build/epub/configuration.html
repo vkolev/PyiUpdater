@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration</title>
+    
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Not So TUF 0.5.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="configuration">
+<span id="id1"></span><h1>Configuration</h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">APP_DATA_DIR</span></tt></td>
+<td>Directory where updates of app &amp; libs are
+cached.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">APP_NAME</span></tt></td>
+<td>Name of your app. Excluding the &#8221;.exe&#8221; on
+on windows.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">DEBUG</span></tt></td>
+<td>enable/disable debug mode</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">DEV_DATA_DIR</span></tt></td>
+<td>Directory on dev machine for nst to do
+its work. Defaults to Current Working Directory</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">KEY_LENGTH</span></tt></td>
+<td>Length of Key Pair. Must be a multipule
+of 256. Default 2048. In 2014 you should
+not use a key length less then 2048.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PRIVATE_KEY_NAME</span></tt></td>
+<td>Name given to your private key. Defaults
+to APP_NAME.pem</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PUBLIC_KEY_NAME</span></tt></td>
+<td>Name given to your public key. Defaults
+to APP_NAME.pub</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PUBLIC_KEY</span></tt></td>
+<td>Public key.  Used on client side</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">UPDATE_URL</span></tt></td>
+<td>Where clients looks for updates</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">UPDATE_PATCHES</span></tt></td>
+<td>enable/disable creation of patches</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">REMOTE_DIR</span></tt></td>
+<td>Remote directory to place updates</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">HOST</span></tt></td>
+<td>Remote host to connect to for ssh</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">SSH_USERNAME</span></tt></td>
+<td>SSH user</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">SSH_KEY_PATH</span></tt></td>
+<td>Path to ssh private key</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">ACCESS_KEY_ID</span></tt></td>
+<td>AWS access key id</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">SECRET_ACCESS_KEY</span></tt></td>
+<td>AWS secret access key</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">BUCKET_NAME</span></tt></td>
+<td>AWS bucket name</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2014, JohnyMoSwag.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

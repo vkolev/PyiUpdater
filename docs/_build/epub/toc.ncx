@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<ncx version="2005-1" xmlns="http://www.daisy.org/z3986/2005/ncx/">
+  <head>
+    <meta name="dtb:uid" content="unknown"/>
+    <meta name="dtb:depth" content="2"/>
+    <meta name="dtb:totalPageCount" content="0"/>
+    <meta name="dtb:maxPageNumber" content="0"/>
+  </head>
+  <docTitle>
+    <text>Not So TUF</text>
+  </docTitle>
+  <navMap>
+    <navPoint id="navPoint1" playOrder="1">
+      <navLabel>
+        <text>Welcome to Not-So-TUF</text>
+      </navLabel>
+      <content src="index.html" />
+    </navPoint>
+    <navPoint id="navPoint2" playOrder="2">
+      <navLabel>
+        <text>Downloads</text>
+      </navLabel>
+      <content src="downloads.html" />
+      <navPoint id="navPoint3" playOrder="2">
+        <navLabel>
+          <text>Downloads</text>
+        </navLabel>
+        <content src="downloads.html" />
+      </navPoint>
+      <navPoint id="navPoint4" playOrder="3">
+        <navLabel>
+          <text>Binary Downloads:</text>
+        </navLabel>
+        <content src="downloads.html#binary-downloads" />
+      </navPoint>
+      <navPoint id="navPoint5" playOrder="4">
+        <navLabel>
+          <text>Source Downloads:</text>
+        </navLabel>
+        <content src="downloads.html#source-downloads" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint6" playOrder="5">
+      <navLabel>
+        <text>Installation</text>
+      </navLabel>
+      <content src="installation.html" />
+    </navPoint>
+    <navPoint id="navPoint7" playOrder="6">
+      <navLabel>
+        <text>Configuration</text>
+      </navLabel>
+      <content src="configuration.html" />
+    </navPoint>
+    <navPoint id="navPoint8" playOrder="7">
+      <navLabel>
+        <text>Usage</text>
+      </navLabel>
+      <content src="usage.html" />
+      <navPoint id="navPoint9" playOrder="7">
+        <navLabel>
+          <text>Usage</text>
+        </navLabel>
+        <content src="usage.html" />
+      </navPoint>
+      <navPoint id="navPoint10" playOrder="8">
+        <navLabel>
+          <text>Initial Setup</text>
+        </navLabel>
+        <content src="usage.html#initial-setup" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint11" playOrder="9">
+      <navLabel>
+        <text>Folder Structure</text>
+      </navLabel>
+      <content src="folder_structure.html" />
+      <navPoint id="navPoint12" playOrder="9">
+        <navLabel>
+          <text>Folder Structure</text>
+        </navLabel>
+        <content src="folder_structure.html" />
+      </navPoint>
+      <navPoint id="navPoint13" playOrder="10">
+        <navLabel>
+          <text>Folder Explanations</text>
+        </navLabel>
+        <content src="folder_structure.html#folder-explanations" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint14" playOrder="11">
+      <navLabel>
+        <text>API</text>
+      </navLabel>
+      <content src="api.html" />
+    </navPoint>
+    <navPoint id="navPoint15" playOrder="12">
+      <navLabel>
+        <text>Release History</text>
+      </navLabel>
+      <content src="release_history.html" />
+    </navPoint>
+  </navMap>
+</ncx>

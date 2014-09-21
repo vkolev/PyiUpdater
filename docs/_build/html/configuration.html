@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration &mdash; PyiUpdater 0.8.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.1.0/flatly/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.8.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="PyiUpdater 0.8.0 documentation" href="index.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          PyiUpdater</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.8.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            <li class="divider-vertical"></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="downloads.html">Downloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="folder_structure.html">Folder Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_history.html">Release History</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Configuration</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="installation.html" title="Previous Chapter: Installation"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Installation</span>
+    </a>
+  </li>
+  <li>
+    <a href="usage.html" title="Next Chapter: Usage"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Usage &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/configuration.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="configuration">
+<span id="id1"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="60%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">APP_DATA_DIR</span></tt></td>
+<td>Directory where updates of app &amp; libs are
+cached. Created dynamically.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">APP_NAME</span></tt></td>
+<td>Name of your app. Excluding the &#8221;.exe&#8221;
+on windows. Used to create APP_DATA_DIR</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">COMPANY_NAME</span></tt></td>
+<td>Company or your name.  Used to create
+APP_DATA_DIR</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">DEBUG</span></tt></td>
+<td>enable/disable debug mode</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">DEV_DATA_DIR</span></tt></td>
+<td>Directory on dev machine for PyiUpdater to
+do its work. Defaults to Current Working Directory</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">KEY_LENGTH</span></tt></td>
+<td>Length of Key Pair. Must be a multipule
+of 256. Default 2048. In 2014 you should
+not use a key length less then 2048.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PRIVATE_KEY_NAME</span></tt></td>
+<td>Name given to your private key. Defaults
+to APP_NAME.pem</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PUBLIC_KEY_NAME</span></tt></td>
+<td>Name given to your public key. Defaults
+to APP_NAME.pub</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PUBLIC_KEY</span></tt></td>
+<td>Public key.  Used on client side</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">UPDATE_URL</span></tt></td>
+<td>Where clients looks for updates</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">UPDATE_PATCHES</span></tt></td>
+<td>enable/disable creation of patches</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">REMOTE_DIR</span></tt></td>
+<td>Remote directory/Bucket Name</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">HOST</span></tt></td>
+<td>Remote host to connect to for ssh</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">USERNAME</span></tt></td>
+<td>Username/API Key</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PASSWORD</span></tt></td>
+<td>Password/API Secret</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">SSH_KEY_PATH</span></tt></td>
+<td>Path to ssh private key</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2014, JohnyMoSwag.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
