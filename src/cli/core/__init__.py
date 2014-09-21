@@ -61,9 +61,8 @@ class Worker(Menu, CommonLogic):
 
     def start(self):
         while 1:
-            self.cwd = cwd_
-            dec_path = os.path.join(self.cwd, u'config.data')
-            enc_path = os.path.join(self.cwd, u'config.data.enc')
+            dec_path = os.path.join(cwd_, u'config.data')
+            enc_path = os.path.join(cwd_, u'config.data.enc')
             if not os.path.exists(dec_path) and not os.path.exists(enc_path):
                 self.initial_setup()
 
@@ -105,21 +104,7 @@ class Worker(Menu, CommonLogic):
                                                       'company or name',
                                                       required=True)
 
-        while 1:
-            dev_data_dir = get_correct_answer(u'Enter directory to store'
-                                              ' work files',
-                                              default=u'Current Working '
-                                              'Directory')
-            dev_data_dir = _directory_fixer(dev_data_dir)
-            if os.access(dev_data_dir, os.W_OK) and os.access(dev_data_dir,
-                                                              os.R_OK):
-                self.config.DEV_DATA_DIR = path_fixer(dev_data_dir)
-                break
-            else:
-                self.display_msg(u'You do not have read/write permission '
-                                 'for this directory')
-                self.display_msg(u'Press Enter to try a different directory')
-                input()
+        self.config.DEV_DATA_DIR = cwd_
 
         while 1:
             key_length = get_correct_answer(u'Enter a key length. Longer is '
@@ -182,14 +167,10 @@ class Worker(Menu, CommonLogic):
         log.debug(u'Saving Config')
         filename = os.path.join(cwd_, u'config.data')
         self.file_crypt.new_file(filename)
-        try:
-            self.file_crypt.decrypt()
-        except Exception as e:
-            log.warning(u'Might be nothing to decrypt yet')
-            log.error(str(e), exc_info=True)
         with open(filename, 'w') as f:
             f.write(str(pickle.dumps(obj)))
         self.file_crypt.encrypt()
+        self.write_config_py(obj)
 
     def load_config(self):
         log.debug(u'Loading Config')
@@ -209,3 +190,19 @@ class Worker(Menu, CommonLogic):
             config_data = SetupConfig()
 
         return config_data
+
+    def write_config_py(self, obj):
+        filename = os.path.join(cwd_, u'client_config.py')
+        attr_format = "    {} = {}\n"
+        attr_str_format = "    {} = '{}'\n"
+        with open(filename, u'w') as f:
+            f.write('class ClientConfig(object):\n')
+            if hasattr(obj, 'APP_NAME') and obj.APP_NAME is not None:
+                f.write(attr_str_format.format('APP_NAME', obj.APP_NAME))
+            if hasattr(obj, 'COMPANY_NAME') and obj.COMPANY_NAME is not None:
+                f.write(attr_str_format.format('COMPANY_NAME',
+                        obj.COMPANY_NAME))
+            if hasattr(obj, 'UPDATE_URL') and obj.UPDATE_URL is not None:
+                f.write(attr_str_format.format('UPDATE_URL', obj.UPDATE_URL))
+            if hasattr(obj, 'PUBLIC_KEY') and obj.PUBLIC_KEY is not None:
+                f.write(attr_format.format('PUBLIC_KEY', obj.PUBLIC_KEY))

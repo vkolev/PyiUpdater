@@ -8,7 +8,7 @@ from six.moves import input
 
 from cli.core.common import CommonLogic
 from cli.ui.menu import Menu
-from cli.ui.menu_utils import get_correct_answer, _directory_fixer
+from cli.ui.menu_utils import get_correct_answer
 from pyi_updater.utils import cwd_, verify_password
 
 
@@ -49,13 +49,12 @@ class Settings(CommonLogic, Menu):
         self.display_msg(u'Then press Enter')
         print((u'1. App Name\n'
                '2. Company Name\n'
-               '3. Dev Data Dir\n'
-               '4. Url\n'
-               '5. Username\n'
-               '6. Password\n'
-               '7. ssh key path\n'
-               '8. Remote dir or bucket name\n'
-               '9. Host settings\n'))
+               '3. Url\n'
+               '4. Username\n'
+               '5. Password\n'
+               '6. ssh key path\n'
+               '7. Remote dir or bucket name\n'
+               '8. Host settings\n'))
         answers = input(u'-->')
 
         self.display_menu_header(u'Updating Settings')
@@ -71,35 +70,30 @@ class Settings(CommonLogic, Menu):
             self.config.COMPANY_NAME = company_name
 
         if '3' in answers:
-            data_dir = get_correct_answer(u'Enter directory to store work '
-                                          'files',
-                                          default=self.config.DEV_DATA_DIR)
-            self.config.DEV_DATA_DIR = _directory_fixer(data_dir)
-        if '4' in answers:
             url = get_correct_answer(u'Enter new update url',
                                      default=self.config.UPDATE_URL)
             self.config.UPDATE_URL = url
 
-        if '5' in answers:
+        if '4' in answers:
             username = get_correct_answer(u'Enter new username',
                                           default=self.config.USERNAME)
             self.config.USERNAME = username
 
-        if '6' in answers:
+        if '5' in answers:
             password = get_correct_answer(u'Enter new password',
                                           default=self.config.PASSWORD)
             self.config.PASSWORD = password
 
-        if '7' in answers:
+        if '6' in answers:
             password = get_correct_answer(u'Enter new ssh key path',
                                           default=self.config.PASSWORD)
             self.config.PASSWORD = password
-        if '8' in answers:
+        if '7' in answers:
             r_dir = get_correct_answer(u'Enter new remote directory or bucket',
                                        default=self.config.REMOTE_DIR)
             self.config.REMOTE_DIR = r_dir
 
-        if '9' in answers:
+        if '8' in answers:
             host = get_correct_answer(u'Enter host name or ip',
                                       default=self.config.HOST)
             self.config.HOST = host
@@ -121,8 +115,9 @@ class Settings(CommonLogic, Menu):
             log.error(u'Cannot copy decrypted config file')
         self.file_crypt.encrypt()
         msg = u'Decrypted config file copied.  Press enter to continue'
-        self.display_msg(msg)
-        input()
+        # May be casing an issue with cli
+        # self.display_msg(msg)
+        input(msg)
         self()
 
     def change_password(self):

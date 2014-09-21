@@ -1,6 +1,5 @@
 from __future__ import print_function
 import logging
-import os
 import sys
 # If i didn't check for platform before
 # importing i'd get an ImportError
@@ -11,8 +10,6 @@ else:
     import tty
 
 from six.moves import input
-
-from pyi_updater.utils import cwd_
 
 log = logging.getLogger(__name__)
 
@@ -105,18 +102,6 @@ def path_fixer(path):
     return path.replace(' ', '\ ')
 
 
-# Makes inputting directory more like shell
-def _directory_fixer(_dir):
-    if _dir == u'Current Working Directory':
-        log.debug(u'Using cwd for Current Working Directory')
-        _dir = cwd_
-    elif _dir.startswith(u'~'):
-        log.debug(u'Expanding ~ to full user path')
-        _dir = _dir[2:]
-        _dir = os.path.join(os.path.expanduser(u'~'), _dir)
-    return _dir
-
-
 # Gets a single character form standard input. Does not echo to the screen
 class _Getch:
 
@@ -132,13 +117,9 @@ class _Getch:
 
 class _GetchUnix:
     def __init__(self):
-        # Not sure if these imports are required here
-        # import tty, sys
         pass
 
     def __call__(self):
-        # NOt sure if these imports are required here
-        # import tty, termios
         pass
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
@@ -152,11 +133,7 @@ class _GetchUnix:
 
 class _GetchWindows:
     def __init__(self):
-        # Not sure if this import is required
-        # import msvcrt
         pass
 
     def __call__(self):
-        # Not sure if this import is required
-        # import msvcrt
         return msvcrt.getch()
