@@ -1,10 +1,13 @@
-from nose import with_setup
 import os
 from random import choice
 import sys
 
+from nose import with_setup
+from nose.tools import raises
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from pyi_updater.exceptions import FileCryptPasswordError, FileCryptError
 from pyi_updater.filecrypt import FileCrypt
 
 PASSWORD = u'This is my password'
@@ -30,6 +33,63 @@ def teardown_func():
         os.remove(FILENAME)
     if os.path.exists(FILENAME_ENC):
         os.remove(FILENAME_ENC)
+
+
+@raises(FileCryptError)
+def test_encrypt_no_filename():
+    fc = FileCrypt()
+    fc.encrypt()
+
+
+@raises(FileCryptError)
+def test_encrypt_no_file():
+    fc = FileCrypt(FILENAME)
+    fc.password = PASSWORD
+    fc.encrypt()
+
+
+@raises(FileCryptError)
+def test_decrypt_no_filename():
+    fc = FileCrypt()
+    fc.decrypt()
+
+
+@raises(FileCryptError)
+def test_decrypt_no_file():
+    fc = FileCrypt(FILENAME)
+    fc.password = PASSWORD
+    fc.decrypt()
+
+
+# @with_setup(setup_func, teardown_func)
+# def test_bad_change_password():
+#     fc = FileCrypt(FILENAME)
+#     fc.password = PASSWORD
+#     fc.encrypt()
+#     fc.password = None
+#     assert fc.change_password('bad password', 'new password') is False
+
+
+@with_setup(setup_func, teardown_func)
+def test_change_password():
+    fc = FileCrypt(FILENAME)
+    fc.password = PASSWORD
+    fc.encrypt()
+    assert fc.change_password(PASSWORD, 'new password') is True
+
+
+def test_update_password_timer():
+    fc = FileCrypt()
+    fc._update_timer()
+    assert fc.password_timer != 0
+
+
+def test_no_update_timer():
+    fc = FileCrypt()
+    fc._update_timer()
+    test_time = fc.password_timer
+    fc._update_timer()
+    assert test_time == fc.password_timer
 
 
 @with_setup(setup_func, teardown_func)

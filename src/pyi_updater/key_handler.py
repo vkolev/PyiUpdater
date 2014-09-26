@@ -4,13 +4,14 @@ import json
 import logging
 import os
 import shutil
+import sys
 
 from Crypto.PublicKey import RSA
 import Crypto.Signature.PKCS1_v1_5
 import Crypto.Hash.SHA256
 from six import PY3
 
-from pyi_updater.exceptions import KeyHandlerError
+from pyi_updater.exceptions import FileCryptPasswordError, KeyHandlerError
 from pyi_updater.filecrypt import FileCrypt
 
 if Crypto is None:  # pragma: no cover
@@ -132,7 +133,10 @@ class KeyHandler(object):
         privkey = os.path.join(self.keys_dir, self.private_key_name)
         log.debug(u'Private Key Path: {}'.format(privkey))
         self.fc.new_file(privkey)
-        self.fc.decrypt()
+        try:
+            self.fc.decrypt()
+        except FileCryptPasswordError:
+            sys.exit(u'Too many failed password')
         shutil.copy(privkey, privkey + u' copy')
         self.fc.encrypt()
 

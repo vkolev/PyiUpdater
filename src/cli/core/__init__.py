@@ -15,6 +15,7 @@ from cli.ui.menu_utils import (ask_yes_no, get_correct_answer,
 
 from pyi_updater import PyiUpdater
 from pyi_updater.config import SetupConfig
+from pyi_updater.exceptions import FileCryptPasswordError
 from pyi_updater.filecrypt import FileCrypt
 from pyi_updater.key_handler import KeyHandler
 from pyi_updater.package_handler import PackageHandler
@@ -183,6 +184,8 @@ class Worker(Menu, CommonLogic):
         self.file_crypt.new_file(filename)
         try:
             self.file_crypt.decrypt()
+        except FileCryptPasswordError:
+            sys.exit(u'Failed password attempt')
         except Exception as e:
             log.error(str(e))
             log.warning(u'No enc file. Will try to load plain config')

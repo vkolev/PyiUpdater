@@ -250,13 +250,13 @@
 <p id='t4' class='stm run hide_run'><span class='key'>import</span> <span class='nam'>shutil</span><span class='strut'>&nbsp;</span></p>
 <p id='t5' class='stm run hide_run'><span class='key'>import</span> <span class='nam'>sys</span><span class='strut'>&nbsp;</span></p>
 <p id='t6' class='pln'><span class='strut'>&nbsp;</span></p>
-<p id='t7' class='stm run hide_run'><span class='key'>from</span> <span class='nam'>jms_utils</span> <span class='key'>import</span> <span class='nam'>get_terminal_size</span><span class='op'>,</span> <span class='nam'>terminal_formatter</span><span class='strut'>&nbsp;</span></p>
+<p id='t7' class='stm run hide_run'><span class='key'>from</span> <span class='nam'>jms_utils</span><span class='op'>.</span><span class='nam'>terminal</span> <span class='key'>import</span> <span class='nam'>get_terminal_size</span><span class='op'>,</span> <span class='nam'>terminal_formatter</span><span class='strut'>&nbsp;</span></p>
 <p id='t8' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t9' class='stm run hide_run'><span class='key'>from</span> <span class='nam'>pyi_updater</span><span class='op'>.</span><span class='nam'>exceptions</span> <span class='key'>import</span> <span class='nam'>ArchiverError</span><span class='strut'>&nbsp;</span></p>
 <p id='t10' class='stm run hide_run'><span class='key'>from</span> <span class='nam'>pyi_updater</span><span class='op'>.</span><span class='nam'>utils</span> <span class='key'>import</span> <span class='op'>(</span><span class='nam'>get_version_number</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
 <p id='t11' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span class='nam'>parse_platform</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
 <p id='t12' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span class='nam'>version_string_to_tuple</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t13' class='stm run hide_run'><span class='key'>from</span> <span class='nam'>pyi_updater</span><span class='op'>.</span><span class='nam'>version</span> <span class='key'>import</span> <span class='nam'>__version__</span><span class='strut'>&nbsp;</span></p>
+<p id='t13' class='stm run hide_run'><span class='key'>from</span> <span class='nam'>pyi_updater</span> <span class='key'>import</span> <span class='nam'>get_version</span><span class='strut'>&nbsp;</span></p>
 <p id='t14' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t15' class='stm run hide_run'><span class='nam'>max_help_position</span> <span class='op'>=</span> <span class='num'>80</span><span class='strut'>&nbsp;</span></p>
 <p id='t16' class='stm run hide_run'><span class='nam'>max_width</span> <span class='op'>=</span> <span class='nam'>get_terminal_size</span><span class='op'>(</span><span class='op'>)</span><span class='op'>[</span><span class='num'>0</span><span class='op'>]</span><span class='strut'>&nbsp;</span></p>
@@ -266,7 +266,7 @@
 <p id='t20' class='stm run hide_run'><span class='nam'>usage</span> <span class='op'>=</span> <span class='op'>(</span><span class='str'>&#39;usage: pyi-archive -n &quot;My App&quot; -v 1.0.1 FILE [FILE...]\n&#39;</span><span class='strut'>&nbsp;</span></p>
 <p id='t21' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span class='str'>&#39;Usage: pyi-archive -i gzip -n &quot;My App&quot; -v 1.0.1 FILE [FILE...]&#39;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t22' class='stm run hide_run'><span class='nam'>kw</span> <span class='op'>=</span> <span class='op'>{</span><span class='strut'>&nbsp;</span></p>
-<p id='t23' class='pln'>&nbsp; &nbsp; <span class='str'>&#39;version&#39;</span><span class='op'>:</span> <span class='nam'>__version__</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
+<p id='t23' class='pln'>&nbsp; &nbsp; <span class='str'>&#39;version&#39;</span><span class='op'>:</span> <span class='nam'>get_version</span><span class='op'>(</span><span class='op'>)</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
 <p id='t24' class='pln'>&nbsp; &nbsp; <span class='str'>&#39;usage&#39;</span><span class='op'>:</span> <span class='nam'>usage</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
 <p id='t25' class='pln'>&nbsp; &nbsp; <span class='str'>&#39;formatter&#39;</span><span class='op'>:</span> <span class='nam'>fmt</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
 <p id='t26' class='pln'>&nbsp; &nbsp; <span class='str'>&#39;conflict_handler&#39;</span><span class='op'>:</span> <span class='str'>&#39;resolve&#39;</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>

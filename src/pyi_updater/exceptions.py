@@ -58,6 +58,12 @@ class FileCryptError(STDError):
         super(FileCryptError, self).__init__(*args, **kwargs)
 
 
+class FileCryptPasswordError(STDError):
+    """Raised for FileCrypt exceptions"""
+    def __init__(self, *args, **kwargs):
+        super(FileCryptPasswordError, self).__init__(*args, **kwargs)
+
+
 class FileDownloaderError(STDError):
     """Raised for File Downloader exceptions"""
     def __init__(self, *args, **kwargs):

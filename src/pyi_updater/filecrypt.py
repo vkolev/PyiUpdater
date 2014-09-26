@@ -8,7 +8,7 @@ from simplecrypt import encrypt as s_encrypt
 from simplecrypt import decrypt as s_decrypt
 from six.moves import input
 
-from pyi_updater.exceptions import FileCryptError
+from pyi_updater.exceptions import FileCryptError, FileCryptPasswordError
 
 
 log = logging.getLogger(__name__)
@@ -49,6 +49,8 @@ class FileCrypt(object):
             log.debug(u'Filename: {}'.format(self.filename))
             log.debug(u'Enc Filename: {}'.format(self.enc_filename))
         else:
+            self.filename = None
+            self.enc_filename = None
             log.warning(u'No file to process yet.')
 
     def encrypt(self):
@@ -119,8 +121,9 @@ class FileCrypt(object):
             log.debug(u'Done writing to file.')
         else:
             if change_password is False:
-                log.warning(u'You entered to many wrong passwords.')
-                sys.exit(0)
+                log.debug(u'To many fialed password attempts')
+                raise FileCryptPasswordError(u'You entered to many wrong '
+                                             'passwords.')
             else:
                 raise FileCryptError('Wrong password')
 
