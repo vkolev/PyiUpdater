@@ -22,9 +22,14 @@
 
     $ pip install PyiUpdater --pre
 
-###### Built in support for AWS S3. SCP is available with
+###### S3 & SCP uploaders are available with
+
+    $ pip install PyiUpdater[s3]
+
+or
 
     $ pip install PyiUpdater[scp]
+
 
 ## Usage:
 

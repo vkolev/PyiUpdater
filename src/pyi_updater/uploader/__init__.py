@@ -50,7 +50,7 @@ class Uploader(object):
         self.test = False
 
         # Extension Manager
-        self.mgr = ExtensionManager(namespace=u'pyiu.uploaders',
+        self.mgr = ExtensionManager(namespace=u'pyiupdater.uploaders',
                                     )
 
     def upload(self):

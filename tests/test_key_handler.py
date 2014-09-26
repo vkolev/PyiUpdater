@@ -4,7 +4,7 @@ import shutil
 import sys
 import time
 
-from jms_utils import ChDir
+from jms_utils.paths import ChDir
 from nose.tools import with_setup
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

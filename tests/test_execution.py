@@ -3,7 +3,7 @@ from nose import with_setup
 import shutil
 import sys
 
-from jms_utils import ChDir
+from jms_utils.paths import ChDir
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
