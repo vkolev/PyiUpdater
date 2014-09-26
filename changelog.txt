@@ -1,19 +1,10 @@
 =========================================
              ***  ToDo's ***
 =========================================
-# Client
-  - Work on Update progress GUI
-    - Make it optional
-  - Make into package
-
 # Test Suite
   - Focus on client auto update tests
   - Add more tests!
     - Coverage is lacking
-
-# Start CLI
-  - Add warnings if required packages
-    are installed
 
 =========================================
            *** Change Log ***
