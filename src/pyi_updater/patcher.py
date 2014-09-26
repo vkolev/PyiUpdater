@@ -8,7 +8,8 @@ try:
     import bsdiff4
 except ImportError:
     bsdiff4 = None
-from jms_utils import ChDir, get_system
+from jms_utils.pahts import ChDir
+from jms_utils.system import get_system
 from six import BytesIO
 
 from pyi_updater.downloader import FileDownloader

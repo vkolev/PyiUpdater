@@ -3,7 +3,7 @@ import logging
 import os
 import sys
 
-from jms_utils import get_terminal_size
+from jms_utils.terminal import get_terminal_size
 from six.moves import xrange
 
 from cli.ui.menu_utils import _Getch

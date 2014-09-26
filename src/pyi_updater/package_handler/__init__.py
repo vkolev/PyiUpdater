@@ -10,7 +10,7 @@ try:
     import bsdiff4
 except ImportError:
     bsdiff4 = None
-from jms_utils import ChDir
+from jms_utils.paths import ChDir
 from six.moves import input
 
 from pyi_updater.package_handler.package import Package

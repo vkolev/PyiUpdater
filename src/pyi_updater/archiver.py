@@ -4,7 +4,7 @@ import os
 import shutil
 import sys
 
-from jms_utils import get_terminal_size, terminal_formatter
+from jms_utils.terminal import get_terminal_size, terminal_formatter
 
 from pyi_updater.exceptions import ArchiverError
 from pyi_updater.utils import (get_version_number,

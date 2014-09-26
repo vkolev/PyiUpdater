@@ -5,12 +5,12 @@ import logging
 import os
 import sys
 
-import jms_utils
+from jms_utils.logger import log_format_string
 from pyi_updater.utils import cwd_
 
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
-fmt_str = jms_utils.log_format_string()
+fmt_str = log_format_string()
 nh = logging.NullHandler()
 nh.setLevel(logging.DEBUG)
 log.addHandler(nh)

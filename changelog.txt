@@ -2,6 +2,8 @@
              ***  ToDo's ***
 =========================================
 # Client
+  - Work on Update progress GUI
+    - Make it optional
   - Make into package
 
 # Test Suite

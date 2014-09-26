@@ -7,7 +7,8 @@ import tarfile
 from zipfile import ZipFile
 
 from appdirs import user_cache_dir
-from jms_utils import ChDir, get_system
+from jms_utils.paths import ChDir
+from jms_utils.system import get_system
 import requests
 
 from pyi_updater.archiver import make_archive
