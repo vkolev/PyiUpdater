@@ -48,7 +48,7 @@ class KeyHandler(object):
             self.keys_dir = os.path.join(self.data_dir, u'keys')
             self.version_file = os.path.join(self.data_dir, u'version.json')
             if not os.path.exists(self.keys_dir):
-                log.info(u'Creating keys directory')
+                log.debug(u'Creating keys directory')
                 # Just in case folders got deleted before we start work :)
                 os.makedirs(self.keys_dir)
         else:
@@ -91,7 +91,7 @@ class KeyHandler(object):
         """
         # Makes a set of private and public keys
         # Used for authentication
-        log.info(u'Making keys')
+        log.debug(u'Making keys')
         rsa_key_object = RSA.generate(int(self.key_length))
         # This is the private key, keep this secret. You'll need
         # it to sign new updates.
@@ -159,7 +159,7 @@ class KeyHandler(object):
 
     def _load_private_key(self):
         # Loads private key
-        log.info(u'Loading private key')
+        log.debug(u'Loading private key')
         if not self._find_private_key():
             raise KeyHandlerError(u"You don't have any keys",
                                   expected=True)
@@ -194,7 +194,7 @@ class KeyHandler(object):
 
     def _add_sig(self):
         # Adding new signature to version file
-        log.info(u'Adding signature to version file...')
+        log.debug(u'Adding signature to version file...')
         if not self.privkey:
             log.warning(u'Private key not loaded')
             raise KeyHandlerError(u'You must load your privkey first',
@@ -202,7 +202,7 @@ class KeyHandler(object):
 
         update_data = self._load_update_data()
         if u'sig' in update_data:
-            log.info(u'Deleting sig')
+            log.debug(u'Deleting sig')
             del update_data[u'sig']
         _data = json.dumps(update_data, sort_keys=True)
         _data_hash = Crypto.Hash.SHA256.new(_data)
@@ -211,12 +211,12 @@ class KeyHandler(object):
 
         update_data = json.loads(_data)
         update_data[u'sig'] = hexlify(signature)
-        log.info(u'Adding sig to update data')
+        log.debug(u'Adding sig to update data')
         self.update_data = update_data
 
     def _write_update_data(self):
         # Write version file "with new sig" to disk
-        log.info(u'Wrote version data')
+        log.debug(u'Wrote version data')
         if self.update_data:
             with open(self.version_file, u'w') as f:
                 f.write(json.dumps(self.update_data, indent=2,
@@ -236,12 +236,12 @@ class KeyHandler(object):
         private = os.path.join(self.keys_dir, self.private_key_name)
         if os.path.exists(public) and os.path.exists(private):
             if overwrite is False:
-                log.info(u'Cannot overwrite old key files.')
+                log.debug(u'Cannot overwrite old key files.')
                 log.debug(u'Pass overwrite=True to make_keys to overwrite')
                 return
             else:
                 log.warning(u'About to overwrite old keys')
-        log.info(u'Writing keys to file')
+        log.debug(u'Writing keys to file')
         with open(private, u'w') as pri:
             pri.write(self.privkey)
         if self.test is False:
@@ -280,7 +280,7 @@ class KeyHandler(object):
 
     def _load_update_data(self):
         # Loads version file into memory
-        log.info(u"Loading version file")
+        log.debug(u"Loading version file")
         try:
             log.debug(u'Version file path: {}'.format(self.version_file))
             with open(self.version_file, 'r') as f:

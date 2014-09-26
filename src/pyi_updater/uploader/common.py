@@ -13,20 +13,13 @@ class BaseUploader(object):
 
         host (str): Either ip or domain name of remote servers
 
-        bucket_name (str): Name of bucket on AWS S3
+        bucket_name/remote_dir (str): Remote location for update
 
         remote_dir (str): The directory on remote server to upload files to.
 
-        username (str): login username of remote server
+        username/aws_access_id (str): login for service
 
-        password (str): login password of remote server
-
-        ssh_key_file (str): full path to ssh pub key on local machine
-
-        aws_access_id (str): aws access id for S3 bucket account owner
-
-        aws_secret_key (str): aws secret key for S3 bucket account owner
-
+        password/ssh_key_file/aws_secret_key (str): login for service
     """
     def __init__(self):
         self.failed_uploads = []

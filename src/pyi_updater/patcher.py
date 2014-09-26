@@ -88,7 +88,7 @@ class Patcher(object):
 
     def _verify_installed_binary(self):
         # Verifies currently installed binary against known hash
-        log.info(u'Checking for current installed binary to patch')
+        log.debug(u'Checking for current installed binary to patch')
         file_info = self._get_current_filename_and_hash(self.name,
                                                         self.current_version)
         filename = file_info[u'filename']
@@ -106,7 +106,7 @@ class Patcher(object):
             with open(filename, u'rb') as f:
                 self.og_binary = f.read()
             os.remove(filename)
-        log.info(u'Binary found and verified')
+        log.debug(u'Binary found and verified')
         return True
 
     # We will take all versions.  Then append any version
@@ -126,7 +126,7 @@ class Patcher(object):
         # the list/set down below.
         # How i envisioned it: sorted(list(set(needed_patches)))
         versions = sorted(versions)
-        log.info(u'getting required patches')
+        log.debug(u'getting required patches')
         for i in versions:
             if i > version_string_to_tuple(self.current_version):
                 needed_patches.append(i)
@@ -134,7 +134,7 @@ class Patcher(object):
         # Taking the list of needed patches and extracting the
         # patch data from it. If any loop fails, will return False
         # and start full binary update.
-        log.info(u'Getting patch meta-data')
+        log.debug(u'Getting patch meta-data')
 
         # Used to guarantee patches are only added once
         needed_patches = list(set(needed_patches))
@@ -187,7 +187,7 @@ class Patcher(object):
 
     def _apply_patches_in_memory(self):
         # Applies a sequence of patches in memory
-        log.info(u'Applying patches')
+        log.debug(u'Applying patches')
         # Beginning the patch process
         self.new_binary = self.og_binary
         progress_signal.send(info=u'Applying Patches')
@@ -202,7 +202,7 @@ class Patcher(object):
 
     def _write_update_to_disk(self):
         # Writes updated binary to disk
-        log.info('Writing update to disk')
+        log.debug('Writing update to disk')
 
         temp_filename = self.json_data[u'updates'][self.name]
 

@@ -125,7 +125,7 @@ class Client(object):
         if not self.verified:
             log.debug('Failed version file verification')
             return False
-        log.info(u'Checking for {} updates...'.format(name))
+        log.debug(u'Checking for {} updates...'.format(name))
 
         # If None is returned self._get_highest_version could
         # not find the supplied name in the version file
@@ -135,11 +135,11 @@ class Client(object):
         if version_string_to_tuple(latest) <= \
                 version_string_to_tuple(version):
             log.debug(u'{} already updated to the latest version'.format(name))
-            log.info(u'Already up-to-date')
+            log.debug(u'Already up-to-date')
             return False
         # Hey, finally made it to the bottom!
         # Looks like its time to do some updating
-        log.info(u'Update available')
+        log.debug(u'Update available')
         self.ready_to_update = True
         return True
 
@@ -153,11 +153,11 @@ class Client(object):
             return False
         patch_success = self._patch_update(self.name, self.version)
         if patch_success:
-            log.info(u'Download successful')
+            log.debug(u'Download successful')
         else:
             update_success = self._full_update(self.name)
             if update_success:
-                log.info(u'Download successful')
+                log.debug(u'Download successful')
             else:
                 return False
         return True
@@ -276,7 +276,7 @@ class Client(object):
             if not os.path.exists(filename):
                 raise ClientError(u'File does not exists')
 
-            log.info(u'Extracting Update')
+            log.debug(u'Extracting Update')
             archive_ext = os.path.splitext(filename)[1].lower()
             if archive_ext == u'.gz':
                 try:
@@ -327,7 +327,7 @@ class Client(object):
         # Oh yes i did just pull that new binary into
         # the currently running process and kept it pushing
         # like nobody's business. Windows what???
-        log.info(u'Restarting')
+        log.debug(u'Restarting')
         current_app = os.path.join(self.current_app_dir, self.name)
         if get_system() == u'mac':
             if not os.path.exists(current_app):
@@ -391,7 +391,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         #
         #        False - Either failed to patch or no base binary to patch
 
-        log.info(u'Starting patch update')
+        log.debug(u'Starting patch update')
         filename = self._get_filename(name, version)
         latest = self._get_highest_version(name)
         # Just checking to see if the zip for the current version is
@@ -425,7 +425,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         #       True - Update Successful
         #
         #       False - Update Failed
-        log.info(u'Starting full update')
+        log.debug(u'Starting full update')
         latest = self._get_highest_version(name)
 
         filename = self._get_filename(name,
@@ -437,11 +437,11 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         _hash = self.dot_access_update_data.get(hash_key)
 
         with ChDir(self.update_folder):
-            log.info(u'Downloading update...')
+            log.debug(u'Downloading update...')
             fd = FileDownloader(filename, url, _hash, self.verify)
             result = fd.download_verify_write()
             if result:
-                log.info(u'Update Complete')
+                log.debug(u'Update Complete')
                 return True
             else:
                 log.error(u'Failed To Updated To Latest Version')
@@ -456,7 +456,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
                                             current_archive_filename)
 
         if not os.path.exists(current_archvie_path):
-            log.info(u'Adding base binary v{} to updates '
+            log.debug(u'Adding base binary v{} to updates '
                      u'folder'.format(self.version))
             # Changing in to directory of currently running exe
             with ChDir(os.path.dirname(sys.argv[0])):

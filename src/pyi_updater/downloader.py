@@ -154,7 +154,7 @@ class FileDownloader(object):
         self.my_file.seek(0)
         self.file_binary_data = self.my_file.read()
         progress_signal.send(info=u'Download Complete', percent=u'100')
-        log.info(u'Download Complete')
+        log.debug(u'Download Complete')
         log.debug(u'Finished in {} seconds'.format(time.time() -
                   self.start))
 
