@@ -20,6 +20,9 @@ v0.9.0 - DEV
     - Better error handling
     - Less failed application execution
       when updater has errors
+    - Patcher
+      - Now verifies patched update integrity
+        against version file
   - Https verification
     - on by default
     - Can disable in config file

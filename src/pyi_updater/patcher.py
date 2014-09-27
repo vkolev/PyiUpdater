@@ -14,7 +14,8 @@ from six import BytesIO
 
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import PatcherError
-from pyi_updater.utils import (get_package_hashes,
+from pyi_updater.utils import (DotAccessDict,
+                               get_package_hashes,
                                version_string_to_tuple,
                                version_tuple_to_string)
 
@@ -41,19 +42,29 @@ class Patcher(object):
     """
 
     def __init__(self, **kwargs):
-        self.name = kwargs.get('name', None)
-        self.json_data = kwargs.get('json_data', None)
-        self.current_version = kwargs.get('current_version', None)
-        self.highest_version = kwargs.get('highest_version', None)
-        self.update_folder = kwargs.get('update_folder', None)
-        self.update_url = kwargs.get('update_url', None)
-        self.verify = kwargs.get('verify', True)
+        self.name = kwargs.get(u'name', None)
+        self.json_data = kwargs.get(u'json_data', None)
+        self.dot_access_update_data = DotAccessDict(self.json_data)
+        self.current_version = kwargs.get(u'current_version', None)
+        self.highest_version = kwargs.get(u'highest_version', None)
+        self.update_folder = kwargs.get(u'update_folder', None)
+        self.update_url = kwargs.get(u'update_url', None)
+        self.verify = kwargs.get(u'verify', True)
         self.patch_data = []
         self.patch_binary_data = []
         self.og_binary = None
         # ToDo: Update tests with linux archives.
         # Used for testing.
-        self.plat = kwargs.get('platform', platform_)
+        self.plat = kwargs.get(u'platform', platform_)
+        self.current_filename = kwargs.get(u'current_filename', None)
+        self.current_file_hash = kwargs.get(u'current_file_hash', None)
+
+        file_info = self._current_file_info(self.name,
+                                            self.current_version)
+        if self.current_filename is None:
+            self.current_filename = file_info['filename']
+        if self.current_file_hash is None:
+            self.current_file_hash = file_info['file_hash']
 
     def start(self):
         "Starts patching process"
@@ -91,23 +102,21 @@ class Patcher(object):
     def _verify_installed_binary(self):
         # Verifies currently installed binary against known hash
         log.debug(u'Checking for current installed binary to patch')
-        file_info = self._get_current_filename_and_hash(self.name,
-                                                        self.current_version)
-        filename = file_info[u'filename']
-        file_hash = file_info[u'file_hash']
+
         # I just really like using this ChDir context
         # manager.  Even sent the developer a cup of coffee
         with ChDir(self.update_folder):
-            installed_file_hash = get_package_hashes(filename)
-            if file_hash != installed_file_hash:
-                log.warning(u'Binary hash mismatch')
-                return False
-            if not os.path.exists(filename):
+            if not os.path.exists(self.current_filename):
                 log.warning(u'Cannot find binary to patch')
                 return False
-            with open(filename, u'rb') as f:
+
+            installed_file_hash = get_package_hashes(self.current_filename)
+            if self.current_file_hash != installed_file_hash:
+                log.warning(u'Binary hash mismatch')
+                return False
+            with open(self.current_filename, u'rb') as f:
                 self.og_binary = f.read()
-            os.remove(filename)
+            os.remove(self.current_filename)
         log.debug(u'Binary found and verified')
         return True
 
@@ -144,8 +153,9 @@ class Patcher(object):
         for p in needed_patches:
             info = {}
             v_num = version_tuple_to_string(p)
-
-            plat_info = self.json_data[u'updates'][name][v_num][self.plat]
+            plat_key = '{}.{}.{}.{}'.format(u'updates', name,
+                                            v_num, self.plat)
+            plat_info = self.dot_access_update_data(plat_key)
 
             try:
                 info[u'patch_name'] = plat_info[u'patch_name']
@@ -206,11 +216,14 @@ class Patcher(object):
         # Writes updated binary to disk
         log.debug('Writing update to disk')
 
-        temp_filename = self.json_data[u'updates'][self.name]
+        filename_key = '{}.{}.{}.{}.{}'.format(u'updates', self.name,
+                                               self.highest_version, self.plat,
+                                               u'filename')
 
-        filename = temp_filename[self.highest_version][self.plat]['filename']
-        info = self._get_current_filename_and_hash(self.name,
-                                                   self.highest_version)
+        filename = self.dot_access_update_data(filename_key)
+        if filename is None:
+            raise PatcherError('Filename missing in version file')
+
         with ChDir(self.update_folder):
             try:
                 with open(filename, u'wb') as f:
@@ -222,15 +235,16 @@ class Patcher(object):
                 log.error(u'Failed to open file for writing')
                 raise PatcherError(u'Failed to open file for writing')
             else:
-                if info['file_hash'] != get_package_hashes(filename):
+                if self.current_file_hash != get_package_hashes(filename):
                     os.remove(filename)
                     raise PatcherError(u'Patched file hash bad checksum')
 
-    def _get_current_filename_and_hash(self, name, version):
+    def _current_file_info(self, name, version):
         # Returns filename and hash for given name and version
         info = {}
-
-        plat_info = self.json_data[u'updates'][name][version][self.plat]
+        plat_key = '{}.{}.{}.{}'.format(u'updates', name,
+                                        version, self.plat)
+        plat_info = self.dot_access_update_data(plat_key)
 
         info[u'filename'] = plat_info[u'filename']
         info[u'file_hash'] = plat_info[u'file_hash']

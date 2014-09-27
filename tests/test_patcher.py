@@ -45,3 +45,33 @@ def teardown():
 def test_execution():
     p = Patcher(**update_data)
     assert p.start() is True
+
+
+@with_setup(setup, teardown)
+def test_bad_hash_current_version():
+    bad_data = update_data.copy()
+    bad_data['current_file_hash'] = 'Thisisabadhash'
+    p = Patcher(**bad_data)
+    assert p.start() is False
+
+
+@with_setup(None, teardown)
+def test_no_base_binary():
+    os.mkdir(UPDATE_DIR)
+    p = Patcher(**update_data)
+    assert p.start() is False
+
+
+@with_setup(None, teardown)
+def test_no_base_to_patch():
+    os.mkdir(UPDATE_DIR)
+    p = Patcher(**update_data)
+    assert p.start() is False
+
+
+@with_setup(setup, teardown)
+def test_missing_version():
+    bad_data = update_data.copy()
+    bad_data['highest_version'] = '0.0.4'
+    p = Patcher(**bad_data)
+    assert p.start() is False
