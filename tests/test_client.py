@@ -44,14 +44,14 @@ def test_bad_pub_key():
     config = TConfig()
     config.PUBLIC_KEY = 'bad key'
     client = Client(config, test=True)
-    assert client.update_check('jms', '0.0.0') is False
+    assert client.update_check(u'jms', '0.0.0') is False
 
 
 @with_setup(None, tear_down)
 def test_check_version():
     config = TConfig()
     client = Client(config, test=True)
-    app = 'jms'
+    app = u'jms'
     assert client.update_check(app, '0.0.0') is True
     assert client.update_check(app, '6.0.0') is False
 

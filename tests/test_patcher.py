@@ -20,7 +20,7 @@ update_data = {
     u'name': u'jms',
     u'json_data': json_data,
     u'current_version': u'0.0.1',
-    u'highest_version': u'0.0.2',
+    u'highest_version': u'0.0.3',
     u'update_folder': UPDATE_DIR,
     u'update_url': u'https://s3-us-west-1.amazonaws.com/pyi-test/',
     u'platform': u'mac',
