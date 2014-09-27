@@ -34,8 +34,16 @@ class Client(object):
     """
 
     def __init__(self, obj=None, test=False):
+        self.name = None
+        self.version = None
+        self.json_data = None
+        self.verified = False
+        self.ready_to_update = False
+        self.updates_key = u'updates'
         if obj:
             self.init_app(obj, test)
+        if obj is None and test is True:
+            self.init_app(None, test)
 
     def init_app(self, obj, test=False):
         """Sets up client with config values from obj
@@ -56,8 +64,11 @@ class Client(object):
             config.from_object(obj)
 
         # Grabbing config information
-        self.update_url = self._fix_update_url(config.get(u'UPDATE_URL'))
-        self.app_name = config.get(u'APP_NAME')
+        update_url = config.get(u'UPDATE_URL', None)
+        if update_url is None:
+            update_url = ''
+        self.update_url = self._fix_update_url(update_url)
+        self.app_name = config.get(u'APP_NAME', u'PyiUpdater')
         self.company_name = config.get(u'COMPANY_NAME', u'Digital Sapphire')
         if test:
             self.data_dir = 'cache'
@@ -70,12 +81,6 @@ class Client(object):
         self.version_file = u'version.json'
         self.version_url = self.update_url + self.version_file
 
-        self.name = None
-        self.version = None
-        self.json_data = None
-        self.verified = False
-        self.ready_to_update = False
-        self.updates_key = u'updates'
         self.current_app_dir = os.path.dirname(sys.argv[0])
 
         self._setup()

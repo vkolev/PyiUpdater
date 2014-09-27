@@ -44,19 +44,16 @@ class TConfig(object):
     # Online repository where you host your packages
     # and version file
     # REQUIRED
-    UPDATE_URL = u'https://s3-us-west-1.amazonaws.com/not-so-tuf/'
+    UPDATE_URL = u'https://s3-us-west-1.amazonaws.com/pyi-test/'
     UPDATE_PATCHES = True
 
     # Upload Setup
     REMOTE_DIR = None
     HOST = None
 
-    # SCP settings
-    # Path to ssh key of server
-    SSH_USERNAME = None
-    SSH_KEY_PATH = u'/path/to/ssh/key file'
+    # server user name/access key id
+    USERNAME = None
+    # Path to ssh key of server / password / secret access key
+    PASSWORD = u'/path/to/ssh/key file'
 
-    # S3 settings
-    ACCESS_KEY_ID = None
-    SECRET_ACCESS_KEY = None
-    BUCKET_NAME = None
+    SERVER_CERT_VERIFY = True

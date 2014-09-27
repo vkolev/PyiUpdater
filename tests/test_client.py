@@ -29,7 +29,7 @@ def test_original_init():
     client = Client(updater, test=True)
     assert client.app_name == u'jms'
     assert client.update_url == (u'https://s3-us-west-1.amazon'
-                                 'aws.com/not-so-tuf/')
+                                 'aws.com/pyi-test/')
 
 
 def test_new_init():
@@ -37,7 +37,7 @@ def test_new_init():
     client = Client(config, test=True)
     assert client.app_name == u'jms'
     assert client.update_url == (u'https://s3-us-west-1.amazon'
-                                 'aws.com/not-so-tuf/')
+                                 'aws.com/pyi-test/')
 
 
 def test_bad_pub_key():
@@ -54,3 +54,9 @@ def test_check_version():
     app = 'jms'
     assert client.update_check(app, '0.0.0') is True
     assert client.update_check(app, '6.0.0') is False
+
+
+@with_setup(None, tear_down)
+def test_failed_refresh_download():
+    client = Client(None, test=True)
+    client.download()
