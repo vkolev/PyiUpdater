@@ -217,7 +217,8 @@ class Patcher(object):
         log.debug('Writing update to disk')
 
         filename_key = '{}*{}*{}*{}*{}'.format(u'updates', self.name,
-                                               self.highest_version, self.plat,
+                                               self.highest_version,
+                                               self.plat,
                                                u'filename')
 
         filename = self.star_access_update_data.get(filename_key)
@@ -235,9 +236,16 @@ class Patcher(object):
                 log.error(u'Failed to open file for writing')
                 raise PatcherError(u'Failed to open file for writing')
             else:
-                if self.current_file_hash != get_package_hashes(filename):
+                file_info = self._current_file_info(self.name,
+                                                    self.highest_version)
+
+                new_file_hash = file_info['file_hash']
+                log.debug(u'checking file hash match')
+                if new_file_hash != get_package_hashes(filename):
+                    log.error(u'File hash does not match')
                     os.remove(filename)
                     raise PatcherError(u'Patched file hash bad checksum')
+            log.debug('Wrote update file')
 
     def _current_file_info(self, name, version):
         # Returns filename and hash for given name and version
@@ -251,6 +259,7 @@ class Patcher(object):
         except Exception as err:
             log.debug(str(err))
             filename = ''
+        log.debug(u'Current filename: {}'.format(filename))
         info[u'filename'] = filename
 
         try:
@@ -259,6 +268,7 @@ class Patcher(object):
             log.debug(str(err))
             file_hash = ''
         info[u'file_hash'] = file_hash
+        log.debug('Current file_hash{}'.format(file_hash))
         return info
 
 

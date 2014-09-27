@@ -138,7 +138,7 @@ class FileDownloader(object):
             if start_block is not None:
                 self.b_size = self._best_block_size(end_block - start_block,
                                                     len(block))
-                log.debug(u'Block size: %s' % self.b_size)
+                # log.debug(u'Block size: %s' % self.b_size)
             self.my_file.write(block)
             recieved_data += len(block)
             percent = self._calc_progress_percent(recieved_data,

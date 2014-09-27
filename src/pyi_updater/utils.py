@@ -39,7 +39,6 @@ class StarAccessDict(object):
             value = self.dict
             for key in layers:
                 value = value[key]
-                print value
             log.debug('Found Key')
             return value
         except KeyError:
