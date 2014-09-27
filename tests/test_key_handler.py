@@ -2,7 +2,6 @@ import json
 import os
 import shutil
 import sys
-import time
 
 from jms_utils.paths import ChDir
 from nose.tools import with_setup
@@ -69,10 +68,24 @@ def setup_func2():
     kh.sign_update()
 
 
-def teardown_func2():
-    with ChDir('tests'):
-        shutil.copytree(u'pyi-data', u'pyi-data-copy-{}'.format(time.time()))
-        shutil.rmtree(u'pyi-data', ignore_errors=True)
+def test_setup():
+    global pub_key
+    global test_data_dir
+
+    config = TConfig()
+    updater = PyiUpdater(config)
+    ph = PackageHandler(updater)
+    key_dir = os.path.join(ph.data_dir, u'keys')
+
+    updater.config.PRIVATE_KEY_NAME = None
+    updater.config.PUBLIC_KEY_NAME = None
+    updater.config.KEY_LENGTH = None
+    kh = KeyHandler(updater)
+    kh.test = True
+    assert os.path.exists(os.path.abspath(key_dir))
+    assert kh.key_length == 2048
+    assert kh.private_key_name == u'jms.pem'
+    assert kh.public_key_name == u'jms.pub'
 
 
 @with_setup(setup_func2, teardown_func)
@@ -104,3 +117,30 @@ def test_key_creation():
     # key names are not provided in tconfig
     assert u'jms.pub' in files
     assert u'jms.pem' in files
+
+
+@with_setup(None, teardown_func)
+def test_execution():
+    global pub_key
+    global test_data_dir
+
+    config = TConfig()
+    updater = PyiUpdater(config)
+    ph = PackageHandler(updater)
+    kh = KeyHandler(updater)
+
+    ph.setup()
+    kh.test = True
+    kh.make_keys()
+    pub_key = kh.get_public_key()
+
+    # Make zipfile
+    with ChDir(test_data_dir):
+        os.mkdir(u'test-app')
+        with ChDir(u'test-app'):
+            with open(u'app.txt', u'w') as f:
+                f.write(u'I am so happy' * 1000)
+        shutil.make_archive(u'Test App-mac-0.2.0', u'zip', u'test-app')
+        shutil.move(u'Test App-mac-0.2.0.zip', u'new')
+    ph.update_package_list()
+    kh.sign_update()

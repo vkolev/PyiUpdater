@@ -35,7 +35,7 @@ class Patcher(object):
 
         current_version (str): Version number of currently installed binary
 
-        hightest_version (str): Newest version available
+        highest_version (str): Newest version available
 
         update_folder (str): Path to update folder to place updated binary in
     """
@@ -51,7 +51,9 @@ class Patcher(object):
         self.patch_data = []
         self.patch_binary_data = []
         self.og_binary = None
-        self.plat = platform_
+        # ToDo: Update tests with linux archives.
+        # Used for testing.
+        self.plat = kwargs.get('platform', platform_)
 
     def start(self):
         "Starts patching process"
@@ -207,6 +209,8 @@ class Patcher(object):
         temp_filename = self.json_data[u'updates'][self.name]
 
         filename = temp_filename[self.highest_version][self.plat]['filename']
+        info = self._get_current_filename_and_hash(self.name,
+                                                   self.highest_version)
         with ChDir(self.update_folder):
             try:
                 with open(filename, u'wb') as f:
@@ -217,6 +221,10 @@ class Patcher(object):
                     os.remove(filename)
                 log.error(u'Failed to open file for writing')
                 raise PatcherError(u'Failed to open file for writing')
+            else:
+                if info['file_hash'] != get_package_hashes(filename):
+                    os.remove(filename)
+                    raise PatcherError(u'Patched file hash bad checksum')
 
     def _get_current_filename_and_hash(self, name, version):
         # Returns filename and hash for given name and version

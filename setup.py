@@ -29,7 +29,7 @@ setup(
         'bsdiff4',
         'jms-utils',
         'pycrypto',
-        'pyinstaller>=2.1.1',
+        'pyinstaller',
         'requests',
         'six',
         'simple-crypt',

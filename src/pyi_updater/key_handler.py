@@ -73,10 +73,10 @@ class KeyHandler(object):
             # Adding extension if not already provided.
             self.public_key_name += u'.pub'
 
-        self.key_length = obj.config.get(u'KEY_LENGTH', 2048)
+        self.key_length = obj.config.get(u'KEY_LENGTH', None)
         # Have to perform this check in case user passed None
         # to KEY_LENGTH in config file
-        if self.key_length is None:
+        if self.key_length is None or self.key_length < 2048:
             self.key_length = 2048
 
         # FileCrypt object
@@ -177,11 +177,12 @@ class KeyHandler(object):
             return
 
         self.fc.new_file(privkey)
-        if self.test is False:
-            try:
-                self.fc.decrypt()
-            except:
-                log.warning(u'Nothing to decrypt')
+        try:
+            self.fc.decrypt()
+        except FileCryptPasswordError:
+            sys.exit(u'Too many failed password attempts')
+        except:
+            log.warning(u'Nothing to decrypt')
 
         if os.path.exists(privkey):
             try:
@@ -193,8 +194,7 @@ class KeyHandler(object):
         else:
             raise KeyHandlerError(u'Private key not found')
 
-        if self.test is False:
-            self.fc.encrypt()
+        self.fc.encrypt()
 
     def _add_sig(self):
         # Adding new signature to version file
