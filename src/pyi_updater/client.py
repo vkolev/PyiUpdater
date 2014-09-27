@@ -117,7 +117,7 @@ class Client(object):
         self.name = name
         self.version = version
 
-        if FROZEN and self.name == self.app_name:
+        if FROZEN is True and self.name == self.app_name:
             # We only add .exe to app executable.  Not libs or dll
             self._archive_installed_binary()
         # Removes old versions, of update being checked, from
@@ -463,7 +463,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
 
         if not os.path.exists(current_archvie_path):
             log.debug(u'Adding base binary v{} to updates '
-                     u'folder'.format(self.version))
+                      u'folder'.format(self.version))
             # Changing in to directory of currently running exe
             with ChDir(os.path.dirname(sys.argv[0])):
                 name = self.name
