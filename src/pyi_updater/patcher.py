@@ -155,7 +155,7 @@ class Patcher(object):
             v_num = version_tuple_to_string(p)
             plat_key = '{}.{}.{}.{}'.format(u'updates', name,
                                             v_num, self.plat)
-            plat_info = self.dot_access_update_data(plat_key)
+            plat_info = self.dot_access_update_data.get(plat_key)
 
             try:
                 info[u'patch_name'] = plat_info[u'patch_name']
@@ -220,7 +220,7 @@ class Patcher(object):
                                                self.highest_version, self.plat,
                                                u'filename')
 
-        filename = self.dot_access_update_data(filename_key)
+        filename = self.dot_access_update_data.get(filename_key)
         if filename is None:
             raise PatcherError('Filename missing in version file')
 
@@ -244,7 +244,7 @@ class Patcher(object):
         info = {}
         plat_key = '{}.{}.{}.{}'.format(u'updates', name,
                                         version, self.plat)
-        plat_info = self.dot_access_update_data(plat_key)
+        plat_info = self.dot_access_update_data.get(plat_key)
 
         info[u'filename'] = plat_info[u'filename']
         info[u'file_hash'] = plat_info[u'file_hash']
