@@ -22,7 +22,7 @@ else:
     cwd_ = os.getcwd()
 
 
-class DotAccessDict(object):
+class StarAccessDict(object):
 
     def __init__(self, dict_=None):
         self.load(dict_)
@@ -35,10 +35,11 @@ class DotAccessDict(object):
 
     def get(self, key):
         try:
-            layers = key.split('.')
+            layers = key.split('*')
             value = self.dict
             for key in layers:
                 value = value[key]
+                print value
             log.debug('Found Key')
             return value
         except KeyError:

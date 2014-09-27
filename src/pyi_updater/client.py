@@ -16,8 +16,9 @@ from pyi_updater.config import Config
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.patcher import Patcher
-from pyi_updater.utils import (DotAccessDict, FROZEN, rsa_verify,
-                               get_version_number, version_string_to_tuple)
+from pyi_updater.utils import (FROZEN, get_version_number,
+                               rsa_verify, StarAccessDict,
+                               version_string_to_tuple)
 
 log = logging.getLogger(__name__)
 
@@ -260,7 +261,7 @@ class Client(object):
                 log.warning(u'Version file not verified')
         else:
             log.error(u'No sig in version file')
-        self.dot_access_update_data = DotAccessDict(self.json_data)
+        self.star_access_update_data = StarAccessDict(self.json_data)
 
     def _extract_update(self):
         platform_name = self.name
@@ -432,9 +433,9 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
                                       latest)
 
         url = self.update_url + filename
-        hash_key = u'{}.{}.{}.{}.{}'.format(self.updates_key, name,
+        hash_key = u'{}*{}*{}*{}*{}'.format(self.updates_key, name,
                                             latest, platform_, u'file_hash')
-        _hash = self.dot_access_update_data.get(hash_key)
+        _hash = self.star_access_update_data.get(hash_key)
 
         with ChDir(self.update_folder):
             log.debug(u'Downloading update...')
@@ -526,9 +527,9 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         #
         # Returns:
         #    (str) Highest version number
-        version_key = u'{}.{}.{}'.format(u'latest', name, platform_)
+        version_key = u'{}*{}*{}'.format(u'latest', name, platform_)
 
-        version = self.dot_access_update_data.get(version_key)
+        version = self.star_access_update_data.get(version_key)
 
         if version is not None:
             log.debug(u'Highest version: {}'.format(version))
@@ -546,12 +547,12 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         #
         # Returns:
         #    (str) Url
-        latest_key = u'{}.{}.{}'.format(u'latest', name, platform_)
-        latest = self.dot_access_update_data.get(latest_key)
+        latest_key = u'{}*{}*{}'.format(u'latest', name, platform_)
+        latest = self.star_access_update_data.get(latest_key)
 
-        url_key = u'{}.{}.{}.{}.{}'.format(self.updates_key, name, latest,
+        url_key = u'{}*{}*{}*{}*{}'.format(self.updates_key, name, latest,
                                            platform_, u'url')
-        url = self.dot_access_update_data.get(url_key)
+        url = self.star_access_update_data.get(url_key)
         return url
 
     def _get_filename(self, name, version):
@@ -567,9 +568,9 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
 
         # ToDo: Remove once stable.  Used to help with transition
         #       to new version file format.
-        filename_key = u'{}.{}.{}.{}.{}'.format(u'updates', name, version,
+        filename_key = u'{}*{}*{}*{}*{}'.format(u'updates', name, version,
                                                 platform_, u'filename')
-        filename = self.dot_access_update_data.get(filename_key)
+        filename = self.star_access_update_data.get(filename_key)
 
         log.debug(u"Filename for {}-{}: {}".format(name, version, filename))
         return filename

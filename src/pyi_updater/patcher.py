@@ -14,8 +14,8 @@ from six import BytesIO
 
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import PatcherError
-from pyi_updater.utils import (DotAccessDict,
-                               get_package_hashes,
+from pyi_updater.utils import (get_package_hashes,
+                               StarAccessDict,
                                version_string_to_tuple,
                                version_tuple_to_string)
 
@@ -44,7 +44,7 @@ class Patcher(object):
     def __init__(self, **kwargs):
         self.name = kwargs.get(u'name', None)
         self.json_data = kwargs.get(u'json_data', None)
-        self.dot_access_update_data = DotAccessDict(self.json_data)
+        self.star_access_update_data = StarAccessDict(self.json_data)
         self.current_version = kwargs.get(u'current_version', None)
         self.highest_version = kwargs.get(u'highest_version', None)
         self.update_folder = kwargs.get(u'update_folder', None)
@@ -153,9 +153,9 @@ class Patcher(object):
         for p in needed_patches:
             info = {}
             v_num = version_tuple_to_string(p)
-            plat_key = '{}.{}.{}.{}'.format(u'updates', name,
+            plat_key = '{}*{}*{}*{}'.format(u'updates', name,
                                             v_num, self.plat)
-            plat_info = self.dot_access_update_data.get(plat_key)
+            plat_info = self.star_access_update_data.get(plat_key)
 
             try:
                 info[u'patch_name'] = plat_info[u'patch_name']
@@ -216,11 +216,11 @@ class Patcher(object):
         # Writes updated binary to disk
         log.debug('Writing update to disk')
 
-        filename_key = '{}.{}.{}.{}.{}'.format(u'updates', self.name,
+        filename_key = '{}*{}*{}*{}*{}'.format(u'updates', self.name,
                                                self.highest_version, self.plat,
                                                u'filename')
 
-        filename = self.dot_access_update_data.get(filename_key)
+        filename = self.star_access_update_data.get(filename_key)
         if filename is None:
             raise PatcherError('Filename missing in version file')
 
@@ -242,12 +242,23 @@ class Patcher(object):
     def _current_file_info(self, name, version):
         # Returns filename and hash for given name and version
         info = {}
-        plat_key = '{}.{}.{}.{}'.format(u'updates', name,
+        plat_key = '{}*{}*{}*{}'.format(u'updates', name,
                                         version, self.plat)
-        plat_info = self.dot_access_update_data.get(plat_key)
+        plat_info = self.star_access_update_data.get(plat_key)
 
-        info[u'filename'] = plat_info[u'filename']
-        info[u'file_hash'] = plat_info[u'file_hash']
+        try:
+            filename = plat_info[u'filename']
+        except Exception as err:
+            log.debug(str(err))
+            filename = ''
+        info[u'filename'] = filename
+
+        try:
+            file_hash = plat_info[u'file_hash']
+        except Exception as err:
+            log.debug(str(err))
+            file_hash = ''
+        info[u'file_hash'] = file_hash
         return info
 
 
