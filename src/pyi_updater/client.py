@@ -10,6 +10,7 @@ from appdirs import user_cache_dir
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 import requests
+import six
 
 from pyi_updater.archiver import make_archive
 from pyi_updater.config import Config
@@ -63,9 +64,9 @@ class Client(object):
 
         # Grabbing config information
         update_url = config.get(u'UPDATE_URL', None)
-        if update_url is None:
-            update_url = ''
-        self.update_urls = self._sanatize_update_url(update_url)
+        update_urls = config.get(u'UPDATE_URLS', None)
+
+        self.update_urls = self._sanatize_update_url(update_url, update_urls)
         self.app_name = config.get(u'APP_NAME', u'PyiUpdater')
         self.company_name = config.get(u'COMPANY_NAME', u'Digital Sapphire')
         if test:
@@ -582,7 +583,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         log.debug(u"Filename for {}-{}: {}".format(name, version, filename))
         return filename
 
-    def _sanatize_update_url(self, url):
+    def _sanatize_update_url(self, url, urls):
         # Adds trailing slash to urls provided in config if
         # not already present
         #
@@ -591,13 +592,16 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         #
         # Returns:
         #    (list) Urls with trailing slash
-
-        # ToDo: Remove v1.0
-        #       For supporting legacy single update url
-        if isinstance(url, list) is False:
-            urls = [url]
-        else:
-            urls = url
+        if not isinstance(url, six.string_types):
+            url = ''
+        if not isinstance(urls, list):
+            # If by accident some passes sting to update_urls
+            # instead of update_url
+            if isinstance(urls, six.string_types):
+                urls = [urls]
+            else:
+                urls = []
+        urls.append(url)
         sanatized_urls = []
         # Adds trailing slash to end of url
         # if not already provided
