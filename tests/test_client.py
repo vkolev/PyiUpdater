@@ -52,7 +52,7 @@ def test_check_version():
     config = TConfig()
     client = Client(config, test=True)
     assert client.update_check(client.app_name, '6.0.0') is False
-    assert client.update_check(client.app_name, '0.0.1') is True
+    assert client.update_check(client.app_name, '0.0.2') is True
 
 
 @with_setup(None, tear_down)
