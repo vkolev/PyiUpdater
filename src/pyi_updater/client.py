@@ -65,7 +65,7 @@ class Client(object):
         update_url = config.get(u'UPDATE_URL', None)
         if update_url is None:
             update_url = ''
-        self.update_url = self._fix_update_url(update_url)
+        self.update_urls = self._sanatize_update_url(update_url)
         self.app_name = config.get(u'APP_NAME', u'PyiUpdater')
         self.company_name = config.get(u'COMPANY_NAME', u'Digital Sapphire')
         if test:
@@ -79,7 +79,6 @@ class Client(object):
         self.debug = config.get(u'DEBUG', False)
         self.verify = config.get(u'VERIFY_SERVER_CERT', True)
         self.version_file = u'version.json'
-        self.version_url = self.update_url + self.version_file
 
         self.current_app_dir = os.path.dirname(sys.argv[0])
 
@@ -225,20 +224,20 @@ class Client(object):
     def _get_update_manifest(self):
         #  Downloads & Verifies version file signature.
         log.debug(u'Loading version file...')
-        try:
-            v = requests.get(self.version_url, verify=self.verify)
-            self.json_data = v.json()
-        except requests.exceptions.SSLError:
+        for u in self.update_urls:
+            url = u + self.version_file
+            try:
+                v = requests.get(url, verify=self.verify)
+                self.json_data = v.json()
+            except requests.exceptions.SSLError:
                 log.error(u'SSL cert not verified')
-                raise ClientError(u'SSL cert not verified')
-        except ValueError:
-            log.error(u'Json failed to load')
-            raise ClientError(u'Failed to load json')
-        except Exception as e:
-            log.error(str(e))
-        finally:
-            if self.json_data is None:
-                self.json_data = {}
+            except ValueError:
+                log.error(u'Json failed to load')
+            except Exception as e:
+                log.error(str(e))
+            finally:
+                if self.json_data is None:
+                    self.json_data = {}
 
         # Checking to see if there is a sig in the version file.
         if u'sig' in self.json_data.keys():
@@ -412,7 +411,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         p = Patcher(name=name, json_data=self.json_data,
                     current_version=version, highest_version=latest,
                     update_folder=self.update_folder,
-                    update_url=self.update_url, verify=self.verify)
+                    update_urls=self.update_urls, verify=self.verify)
 
         # Returns True if everything went well
         # If False is returned then we will just do the full
@@ -439,14 +438,15 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         filename = self._get_filename(name,
                                       latest)
 
-        url = self.update_url + filename
         hash_key = u'{}*{}*{}*{}*{}'.format(self.updates_key, name,
-                                            latest, self.platform, u'file_hash')
+                                            latest, self.platform,
+                                            u'file_hash')
         _hash = self.star_access_update_data.get(hash_key)
 
         with ChDir(self.update_folder):
             log.debug(u'Downloading update...')
-            fd = FileDownloader(filename, url, _hash, self.verify)
+            fd = FileDownloader(filename, self.update_urls,
+                                _hash, self.verify)
             result = fd.download_verify_write()
             if result:
                 log.debug(u'Update Complete')
@@ -582,18 +582,29 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         log.debug(u"Filename for {}-{}: {}".format(name, version, filename))
         return filename
 
-    def _fix_update_url(self, url):
+    def _sanatize_update_url(self, url):
         # Adds trailing slash to urls provided in config if
         # not already present
         #
         # Args:
-        #    url (str): url to process
+        #    url (str)/(list): urls to process
         #
         # Returns:
-        #    (str) Url with trailing slash
+        #    (list) Urls with trailing slash
 
+        # ToDo: Remove v1.0
+        #       For supporting legacy single update url
+        if isinstance(url, list) is False:
+            urls = [url]
+        else:
+            urls = url
+        sanatized_urls = []
         # Adds trailing slash to end of url
         # if not already provided
-        if not url.endswith(u'/'):
-            return url + u'/'
-        return url
+        for u in urls:
+            if not u.endswith(u'/'):
+                sanatized_urls.append(u + u'/')
+            else:
+                sanatized_urls.append(u)
+
+        return sanatized_urls

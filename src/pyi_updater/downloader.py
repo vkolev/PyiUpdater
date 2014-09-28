@@ -6,7 +6,6 @@ import sys
 from blinker import signal
 import requests
 
-from pyi_updater.exceptions import FileDownloaderError
 from pyi_updater.utils import get_hash
 
 log = logging.getLogger(__name__)
@@ -28,10 +27,13 @@ class FileDownloader(object):
 
         hexdigest str(str): The hash checksum of the file to download
     """
-    def __init__(self, filename, url, hexdigest, verify=True):
+    def __init__(self, filename, urls, hexdigest, verify=True):
         self.start = time.time()
         self.filename = filename
-        self.url = url
+        if isinstance(urls, list) is False:
+            self.urls = [urls]
+        else:
+            self.urls = urls
         self.hexdigest = hexdigest
         self.verify = verify
         self.b_size = 4096 * 4
@@ -99,37 +101,47 @@ class FileDownloader(object):
 
     def _download_to_memory(self):
         # Downloads file to memory.  Keeps internal reference
-        try:
-            data = requests.get(self.url, verify=self.verify, stream=True)
-        except requests.exceptions.HTTPError:
-            log.debug(u'Might have had spaces in an S3 url...')
-            self.url = self.url.replace(' ', '+')
-            data = None
-            log.debug(u'S3 updated url {}'.format(self.url))
-        except requests.exceptions.SSLError:
-            log.error(u'SSL cert not verified')
-            raise FileDownloaderError(u'SSL cert not verified')
-        except Exception as e:
-            # Catch whatever else comes up and log it
-            # to help fix other http related issues
-            log.error(str(e), exc_info=True)
-            return None
-
-        if data is None:
-            # Let's try one more time with the fixed url
+        data = None
+        for url in self.urls:
+            print url
+            file_url = url + self.filename
             try:
-                data = requests.get(self.url, verify=self.verify, stream=True)
+                data = requests.get(file_url, verify=self.verify, stream=True)
+            except requests.exceptions.HTTPError:
+                log.debug(u'Might have had spaces in an S3 url...')
+                file_url = file_url.replace(' ', '+')
+                log.debug(u'S3 updated url {}'.format(file_url))
+                data = None
             except requests.exceptions.SSLError:
                 log.error(u'SSL cert not verified')
-                raise FileDownloaderError(u'SSL cert not verified')
+                data = ''
             except Exception as e:
+                # Catch whatever else comes up and log it
+                # to help fix other http related issues
                 log.error(str(e), exc_info=True)
-                self.file_binary_data = None
-                return None
+                data = ''
+            else:
+                break
+
+            if data is None:
+                # Let's try one more time with the fixed url
+                try:
+                    data = requests.get(file_url, verify=self.verify,
+                                        stream=True)
+                except requests.exceptions.SSLError:
+                    log.error(u'SSL cert not verified')
+                except Exception as e:
+                    log.error(str(e), exc_info=True)
+                    self.file_binary_data = None
+                else:
+                    break
+
+        if data is None or data == '':
+            return None
 
         self.content_length = self._get_content_length(data)
         self.my_file = BytesIO()
-        log.debug(u'Downloading {} from \n{}'.format(self.filename, self.url))
+        log.debug(u'Downloading {} from:\n{}'.format(self.filename, file_url))
         recieved_data = 0
 
         start_block = None
@@ -200,3 +212,4 @@ class FileDownloader(object):
         percent = float(x) / y * 100
         percent = u'%.1f' % percent
         return percent
+
