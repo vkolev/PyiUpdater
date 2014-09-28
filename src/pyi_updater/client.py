@@ -22,8 +22,6 @@ from pyi_updater.utils import (FROZEN, get_version_number,
 
 log = logging.getLogger(__name__)
 
-platform_ = get_system()
-
 
 class Client(object):
     """Used on client side to update files
@@ -72,8 +70,10 @@ class Client(object):
         self.company_name = config.get(u'COMPANY_NAME', u'Digital Sapphire')
         if test:
             self.data_dir = 'cache'
+            self.platform = 'mac'
         else:
             self.data_dir = user_cache_dir(self.app_name, self.company_name)
+            self.platform = get_system()
         self.update_folder = os.path.join(self.data_dir, u'update')
         self.public_key = config.get(u'PUBLIC_KEY', None)
         self.debug = config.get(u'DEBUG', False)
@@ -199,11 +199,13 @@ class Client(object):
         """
         if get_system() == u'win':
             log.warning('Only supported on Unix like systems')
-            return
+            return False
         try:
             self._extract_update()
         except ClientError as err:
             log.error(str(err), exc_info=True)
+            return False
+        return True
 
     def restart(self):
         """Will overwrite old binary with updated binary and
@@ -439,7 +441,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
 
         url = self.update_url + filename
         hash_key = u'{}*{}*{}*{}*{}'.format(self.updates_key, name,
-                                            latest, platform_, u'file_hash')
+                                            latest, self.platform, u'file_hash')
         _hash = self.star_access_update_data.get(hash_key)
 
         with ChDir(self.update_folder):
@@ -532,7 +534,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         #
         # Returns:
         #    (str) Highest version number
-        version_key = u'{}*{}*{}'.format(u'latest', name, platform_)
+        version_key = u'{}*{}*{}'.format(u'latest', name, self.platform)
 
         version = self.star_access_update_data.get(version_key)
 
@@ -552,11 +554,11 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         #
         # Returns:
         #    (str) Url
-        latest_key = u'{}*{}*{}'.format(u'latest', name, platform_)
+        latest_key = u'{}*{}*{}'.format(u'latest', name, self.platform)
         latest = self.star_access_update_data.get(latest_key)
 
         url_key = u'{}*{}*{}*{}*{}'.format(self.updates_key, name, latest,
-                                           platform_, u'url')
+                                           self.platform, u'url')
         url = self.star_access_update_data.get(url_key)
         return url
 
@@ -574,7 +576,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         # ToDo: Remove once stable.  Used to help with transition
         #       to new version file format.
         filename_key = u'{}*{}*{}*{}*{}'.format(u'updates', name, version,
-                                                platform_, u'filename')
+                                                self.platform, u'filename')
         filename = self.star_access_update_data.get(filename_key)
 
         log.debug(u"Filename for {}-{}: {}".format(name, version, filename))
