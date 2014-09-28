@@ -45,6 +45,7 @@ def ask_yes_no(question, default='no', answer=None):
         if answer is None:
             log.debug(u'Under None')
             answer = input(display)
+            answer = answer.lower()
         if answer == u'':
             log.debug(u'Under blank')
             return default
@@ -57,6 +58,7 @@ def ask_yes_no(question, default='no', answer=None):
         else:
             sys.stdout.write(u'Please answer yes or no only!\n\n')
             sys.stdout.flush()
+            answer = None
             input(u'Press enter to continue')
             sys.stdout.write('\n\n\n\n\n')
             sys.stdout.flush()
