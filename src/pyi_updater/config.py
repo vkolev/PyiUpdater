@@ -52,17 +52,8 @@ class SetupConfig(object):
     # Company/Your name
     COMPANY_NAME = None
 
-    # Directory for updater to place verified updates.
-    APP_DATA_DIR = None
-
     # If set more debug info will be printed to console
     DEBUG = False
-
-    # Work directory on dev machine for framework to
-    # do its business. sign updates, get hashes etc...
-    # If None a data folder will be created in the
-    # current directory
-    DEV_DATA_DIR = None
 
     # Length of keys to sign and verify files with
     # If left None 2048 key size will be used
@@ -80,10 +71,11 @@ class SetupConfig(object):
     # None "Not_So_TUF.pub" will be used
     PUBLIC_KEY_NAME = None
 
-    # Online repository where you host your packages
-    # and version file
-    # REQUIRED
+    # Url to ping for updates
     UPDATE_URL = None
+    # List of urls to ping for updates
+    # REQUIRED
+    UPDATE_URLS = None
 
     # Support for patch updates
     UPDATE_PATCHES = True
@@ -91,7 +83,5 @@ class SetupConfig(object):
     # Upload Setup
     REMOTE_DIR = None
     HOST = None
-
     USERNAME = None
     PASSWORD = None
-    SSH_KEY_PATH = u''

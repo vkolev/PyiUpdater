@@ -7,7 +7,7 @@ from nose.tools import raises
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pyi_updater.exceptions import FileCryptPasswordError, FileCryptError
+from pyi_updater.exceptions import FileCryptError
 from pyi_updater.filecrypt import FileCrypt
 
 PASSWORD = u'This is my password'

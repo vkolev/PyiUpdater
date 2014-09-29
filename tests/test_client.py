@@ -28,16 +28,16 @@ def test_original_init():
     updater = PyiUpdater(config)
     client = Client(updater, test=True)
     assert client.app_name == u'jms'
-    assert client.update_url == (u'https://s3-us-west-1.amazon'
-                                 'aws.com/pyi-test/')
+    assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
+                                    'aws.com/pyi-test/')
 
 
 def test_new_init():
     config = TConfig()
     client = Client(config, test=True)
     assert client.app_name == u'jms'
-    assert client.update_url == (u'https://s3-us-west-1.amazon'
-                                 'aws.com/pyi-test/')
+    assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
+                                    'aws.com/pyi-test/')
 
 
 def test_bad_pub_key():

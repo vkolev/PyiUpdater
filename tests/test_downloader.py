@@ -9,11 +9,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pyi_updater.downloader import FileDownloader
 
 
-FILENAME = u'test_download.txt'
+FILENAME = u'dont+delete+nst+test.txt'
+FILENAME_WITH_SPACES = 'dont delete nst test.txt'
 FILE_HASH = u'9da856b0b8b77c838d6945e0bfbc62fff978a9dd5256eed231fc499b5d4b183c'
-URL = u'https://s3-us-west-1.amazonaws.com/not-so-tuf/dont+delete+nst+test.txt'
-URL_WITH_SPACES = (u'https://s3-us-west-1.amazonaws.com/not-so-'
-                   'tuf/dont delete nst test.txt')
+URL = u'https://s3-us-west-1.amazonaws.com/not-so-tuf/'
 
 
 def teardown_func():
@@ -54,7 +53,7 @@ def test_download_return_fail():
 
 def test_url_with_spaces():
     with ChDir(u'tests'):
-        fd = FileDownloader(FILENAME, URL_WITH_SPACES, FILE_HASH)
+        fd = FileDownloader(FILENAME_WITH_SPACES, URL, FILE_HASH)
         binary_data = fd.download_verify_return()
         assert binary_data is not None
 

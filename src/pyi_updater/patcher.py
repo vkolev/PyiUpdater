@@ -48,7 +48,7 @@ class Patcher(object):
         self.current_version = kwargs.get(u'current_version', None)
         self.highest_version = kwargs.get(u'highest_version', None)
         self.update_folder = kwargs.get(u'update_folder', None)
-        self.update_url = kwargs.get(u'update_url', None)
+        self.update_urls = kwargs.get(u'update_urls', [])
         self.verify = kwargs.get(u'verify', True)
         self.patch_data = []
         self.patch_binary_data = []
@@ -159,7 +159,7 @@ class Patcher(object):
 
             try:
                 info[u'patch_name'] = plat_info[u'patch_name']
-                info[u'patch_url'] = self.update_url + plat_info[u'patch_name']
+                info[u'patch_urls'] = self.update_urls
                 info[u'patch_hash'] = plat_info[u'patch_hash']
                 self.patch_data.append(info)
             except KeyError:
@@ -176,7 +176,7 @@ class Patcher(object):
         else:
             percent_each = None
         for p in self.patch_data:
-            fd = FileDownloader(p[u'patch_name'], p[u'patch_url'],
+            fd = FileDownloader(p[u'patch_name'], p[u'patch_urls'],
                                 p[u'patch_hash'], self.verify)
 
             data = fd.download_verify_return()

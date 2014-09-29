@@ -22,6 +22,7 @@ class Settings(CommonLogic, Menu):
 
         header = u'Settings'
         options = [(u'View Settings', self.view_settings),
+                   (u'Add Url', self.add_url),
                    (u'Update Settings', self.update_settings),
                    (u'Copy Decrypted Config File', self.copy_decrypted_config),
                    (u'Change Encryption Password', self.change_password),
@@ -37,6 +38,15 @@ class Settings(CommonLogic, Menu):
         input(u'\nPress enter to continue')
         self()
 
+    def add_url(self):
+        self.display_menu_header('Add Url')
+        url = get_correct_answer('Enter url to add.')
+        self.config.UPDATE_URLS.append(url)
+        self.config.UPDATE_URLS = list(set(self.config.UPDATE_URLS))
+        self.save(self.config)
+        input(u'\nUrl added. Press enter to continue')
+        self()
+
     def update_settings(self):
         log.debug(u'Update Settings Menu')
         self.display_menu_header(u'Update Settings')
@@ -49,12 +59,11 @@ class Settings(CommonLogic, Menu):
         self.display_msg(u'Then press Enter')
         print((u'1. App Name\n'
                '2. Company Name\n'
-               '3. Url\n'
-               '4. Username\n'
-               '5. Password\n'
-               '6. ssh key path\n'
-               '7. Remote dir or bucket name\n'
-               '8. Host settings\n'))
+               '3. Username\n'
+               '4. Password\n'
+               '5. ssh key path\n'
+               '6. Remote dir or bucket name\n'
+               '7. Host settings\n'))
         answers = input(u'-->')
 
         self.display_menu_header(u'Updating Settings')
@@ -70,30 +79,25 @@ class Settings(CommonLogic, Menu):
             self.config.COMPANY_NAME = company_name
 
         if '3' in answers:
-            url = get_correct_answer(u'Enter new update url',
-                                     default=self.config.UPDATE_URL)
-            self.config.UPDATE_URL = url
-
-        if '4' in answers:
             username = get_correct_answer(u'Enter new username',
                                           default=self.config.USERNAME)
             self.config.USERNAME = username
 
-        if '5' in answers:
+        if '4' in answers:
             password = get_correct_answer(u'Enter new password',
                                           default=self.config.PASSWORD)
             self.config.PASSWORD = password
 
-        if '6' in answers:
+        if '5' in answers:
             password = get_correct_answer(u'Enter new ssh key path',
                                           default=self.config.PASSWORD)
             self.config.PASSWORD = password
-        if '7' in answers:
+        if '6' in answers:
             r_dir = get_correct_answer(u'Enter new remote directory or bucket',
                                        default=self.config.REMOTE_DIR)
             self.config.REMOTE_DIR = r_dir
 
-        if '8' in answers:
+        if '7' in answers:
             host = get_correct_answer(u'Enter host name or ip',
                                       default=self.config.HOST)
             self.config.HOST = host

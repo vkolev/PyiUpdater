@@ -1,7 +1,6 @@
 import getpass
 import logging
 import os
-import sys
 import time
 
 from simplecrypt import encrypt as s_encrypt
