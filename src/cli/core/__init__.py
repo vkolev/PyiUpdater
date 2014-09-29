@@ -116,13 +116,23 @@ class Worker(Menu, CommonLogic):
                                             'more secure but takes longer '
                                             'to compute. Must be multiple '
                                             'of 256!', default=u'2048')
-            if int(key_length) % 256 == 0:
+            if int(key_length) % 256 == 0 and int(key_length) >= 2048:
                 self.config.KEY_LENGTH = key_length
                 break
             input('Must be a multiple of 256!! Press enter to try again.')
 
-        self.config.UPDATE_URL = get_correct_answer(u'Enter your update url',
-                                                    required=True)
+        url = get_correct_answer(u'Enter a url to ping for updates.',
+                                 required=True)
+        self.config.UPDATE_URLS = [url]
+        while 1:
+            answer = ask_yes_no(u'Would you like to add another '
+                                'url for backup?', default='no')
+            if answer is True:
+                url = get_correct_answer(u'Enter another url.',
+                                         required=True)
+                self.config.UPDATE_URLS.append(url)
+            else:
+                break
 
         self.config.UPDATE_PATCHES = ask_yes_no(u'Would you like to enable '
                                                 'patch updates?',

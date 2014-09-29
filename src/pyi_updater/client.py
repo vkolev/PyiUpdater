@@ -611,4 +611,4 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
             else:
                 sanatized_urls.append(u)
 
-        return sanatized_urls
+        return list(set(sanatized_urls))
