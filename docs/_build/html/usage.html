@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Usage &mdash; PyiUpdater 0.9-dev1411281552 documentation</title>
+    <title>Usage &mdash; PyiUpdater 0.9-dev1411963074 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.9-dev1411281552',
+        VERSION:     '0.9-dev1411963074',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.9-dev1411281552 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9-dev1411963074 documentation" href="index.html" />
     <link rel="next" title="Folder Structure" href="folder_structure.html" />
     <link rel="prev" title="Configuration" href="configuration.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1411281552</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1411963074</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -90,6 +90,7 @@
 <li><a class="reference internal" href="#">Usage</a><ul>
 <li><a class="reference internal" href="#initial-setup">Initial Setup</a></li>
 <li><a class="reference internal" href="#archive-maker-utility-usage">Archive maker utility usage</a></li>
+<li><a class="reference internal" href="#example-updater">Example updater</a></li>
 </ul>
 </li>
 </ul>
@@ -142,8 +143,7 @@
   <div class="section" id="usage">
 <span id="id1"></span><h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <p>After compiling your program with pyinstaller or any freezer that compiles python into a single executable.</p>
-<p>Zip or gzip the program. Name the archive ProgramName-platform-version.zip or ProgramName-platform-version.gz</p>
-<p>Supported platform names: mac, nix, nix64, win</p>
+<p>Use the Archiver Maker for easy update compression &amp; naming.</p>
 <p>Version numbers are in the form of: x.x.x</p>
 <p>Check <a class="reference external" href="http://semver.org/">Semantic Versioning</a> for more info</p>
 <p>The easiest way to get started quickly is to use to command line tool.</p>
@@ -210,7 +210,9 @@ Options:
 </div>
 <p>Check out the examples folder to see how to use the framework programmatically, to easily PyiUpdater into your existing setup.</p>
 <p>The cli tool uses the framework almost exactly the same as the dev script but is easier for beginners. A guided setup example is also provided.</p>
-<p>Below is an example of how you can easily add the client updater to your app.</p>
+</div>
+<div class="section" id="example-updater">
+<h2>Example updater<a class="headerlink" href="#example-updater" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.9-dev1411281552 documentation</title>
+    <title>API &mdash; PyiUpdater 0.9-dev1411963074 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.9-dev1411281552',
+        VERSION:     '0.9-dev1411963074',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.9-dev1411281552 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9-dev1411963074 documentation" href="index.html" />
     <link rel="next" title="Release History" href="release_history.html" />
     <link rel="prev" title="Folder Structure" href="folder_structure.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1411281552</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1411963074</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -295,7 +295,7 @@ Example usage:</p>
 
 <span class="target" id="module-pyi_updater.downloader"></span><dl class="class">
 <dt id="pyi_updater.downloader.FileDownloader">
-<em class="property">class </em><tt class="descclassname">pyi_updater.downloader.</tt><tt class="descname">FileDownloader</tt><big>(</big><em>filename</em>, <em>url</em>, <em>hexdigest</em>, <em>verify=True</em><big>)</big><a class="headerlink" href="#pyi_updater.downloader.FileDownloader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pyi_updater.downloader.</tt><tt class="descname">FileDownloader</tt><big>(</big><em>filename</em>, <em>urls</em>, <em>hexdigest</em>, <em>verify=True</em><big>)</big><a class="headerlink" href="#pyi_updater.downloader.FileDownloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>The FileDownloader object downloads files to memory and
 verifies their hash.  If hash is verified data is either
 written to disk to returned to calling object</p>
@@ -380,6 +380,12 @@ None - If any verification didn&#39;t pass
 <dl class="exception">
 <dt id="pyi_updater.exceptions.FileCryptError">
 <em class="property">exception </em><tt class="descclassname">pyi_updater.exceptions.</tt><tt class="descname">FileCryptError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.exceptions.FileCryptError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised for FileCrypt exceptions</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="pyi_updater.exceptions.FileCryptPasswordError">
+<em class="property">exception </em><tt class="descclassname">pyi_updater.exceptions.</tt><tt class="descname">FileCryptPasswordError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.exceptions.FileCryptPasswordError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised for FileCrypt exceptions</p>
 </dd></dl>
 
@@ -593,7 +599,7 @@ version file back to disk.</p>
 <dd><p class="first">name (str): Name of binary to patch</p>
 <p>json_data (dict): Info dict with all package meta data</p>
 <p>current_version (str): Version number of currently installed binary</p>
-<p>hightest_version (str): Newest version available</p>
+<p>highest_version (str): Newest version available</p>
 <p class="last">update_folder (str): Path to update folder to place updated binary in</p>
 </dd>
 </dl>
@@ -676,13 +682,10 @@ this base class</p>
 <dt>Kwargs:</dt>
 <dd><p class="first">file_list (list): List of files to upload</p>
 <p>host (str): Either ip or domain name of remote servers</p>
-<p>bucket_name (str): Name of bucket on AWS S3</p>
+<p>bucket_name/remote_dir (str): Remote location for update</p>
 <p>remote_dir (str): The directory on remote server to upload files to.</p>
-<p>username (str): login username of remote server</p>
-<p>password (str): login password of remote server</p>
-<p>ssh_key_file (str): full path to ssh pub key on local machine</p>
-<p>aws_access_id (str): aws access id for S3 bucket account owner</p>
-<p class="last">aws_secret_key (str): aws secret key for S3 bucket account owner</p>
+<p>username/aws_access_id (str): login for service</p>
+<p class="last">password/ssh_key_file/aws_secret_key (str): login for service</p>
 </dd>
 </dl>
 <dl class="method">

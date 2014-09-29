@@ -5,9 +5,7 @@ Usage
 
 After compiling your program with pyinstaller or any freezer that compiles python into a single executable.
 
-Zip or gzip the program. Name the archive ProgramName-platform-version.zip or ProgramName-platform-version.gz
-
-Supported platform names: mac, nix, nix64, win
+Use the Archiver Maker for easy update compression & naming.
 
 Version numbers are in the form of: x.x.x
 
@@ -85,7 +83,8 @@ Check out the examples folder to see how to use the framework programmatically, 
 
 The cli tool uses the framework almost exactly the same as the dev script but is easier for beginners. A guided setup example is also provided.
 
-Below is an example of how you can easily add the client updater to your app.
+Example updater
+---------------
 
-.. literalinclude:: ../examples/guided_setup.py
+.. literalinclude:: ../examples/client_update.py
    :linenos:

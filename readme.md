@@ -39,7 +39,7 @@ or
     $ pyi-cli
 
 #### Can also be used programmatically
-######[Click Here To See Example Dev Script](https://github.com/JohnyMoSwag/PyiUpdater/blob/master/examples/programtically.py "Example Usage")
+######[Click Here To See Example Work Flow](https://github.com/JohnyMoSwag/PyiUpdater/tree/master/examples "Example Usage")
 
 
 ## Write your own upload plugin
