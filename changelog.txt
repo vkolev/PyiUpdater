@@ -12,6 +12,7 @@
 v0.9.0 - DEV
 -------------------
 * Added
+  - Support for multiple update urls
   - Auto generated client config
 
 * Updated
