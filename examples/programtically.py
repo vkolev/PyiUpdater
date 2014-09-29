@@ -1,7 +1,6 @@
 import sys
 
 from pyi_updater import PyiUpdater
-from pyi_updater.client import Client
 from pyi_updater.key_handler import KeyHandler
 from pyi_updater.package_handler import PackageHandler
 
@@ -13,21 +12,6 @@ from pyi_updater.package_handler import PackageHandler
 class DefaultConfig(object):
     # If left None "Not_So_TUF" will be used
     APP_NAME = None
-
-    # Directory for updater to place verified updates.
-    # If left blank will be place in the users home
-    # directory Unix ".Not_So_TUF"
-    # windows "Not_So_Tuf"
-    APP_DATA_DIR = None
-
-    # If True more debug info will be printed to console
-    DEBUG = False
-
-    # Work directory on dev machine for framework to
-    # do its business. sign updates, get hashes etc...
-    # If None a data folder will be created in the
-    # current directory
-    DEV_DATA_DIR = None
 
     # Length of keys to sign and verify files with
     # If left None 2048 key size will be used
@@ -54,63 +38,8 @@ class DefaultConfig(object):
     # Upload Setup
     REMOTE_DIR = None
     HOST = None
-
-    # SSH settings
-    # Path to ssh key of server
-    SSH_USERNAME = None
-    SSH_KEY_PATH = '/path/to/ssh/key file'
-
-    # FTP settings
-    FTP_USERNAME = None
-    FTP_PASSWORD = None
-
-    # S3 settings
-    ACCESS_KEY_ID = None
-    SECRET_ACCESS_KEY = None
-    BUCKET_NAME = None
-
-
-class ClientConfig(object):
-    PUBLIC_KEY = (21678817447868585449115697987678502505945103410555152349698338472018453052725392072213732411914941737033730586390277748185463389785632352069304001653966328097944367110643352281970039925042778319015494384645524571026486916606102705199134571058437912275415402700208784612991658733992508456441456514952711719546447956065399368031915386896933330002604671992900054306021633910174143739583834880543068325256094720097838261058652981039540344732977164643375211589345817595734599501061440937572259146977957068281982760279616247310766122671544880016806645067909061028669150575838147078119810139966715033847614861268682023648983L, 65537)
-    UPDATE_URL = 'https://s3-us-west-1.amazonaws.com/not-so-tuf/'
-
-
-def client_update():
-    # Old way to configure client
-    client_config = DefaultConfig()
-    pyi = PyiUpdater(client_config)
-    client = Client(pyi)
-
-    # New way to configure client
-    client = Client(client_config)
-
-    # Supply the name and current version #
-    # of the resource you want to check for
-    # an update
-    updates_available = client.update_check('gist', '0.10.6')
-
-    # If updates available then download.
-    if updates_available:
-        downloaded = client.download()
-
-    # If download successful then install & restart
-    if downloaded and not client.up_to_date:
-        client.install_restart()
-
-   # Say you don't want to install and restart without
-   # user consent.  Then call install and later call
-   # restart
-    updates_available = client.update_check('cpuz', '1.68.27')
-
-    if updates_available:
-        downloaded = client.download()
-
-    if downloaded and not client.up_to_date:
-        client.install()
-
-    answer = raw_input('Would you like to install update now?')
-    if 'y' in answer:
-        client.restart()
+    USERNAME = None
+    PASSWORD = None
 
 
 def setup():
@@ -126,7 +55,7 @@ def setup():
 
     # Setting up Package Handler
     # Getting config from updater
-    package_handler = PackageHandler(nst)
+    package_handler = PackageHandler(pyi)
 
     # Setting up work directories
     # Only need to run once but ok
@@ -170,12 +99,10 @@ def make_keys():
 
 
 def main():
-    ans = raw_input('1. Setup\n2. Client Update\n3. Make Keys\n*. Exit\n-->')
+    ans = raw_input('1. Setup\n2. Make Keys\n*. Exit\n-->')
     if ans == '1':
         setup()
     elif ans == '2':
-        client_update()
-    elif ans == '3':
         make_keys()
     else:
         sys.exit(0)
