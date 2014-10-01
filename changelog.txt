@@ -1,6 +1,7 @@
 =========================================
              ***  ToDo's ***
 =========================================
+# Move to ed25519 signing
 # Test Suite
   - Focus on client auto update tests
   - Add more tests!
