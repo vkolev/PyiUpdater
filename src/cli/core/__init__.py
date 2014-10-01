@@ -111,16 +111,6 @@ class Worker(Menu, CommonLogic):
 
         self.config.DEV_DATA_DIR = cwd_
 
-        while 1:
-            key_length = get_correct_answer(u'Enter a key length. Longer is '
-                                            'more secure but takes longer '
-                                            'to compute. Must be multiple '
-                                            'of 256!', default=u'2048')
-            if int(key_length) % 256 == 0 and int(key_length) >= 2048:
-                self.config.KEY_LENGTH = key_length
-                break
-            input('Must be a multiple of 256!! Press enter to try again.')
-
         url = get_correct_answer(u'Enter a url to ping for updates.',
                                  required=True)
         self.config.UPDATE_URLS = [url]

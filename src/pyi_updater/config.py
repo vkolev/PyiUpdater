@@ -55,10 +55,6 @@ class SetupConfig(object):
     # If set more debug info will be printed to console
     DEBUG = False
 
-    # Length of keys to sign and verify files with
-    # If left None 2048 key size will be used
-    KEY_LENGTH = None
-
     # Name made for your private key. If left
     # None "Not_So_TUF.pem" will be used
     PRIVATE_KEY_NAME = None
