@@ -2,6 +2,7 @@
              ***  ToDo's ***
 =========================================
 # Move to ed25519 signing
+# Update OOS Licenses
 # Test Suite
   - Focus on client auto update tests
   - Add more tests!
