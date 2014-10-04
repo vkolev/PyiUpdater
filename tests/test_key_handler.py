@@ -3,6 +3,7 @@ import os
 import shutil
 import sys
 
+import ed25519
 from jms_utils.paths import ChDir
 from nose.tools import with_setup
 
@@ -11,7 +12,6 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pyi_updater import PyiUpdater
 from pyi_updater.key_handler import KeyHandler
 from pyi_updater.package_handler import PackageHandler
-from pyi_updater.utils import rsa_verify
 
 from tconfig import TConfig
 

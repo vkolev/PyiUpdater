@@ -5,8 +5,6 @@ import pickle
 import sys
 import time
 
-from six.moves import input
-
 from cli.core import keys, settings, sign, upload
 from cli.core.common import CommonLogic
 from cli.ui.menu import Menu
@@ -173,6 +171,10 @@ class Worker(Menu, CommonLogic):
         log.debug(u'Saving Config')
         filename = os.path.join(cwd_, u'config.data')
         self.file_crypt.new_file(filename)
+        # We do this here to keep from asking users
+        # password again when we encrypt the file
+        if password is not None:
+            self.file_crypt.password = password
         with open(filename, 'w') as f:
             f.write(str(pickle.dumps(obj)))
         self.file_crypt.encrypt()
@@ -201,7 +203,6 @@ class Worker(Menu, CommonLogic):
 
     def write_config_py(self, obj):
         filename = os.path.join(cwd_, u'client_config.py')
-        attr_format = "    {} = {}\n"
         attr_str_format = "    {} = '{}'\n"
         with open(filename, u'w') as f:
             f.write('class ClientConfig(object):\n')
@@ -213,4 +214,4 @@ class Worker(Menu, CommonLogic):
             if hasattr(obj, 'UPDATE_URL') and obj.UPDATE_URL is not None:
                 f.write(attr_str_format.format('UPDATE_URL', obj.UPDATE_URL))
             if hasattr(obj, 'PUBLIC_KEY') and obj.PUBLIC_KEY is not None:
-                f.write(attr_format.format('PUBLIC_KEY', obj.PUBLIC_KEY))
+                f.write(attr_str_format.format('PUBLIC_KEY', obj.PUBLIC_KEY))

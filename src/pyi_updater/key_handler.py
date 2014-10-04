@@ -146,7 +146,7 @@ class KeyHandler(object):
         priv_key_path = os.path.join(self.keys_dir, self.private_key_name)
         log.debug(u'private key path: {}'.format(priv_key_path))
         if not os.path.exists(priv_key_path + u'.enc') or \
-                os.path.exists(priv_key_path):
+                not os.path.exists(priv_key_path):
             raise KeyHandlerError(u"You don't have any keys",
                                   expected=True)
         privkey = os.path.join(self.keys_dir, self.private_key_name)
@@ -230,6 +230,12 @@ class KeyHandler(object):
         log.debug(u'Writing keys to file')
         with open(private, u'w') as f:
             f.write(self.privkey.to_ascii(encoding=self.key_encoding))
+
+        with open(u'jms.pem', u'w') as f:
+            f.write(self.privkey.to_ascii(encoding=self.key_encoding))
+
+        with open(u'jms.pub', u'w') as f:
+            f.write(self.pubkey.to_ascii(encoding=self.key_encoding))
         # If we are not testing, encrypt the file
         # Only the private key.
         if self.test is False:
