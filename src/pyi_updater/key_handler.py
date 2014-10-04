@@ -231,11 +231,6 @@ class KeyHandler(object):
         with open(private, u'w') as f:
             f.write(self.privkey.to_ascii(encoding=self.key_encoding))
 
-        with open(u'jms.pem', u'w') as f:
-            f.write(self.privkey.to_ascii(encoding=self.key_encoding))
-
-        with open(u'jms.pub', u'w') as f:
-            f.write(self.pubkey.to_ascii(encoding=self.key_encoding))
         # If we are not testing, encrypt the file
         # Only the private key.
         if self.test is False:
