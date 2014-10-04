@@ -5,8 +5,6 @@ import pickle
 import sys
 import time
 
-from six.moves import input
-
 from cli.core import keys, settings, sign, upload
 from cli.core.common import CommonLogic
 from cli.ui.menu import Menu
@@ -102,24 +100,12 @@ class Worker(Menu, CommonLogic):
 
         self.config.APP_NAME = get_correct_answer(u'Please enter app name',
                                                   required=True)
-        self.config.PRIVATE_KEY_NAME = self.config.APP_NAME
-        self.config.PUBLIC_KEY_NAME = self.config.APP_NAME
 
         self.config.COMPANY_NAME = get_correct_answer(u'Please enter your '
                                                       'company or name',
                                                       required=True)
 
         self.config.DEV_DATA_DIR = cwd_
-
-        while 1:
-            key_length = get_correct_answer(u'Enter a key length. Longer is '
-                                            'more secure but takes longer '
-                                            'to compute. Must be multiple '
-                                            'of 256!', default=u'2048')
-            if int(key_length) % 256 == 0 and int(key_length) >= 2048:
-                self.config.KEY_LENGTH = key_length
-                break
-            input('Must be a multiple of 256!! Press enter to try again.')
 
         url = get_correct_answer(u'Enter a url to ping for updates.',
                                  required=True)
@@ -183,6 +169,10 @@ class Worker(Menu, CommonLogic):
         log.debug(u'Saving Config')
         filename = os.path.join(cwd_, u'config.data')
         self.file_crypt.new_file(filename)
+        # We do this here to keep from asking users
+        # password again when we encrypt the file
+        if password is not None:
+            self.file_crypt.password = password
         with open(filename, 'w') as f:
             f.write(str(pickle.dumps(obj)))
         self.file_crypt.encrypt()
@@ -211,7 +201,6 @@ class Worker(Menu, CommonLogic):
 
     def write_config_py(self, obj):
         filename = os.path.join(cwd_, u'client_config.py')
-        attr_format = "    {} = {}\n"
         attr_str_format = "    {} = '{}'\n"
         with open(filename, u'w') as f:
             f.write('class ClientConfig(object):\n')
@@ -223,4 +212,4 @@ class Worker(Menu, CommonLogic):
             if hasattr(obj, 'UPDATE_URL') and obj.UPDATE_URL is not None:
                 f.write(attr_str_format.format('UPDATE_URL', obj.UPDATE_URL))
             if hasattr(obj, 'PUBLIC_KEY') and obj.PUBLIC_KEY is not None:
-                f.write(attr_format.format('PUBLIC_KEY', obj.PUBLIC_KEY))
+                f.write(attr_str_format.format('PUBLIC_KEY', obj.PUBLIC_KEY))

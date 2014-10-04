@@ -1,15 +1,15 @@
 from __future__ import print_function
-from binascii import hexlify
 import json
 import logging
 import os
 import shutil
 import sys
 
+import ed25519
 from Crypto.PublicKey import RSA
 import Crypto.Signature.PKCS1_v1_5
 import Crypto.Hash.SHA256
-from six import PY3
+import six
 
 from pyi_updater.exceptions import FileCryptPasswordError, KeyHandlerError
 from pyi_updater.filecrypt import FileCrypt
@@ -17,7 +17,7 @@ from pyi_updater.filecrypt import FileCrypt
 if Crypto is None:  # pragma: no cover
     KeyHandlerError(u'You must have PyCrypto installed.',
                     expected=True)
-if PY3 is True:
+if six.PY3 is True:
     long = int
 
 log = logging.getLogger(__name__)
@@ -43,7 +43,7 @@ class KeyHandler(object):
         # Copies and sets all needed config attributes
         # for this object
         self.app_name = obj.config.get(u'APP_NAME')
-        self.data_dir = obj.config.get(u'DEV_DATA_DIR')
+        self.data_dir = obj.config.get(u'DEV_DATA_DIR',)
         if self.data_dir is not None:
             self.data_dir = os.path.join(self.data_dir, u'pyi-data')
             self.keys_dir = os.path.join(self.data_dir, u'keys')
@@ -56,28 +56,12 @@ class KeyHandler(object):
             log.error(u'Dev_DATA_DIR is None. Setup Failed')
 
         # Private key setup
-        self.private_key_name = obj.config.get(u'PRIVATE_KEY_NAME')
-        if self.private_key_name is None:
-            # Using the app name for key name if not provided
-            self.private_key_name = self.app_name + u'.pem'
-        if not self.private_key_name.endswith(u'.pem'):
-            # Adding extension if not already provided.
-            self.private_key_name += u'.pem'
+        self.private_key_name = self.app_name + u'.pem'
 
         # Public key setup
-        self.public_key_name = obj.config.get(u'PUBLIC_KEY_NAME')
-        if self.public_key_name is None:
-            # Using app name for key name if not provided
-            self.public_key_name = self.app_name + u'.pub'
-        if not self.public_key_name.endswith(u'.pub'):
-            # Adding extension if not already provided.
-            self.public_key_name += u'.pub'
+        self.public_key_name = self.app_name + u'.pub'
 
-        self.key_length = obj.config.get(u'KEY_LENGTH', None)
-        # Have to perform this check in case user passed None
-        # to KEY_LENGTH in config file
-        if self.key_length is None or self.key_length < 2048:
-            self.key_length = 2048
+        self.key_encoding = 'base64'
 
         # FileCrypt object
         self.fc = None
@@ -93,16 +77,8 @@ class KeyHandler(object):
         # Makes a set of private and public keys
         # Used for authentication
         log.debug(u'Making keys')
-        rsa_key_object = RSA.generate(int(self.key_length))
-        # This is the private key, keep this secret. You'll need
-        # it to sign new updates.
 
-        self.privkey = rsa_key_object.exportKey(format=u'PEM')
-
-        public_key_object = rsa_key_object.publickey()
-        # This is the public key you must distribute with your
-        # program and pass to rsa_verify.
-        self.pubkey = (public_key_object.n, public_key_object.e)
+        self.privkey, self.pubkey = ed25519.create_keypair()
         self._write_keys_to_file(overwrite)
 
     def sign_update(self):
@@ -120,13 +96,15 @@ class KeyHandler(object):
         self._write_update_data()
 
     def get_public_key(self):
-        if not self._find_public_key():
+        public_key_path = os.path.join(self.keys_dir, self.public_key_name)
+        log.debug(u'Public key path: {}'.format(public_key_path))
+        if not os.path.exists(public_key_path):
             raise KeyHandlerError(u'You do not have a public key',
                                   expected=True)
         public_key_path = os.path.join(self.keys_dir, self.public_key_name)
         with open(public_key_path, u'r') as f:
             pub_key_data = f.read()
-        return KeyHandler._pub_key_string_to_tuple(pub_key_data)
+        return ed25519.VerifyingKey(pub_key_data, encoding='base64')
 
     def copy_decrypted_private_key(self):
         """Copies decrypted private key."""
@@ -140,12 +118,6 @@ class KeyHandler(object):
         shutil.copy(privkey, privkey + u' copy')
         self.fc.encrypt()
 
-    def print_keys_to_console(self):
-        """Prints public key and private key data to console"""
-        self._load_private_key()
-        print(u'Private Key:\n{}\n\n'.format(self.privkey))
-        self.print_public_key()
-
     def print_public_key(self):
         """Prints public key data to console"""
         public = os.path.join(self.keys_dir, self.public_key_name)
@@ -156,24 +128,23 @@ class KeyHandler(object):
         else:
             print(u'No Public Key Found')
 
-    def print_key_names_to_console(self):
-        """Prints name of public and private key to console"""
-        print(u'Private Key:\n{}\n\n'.format(self.private_key_name))
-        print(u'Public Key:\n{}\n\n'.format(self.public_key_name))
-
     def _load_private_key(self):
         # Loads private key
         log.debug(u'Loading private key')
-        if not self._find_private_key():
-            raise KeyHandlerError(u"You don't have any keys",
-                                  expected=True)
+        priv_key_path = os.path.join(self.keys_dir, self.private_key_name)
+        log.debug(u'private key path: {}'.format(priv_key_path))
+        if not os.path.exists(priv_key_path):
+            if not not os.path.exists(priv_key_path + u'.enc'):
+                raise KeyHandlerError(u"You don't have any keys",
+                                      expected=True)
         privkey = os.path.join(self.keys_dir, self.private_key_name)
 
         # If we are testing we can skip the decrypt set since nose
         # cannot provide passwords.
         if self.test:
             with open(privkey, u'r') as pk:
-                self.privkey = RSA.importKey(pk.read())
+                self.privkey = ed25519.SigningKey(pk.read(),
+                                                  encoding='base64')
             return
 
         self.fc.new_file(privkey)
@@ -187,7 +158,9 @@ class KeyHandler(object):
         if os.path.exists(privkey):
             try:
                 with open(privkey, u'r') as pk:
-                    self.privkey = RSA.importKey(pk.read())
+                    key_data = pk.read()
+                self.privkey = ed25519.SigningKey(key_data,
+                                                  encoding=self.key_encoding)
             except Exception as e:
                 log.error(e, exc_info=True)
                 raise KeyHandlerError(u'Invalid private key')
@@ -209,12 +182,12 @@ class KeyHandler(object):
             log.debug(u'Deleting sig')
             del update_data[u'sig']
         _data = json.dumps(update_data, sort_keys=True)
-        _data_hash = Crypto.Hash.SHA256.new(_data)
-        signer = Crypto.Signature.PKCS1_v1_5.new(self.privkey)
-        signature = signer.sign(_data_hash)
+        signature = self.privkey.sign(six.b(_data),
+                                      encoding=self.key_encoding)
 
+        # Finish conversion here
         update_data = json.loads(_data)
-        update_data[u'sig'] = hexlify(signature)
+        update_data[u'sig'] = signature
         log.debug(u'Adding sig to update data')
         self.update_data = update_data
 
@@ -246,41 +219,16 @@ class KeyHandler(object):
             else:
                 log.warning(u'About to overwrite old keys')
         log.debug(u'Writing keys to file')
-        with open(private, u'w') as pri:
-            pri.write(self.privkey)
+        with open(private, u'w') as f:
+            f.write(self.privkey.to_ascii(encoding=self.key_encoding))
+
+        # If we are not testing, encrypt the file
+        # Only the private key.
         if self.test is False:
             self.fc.new_file(private)
             self.fc.encrypt()
-        with open(public, u'w') as pub:
-            pub.write(str(self.pubkey))
-
-    def _find_private_key(self):
-        # Searches keys folder for private key to sign version file
-        priv_key_path = os.path.join(self.keys_dir, self.private_key_name)
-        log.debug(u'private key path: {}'.format(priv_key_path))
-        if os.path.exists(priv_key_path + u'.enc') or \
-                os.path.exists(priv_key_path):
-            log.debug(u'Found private key')
-            return True
-        log.debug(u"Didn't find private key")
-        return False
-
-    def _find_public_key(self):
-        # Searches keys folder for public key
-        public_key_path = os.path.join(self.keys_dir, self.public_key_name)
-        log.debug(u'Private key path: {}'.format(public_key_path))
-        if os.path.exists(public_key_path):
-            log.debug(u'Found public key')
-            return True
-        log.debug(u"Didn't find public key")
-        return False
-
-    @staticmethod
-    def _pub_key_string_to_tuple(x):
-        x = x.replace(u'(', u'')
-        x = x.replace(u')', u'')
-        x = x.split(u',')
-        return (long(x[0]), long(x[1]))
+        with open(public, u'w') as f:
+            f.write(self.pubkey.to_ascii(encoding=self.key_encoding))
 
     def _load_update_data(self):
         # Loads version file into memory

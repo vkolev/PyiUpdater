@@ -16,7 +16,7 @@ nh.setLevel(logging.DEBUG)
 log.addHandler(nh)
 
 if os.path.exists(os.path.join(cwd_, u'pyi.log')):
-    ch = logging.FileHandler(cwd_, u'pyi.log')
+    ch = logging.FileHandler(os.path.join(cwd_, u'pyi.log'))
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(fmt_str)
     log.addHandler(ch)

@@ -7,6 +7,7 @@ import tarfile
 from zipfile import ZipFile
 
 from appdirs import user_cache_dir
+import ed25519
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 import requests
@@ -18,8 +19,7 @@ from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.patcher import Patcher
 from pyi_updater.utils import (FROZEN, get_version_number,
-                               rsa_verify, StarAccessDict,
-                               version_string_to_tuple)
+                               StarAccessDict, version_string_to_tuple)
 
 log = logging.getLogger(__name__)
 
@@ -255,17 +255,17 @@ class Client(object):
             # Hopefully i fixed it by return right under the Exception
             # block above.  But just in case will leave anyway.
             try:
-                result = rsa_verify(update_data, self.sig, self.public_key)
+                pub_key = ed25519.VerifyingKey(self.public_key,
+                                               encoding='base64')
+                pub_key.verify(self.sig, update_data, encoding='base64')
             except Exception as e:
                 log.error(str(e))
-                result = False
-            if result:
+                self.json_data = None
+                log.warning(u'Version file not verified')
+            else:
                 log.debug(u'Version file verified')
                 self.verified = True
 
-            else:
-                self.json_data = None
-                log.warning(u'Version file not verified')
         else:
             log.error(u'No sig in version file')
         self.star_access_update_data = StarAccessDict(self.json_data)
