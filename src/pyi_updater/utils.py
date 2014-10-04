@@ -3,7 +3,6 @@ import hashlib
 import logging
 import os
 import re
-import struct
 import sys
 
 from six.moves import input
