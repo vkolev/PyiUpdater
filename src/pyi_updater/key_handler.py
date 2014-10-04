@@ -43,7 +43,7 @@ class KeyHandler(object):
         # Copies and sets all needed config attributes
         # for this object
         self.app_name = obj.config.get(u'APP_NAME')
-        self.data_dir = obj.config.get(u'DEV_DATA_DIR')
+        self.data_dir = obj.config.get(u'DEV_DATA_DIR',)
         if self.data_dir is not None:
             self.data_dir = os.path.join(self.data_dir, u'pyi-data')
             self.keys_dir = os.path.join(self.data_dir, u'keys')
@@ -56,22 +56,10 @@ class KeyHandler(object):
             log.error(u'Dev_DATA_DIR is None. Setup Failed')
 
         # Private key setup
-        self.private_key_name = obj.config.get(u'PRIVATE_KEY_NAME')
-        if self.private_key_name is None:
-            # Using the app name for key name if not provided
-            self.private_key_name = self.app_name + u'.pem'
-        if not self.private_key_name.endswith(u'.pem'):
-            # Adding extension if not already provided.
-            self.private_key_name += u'.pem'
+        self.private_key_name = self.app_name + u'.pem'
 
         # Public key setup
-        self.public_key_name = obj.config.get(u'PUBLIC_KEY_NAME')
-        if self.public_key_name is None:
-            # Using app name for key name if not provided
-            self.public_key_name = self.app_name + u'.pub'
-        if not self.public_key_name.endswith(u'.pub'):
-            # Adding extension if not already provided.
-            self.public_key_name += u'.pub'
+        self.public_key_name = self.app_name + u'.pub'
 
         self.key_encoding = 'base64'
 
@@ -116,7 +104,7 @@ class KeyHandler(object):
         public_key_path = os.path.join(self.keys_dir, self.public_key_name)
         with open(public_key_path, u'r') as f:
             pub_key_data = f.read()
-        return pub_key_data
+        return ed25519.VerifyingKey(pub_key_data, encoding='base64')
 
     def copy_decrypted_private_key(self):
         """Copies decrypted private key."""
@@ -145,17 +133,18 @@ class KeyHandler(object):
         log.debug(u'Loading private key')
         priv_key_path = os.path.join(self.keys_dir, self.private_key_name)
         log.debug(u'private key path: {}'.format(priv_key_path))
-        if not os.path.exists(priv_key_path + u'.enc') or \
-                not os.path.exists(priv_key_path):
-            raise KeyHandlerError(u"You don't have any keys",
-                                  expected=True)
+        if not os.path.exists(priv_key_path):
+            if not not os.path.exists(priv_key_path + u'.enc'):
+                raise KeyHandlerError(u"You don't have any keys",
+                                      expected=True)
         privkey = os.path.join(self.keys_dir, self.private_key_name)
 
         # If we are testing we can skip the decrypt set since nose
         # cannot provide passwords.
         if self.test:
             with open(privkey, u'r') as pk:
-                self.privkey = RSA.importKey(pk.read())
+                self.privkey = ed25519.SigningKey(pk.read(),
+                                                  encoding='base64')
             return
 
         self.fc.new_file(privkey)
@@ -169,7 +158,9 @@ class KeyHandler(object):
         if os.path.exists(privkey):
             try:
                 with open(privkey, u'r') as pk:
-                    self.privkey = RSA.importKey(pk.read())
+                    key_data = pk.read()
+                self.privkey = ed25519.SigningKey(key_data,
+                                                  encoding=self.key_encoding)
             except Exception as e:
                 log.error(e, exc_info=True)
                 raise KeyHandlerError(u'Invalid private key')

@@ -100,8 +100,6 @@ class Worker(Menu, CommonLogic):
 
         self.config.APP_NAME = get_correct_answer(u'Please enter app name',
                                                   required=True)
-        self.config.PRIVATE_KEY_NAME = self.config.APP_NAME
-        self.config.PUBLIC_KEY_NAME = self.config.APP_NAME
 
         self.config.COMPANY_NAME = get_correct_answer(u'Please enter your '
                                                       'company or name',

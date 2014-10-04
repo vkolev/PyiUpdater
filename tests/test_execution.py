@@ -20,7 +20,7 @@ kh.test = True
 kh._add_filecrypt()
 ph = PackageHandler(pyi_updater)
 
-nst_data = os.path.abspath(os.path.join(u'tests', u'pyi-data'))
+PYI_DATA = os.path.abspath(os.path.join(u'tests', u'pyi-data'))
 
 
 def setup_func():
@@ -39,7 +39,7 @@ def setup_func():
 
 @with_setup(setup_func, None)
 def test_exe1():
-    assert os.path.exists(nst_data) is True
+    assert os.path.exists(PYI_DATA) is True
 
 
 def setup_func2():
@@ -56,18 +56,18 @@ def setup_func2():
 
 @with_setup(setup_func2, None)
 def test_exe2():
-    assert os.path.exists(nst_data) is True
+    assert os.path.exists(PYI_DATA) is True
 
 
 def test_patch_creation():
-    assert os.path.exists(os.path.join(nst_data, u'deploy',
+    assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
                           u'Not So TUF-arm-2')) is True
-    assert os.path.exists(os.path.join(nst_data, u'deploy',
+    assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
                           u'Not So TUF-mac-2')) is True
 
 
 def test_move_to_deploy():
-    deploy_dir = os.path.join(nst_data, u'deploy')
+    deploy_dir = os.path.join(PYI_DATA, u'deploy')
     with ChDir(deploy_dir):
         files = os.listdir(os.getcwd())
         assert u'version.json' in files

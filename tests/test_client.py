@@ -29,7 +29,7 @@ def test_original_init():
     client = Client(updater, test=True)
     assert client.app_name == u'jms'
     assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
-                                    'aws.com/pyi-test/')
+                                     'aws.com/pyi-test/')
 
 
 def test_new_init():
@@ -37,7 +37,7 @@ def test_new_init():
     client = Client(config, test=True)
     assert client.app_name == u'jms'
     assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
-                                    'aws.com/pyi-test/')
+                                     'aws.com/pyi-test/')
 
 
 def test_bad_pub_key():

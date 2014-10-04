@@ -83,7 +83,6 @@ def test_setup():
     kh = KeyHandler(updater)
     kh.test = True
     assert os.path.exists(os.path.abspath(key_dir))
-    assert kh.key_length == 2048
     assert kh.private_key_name == u'jms.pem'
     assert kh.public_key_name == u'jms.pub'
 
@@ -98,7 +97,7 @@ def test_key_verify():
     sig = version_data[u'sig']
     del version_data[u'sig']
     version_data = json.dumps(version_data, sort_keys=True)
-    # assert rsa_verify(version_data, sig, pub_key) is True
+    pub_key.verify(sig, version_data, encoding='base64')
 
 
 @with_setup(setup_func, teardown_func)
