@@ -265,7 +265,7 @@ class PackageHandler(object):
                 info[u'patch_hash'] = patch_hash
 
             version_key = '{}*{}*{}'.format(u'updates', p.name, p.version)
-            version = easy_dict(version_key)
+            version = easy_dict.get(version_key)
             log.debug(u'Package version {}'.format(version))
 
             if version is None:
@@ -276,7 +276,7 @@ class PackageHandler(object):
                 platform_key = '{}*{}*{}*{}'.format(u'updates', p.name,
                                                     p.version, u'platform')
 
-                platform = easy_dict(platform_key)
+                platform = easy_dict.get(platform_key)
                 if platform is None:
                     name_ = json_data[u'updates'][p.name]
                     name_[p.version][p.platform] = info
