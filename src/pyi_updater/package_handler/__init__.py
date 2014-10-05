@@ -93,6 +93,7 @@ class PackageHandler(object):
         self._setup_file_dirs(package_manifest)
         self.json_data = self._update_version_file(self.json_data,
                                                    package_manifest)
+        self.package_manifest = package_manifest
         self._write_json_to_file(self.json_data)
 
     def deploy(self):
@@ -187,17 +188,20 @@ class PackageHandler(object):
                                                   package.version,
                                                   package.platform)
                     if path is not None:
-                        platform_patch_name = package.name + u'-' + \
-                            package.platform
+                        log.debug(u'Found source file to create patch')
+                        patch_name = package.name + u'-' + package.platform
                         src_path = path[0]
                         patch_number = path[1]
                         patch_info = dict(src=src_path,
                                           dst=os.path.abspath(p),
-                                          patch_name=platform_patch_name,
+                                          patch_name=os.path.join(self.new_dir,
+                                                                  patch_name),
                                           patch_num=patch_number,
                                           package=package.filename)
                         # ready for patching
                         patch_manifest.append(patch_info)
+                    else:
+                        log.debug(u'No patch source file')
 
         # ToDo: Expose this
         if ignore_errors is False:
@@ -213,8 +217,9 @@ class PackageHandler(object):
         # When the framework is frozen with pyinstaller I got
         # weird issues with multiprocessing. If you can fix
         # the issue a PR is greatly appreciated
+        pool_output = []
+        log.debug(u'Staring patch creation')
         if FROZEN and sys.platform == u'win32':
-            pool_output = []
             for p in patch_manifest:
                 patch_output = _make_patch(p)
                 pool_output.append(patch_output)
@@ -227,13 +232,17 @@ class PackageHandler(object):
     def _add_patches_to_packages(self, package_manifest, patches):
         # ToDo: Increase the efficiency of this double for
         #       loop. Not sure if it can be but though
+        log.debug(u'Adding patches to package list')
         if patches is not None:
+            log.debug('We got patches...')
             for i in patches:
                 for s in package_manifest:
-                    if i[0] == s.filename:
+                    if i[2] == s.filename:
                         s.patch_info[u'patch_name'] = i[1]
                         s.patch_info[u'patch_hash'] = get_package_hashes(i[1])
                         break
+                    else:
+                        log.debug('No patch match found')
         return package_manifest
 
     def _setup_file_dirs(self, package_manifest):
@@ -266,7 +275,7 @@ class PackageHandler(object):
 
             version_key = '{}*{}*{}'.format(u'updates', p.name, p.version)
             version = easy_dict.get(version_key)
-            log.debug(u'Package version {}'.format(version))
+            log.debug(u'Package info {}'.format(version))
 
             if version is None:
                 log.debug(u'Adding new version to file')
@@ -321,20 +330,10 @@ class PackageHandler(object):
                           self.deploy_dir))
 
                 if os.path.exists(os.path.join(version_path, p.filename)):
-                    msg = (u'Version {} of {} already exists.  Overwrite?\n'
-                           '[N/y]-->'.format(p['version'], p['name']))
-
-                    answer = input(msg)
-                    if answer.lower() in [u'yes', u'ye', u'y']:
-                        shutil.rmtree(version_path, ignore_errors=True)
-                        os.mkdir(version_path)
-                        shutil.move(p.filename, version_path)
-                    else:
-                        continue
-                else:
-                    shutil.move(p.filename, version_path)
-                    log.debug(u'Moving {} to {}'.format(p.filename,
-                              version_path))
+                    os.remove(version_path + p.filename)
+                shutil.move(p.filename, version_path)
+                log.debug(u'Moving {} to {}'.format(p.filename,
+                          version_path))
 
         # I freaking love this chdir context manager!!!
         with ChDir(self.data_dir):
@@ -359,6 +358,7 @@ class PackageHandler(object):
         # Check to see if previous version is available to
         # make patch updates
         # Also calculates patch number
+        log.debug('Checking if patch creation is possible')
         version = version_string_to_tuple(version_str)
         if bsdiff4 is None:
             return None
@@ -391,6 +391,7 @@ class PackageHandler(object):
             target_dir = os.path.join(data_dir, highest_version_str)
             with ChDir(target_dir):
                 files = remove_dot_files(os.listdir(os.getcwd()))
+                log.debug('Files in {}:\n{}'.format(target_dir, files))
                 # If somehow the source file got deleted
                 # just return
                 if len(files) == 0:
@@ -417,10 +418,12 @@ def _make_patch(patch_info):
     print(u"Patch name: {}".format(patch_name))
     print(u'Patch number: {}'.format(patch_number))
     print(u'Src: {}'.format(src_path))
+    log.debug(u'Patch source path:{}'.format(src_path))
     print(u'Dst: {}'.format(dst_path))
+    log.debug(u'Patch destination path: {}'.format(dst_path))
 
     patch_name += u'-' + str(patch_number)
     log.debug(u'Creating patch')
     bsdiff4.file_diff(src_path, dst_path, patch_name)
     log.debug(u'Done creating patch')
-    return dst_path, patch_name
+    return dst_path, patch_name, patch_info['package']

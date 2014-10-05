@@ -39,10 +39,11 @@ def setup_func():
 
 @with_setup(setup_func, None)
 def test_exe1():
-    assert os.path.exists(PYI_DATA) is True
+    assert os.path.exists(ph.new_dir) is True
+    assert os.path.exists(ph.deploy_dir) is True
 
 
-def setup_func2():
+def test_patch_creation():
     test_data_dir = os.path.abspath(os.path.join(u'tests', u'test data',
                                     u'5.3'))
     with ChDir(test_data_dir):
@@ -52,14 +53,12 @@ def setup_func2():
     ph.update_version_file()
     kh.sign_update()
     ph.deploy()
-
-
-@with_setup(setup_func2, None)
-def test_exe2():
-    assert os.path.exists(PYI_DATA) is True
-
-
-def test_patch_creation():
+    # Temp debugging
+    # temp_dir = os.path.join(os.getcwd(), 'jazz')
+    # if os.path.exists(temp_dir):
+        # shutil.rmtree(temp_dir, ignore_errors=True)
+    # shutil.copytree(PYI_DATA, temp_dir)
+    # End Debugging
     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
                           u'Not So TUF-arm-2')) is True
     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
