@@ -1,10 +1,6 @@
 =========================================
              ***  ToDo's ***
 =========================================
-# Add version select
-  - In case a bad update was pushed &
-    you don't want your whole user base to
-    update yet.
 # Update OOS Licenses
 # Test Suite
   - Focus on client auto update tests
@@ -19,7 +15,7 @@ v0.9.0 - DEV
 * Added
   - Support for multiple update urls
   - Auto generated client config
-  - ed25529 Keys
+  - ed25529 Update verification
     - Using instead of RSA
 
 * Updated
