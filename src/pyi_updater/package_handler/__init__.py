@@ -106,7 +106,7 @@ class PackageHandler(object):
         #    - Files - All updates are placed here for future reference
         #
         # This is non destructive
-        log.info(u'Setting up work dirs...')
+        log.debug(u'Setting up work dirs...')
         dirs = [self.data_dir, self.new_dir, self.deploy_dir, self.files_dir]
         for d in dirs:
             if not os.path.exists(d):
@@ -120,7 +120,7 @@ class PackageHandler(object):
         version_file = os.path.join(self.data_dir, u'version.json')
         if os.path.exists(version_file):
             with open(version_file) as f:
-                log.info(u'Loading version file...')
+                log.debug(u'Loading version file...')
                 try:
                     json_data = json.loads(f.read())
                     log.debug(u'Found version file, now reading')
@@ -139,7 +139,7 @@ class PackageHandler(object):
             log.error(u'Version file not found')
             json_data = {'updates': {}}
             log.debug(u'Created new version file')
-        log.info(u'Loaded version file')
+        log.debug(u'Loaded version file')
         return json_data
 
     def _get_package_list(self, ignore_errors=True):
@@ -223,7 +223,7 @@ class PackageHandler(object):
                 print(b.name, b.info['reason'])
 
     def _setup_file_dirs(self):
-        log.info(u'Setting up directories for file updates')
+        log.debug(u'Setting up directories for file updates')
         for p in self.package_manifest:
             package_dir = os.path.join(self.files_dir, p.name)
             package_version_path = os.path.join(package_dir, p.version)
@@ -237,7 +237,7 @@ class PackageHandler(object):
 
     def _update_version_file(self):
         # Updates version file with package meta-data
-        log.info(u'Starting version file update')
+        log.debug(u'Starting version file update')
         for p in self.package_manifest:
             patch_name = p.patch_info.get(u'patch_name', None)
             patch_hash = p.patch_info.get(u'patch_hash', None)
@@ -276,7 +276,7 @@ class PackageHandler(object):
 
     def _write_json_to_file(self):
         # Writes json data to disk
-        log.info(u'Writing version data to file')
+        log.debug(u'Writing version data to file')
         with open(os.path.join(self.data_dir, u'version.json'), u'w') as f:
             f.write(json.dumps(self.json_data, sort_keys=True, indent=4))
 
@@ -287,7 +287,7 @@ class PackageHandler(object):
         # Since we are copying files to the deploy folder then
         # moving the updates to the files folder, we can safely
         # delete files in deploy folder after uploading.
-        log.info(u'Moving packages to deploy folder')
+        log.debug(u'Moving packages to deploy folder')
         for p in self.package_manifest:
             patch = p.patch_info.get(u'patch_name', None)
             version_path = p.version_path
@@ -330,7 +330,7 @@ class PackageHandler(object):
             self.json_data[u'latest'] = {}
         file_name = files.get(package_info.name, None)
         if file_name is None:
-            log.info(u'Adding {} to file list'.format(package_info.name))
+            log.debug(u'Adding {} to file list'.format(package_info.name))
             self.json_data[u'updates'][package_info.name] = {}
 
         latest_package = self.json_data[u'latest'].get(package_info.name, None)
@@ -402,7 +402,7 @@ def _make_patch(patch_info):
     print(u'Dst: {}'.format(dst_path))
 
     patch_name += u'-' + str(patch_number)
-    log.info(u'Creating patch')
+    log.debug(u'Creating patch')
     bsdiff4.file_diff(src_path, dst_path, patch_name)
-    log.info(u'Done creating patch')
+    log.debug(u'Done creating patch')
     return dst_path, patch_name
