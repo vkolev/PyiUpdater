@@ -17,6 +17,7 @@ from pyi_updater.package_handler.package import Package
 from pyi_updater.utils import (FROZEN,
                                get_package_hashes,
                                remove_dot_files,
+                               StarAccessDict,
                                version_string_to_tuple,
                                version_tuple_to_string,
                                )
@@ -75,7 +76,7 @@ class PackageHandler(object):
         self._setup_work_dirs()
         self.json_data = self._load_version_file()
 
-    def _update_version_file(self):
+    def update_version_file(self):
         """Gets a list of updates to process.  Adds the name of an
         update to the version file if not already present.  Processes
         all packages.  Updates the version file meta-data. Then writes
@@ -90,8 +91,9 @@ class PackageHandler(object):
         package_manifest = self._add_patches_to_packages(package_manifest,
                                                          patches)
         self._setup_file_dirs(package_manifest)
-        self._update_version_file()
-        self._write_json_to_file()
+        self.json_data = self._update_version_file(self.json_data,
+                                                   package_manifest)
+        self._write_json_to_file(self.json_data)
 
     def deploy(self):
         """Moves updates/patches/version file to deploy folder
@@ -245,10 +247,11 @@ class PackageHandler(object):
             if not os.path.exists(package_version_path):
                 os.mkdir(package_version_path)
 
-    def _update_version_file(self):
+    def _update_version_file(self, json_data, package_manifest):
         # Updates version file with package meta-data
         log.debug(u'Starting version file update')
-        for p in self.package_manifest:
+        easy_dict = StarAccessDict(json_data)
+        for p in package_manifest:
             patch_name = p.patch_info.get(u'patch_name', None)
             patch_hash = p.patch_info.get(u'patch_hash', None)
 
@@ -259,36 +262,38 @@ class PackageHandler(object):
                 info[u'patch_name'] = patch_name
                 info[u'patch_hash'] = patch_hash
 
-            log.debug(u'json version {}'.format(self.json_data[u'updates']
-                      [p.name].get(p.version, None)))
+            version_key = '{}*{}*{}'.format(u'updates', p.name, p.version)
+            version = easy_dict(version_key)
+            log.debug(u'Package version {}'.format(version))
 
-            if self.json_data[u'updates'][p.name].get(p.version,
-                                                      None) is None:
+            if version is None:
                 log.debug(u'Adding new version to file')
 
                 # First version this package name
-                self.json_data[u'updates'][p.name][p.version] = {}
-                temp_platform = self.json_data[u'updates'][p.name][p.version]
-                temp_platform = temp_platform.get(u'platform', None)
-                if temp_platform is None:
-                    name_ = self.json_data[u'updates'][p.name]
+                json_data[u'updates'][p.name][p.version] = {}
+                platform_key = '{}*{}*{}*{}'.format(u'updates', p.name,
+                                                    p.version, u'platform')
+
+                platform = easy_dict(platform_key)
+                if platform is None:
+                    name_ = json_data[u'updates'][p.name]
                     name_[p.version][p.platform] = info
 
             else:
                 # package already present, adding another version to it
                 log.debug(u'Appending info data to version file')
-                self.json_data[u'updates'][p.name][p.version][p.platform] = \
-                    info
+                json_data[u'updates'][p.name][p.version][p.platform] = info
 
             # Will add each individual platform version update
             # to latest.  Now can update platforms independently
-            self.json_data[u'latest'][p.name][p.platform] = p.version
+            json_data[u'latest'][p.name][p.platform] = p.version
+        return json_data
 
-    def _write_json_to_file(self):
+    def _write_json_to_file(self, json_data):
         # Writes json data to disk
         log.debug(u'Writing version data to file')
         with open(os.path.join(self.data_dir, u'version.json'), u'w') as f:
-            f.write(json.dumps(self.json_data, sort_keys=True, indent=4))
+            f.write(json.dumps(json_data, sort_keys=True, indent=4))
 
     # ToDo: Explain whats going on below &/or clean up
     def _move_packages(self):
