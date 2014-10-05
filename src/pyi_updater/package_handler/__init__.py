@@ -73,7 +73,7 @@ class PackageHandler(object):
         Proxy method for :meth:`_setup_work_dirs` & :meth:`_load_version_file`
         """
         self._setup_work_dirs()
-        self._load_version_file()
+        self.json_data = self._load_version_file()
 
     def update_package_list(self):
         """Gets a list of updates to process.  Adds the name of an
@@ -115,40 +115,39 @@ class PackageHandler(object):
     def _load_version_file(self):
         # If version file is found its loaded to memory
         # If no version file is found then one is created.
+        json_data = None
         log.debug(u'Looking for version file...')
         version_file = os.path.join(self.data_dir, u'version.json')
         if os.path.exists(version_file):
             with open(version_file) as f:
                 log.info(u'Loading version file...')
                 try:
-                    self.json_data = json.loads(f.read())
+                    json_data = json.loads(f.read())
                     log.debug(u'Found version file, now reading')
                 except Exception as err:
                     log.error(str(err))
-                    self.json_data = None
 
-            if self.json_data is not None:
-                updates = self.json_data.get(u'updates', None)
+            if json_data is not None:
+                updates = json_data.get(u'updates', None)
                 log.debug(u'Checking for valid data in version file...')
                 if updates is None:
                     log.debug(u'Invalid data in version file...')
-                    self.json_data[u'updates'] = {}
+                    json_data[u'updates'] = {}
                     log.debug(u'Updated version file format')
-            else:
-                self.json_data = {'updates': {}}
-                log.debug(u'Created new version file')
-        else:
+
+        if json_data is None:
             log.error(u'Version file not found')
-            self.json_data = {'updates': {}}
+            json_data = {'updates': {}}
             log.debug(u'Created new version file')
         log.info(u'Loaded version file')
+        return json_data
 
     def _get_package_list(self, ignore_errors=True):
         # Adds compatible packages to internal package manifest
         # for futher processing
         # Process all packages in new folder and gets
         # url, hash and some outer info.
-        log.info(u'Getting package list')
+        log.debug(u'Getting package list')
         # Clears manifest if sign updates runs more the once without
         # app being restarted
         if len(self.package_manifest) != 0:
@@ -209,8 +208,7 @@ class PackageHandler(object):
                 pool_output = pool.map(_make_patch, patch_manifest)
 
             # ToDo: Increase the efficiency of this double for
-            #       loop. Not sure if it can be but it just
-            #       looks like it wastes time.
+            #       loop. Not sure if it can be but though
             for i in pool_output:
                 for s in self.package_manifest:
                     if i[0] == s.filename:
