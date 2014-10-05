@@ -222,16 +222,18 @@ class PackageHandler(object):
             cpu_count = multiprocessing.cpu_count() * 2
             pool = multiprocessing.Pool(processes=cpu_count)
             pool_output = pool.map(_make_patch, patch_manifest)
+        return pool_output
 
     def _add_patches_to_packages(self, package_manifest, patches):
         # ToDo: Increase the efficiency of this double for
         #       loop. Not sure if it can be but though
-        for i in patches:
-            for s in package_manifest:
-                if i[0] == s.filename:
-                    s.patch_info[u'patch_name'] = i[1]
-                    s.patch_info[u'patch_hash'] = get_package_hashes(i[1])
-                    break
+        if patches is not None:
+            for i in patches:
+                for s in package_manifest:
+                    if i[0] == s.filename:
+                        s.patch_info[u'patch_name'] = i[1]
+                        s.patch_info[u'patch_hash'] = get_package_hashes(i[1])
+                        break
         return package_manifest
 
     def _setup_file_dirs(self, package_manifest):
