@@ -85,8 +85,11 @@ class PackageHandler(object):
         :meth:`_setup_file_dirs`, :meth:`_update_version_file` &
         :meth:`_write_json_to_file`.
         """
-        self._get_package_list()
-        self._setup_file_dirs()
+        package_manifest, patch_manifest = self._get_package_list()
+        patches = self._make_patches(patch_manifest)
+        package_manifest = self._add_patches_to_packages(package_manifest,
+                                                         patches)
+        self._setup_file_dirs(package_manifest)
         self._update_version_file()
         self._write_json_to_file()
 
@@ -150,13 +153,11 @@ class PackageHandler(object):
         log.debug(u'Getting package list')
         # Clears manifest if sign updates runs more the once without
         # app being restarted
-        if len(self.package_manifest) != 0:
-            self.package_manifest = []
-
+        package_manifest = []
+        patch_manifest = []
+        bad_packages = []
         with ChDir(self.new_dir):
             # Getting a list of all files in the new dir
-            bad_packages = []
-            patch_manifest = []
             packages = os.listdir(os.getcwd())
             for p in packages:
                 # On package initialization we do the following
@@ -171,9 +172,10 @@ class PackageHandler(object):
                     bad_packages.append(package)
                     continue
 
-                self._update_file_list(package)
+                self.json_data = self._update_file_list(self.json_data,
+                                                        package)
 
-                self.package_manifest.append(package)
+                package_manifest.append(package)
 
                 if self.patch_support:
                     # Will check if source file for patch exists
@@ -187,34 +189,13 @@ class PackageHandler(object):
                             package.platform
                         src_path = path[0]
                         patch_number = path[1]
-                        patch_info = dict(src=src_path, dst=p,
+                        patch_info = dict(src=src_path,
+                                          dst=os.path.abspath(p),
                                           patch_name=platform_patch_name,
                                           patch_num=patch_number,
                                           package=package.filename)
                         # ready for patching
                         patch_manifest.append(patch_info)
-
-            # When the framework is frozen with pyinstaller I got
-            # weird issues with multiprocessing. If you can fix
-            # the issue a PR is greatly appreciated
-            if FROZEN and sys.platform == u'win32':
-                pool_output = []
-                for p in patch_manifest:
-                    patch_output = _make_patch(p)
-                    pool_output.append(patch_output)
-            else:
-                cpu_count = multiprocessing.cpu_count() * 2
-                pool = multiprocessing.Pool(processes=cpu_count)
-                pool_output = pool.map(_make_patch, patch_manifest)
-
-            # ToDo: Increase the efficiency of this double for
-            #       loop. Not sure if it can be but though
-            for i in pool_output:
-                for s in self.package_manifest:
-                    if i[0] == s.filename:
-                        s.patch_info[u'patch_name'] = i[1]
-                        s.patch_info[u'patch_hash'] = get_package_hashes(i[1])
-                        break
 
         # ToDo: Expose this
         if ignore_errors is False:
@@ -222,9 +203,38 @@ class PackageHandler(object):
             for b in bad_packages:
                 print(b.name, b.info['reason'])
 
-    def _setup_file_dirs(self):
+        return package_manifest, patch_manifest
+
+    def _make_patches(self, patch_manifest):
+        # ToDo: Since not packing as an executable test
+        #       to see if it multiprocessing works on windows
+        # When the framework is frozen with pyinstaller I got
+        # weird issues with multiprocessing. If you can fix
+        # the issue a PR is greatly appreciated
+        if FROZEN and sys.platform == u'win32':
+            pool_output = []
+            for p in patch_manifest:
+                patch_output = _make_patch(p)
+                pool_output.append(patch_output)
+        else:
+            cpu_count = multiprocessing.cpu_count() * 2
+            pool = multiprocessing.Pool(processes=cpu_count)
+            pool_output = pool.map(_make_patch, patch_manifest)
+
+    def _add_patches_to_packages(self, package_manifest, patches):
+        # ToDo: Increase the efficiency of this double for
+        #       loop. Not sure if it can be but though
+        for i in patches:
+            for s in package_manifest:
+                if i[0] == s.filename:
+                    s.patch_info[u'patch_name'] = i[1]
+                    s.patch_info[u'patch_hash'] = get_package_hashes(i[1])
+                    break
+        return package_manifest
+
+    def _setup_file_dirs(self, package_manifest):
         log.debug(u'Setting up directories for file updates')
-        for p in self.package_manifest:
+        for p in package_manifest:
             package_dir = os.path.join(self.files_dir, p.name)
             package_version_path = os.path.join(package_dir, p.version)
             p.version_path = package_version_path
@@ -323,19 +333,20 @@ class PackageHandler(object):
         with ChDir(self.data_dir):
             shutil.copy(u'version.json', self.deploy_dir)
 
-    def _update_file_list(self, package_info):
-        files = self.json_data[u'updates']
-        latest = self.json_data.get(u'latest', None)
+    def _update_file_list(self, json_data, package_info):
+        files = json_data[u'updates']
+        latest = json_data.get(u'latest', None)
         if latest is None:
-            self.json_data[u'latest'] = {}
+            json_data[u'latest'] = {}
         file_name = files.get(package_info.name, None)
         if file_name is None:
             log.debug(u'Adding {} to file list'.format(package_info.name))
-            self.json_data[u'updates'][package_info.name] = {}
+            json_data[u'updates'][package_info.name] = {}
 
-        latest_package = self.json_data[u'latest'].get(package_info.name, None)
+        latest_package = json_data[u'latest'].get(package_info.name, None)
         if latest_package is None:
-            self.json_data[u'latest'][package_info.name] = {}
+            json_data[u'latest'][package_info.name] = {}
+        return json_data
 
     def _check_make_patch(self, name, version_str, platform):
         # Check to see if previous version is available to
