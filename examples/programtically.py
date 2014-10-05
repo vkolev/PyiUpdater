@@ -63,7 +63,7 @@ def setup():
     raw_input('Place updates in new folder then press enter.')
     # This updates the version file with the
     # new packages
-    package_handler.update_package_list()
+    package_handler.update_version_file()
 
     # Initializing KeyHandler and getting
     # config from updater

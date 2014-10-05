@@ -32,7 +32,7 @@ def setup_func():
         files = remove_dot_files(os.listdir(os.getcwd()))
         for f in files:
             shutil.copy(f, ph.new_dir)
-    ph.update_package_list()
+    ph.update_version_file()
     kh.sign_update()
     ph.deploy()
 
@@ -49,7 +49,7 @@ def setup_func2():
         files = remove_dot_files(os.listdir(os.getcwd()))
         for f in files:
             shutil.copy(f, ph.new_dir)
-    ph.update_package_list()
+    ph.update_version_file()
     kh.sign_update()
     ph.deploy()
 

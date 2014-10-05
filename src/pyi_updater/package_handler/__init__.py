@@ -75,7 +75,7 @@ class PackageHandler(object):
         self._setup_work_dirs()
         self.json_data = self._load_version_file()
 
-    def update_package_list(self):
+    def _update_version_file(self):
         """Gets a list of updates to process.  Adds the name of an
         update to the version file if not already present.  Processes
         all packages.  Updates the version file meta-data. Then writes

@@ -64,7 +64,7 @@ def setup_func2():
                 f.write(u'I am so happy' * 1000)
         shutil.make_archive(u'Test App-mac-0.2.0', u'zip', u'test-app')
         shutil.move(u'Test App-mac-0.2.0.zip', u'new')
-    ph.update_package_list()
+    ph.update_version_file()
     kh.sign_update()
 
 
@@ -141,5 +141,5 @@ def test_execution():
                 f.write(u'I am so happy' * 1000)
         shutil.make_archive(u'Test App-mac-0.2.0', u'zip', u'test-app')
         shutil.move(u'Test App-mac-0.2.0.zip', u'new')
-    ph.update_package_list()
+    ph.update_version_file()
     kh.sign_update()
