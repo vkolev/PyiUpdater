@@ -1,13 +1,15 @@
 import os
 import sys
 
+from jms_utils import FROZEN
+from jms_utils.paths import cwd
 from nose import with_setup
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cli.ui.menu_utils import ask_yes_no
 
-from pyi_updater.utils import (cwd_, FROZEN, get_hash,
+from pyi_updater.utils import (get_hash,
                                get_package_hashes,
                                version_string_to_tuple,
                                version_tuple_to_string
@@ -21,7 +23,7 @@ def test_frozen():
 
 
 def test_cwd():
-    assert cwd_ == os.getcwd()
+    assert cwd == os.getcwd()
 
 
 def test_ask_yes_no_true():

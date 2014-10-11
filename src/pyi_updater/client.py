@@ -8,6 +8,7 @@ from zipfile import ZipFile
 
 from appdirs import user_cache_dir
 import ed25519
+from jms_utils import FROZEN
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 import requests
@@ -18,8 +19,9 @@ from pyi_updater.config import Config
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.patcher import Patcher
-from pyi_updater.utils import (FROZEN, get_version_number,
-                               StarAccessDict, version_string_to_tuple)
+from pyi_updater.utils import (get_version_number,
+                               StarAccessDict,
+                               version_string_to_tuple)
 
 log = logging.getLogger(__name__)
 

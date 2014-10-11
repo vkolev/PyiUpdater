@@ -28,9 +28,6 @@
   - get_all_patches
     - change func name to get_patch_info
     - Seperate required version to seperate func
-  - Move bsdiff4_py & decode_offt to utils
-  - Move bsdiff4 failed import check to top of module
-  - Use get_system instead of platform_
 
 # Uploader
   - Exlude covarge on BaseClass "# pragma: no cover"
@@ -44,6 +41,7 @@
     - Rename to EasyAccessDict
     - Add option for delimiter
     - Research __call__ incase get method isn't called
+
 # Test Suite
   - Focus on client auto update tests
   - Add more tests!
