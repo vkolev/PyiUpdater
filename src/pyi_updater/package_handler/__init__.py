@@ -326,10 +326,6 @@ class PackageHandler(object):
                 log.debug(u'Moving {} to {}'.format(p.filename,
                           version_path))
 
-        # I freaking love this chdir context manager!!!
-        with ChDir(self.data_dir):
-            shutil.copy(u'version.json', self.deploy_dir)
-
     def _update_file_list(self, json_data, package_info):
         files = json_data[u'updates']
         latest = json_data.get(u'latest', None)

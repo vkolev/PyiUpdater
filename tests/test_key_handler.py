@@ -64,7 +64,7 @@ def setup_func2():
                 f.write(u'I am so happy' * 1000)
         shutil.make_archive(u'Test App-mac-0.2.0', u'zip', u'test-app')
         shutil.move(u'Test App-mac-0.2.0.zip', u'new')
-    ph.update_version_file()
+    ph.process_packages()
     kh.sign_update()
 
 
@@ -77,9 +77,6 @@ def test_setup():
     ph = PackageHandler(updater)
     key_dir = os.path.join(ph.data_dir, u'keys')
 
-    updater.config.PRIVATE_KEY_NAME = None
-    updater.config.PUBLIC_KEY_NAME = None
-    updater.config.KEY_LENGTH = None
     kh = KeyHandler(updater)
     kh.test = True
     assert os.path.exists(os.path.abspath(key_dir))

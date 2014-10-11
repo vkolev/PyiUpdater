@@ -32,9 +32,8 @@ def setup_func():
         files = remove_dot_files(os.listdir(os.getcwd()))
         for f in files:
             shutil.copy(f, ph.new_dir)
-    ph.update_version_file()
+    ph.process_packages()
     kh.sign_update()
-    ph.deploy()
 
 
 @with_setup(setup_func, None)
@@ -50,15 +49,8 @@ def test_patch_creation():
         files = remove_dot_files(os.listdir(os.getcwd()))
         for f in files:
             shutil.copy(f, ph.new_dir)
-    ph.update_version_file()
+    ph.process_packages()
     kh.sign_update()
-    ph.deploy()
-    # Temp debugging
-    # temp_dir = os.path.join(os.getcwd(), 'jazz')
-    # if os.path.exists(temp_dir):
-        # shutil.rmtree(temp_dir, ignore_errors=True)
-    # shutil.copytree(PYI_DATA, temp_dir)
-    # End Debugging
     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
                           u'Not So TUF-arm-2')) is True
     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',

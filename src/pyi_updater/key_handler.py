@@ -6,17 +6,12 @@ import shutil
 import sys
 
 import ed25519
-from Crypto.PublicKey import RSA
-import Crypto.Signature.PKCS1_v1_5
-import Crypto.Hash.SHA256
+from jms_utils.paths import ChDir
 import six
 
 from pyi_updater.exceptions import FileCryptPasswordError, KeyHandlerError
 from pyi_updater.filecrypt import FileCrypt
 
-if Crypto is None:  # pragma: no cover
-    KeyHandlerError(u'You must have PyCrypto installed.',
-                    expected=True)
 if six.PY3 is True:
     long = int
 
@@ -198,6 +193,8 @@ class KeyHandler(object):
             with open(self.version_file, u'w') as f:
                 f.write(json.dumps(self.update_data, indent=2,
                         sort_keys=True))
+            with ChDir(self.data_dir):
+                shutil.copy(u'version.json', self.deploy_dir)
         else:
             msg = u'You must sign update data first'
             raise KeyHandlerError(msg, expected=True)
