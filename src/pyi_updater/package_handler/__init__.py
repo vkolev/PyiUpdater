@@ -14,7 +14,7 @@ from jms_utils.paths import ChDir
 from pyi_updater.package_handler.package import Package, Patch
 from pyi_updater.utils import (get_package_hashes as gph,
                                remove_dot_files,
-                               StarAccessDict,
+                               EasyAccessDict,
                                version_string_to_tuple,
                                version_tuple_to_string,
                                )
@@ -252,7 +252,7 @@ class PackageHandler(object):
     def _update_version_file(self, json_data, package_manifest):
         # Updates version file with package meta-data
         log.debug(u'Starting version file update')
-        easy_dict = StarAccessDict(json_data)
+        easy_dict = EasyAccessDict(json_data)
         for p in package_manifest:
             patch_name = p.patch_info.get(u'patch_name', None)
             patch_hash = p.patch_info.get(u'patch_hash', None)

@@ -32,16 +32,6 @@
 # Uploader
   - Exlude covarge on BaseClass "# pragma: no cover"
 
-# Utils
-  - Remove FROZEN
-    - check package for traces of FROZEN
-  - Move cwd_ to jms_utils
-    - update cwd_ in package to use jms_utils version
-  - StarAccessDict
-    - Rename to EasyAccessDict
-    - Add option for delimiter
-    - Research __call__ incase get method isn't called
-
 # Test Suite
   - Focus on client auto update tests
   - Add more tests!

@@ -20,7 +20,7 @@ from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.patcher import Patcher
 from pyi_updater.utils import (get_version_number,
-                               StarAccessDict,
+                               EasyAccessDict,
                                version_string_to_tuple)
 
 log = logging.getLogger(__name__)
@@ -270,7 +270,7 @@ class Client(object):
 
         else:
             log.error(u'No sig in version file')
-        self.star_access_update_data = StarAccessDict(self.json_data)
+        self.star_access_update_data = EasyAccessDict(self.json_data)
 
     def _extract_update(self):
         platform_name = self.name

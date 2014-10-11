@@ -14,12 +14,17 @@ from pyi_updater.exceptions import UtilsError
 log = logging.getLogger(__name__)
 
 
-class StarAccessDict(object):
+class EasyAccessDict(object):
 
-    def __init__(self, dict_=None):
-        self.load(dict_)
+    def __init__(self, dict_=None, sep='*'):
+        self.load(dict_, sep)
 
-    def load(self, dict_):
+    # Because I always for get call the get method
+    def __call__(self, key):
+        return self.get(key)
+
+    def load(self, dict_, sep='*'):
+        self.sep = sep
         if not isinstance(dict_, dict):
             self.dict = dict()
         else:
@@ -27,7 +32,7 @@ class StarAccessDict(object):
 
     def get(self, key):
         try:
-            layers = key.split('*')
+            layers = key.split(self.sep)
             value = self.dict
             for key in layers:
                 value = value[key]

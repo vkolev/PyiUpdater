@@ -14,7 +14,7 @@ from jms_utils.system import get_system
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import PatcherError
 from pyi_updater.utils import (get_package_hashes,
-                               StarAccessDict,
+                               EasyAccessDict,
                                version_string_to_tuple,
                                version_tuple_to_string)
 
@@ -46,7 +46,7 @@ class Patcher(object):
     def __init__(self, **kwargs):
         self.name = kwargs.get(u'name', None)
         self.json_data = kwargs.get(u'json_data', None)
-        self.star_access_update_data = StarAccessDict(self.json_data)
+        self.star_access_update_data = EasyAccessDict(self.json_data)
         self.current_version = kwargs.get(u'current_version', None)
         self.highest_version = kwargs.get(u'highest_version', None)
         self.update_folder = kwargs.get(u'update_folder', None)
