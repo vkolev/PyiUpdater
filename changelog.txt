@@ -21,16 +21,10 @@
 # FileCrypt
   - Split read & write into seprate func
   - Replace simple_crypt with crytography "fernet"
-  - Implement internal encryptin version #
+  - Implement internal encryption version #
   - Update file name
 
 # Package Handler
-  - Merge update_version_file & deploy methods
-    - process_packages method
-
-  - Update move_packages method signature
-    - accpet package_manifest
-
   - Make patch object
     - attrs
       - dst_path

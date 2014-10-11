@@ -11,7 +11,6 @@ try:
 except ImportError:
     bsdiff4 = None
 from jms_utils.paths import ChDir
-from six.moves import input
 
 from pyi_updater.package_handler.package import Package
 from pyi_updater.utils import (FROZEN,
@@ -66,7 +65,6 @@ class PackageHandler(object):
         self.update_url = obj.config.get(u'UPDATE_URL')
 
         self.json_data = None
-        self.package_manifest = []
 
     def setup(self):
         """Creates all needed working directories & loads version file.
@@ -76,7 +74,7 @@ class PackageHandler(object):
         self._setup_work_dirs()
         self.json_data = self._load_version_file()
 
-    def update_version_file(self):
+    def process_packages(self):
         """Gets a list of updates to process.  Adds the name of an
         update to the version file if not already present.  Processes
         all packages.  Updates the version file meta-data. Then writes
@@ -93,15 +91,8 @@ class PackageHandler(object):
         self._setup_file_dirs(package_manifest)
         self.json_data = self._update_version_file(self.json_data,
                                                    package_manifest)
-        self.package_manifest = package_manifest
         self._write_json_to_file(self.json_data)
-
-    def deploy(self):
-        """Moves updates/patches/version file to deploy folder
-
-        Proxy method form :meth:`_move_packages`
-        """
-        self._move_packages()
+        self._move_packages(package_manifest)
 
     def _setup_work_dirs(self):
         # Sets up work dirs on dev machine.  Creates the following folder
@@ -307,14 +298,14 @@ class PackageHandler(object):
             f.write(json.dumps(json_data, sort_keys=True, indent=4))
 
     # ToDo: Explain whats going on below &/or clean up
-    def _move_packages(self):
+    def _move_packages(self, package_manifest):
         # Moves all packages to their destination folder.
         # Destination is figured by lib name and version number.
         # Since we are copying files to the deploy folder then
         # moving the updates to the files folder, we can safely
         # delete files in deploy folder after uploading.
         log.debug(u'Moving packages to deploy folder')
-        for p in self.package_manifest:
+        for p in package_manifest:
             patch = p.patch_info.get(u'patch_name', None)
             version_path = p.version_path
             with ChDir(self.new_dir):
