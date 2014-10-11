@@ -138,5 +138,5 @@ def test_execution():
                 f.write(u'I am so happy' * 1000)
         shutil.make_archive(u'Test App-mac-0.2.0', u'zip', u'test-app')
         shutil.move(u'Test App-mac-0.2.0.zip', u'new')
-    ph.update_version_file()
+    ph.process_packages()
     kh.sign_update()

@@ -42,6 +42,7 @@ class KeyHandler(object):
         if self.data_dir is not None:
             self.data_dir = os.path.join(self.data_dir, u'pyi-data')
             self.keys_dir = os.path.join(self.data_dir, u'keys')
+            self.deploy_dir = os.path.join(self.data_dir, u'deploy')
             self.version_file = os.path.join(self.data_dir, u'version.json')
             if not os.path.exists(self.keys_dir):
                 log.debug(u'Creating keys directory')
