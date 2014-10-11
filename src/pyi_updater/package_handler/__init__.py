@@ -4,7 +4,6 @@ import logging
 import multiprocessing
 import os
 import shutil
-import sys
 
 try:
     import bsdiff4
@@ -12,9 +11,8 @@ except ImportError:
     bsdiff4 = None
 from jms_utils.paths import ChDir
 
-from pyi_updater.package_handler.package import Package
-from pyi_updater.utils import (FROZEN,
-                               get_package_hashes,
+from pyi_updater.package_handler.package import Package, Patch
+from pyi_updater.utils import (get_package_hashes as gph,
                                remove_dot_files,
                                StarAccessDict,
                                version_string_to_tuple,
@@ -210,14 +208,14 @@ class PackageHandler(object):
         # the issue a PR is greatly appreciated
         pool_output = []
         log.debug(u'Staring patch creation')
-        if FROZEN and sys.platform == u'win32':
-            for p in patch_manifest:
-                patch_output = _make_patch(p)
-                pool_output.append(patch_output)
-        else:
-            cpu_count = multiprocessing.cpu_count() * 2
-            pool = multiprocessing.Pool(processes=cpu_count)
-            pool_output = pool.map(_make_patch, patch_manifest)
+        # if FROZEN and sys.platform == u'win32':
+            # for p in patch_manifest:
+                # patch_output = _make_patch(p)
+                # pool_output.append(patch_output)
+        # else:
+        cpu_count = multiprocessing.cpu_count() * 2
+        pool = multiprocessing.Pool(processes=cpu_count)
+        pool_output = pool.map(_make_patch, patch_manifest)
         return pool_output
 
     def _add_patches_to_packages(self, package_manifest, patches):
@@ -226,11 +224,13 @@ class PackageHandler(object):
         log.debug(u'Adding patches to package list')
         if patches is not None:
             log.debug('We got patches...')
-            for i in patches:
-                for s in package_manifest:
-                    if i[2] == s.filename:
-                        s.patch_info[u'patch_name'] = i[1]
-                        s.patch_info[u'patch_hash'] = get_package_hashes(i[1])
+            for p in patches:
+                if p.ready is False:
+                    continue
+                for pm in package_manifest:
+                    if p.dst_filename == pm.filename:
+                        pm.patch_info[u'patch_name'] = p.patch_name
+                        pm.patch_info[u'patch_hash'] = gph(p.patch_name)
                         break
                     else:
                         log.debug('No patch match found')
@@ -398,19 +398,26 @@ class PackageHandler(object):
 
 def _make_patch(patch_info):
     # Does with the name implies. Used with multiprocessing
+    patch = Patch(patch_info)
     patch_name = patch_info[u'patch_name']
+    dst_path = patch_info[u'dst']
     patch_number = patch_info[u'patch_num']
     src_path = patch_info[u'src']
-    dst_path = patch_info[u'dst']
-    print(u"Patch name: {}".format(patch_name))
-    print(u'Patch number: {}'.format(patch_number))
-    print(u'Src: {}'.format(src_path))
-    log.debug(u'Patch source path:{}'.format(src_path))
-    print(u'Dst: {}'.format(dst_path))
-    log.debug(u'Patch destination path: {}'.format(dst_path))
-
     patch_name += u'-' + str(patch_number)
-    log.debug(u'Creating patch')
-    bsdiff4.file_diff(src_path, dst_path, patch_name)
-    log.debug(u'Done creating patch')
-    return dst_path, patch_name, patch_info['package']
+    # Updating with full name - number included
+    patch.patch_name = patch_name
+    if not os.path.exists(src_path):
+        log.debug('Src file does not exist to create patch')
+
+    else:
+        print(u"Patch name: {}".format(patch_name))
+        print(u'Patch number: {}'.format(patch_number))
+        log.debug(u'Patch source path:{}'.format(src_path))
+        log.debug(u'Patch destination path: {}'.format(dst_path))
+        if patch.ready is True:
+            log.debug(u'Creating patch')
+            bsdiff4.file_diff(src_path, patch.dst_path, patch.patch_name)
+            log.debug(u'Done creating patch')
+        else:
+            log.debug('Missing patch attr')
+    return patch

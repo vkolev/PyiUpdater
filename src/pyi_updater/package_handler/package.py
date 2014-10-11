@@ -11,6 +11,27 @@ from pyi_updater.utils import (get_package_hashes,
 log = logging.getLogger(__name__)
 
 
+class Patch(object):
+
+    def __init__(self, patch_info):
+        self.dst_path = patch_info.get(u'dst')
+        self.patch_name = patch_info.get(u'patch_name')
+        self.dst_filename = patch_info.get(u'package')
+        self.ready = self._check_attrs()
+
+    def _check_attrs(self):
+        if self.dst_path is not None:
+            if not os.path.exists(self.dst_path):
+                return False
+        else:
+            return False
+        if self.patch_name is None:
+            return False
+        if self.dst_filename is None:
+            return False
+        return True
+
+
 class Package(object):
 
     def __init__(self, file_):

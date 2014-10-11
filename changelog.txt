@@ -24,21 +24,6 @@
   - Implement internal encryption version #
   - Update file name
 
-# Package Handler
-  - Make patch object
-    - attrs
-      - dst_path
-      - path_name
-      - filename = patch_info['package']
-      - hash
-        - Make sure getting the correct hash
-
-  - _make_patch
-    - Handle errors
-
-  - Unify multiprocessing on Unix & Win
-    - Remove frozen hack on windows
-
 # Patcher
   - get_all_patches
     - change func name to get_patch_info
