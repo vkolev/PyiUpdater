@@ -19,10 +19,7 @@
   - Implement dynamic block size
 
 # FileCrypt
-  - Split read & write into seprate func
-  - Replace simple_crypt with crytography "fernet"
   - Implement internal encryption version #
-  - Update file name
 
 # Patcher
   - get_all_patches
@@ -54,14 +51,18 @@ v0.9.0 - DEV
     - Patcher
       - Now verifies patched update integrity
         against version file
-  - Https verification
-    - on by default
-    - Can disable in config file
-    - VERIFY_SERVER_CERT
+  - Downloader
+    - Https verification
+      - on by default
+      - Can disable in config file
+      - VERIFY_SERVER_CERT
+    - Dynamic block resizing
   - Archive Extraction
     - More reliable
   - Archive creator
     - Works with mac GUI apps
+  - Private methods
+    - Refactored to make testing easier
 
 
 v0.8.1 - 9/3/2014

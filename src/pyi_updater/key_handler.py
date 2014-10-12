@@ -26,6 +26,7 @@ class KeyHandler(object):
     """
 
     def __init__(self, app=None):
+        self.fc = None
         if app:
             self.init_app(app)
 
@@ -59,8 +60,6 @@ class KeyHandler(object):
 
         self.key_encoding = 'base64'
 
-        # FileCrypt object
-        self.fc = None
         # Set to true when running tests
         self.test = False
 
