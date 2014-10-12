@@ -58,6 +58,7 @@ class Worker(Menu, CommonLogic):
         # self.menu = Menu(header, options)
 
     def update_helpers(self, pyi_updater):
+        self.file_crypt.init_app(pyi_updater)
         self.key_handler.init_app(pyi_updater)
         self.key_handler._add_filecrypt(self.file_crypt)
         self.package_handler.init_app(pyi_updater)
@@ -156,7 +157,7 @@ class Worker(Menu, CommonLogic):
                                                         required=True)
 
         password = verify_password(u'Enter password')
-
+        self.file_crypt._update_timer()
         self.save_config(self.config, password)
         self.package_handler.setup()
         print(u'Making keys...')
@@ -174,6 +175,7 @@ class Worker(Menu, CommonLogic):
         # We do this here to keep from asking users
         # password again when we encrypt the file
         if password is not None:
+            password = self.file_crypt._gen_password(password)
             self.file_crypt.password = password
         with open(filename, 'w') as f:
             f.write(str(pickle.dumps(obj)))

@@ -1,10 +1,11 @@
+from base64 import (urlsafe_b64encode as b_encode)
 import getpass
 import logging
 import os
 import time
 
-from simplecrypt import encrypt as s_encrypt
-from simplecrypt import decrypt as s_decrypt
+from cryptography.fernet import Fernet
+from pbkdf2 import pbkdf2_bin
 from six.moves import input
 
 from pyi_updater.exceptions import FileCryptError, FileCryptPasswordError
@@ -28,11 +29,17 @@ class FileCrypt(object):
     """
 
     def __init__(self, filename=None, password_timeout=30, max_tries=3):
+        self.data_dir = None
+        self.salt_file = None
         self.password = None
         self.password_timer = 0
         self.password_max_tries = max_tries
         self.passwrod_timeout = password_timeout
         self.new_file(filename)
+
+    def init_app(self, pyi):
+        self.data_dir = pyi.config.get(u'DEV_DATA_DIR')
+        self.salt_file = os.path.join(self.data_dir, u'keys', u'salt.v1')
 
     def new_file(self, filename=None):
         """Adds filename internally to be used for encryption and
@@ -68,9 +75,10 @@ class FileCrypt(object):
 
         log.debug(u'Lets start this encryption process.')
         if self.password is None:
-            self._get_password()
+            self.password = self._get_password()
+        fernet = Fernet(self.password)
 
-        enc_data = s_encrypt(self.password, plain_data)
+        enc_data = fernet.encrypt(plain_data)
 
         with open(self.enc_filename, u'w') as f:
             f.write(enc_data)
@@ -100,11 +108,12 @@ class FileCrypt(object):
         while tries < self.password_max_tries:
             log.debug(u'Tries = {}'.format(tries))
             if self.password is None:
-                self._get_password()
+                self.password = self._get_password()
+            fernet = Fernet(self.password)
             try:
                 log.debug(u'Going to attempt to decrypt the file')
 
-                plain_data = s_decrypt(self.password, enc_data)
+                plain_data = fernet.decrypt(enc_data)
                 break
             except Exception as e:
                 self.password = None
@@ -156,9 +165,25 @@ class FileCrypt(object):
     def _get_password(self):
         # Gets user password without echoing to the console
         log.debug(u'Getting user password')
-        self.password = getpass.getpass(u'Enter password:\n-->')
+        temp_password = getpass.getpass(u'Enter password:\n-->')
         log.debug(u'Got you pass')
         self._update_timer()
+        return self._gen_password(temp_password)
+
+    def _gen_password(self, password):
+        salt = self._get_salt()
+        key = pbkdf2_bin(password, salt, keylen=32)
+        return b_encode(key)
+
+    def _get_salt(self):
+        if os.path.exists(self.salt_file):
+            with open(self.salt_file, u'r') as f:
+                salt = f.read()
+        else:
+            salt = os.urandom(16)
+            with open(self.salt_file, u'w') as f:
+                f.write(salt)
+        return salt
 
     def _update_timer(self):
         # Updates internal timer if not already past current time
