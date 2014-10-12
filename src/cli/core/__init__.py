@@ -185,13 +185,15 @@ class Worker(Menu, CommonLogic):
     def load_config(self):
         log.debug(u'Loading Config')
         filename = os.path.join(cwd, u'config.data')
+        salt_file = os.path.join(cwd, u'pyi-data', u'keys', u'salt')
+        self.file_crypt.salt_file = salt_file
         self.file_crypt.new_file(filename)
         try:
             self.file_crypt.decrypt()
         except FileCryptPasswordError:
             sys.exit(u'Failed password attempt')
         except Exception as e:
-            log.error(str(e))
+            log.error(str(e), exc_info=True)
             log.warning(u'No enc file. Will try to load plain config')
         try:
             with open(filename, 'r') as f:

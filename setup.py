@@ -20,8 +20,8 @@ setup(
     dependency_links=['https://github.com/pyinstaller/pyinstaller/archive/de'
                       'velop.zip#egg=pyinstaller-2.1.1'],
     extras_require = {
-        's3': 'PyiUpdater-s3-Plugin>=0.10',
-        'scp': 'PyiUpdater-scp-Plugin>=0.8',
+        's3': 'PyiUpdater-s3-Plugin>=0.11',
+        'scp': 'PyiUpdater-scp-Plugin>=0.9',
         },
     install_requires=[
         'appdirs',

@@ -113,10 +113,10 @@ class FileCrypt(object):
 
         plain_data = None
         tries = 0
+        if self.password is None:
+                self.password = self._get_password()
         while tries < self.password_max_tries:
             log.debug(u'Tries = {}'.format(tries))
-            if self.password is None:
-                self.password = self._get_password()
             fernet = Fernet(self.password)
             try:
                 log.debug(u'Going to attempt to decrypt the file')
@@ -203,14 +203,19 @@ class FileCrypt(object):
             v = str(v)
             salt_file = self.salt_file + u'.' + v
             if os.path.exists(salt_file):
+                log.debug(u'Found salt file: {}'.format(salt_file))
                 self.salt_file = salt_file
                 with open(self.salt_file, u'r') as f:
                     salt = f.read()
                 version = v
+                break
         else:
+            log.debug(u'Did not find salt file')
             salt = os.urandom(16)
-            with open(self.salt_file + u'.' + SALT_VESION, u'w') as f:
+            self.salt_file = self.salt_file + u'.' + SALT_VESION
+            with open(self.salt_file, u'w') as f:
                 f.write(salt)
+            log.debug(u'Created salt file: {}'.format(self.salt_file))
             version = SALT_VESION
         return {u'salt': salt, 'version': version}
 
