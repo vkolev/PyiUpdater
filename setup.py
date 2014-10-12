@@ -28,7 +28,7 @@ setup(
         'blinker',
         'bsdiff4',
         'ed25519',
-        'jms-utils >= 0.2.1',
+        'jms-utils >= 0.3',
         'pyinstaller',
         'requests',
         'six',
