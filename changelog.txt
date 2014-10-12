@@ -12,19 +12,8 @@
   - Research windows cli programs
     - Do majority have .exe ext?
 
-# Downloader
-  - Replace requests with urllib3
-  - _download_to_memory
-    - Move response logic to seperate func
-  - Implement dynamic block size
-
 # FileCrypt
   - Implement internal encryption version #
-
-# Patcher
-  - get_all_patches
-    - change func name to get_patch_info
-    - Seperate required version to seperate func
 
 # Test Suite
   - Focus on client auto update tests

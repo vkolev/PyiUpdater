@@ -78,7 +78,7 @@ class Patcher(object):
             log.warning(u'Binary check failed...')
             return False
         # Getting all required patch meta-data
-        all_patches = self._get_all_patches(self.name)
+        all_patches = self._get_patch_info(self.name)
         if all_patches is False:
             log.warning(u'Cannot find all patches...')
             return False
@@ -125,7 +125,31 @@ class Patcher(object):
     # We will take all versions.  Then append any version
     # thats greater then the current version to the list
     # of needed patches.
-    def _get_all_patches(self, name):
+    def _get_patch_info(self, name):
+        # Taking the list of needed patches and extracting the
+        # patch data from it. If any loop fails, will return False
+        # and start full binary update.
+        log.debug(u'Getting patch meta-data')
+        required_patches = self._get_required_patches(name)
+
+        for p in required_patches:
+            info = {}
+            v_num = version_tuple_to_string(p)
+            plat_key = '{}*{}*{}*{}'.format(u'updates', name,
+                                            v_num, self.plat)
+            plat_info = self.star_access_update_data.get(plat_key)
+
+            try:
+                info[u'patch_name'] = plat_info[u'patch_name']
+                info[u'patch_urls'] = self.update_urls
+                info[u'patch_hash'] = plat_info[u'patch_hash']
+                self.patch_data.append(info)
+            except KeyError:
+                log.error(u'Missing required patch meta-data')
+                return False
+        return True
+
+    def _get_required_patches(self, name):
         needed_patches = []
         versions = []
         try:
@@ -143,31 +167,8 @@ class Patcher(object):
         for i in versions:
             if i > version_string_to_tuple(self.current_version):
                 needed_patches.append(i)
-
-        # Taking the list of needed patches and extracting the
-        # patch data from it. If any loop fails, will return False
-        # and start full binary update.
-        log.debug(u'Getting patch meta-data')
-
         # Used to guarantee patches are only added once
-        needed_patches = list(set(needed_patches))
-
-        for p in needed_patches:
-            info = {}
-            v_num = version_tuple_to_string(p)
-            plat_key = '{}*{}*{}*{}'.format(u'updates', name,
-                                            v_num, self.plat)
-            plat_info = self.star_access_update_data.get(plat_key)
-
-            try:
-                info[u'patch_name'] = plat_info[u'patch_name']
-                info[u'patch_urls'] = self.update_urls
-                info[u'patch_hash'] = plat_info[u'patch_hash']
-                self.patch_data.append(info)
-            except KeyError:
-                log.error(u'Missing required patch meta-data')
-                return False
-        return True
+        return list(set(needed_patches))
 
     def _download_verify_patches(self):
         # Downloads & verifies all patches
