@@ -2,10 +2,7 @@
              ***  ToDo's ***
 =========================================
 # PyiUpdater
-  - Implement win64 packages
-  - Change all non debug logs to debug
   - Document every function
-  - Remove unsed import
   - Clean up version to tuple and vice versa
 
 # Client
