@@ -1,6 +1,7 @@
 appdirs
 blinker
 bsdiff4
+certifi
 ed25519
 jms-utils
 git+git://github.com/pyinstaller/pyinstaller.git@develop#egg=pyinstaller
@@ -10,3 +11,4 @@ requests
 simple-crypt
 six
 stevedore
+urllib3

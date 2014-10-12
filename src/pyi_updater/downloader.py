@@ -4,7 +4,9 @@ import time
 import sys
 
 from blinker import signal
+import certifi
 import requests
+import urllib3
 
 from pyi_updater.utils import get_hash
 
@@ -28,7 +30,6 @@ class FileDownloader(object):
         hexdigest str(str): The hash checksum of the file to download
     """
     def __init__(self, filename, urls, hexdigest, verify=True):
-        self.start = time.time()
         self.filename = filename
         if isinstance(urls, list) is False:
             self.urls = [urls]
@@ -38,6 +39,11 @@ class FileDownloader(object):
         self.verify = verify
         self.b_size = 4096 * 4
         self.file_binary_data = None
+        if self.verify is True:
+            self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
+                                                 ca_certs=certifi.where())
+        else:
+            self.http_pool = urllib3.PoolManager()
 
     def download_verify_write(self):
         """Downloads file then verifies against provided hash
@@ -100,13 +106,50 @@ class FileDownloader(object):
         return int(rate)
 
     def _download_to_memory(self):
+        data = self._make_response()
+        if data is None or data == '':
+            return None
+
+        self.content_length = self._get_content_length(data)
+        self.my_file = BytesIO()
+        log.debug(u'Downloading {} from:\n{}'.format(self.filename, file_url))
+        recieved_data = 0
+
+        while 1:
+            start_block = time.time()
+            block = data.read(self.b_size)
+            end_block = time.time()
+            if len(block) == 0:
+                break
+            self.b_size = self._best_block_size(end_block - start_block,
+                                                len(block))
+            log.debug(u'Block size: %s' % self.b_size)
+            self.my_file.write(block)
+            recieved_data += len(block)
+            percent = self._calc_progress_percent(recieved_data,
+                                                  self.content_length)
+            progress_signal.send(info=u'Downloading', percent=percent)
+            sys.stdout.write(u'\r{} Percent Complete'.format(percent))
+            sys.stdout.flush()
+
+        sys.stdout.write('\n')
+        sys.stdout.flush()
+        self.my_file.flush()
+        self.my_file.seek(0)
+        self.file_binary_data = self.my_file.read()
+        progress_signal.send(info=u'Download Complete', percent=u'100')
+        log.debug(u'Download Complete')
+
+    def _make_response(self):
         # Downloads file to memory.  Keeps internal reference
         data = None
         for url in self.urls:
             print url
             file_url = url + self.filename
             try:
-                data = requests.get(file_url, verify=self.verify, stream=True)
+                data = self.http_pool.urlopen('GET', file_url,
+                                              preload_content=False)
+                # data = requests.get(file_url, verify=self.verify, stream=True)
             except requests.exceptions.HTTPError:
                 log.debug(u'Might have had spaces in an S3 url...')
                 file_url = file_url.replace(' ', '+')
@@ -126,8 +169,10 @@ class FileDownloader(object):
             if data is None:
                 # Let's try one more time with the fixed url
                 try:
-                    data = requests.get(file_url, verify=self.verify,
-                                        stream=True)
+                    data = self.http_pool.urlopen('GET', file_url,
+                                                  preload_content=False)
+                    # data = requests.get(file_url, verify=self.verify,
+                                        # stream=True)
                 except requests.exceptions.SSLError:
                     log.error(u'SSL cert not verified')
                 except Exception as e:
@@ -135,40 +180,6 @@ class FileDownloader(object):
                     self.file_binary_data = None
                 else:
                     break
-
-        if data is None or data == '':
-            return None
-
-        self.content_length = self._get_content_length(data)
-        self.my_file = BytesIO()
-        log.debug(u'Downloading {} from:\n{}'.format(self.filename, file_url))
-        recieved_data = 0
-
-        start_block = None
-        for block in data.iter_content(self.b_size):
-            end_block = time.time()
-            if start_block is not None:
-                self.b_size = self._best_block_size(end_block - start_block,
-                                                    len(block))
-                # log.debug(u'Block size: %s' % self.b_size)
-            self.my_file.write(block)
-            recieved_data += len(block)
-            percent = self._calc_progress_percent(recieved_data,
-                                                  self.content_length)
-            progress_signal.send(info=u'Downloading', percent=percent)
-            sys.stdout.write(u'\r{} Percent Complete'.format(percent))
-            sys.stdout.flush()
-            start_block = time.time()
-
-        sys.stdout.write('\n')
-        sys.stdout.flush()
-        self.my_file.flush()
-        self.my_file.seek(0)
-        self.file_binary_data = self.my_file.read()
-        progress_signal.send(info=u'Download Complete', percent=u'100')
-        log.debug(u'Download Complete')
-        log.debug(u'Finished in {} seconds'.format(time.time() -
-                  self.start))
 
     def _write_to_file(self):
         # Writes download data in memory to disk
@@ -212,4 +223,3 @@ class FileDownloader(object):
         percent = float(x) / y * 100
         percent = u'%.1f' % percent
         return percent
-
