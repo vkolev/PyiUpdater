@@ -47,7 +47,7 @@ class BaseUploader(object):
                 log.debug('{} uploaded successfully'.format(f))
                 self.files_completed += 1
             else:
-                log.warning(u'{} failed to upload.  will retry'.format(f))
+                log.debug(u'{} failed to upload.  will retry'.format(f))
                 self.failed_uploads.append(f)
         if len(self.failed_uploads) > 0:
             self._retry_upload()

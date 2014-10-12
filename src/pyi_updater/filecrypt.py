@@ -57,7 +57,7 @@ class FileCrypt(object):
         else:
             self.filename = None
             self.enc_filename = None
-            log.warning(u'No file to process yet.')
+            log.debug(u'No file to process yet.')
 
     def encrypt(self):
         """Will encrypt the file"""
@@ -118,7 +118,7 @@ class FileCrypt(object):
             except Exception as e:
                 self.password = None
                 input(u'\nInvalid Password.  Press enter to try again')
-                log.warning(u'Invalid Password')
+                log.debug(u'Invalid Password')
                 log.error(str(e), exc_info=True)
                 tries += 1
 

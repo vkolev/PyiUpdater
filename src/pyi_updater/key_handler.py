@@ -148,7 +148,7 @@ class KeyHandler(object):
         except FileCryptPasswordError:
             sys.exit(u'Too many failed password attempts')
         except:
-            log.warning(u'Nothing to decrypt')
+            log.debug(u'Nothing to decrypt')
 
         if os.path.exists(privkey):
             try:
@@ -168,7 +168,7 @@ class KeyHandler(object):
         # Adding new signature to version file
         log.debug(u'Adding signature to version file...')
         if not self.privkey:
-            log.warning(u'Private key not loaded')
+            log.debug(u'Private key not loaded')
             raise KeyHandlerError(u'You must load your privkey first',
                                   expected=True)
 
@@ -214,7 +214,7 @@ class KeyHandler(object):
                 log.debug(u'Pass overwrite=True to make_keys to overwrite')
                 return
             else:
-                log.warning(u'About to overwrite old keys')
+                log.debug(u'About to overwrite old keys')
         log.debug(u'Writing keys to file')
         with open(private, u'w') as f:
             f.write(self.privkey.to_ascii(encoding=self.key_encoding))

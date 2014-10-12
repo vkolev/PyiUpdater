@@ -206,7 +206,7 @@ class Client(object):
         Proxy method for :meth:`_extract_update`.
         """
         if get_system() == u'win':
-            log.warning('Only supported on Unix like systems')
+            log.debug('Only supported on Unix like systems')
             return False
         try:
             self._extract_update()
@@ -222,7 +222,7 @@ class Client(object):
         Proxy method for :meth:`_overwrite_app` & :meth:`_restart`.
         """
         if get_system() == u'win':
-            log.warning(u'Only supported on Unix like systems')
+            log.debug(u'Only supported on Unix like systems')
             return
         try:
             self._overwrite_app()
@@ -269,7 +269,7 @@ class Client(object):
             except Exception as e:
                 log.error(str(e))
                 self.json_data = None
-                log.warning(u'Version file not verified')
+                log.debug(u'Version file not verified')
             else:
                 log.debug(u'Version file verified')
                 self.verified = True
@@ -413,7 +413,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         # Just checking to see if the zip for the current version is
         # available to patch If not we'll just do a full binary download
         if not os.path.exists(os.path.join(self.update_folder, filename)):
-            log.warning(u'{} got deleted. No base binary to start patching '
+            log.debug(u'{} got deleted. No base binary to start patching '
                         'form'.format(filename))
             return False
 
@@ -518,7 +518,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         try:
             current_version_str = get_version_number(filename)
         except UtilsError:
-            log.warning(u'Cannot parse version info')
+            log.debug(u'Cannot parse version info')
             current_version_str = u'0.0.0'
 
         current_version = version_string_to_tuple(current_version_str)
@@ -527,7 +527,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
                 try:
                     t_versoin_str = get_version_number(t)
                 except UtilsError:
-                    log.warning(u'Cannot parse version info')
+                    log.debug(u'Cannot parse version info')
                     t_versoin_str = u'0.0.0'
                 t_version = version_string_to_tuple(t_versoin_str)
 

@@ -58,7 +58,7 @@ class PackageHandler(object):
             self.deploy_dir = os.path.join(self.data_dir, u'deploy')
             self.new_dir = os.path.join(self.data_dir, u'new')
         else:
-            log.warning('DEV_DATA_DIR is None. Setup Failed')
+            log.debug('DEV_DATA_DIR is None. Setup Failed')
 
         self.update_url = obj.config.get(u'UPDATE_URL')
 

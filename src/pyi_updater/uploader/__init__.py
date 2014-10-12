@@ -34,7 +34,7 @@ class Uploader(object):
             self.data_dir = os.path.join(self.data_dir, u'pyi-data')
             self.deploy_dir = os.path.join(self.data_dir, u'deploy')
         else:
-            log.warning(u'DEV_DATA_DIR is None. Setup failed.')
+            log.debug(u'DEV_DATA_DIR is None. Setup failed.')
 
         self.remote_dir = obj.config.get(u'REMOTE_DIR', None)
         self.host = obj.config.get(u'HOST', None)

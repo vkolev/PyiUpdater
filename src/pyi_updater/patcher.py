@@ -75,18 +75,18 @@ class Patcher(object):
         # Check hash on installed binary to begin patching
         binary_check = self._verify_installed_binary()
         if not binary_check:
-            log.warning(u'Binary check failed...')
+            log.debug(u'Binary check failed...')
             return False
         # Getting all required patch meta-data
         all_patches = self._get_patch_info(self.name)
         if all_patches is False:
-            log.warning(u'Cannot find all patches...')
+            log.debug(u'Cannot find all patches...')
             return False
 
         # Download and verify patches in 1 go
         download_check = self._download_verify_patches()
         if download_check is False:
-            log.warning(u'Patch check failed...')
+            log.debug(u'Patch check failed...')
             return False
 
         try:
@@ -109,12 +109,12 @@ class Patcher(object):
         # manager.  Even sent the developer a cup of coffee
         with ChDir(self.update_folder):
             if not os.path.exists(self.current_filename):
-                log.warning(u'Cannot find binary to patch')
+                log.debug(u'Cannot find binary to patch')
                 return False
 
             installed_file_hash = get_package_hashes(self.current_filename)
             if self.current_file_hash != installed_file_hash:
-                log.warning(u'Binary hash mismatch')
+                log.debug(u'Binary hash mismatch')
                 return False
             with open(self.current_filename, u'rb') as f:
                 self.og_binary = f.read()
