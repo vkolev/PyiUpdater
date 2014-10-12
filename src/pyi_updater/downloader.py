@@ -39,6 +39,7 @@ class FileDownloader(object):
         self.verify = verify
         self.b_size = 4096 * 4
         self.file_binary_data = None
+        self.my_file = BytesIO()
         if self.verify is True:
             self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
                                                  ca_certs=certifi.where())
@@ -111,7 +112,6 @@ class FileDownloader(object):
             return None
 
         self.content_length = self._get_content_length(data)
-        self.my_file = BytesIO()
         log.debug(u'Downloading {} from:\n{}'.format(self.filename, file_url))
         recieved_data = 0
 
