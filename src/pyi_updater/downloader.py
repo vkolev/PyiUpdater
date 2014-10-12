@@ -5,7 +5,6 @@ import sys
 
 from blinker import signal
 import certifi
-import requests
 import urllib3
 
 from pyi_updater.utils import get_hash
@@ -40,6 +39,7 @@ class FileDownloader(object):
         self.b_size = 4096 * 4
         self.file_binary_data = None
         self.my_file = BytesIO()
+        self.content_length = None
         if self.verify is True:
             self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
                                                  ca_certs=certifi.where())
@@ -112,7 +112,6 @@ class FileDownloader(object):
             return None
 
         self.content_length = self._get_content_length(data)
-        log.debug(u'Downloading {} from:\n{}'.format(self.filename, file_url))
         recieved_data = 0
 
         while 1:
@@ -149,13 +148,15 @@ class FileDownloader(object):
             try:
                 data = self.http_pool.urlopen('GET', file_url,
                                               preload_content=False)
-                # data = requests.get(file_url, verify=self.verify, stream=True)
-            except requests.exceptions.HTTPError:
+                # Have to catch url with spaces
+                if data.status == 505:
+                    raise urllib3.exceptions.HTTPError
+            except urllib3.exceptions.HTTPError:
                 log.debug(u'Might have had spaces in an S3 url...')
                 file_url = file_url.replace(' ', '+')
                 log.debug(u'S3 updated url {}'.format(file_url))
                 data = None
-            except requests.exceptions.SSLError:
+            except urllib3.exceptions.SSLError:
                 log.error(u'SSL cert not verified')
                 data = ''
             except Exception as e:
@@ -171,15 +172,15 @@ class FileDownloader(object):
                 try:
                     data = self.http_pool.urlopen('GET', file_url,
                                                   preload_content=False)
-                    # data = requests.get(file_url, verify=self.verify,
-                                        # stream=True)
-                except requests.exceptions.SSLError:
+                except urllib3.exceptions.SSLError:
                     log.error(u'SSL cert not verified')
                 except Exception as e:
                     log.error(str(e), exc_info=True)
                     self.file_binary_data = None
                 else:
                     break
+        log.debug(u'Downloading {} from:\n{}'.format(self.filename, file_url))
+        return data
 
     def _write_to_file(self):
         # Writes download data in memory to disk

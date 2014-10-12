@@ -7,12 +7,13 @@ import tarfile
 from zipfile import ZipFile
 
 from appdirs import user_cache_dir
+import certifi
 import ed25519
 from jms_utils import FROZEN
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
-import requests
 import six
+import urllib3
 
 from pyi_updater.archiver import make_archive
 from pyi_updater.config import Config
@@ -81,6 +82,11 @@ class Client(object):
         self.public_key = config.get(u'PUBLIC_KEY', None)
         self.debug = config.get(u'DEBUG', False)
         self.verify = config.get(u'VERIFY_SERVER_CERT', True)
+        if self.verify is True:
+            self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
+                                                 ca_certs=certifi.where())
+        else:
+            self.http_pool = urllib3.PoolManager()
         self.version_file = u'version.json'
 
         self.current_app_dir = os.path.dirname(sys.argv[0])
@@ -230,9 +236,9 @@ class Client(object):
         for u in self.update_urls:
             url = u + self.version_file
             try:
-                v = requests.get(url, verify=self.verify)
-                self.json_data = v.json()
-            except requests.exceptions.SSLError:
+                v = self.http_pool.urlopen('GET', url, preload_content=False)
+                self.json_data = json.loads(v.read())
+            except urllib3.exceptions.SSLError:
                 log.error(u'SSL cert not verified')
             except ValueError:
                 log.error(u'Json failed to load')

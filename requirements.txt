@@ -2,13 +2,13 @@ appdirs
 blinker
 bsdiff4
 certifi
+cryptography
 ed25519
-jms-utils
+jms-utils >= 0.3
 git+git://github.com/pyinstaller/pyinstaller.git@develop#egg=pyinstaller
 PyiUpdater-s3-Plugin
 PyiUpdater-scp-Plugin
-requests
-simple-crypt
+simple-pbkdf2
 six
 stevedore
 urllib3
