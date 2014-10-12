@@ -29,9 +29,6 @@
     - change func name to get_patch_info
     - Seperate required version to seperate func
 
-# Uploader
-  - Exlude covarge on BaseClass "# pragma: no cover"
-
 # Test Suite
   - Focus on client auto update tests
   - Add more tests!
