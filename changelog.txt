@@ -19,10 +19,7 @@
   - Implement dynamic block size
 
 # FileCrypt
-  - Split read & write into seprate func
-  - Replace simple_crypt with crytography "fernet"
   - Implement internal encryption version #
-  - Update file name
 
 # Patcher
   - get_all_patches
