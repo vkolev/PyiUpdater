@@ -49,6 +49,11 @@ class Package(object):
         self.extract_info(file_)
 
     def extract_info(self, package):
+        """Gets version number, platform & hash for package.
+
+        Args:
+            package (str): filename
+        """
         if os.path.splitext(package)[1].lower() not in \
                 self.supported_extensions:
             msg = u'Not a supported archive format: {}'.format(package)

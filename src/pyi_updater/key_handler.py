@@ -91,6 +91,8 @@ class KeyHandler(object):
         self._write_update_data()
 
     def get_public_key(self):
+        """Returns (object): Public Key
+        """
         public_key_path = os.path.join(self.keys_dir, self.public_key_name)
         log.debug(u'Public key path: {}'.format(public_key_path))
         if not os.path.exists(public_key_path):
@@ -99,7 +101,7 @@ class KeyHandler(object):
         public_key_path = os.path.join(self.keys_dir, self.public_key_name)
         with open(public_key_path, u'r') as f:
             pub_key_data = f.read()
-        return ed25519.VerifyingKey(pub_key_data, encoding='base64')
+        return pub_key_data
 
     def copy_decrypted_private_key(self):
         """Copies decrypted private key."""

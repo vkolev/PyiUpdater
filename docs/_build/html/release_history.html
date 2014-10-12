@@ -5,17 +5,17 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release History &mdash; PyiUpdater 0.9-dev1411963414 documentation</title>
+    <title>Release History &mdash; PyiUpdater 0.9-dev1413144725 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.1.0/flatly/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.2.0/flatly/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.9-dev1411963414',
+        VERSION:     '0.9-dev1413144725',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,9 +26,9 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.9-dev1411963414 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9-dev1413144725 documentation" href="index.html" />
     <link rel="prev" title="API" href="api.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1411963414</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1413144725</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -135,6 +135,10 @@
 <div class="highlight-python"><div class="highlight"><pre>=========================================
              ***  ToDo&#39;s ***
 =========================================
+# PyiUpdater
+  - Document every function
+  - Clean up version to tuple and vice versa
+
 # Test Suite
   - Focus on client auto update tests
   - Add more tests!
@@ -148,6 +152,8 @@ v0.9.0 - DEV
 * Added
   - Support for multiple update urls
   - Auto generated client config
+  - ed25529 Update verification
+    - Using instead of RSA
 
 * Updated
   - Client updater
@@ -158,14 +164,18 @@ v0.9.0 - DEV
     - Patcher
       - Now verifies patched update integrity
         against version file
-  - Https verification
-    - on by default
-    - Can disable in config file
-    - VERIFY_SERVER_CERT
+  - Downloader
+    - Https verification
+      - on by default
+      - Can disable in config file
+      - VERIFY_SERVER_CERT
+    - Dynamic block resizing
   - Archive Extraction
     - More reliable
   - Archive creator
     - Works with mac GUI apps
+  - Private methods
+    - Refactored to make testing easier
 
 
 v0.8.1 - 9/3/2014
@@ -730,7 +740,7 @@ v0.1.0 - 1/3/2014
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.3.<br/>
+      Last updated on Oct 12, 2014.<br/>
     </p>
   </div>
 </footer>

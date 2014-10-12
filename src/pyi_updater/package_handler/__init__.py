@@ -79,8 +79,9 @@ class PackageHandler(object):
         version file back to disk.
 
         Proxy method for :meth:`_get_package_list`,
-        :meth:`_setup_file_dirs`, :meth:`_update_version_file` &
-        :meth:`_write_json_to_file`.
+        :meth:`_make_patches`, :meth:`_add_patches_to_packages`,
+        :meth:`_setup_file_dirs`, :meth:`_update_version_file`,
+        :meth:`_write_json_to_file` & :meth:`_move_packages`.
         """
         package_manifest, patch_manifest = self._get_package_list()
         patches = self._make_patches(patch_manifest)

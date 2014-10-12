@@ -5,13 +5,6 @@
   - Document every function
   - Clean up version to tuple and vice versa
 
-# Client
-  - Research windows cli programs
-    - Do majority have .exe ext?
-
-# FileCrypt
-  - Implement internal encryption version #
-
 # Test Suite
   - Focus on client auto update tests
   - Add more tests!

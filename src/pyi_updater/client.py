@@ -126,7 +126,6 @@ class Client(object):
         self.version = version
 
         if FROZEN is True and self.name == self.app_name:
-            # We only add .exe to app executable.  Not libs or dll
             self._archive_installed_binary()
         # Removes old versions, of update being checked, from
         # updates folder.  Since we only start patching from
@@ -162,6 +161,13 @@ class Client(object):
         with check update.
 
         Proxy method for :meth:`_patch_update` & :meth:`_full_update`.
+
+        Returns:
+            (bool) Meanings::
+
+                True - Download successful
+
+                False - Download failed
         """
         if self.ready_to_update is False:
             return False
@@ -204,6 +210,13 @@ class Client(object):
         complete update.
 
         Proxy method for :meth:`_extract_update`.
+
+        Returns:
+            (bool) Meanings::
+
+                True - Install successful
+
+                False - Install failed
         """
         if get_system() == u'win':
             log.debug('Only supported on Unix like systems')

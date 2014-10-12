@@ -13,6 +13,12 @@ from pyi_updater.exceptions import FileCryptError, FileCryptPasswordError
 
 log = logging.getLogger(__name__)
 
+SALT_VESION = '1'
+
+SALT_VERSIONS = {
+    '1': 1000,
+    }
+
 
 class FileCrypt(object):
     """Small wrapper around cryptography to make it easier to use
@@ -39,7 +45,9 @@ class FileCrypt(object):
 
     def init_app(self, pyi):
         self.data_dir = pyi.config.get(u'DEV_DATA_DIR')
-        self.salt_file = os.path.join(self.data_dir, u'keys', u'salt.v1')
+        if self.data_dir is not None:
+            self.salt_file = os.path.join(self.data_dir, u'pyi-data',
+                                          u'keys', u'salt')
 
     def new_file(self, filename=None):
         """Adds filename internally to be used for encryption and
@@ -136,6 +144,19 @@ class FileCrypt(object):
                 raise FileCryptError('Wrong password')
 
     def change_password(self, old_pass, new_pass):
+        """Will change password for encrypted file
+
+        Args:
+            old_pass (str): Old Password
+            new_pass (str): New Password
+
+        Returns:
+            (bool) Meanings::
+
+                True - Password change successful
+
+                False - Password change failed
+        """
         default_tries = self.password_max_tries
         self.password_max_tries = 1
         self.password = old_pass
@@ -171,19 +192,27 @@ class FileCrypt(object):
         return self._gen_password(temp_password)
 
     def _gen_password(self, password):
-        salt = self._get_salt()
-        key = pbkdf2_bin(password, salt, keylen=32)
+        salt_info = self._get_salt()
+        iterations = SALT_VERSIONS[salt_info['version']]
+        key = pbkdf2_bin(password, salt_info['salt'],
+                         iterations=iterations, keylen=32)
         return b_encode(key)
 
     def _get_salt(self):
-        if os.path.exists(self.salt_file):
-            with open(self.salt_file, u'r') as f:
-                salt = f.read()
+        for v in sorted(map(int, SALT_VERSIONS.keys()), reverse=True):
+            v = str(v)
+            salt_file = self.salt_file + u'.' + v
+            if os.path.exists(salt_file):
+                self.salt_file = salt_file
+                with open(self.salt_file, u'r') as f:
+                    salt = f.read()
+                version = v
         else:
             salt = os.urandom(16)
-            with open(self.salt_file, u'w') as f:
+            with open(self.salt_file + u'.' + SALT_VESION, u'w') as f:
                 f.write(salt)
-        return salt
+            version = SALT_VESION
+        return {u'salt': salt, 'version': version}
 
     def _update_timer(self):
         # Updates internal timer if not already past current time
