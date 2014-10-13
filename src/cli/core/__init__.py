@@ -208,6 +208,7 @@ class Worker(Menu, CommonLogic):
     def write_config_py(self, obj):
         filename = os.path.join(cwd, u'client_config.py')
         attr_str_format = "    {} = '{}'\n"
+        attr_format = "    {} = {}"
         with open(filename, u'w') as f:
             f.write('class ClientConfig(object):\n')
             if hasattr(obj, 'APP_NAME') and obj.APP_NAME is not None:
@@ -215,7 +216,7 @@ class Worker(Menu, CommonLogic):
             if hasattr(obj, 'COMPANY_NAME') and obj.COMPANY_NAME is not None:
                 f.write(attr_str_format.format('COMPANY_NAME',
                         obj.COMPANY_NAME))
-            if hasattr(obj, 'UPDATE_URL') and obj.UPDATE_URL is not None:
-                f.write(attr_str_format.format('UPDATE_URL', obj.UPDATE_URL))
+            if hasattr(obj, 'UPDATE_URLS') and obj.UPDATE_URLS is not None:
+                f.write(attr_format.format('UPDATE_URLS', obj.UPDATE_URL))
             if hasattr(obj, 'PUBLIC_KEY') and obj.PUBLIC_KEY is not None:
                 f.write(attr_str_format.format('PUBLIC_KEY', obj.PUBLIC_KEY))
