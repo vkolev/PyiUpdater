@@ -1,3 +1,4 @@
+import gzip
 import json
 import logging
 import os
@@ -40,6 +41,7 @@ class Client(object):
         self.version = None
         self.json_data = None
         self.verified = False
+        self.ready = False
         self.ready_to_update = False
         self.updates_key = u'updates'
         if obj:
@@ -124,7 +126,9 @@ class Client(object):
         """
         self.name = name
         self.version = version
-
+        if self.ready is False:
+            log.debug('No update manifest found')
+            return False
         if FROZEN is True and self.name == self.app_name:
             self._archive_installed_binary()
         # Removes old versions, of update being checked, from
@@ -251,6 +255,7 @@ class Client(object):
             try:
                 v = self.http_pool.urlopen('GET', url, preload_content=False)
                 self.json_data = json.loads(v.read())
+                self.ready = True
             except urllib3.exceptions.SSLError:
                 log.error(u'SSL cert not verified')
             except ValueError:
@@ -292,16 +297,17 @@ class Client(object):
         self.star_access_update_data = EasyAccessDict(self.json_data)
 
     def _extract_update(self):
-        platform_name = self.name
-        if sys.platform == u'win32' and self.name == self.app_name:
-            # We only add .exe to app executable.  Not libs or dll
-            log.debug(u'Adding .exe to filename for windows main app udpate.')
-            platform_name += u'.exe'
-        latest = self._get_highest_version(self.name)
-        filename = self._get_filename(self.name,
-                                      latest)
-
         with ChDir(self.update_folder):
+            platform_name = self.name
+            if sys.platform == u'win32' and self.name == self.app_name:
+                # We only add .exe to app executable.  Not libs or dll
+                log.debug(u'Adding .exe to filename for windows main '
+                          'app udpate.')
+                platform_name += u'.exe'
+
+            latest = self._get_highest_version(self.name)
+            filename = self._get_filename(self.name,
+                                          latest)
             if not os.path.exists(filename):
                 raise ClientError(u'File does not exists')
 
@@ -309,10 +315,16 @@ class Client(object):
             archive_ext = os.path.splitext(filename)[1].lower()
             if archive_ext == u'.gz':
                 try:
-                    with tarfile.open(filename, u'r:gz') as tfile:
-                        # Extract file update to current
-                        # directory.
-                        tfile.extractall()
+                    if filename.endswith('tar.gz'):
+                        with tarfile.open(filename, u'r:gz') as tfile:
+                            # Extract file update to current
+                            # directory.
+                            tfile.extractall()
+                    else:
+                        with gzip.open(filename, 'rb') as gz:
+                            with open(platform_name, 'wb') as out_file:
+                                out_file.write(gz.read())
+
                 except Exception as err:
                     log.error(err, exc_info=True)
                     raise ClientError(u'Error reading gzip file')

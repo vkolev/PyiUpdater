@@ -1,8 +1,10 @@
 from __future__ import print_function
+import gzip
 import optparse
 import os
 import shutil
 import sys
+from zipfile import ZipFile
 
 from jms_utils.terminal import get_terminal_size, terminal_formatter
 
@@ -69,9 +71,10 @@ def main(my_opts=None):
         if not os.path.exists(f):
             not_found_files.append(f)
         elif support_files(f) is False:
-            not_supported.appned(f)
+            not_supported.append(f)
         else:
             files.append(f)
+    print(files)
     # Used for testing purposes
     if len(files) < 1:
         return False
@@ -137,13 +140,11 @@ def make_archive(name, version, file_, archive_format=u'zip', platform=None):
         plat = parse_platform(file_)
     else:
         plat = platform
-    if archive_format == u'zip':
-        ext = u'.zip'
-    else:
-        ext = u'.tar.gz'
 
     file_dir = os.path.dirname(os.path.abspath(file_))
     filename = '{}-{}-{}'.format(name, plat, version)
+
+    print('starting archive')
 
     ext = os.path.splitext(file_)[1]
     temp_file = name + ext
@@ -152,8 +153,16 @@ def make_archive(name, version, file_, archive_format=u'zip', platform=None):
         shutil.copy(file_, temp_file)
     else:
         shutil.copytree(file_, temp_file)
-
-    shutil.make_archive(filename, archive_format, file_dir, temp_file)
+    if os.path.isfile(file_):
+        if archive_format == u'zip':
+            with ZipFile(filename + '.zip', 'w') as zf:
+                zf.write(file_, temp_file)
+        else:
+            with open(file_, 'rb') as in_file:
+                with gzip.open(filename + '.gz', 'wb') as gz:
+                    gz.write(in_file.read())
+    else:
+        shutil.make_archive(filename, archive_format, file_dir, temp_file)
 
     if os.path.isfile(temp_file):
         os.remove(temp_file)
@@ -161,7 +170,10 @@ def make_archive(name, version, file_, archive_format=u'zip', platform=None):
         shutil.rmtree(temp_file, ignore_errors=True)
 
     if keep is False:
-        os.remove(file_)
+        if os.path.isfile(file_):
+            os.remove(file_)
+        else:
+            shutil.rmtree(file_, ignore_errors=True)
 
     return filename + ext
 
