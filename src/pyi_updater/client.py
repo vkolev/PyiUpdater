@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import shutil
+import stat
 import sys
 import tarfile
 from zipfile import ZipFile
@@ -388,10 +389,11 @@ class Client(object):
                 current_app += u'.app'
                 mac_app_binary_dir = os.path.join(current_app, u'Contents',
                                                   u'MacOS')
-                current_app = os.path.join(mac_app_binary_dir, self.name)
+                file_ = os.listdir(mac_app_binary_dir)
+                current_app = os.path.join(mac_app_binary_dir, file_[0])
                 log.debug('Mac .app exe path: {}'.format(current_app))
 
-        os.execv(current_app, [current_app])
+        os.execv(current_app, [self.name])
 
     def _win_overwrite_app_restart(self):
         # Windows: Moves update to current directory of running

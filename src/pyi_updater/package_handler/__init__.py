@@ -412,7 +412,7 @@ def _make_patch(patch_info):
         log.debug('Src file does not exist to create patch')
 
     else:
-        print(u"Making patch...: {}".format(os.path.basename(patch_name)))
+        print(u"Making patch... {}".format(os.path.basename(patch_name)))
         log.debug(u'Patch source path:{}'.format(src_path))
         log.debug(u'Patch destination path: {}'.format(dst_path))
         if patch.ready is True:

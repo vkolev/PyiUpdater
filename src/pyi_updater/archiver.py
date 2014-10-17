@@ -20,7 +20,7 @@ max_width = get_terminal_size()[0]
 fmt = terminal_formatter()
 
 usage = ('usage: pyi-archive -n "My App" -v 1.0.1 FILE [FILE...]\n'
-         'Usage: pyi-archive -i gzip -n "My App" -v 1.0.1 FILE [FILE...]')
+         'Usage: pyi-archive -c gzip -n "My App" -v 1.0.1 FILE [FILE...]')
 kw = {
     'version': get_version(),
     'usage': usage,
