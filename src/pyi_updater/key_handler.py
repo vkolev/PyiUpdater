@@ -131,7 +131,7 @@ class KeyHandler(object):
         priv_key_path = os.path.join(self.keys_dir, self.private_key_name)
         log.debug(u'private key path: {}'.format(priv_key_path))
         if not os.path.exists(priv_key_path):
-            if not not os.path.exists(priv_key_path + u'.enc'):
+            if not os.path.exists(priv_key_path + u'.enc'):
                 raise KeyHandlerError(u"You don't have any keys",
                                       expected=True)
         privkey = os.path.join(self.keys_dir, self.private_key_name)

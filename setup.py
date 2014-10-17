@@ -31,6 +31,7 @@ setup(
         'cryptography',
         'ed25519',
         'jms-utils >= 0.3',
+        # 'pyinstaller >= 2.1.1',
         'pyinstaller',
         'six',
         'simple-pbkdf2',

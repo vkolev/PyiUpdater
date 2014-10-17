@@ -25,7 +25,7 @@ class Upload(CommonLogic, Menu):
     def make_plugin_options(self):
         plugin_options = []
 
-        self.mgr = ExtensionManager(u'pyiu.uploaders')
+        self.mgr = ExtensionManager(u'pyiupdater.uploaders')
         plugin_names = self.mgr.names()
         log.debug(u'Plugin names: {}'.format(plugin_names))
 

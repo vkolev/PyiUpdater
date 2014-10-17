@@ -253,8 +253,10 @@ class Client(object):
         for u in self.update_urls:
             url = u + self.version_file
             try:
-                v = self.http_pool.urlopen('GET', url, preload_content=False)
-                self.json_data = json.loads(v.read())
+                # v = self.http_pool.urlopen('GET', url, preload_content=False)
+                v = self.http_pool.urlopen('GET', url)
+                log.debug('Data type: {}'.format(type(v.data)))
+                self.json_data = json.loads(v.data)
                 self.ready = True
             except urllib3.exceptions.SSLError:
                 log.error(u'SSL cert not verified')
@@ -262,9 +264,11 @@ class Client(object):
                 log.error(u'Json failed to load')
             except Exception as e:
                 log.error(str(e))
-            finally:
-                if self.json_data is None:
-                    self.json_data = {}
+            else:
+                break
+
+        if self.json_data is None:
+            self.json_data = {}
 
         # Checking to see if there is a sig in the version file.
         if u'sig' in self.json_data.keys():
@@ -344,25 +348,34 @@ class Client(object):
         # Unix: Overwrites the running applications binary,
         #       then starts the updated binary in the currently
         #       running applications process memory.
-        # Windows: Moves update to current directory of running
-        #          application then restarts application using
-        #          new update.
-        current_app = os.path.join(self.current_app_dir, self.name)
-        app_update = os.path.join(self.update_folder, self.name)
-        log.debug(u'Current App location:\n\n{}'.format(current_app))
-        log.debug(u'Update Location:\n\n{}'.format(app_update))
-
         if get_system() == u'mac':
-            if not os.path.exists(app_update):
-                app_update += u'.app'
+            if self.current_app_dir.endswith('MacOS') is True:
+                log.debug('Looks like we\'re dealing with a Mac Gui')
+                temp_dir = self._get_mac_dot_app_dir(self.current_app_dir)
+                self.current_app_dir = temp_dir
 
+        app_update = os.path.join(self.update_folder, self.name)
+        if not os.path.exists(app_update):
+            app_update += u'.app'
+        log.debug(u'Update Location'
+                  ':\n{}'.format(os.path.dirname(app_update)))
+        log.debug(u'Update Name: {}'.format(os.path.basename(app_update)))
+
+        current_app = os.path.join(self.current_app_dir, self.name)
+        if not os.path.exists(current_app):
+            current_app += u'.app'
+        log.debug(u'Current App location:\n\n{}'.format(current_app))
         if os.path.exists(current_app):
-            os.remove(current_app)
-        if os.path.exists(current_app + u'.app'):
-            shutil.rmtree(current_app + u'.app', ignore_errors=True)
+            if os.path.isfile(current_app):
+                os.remove(current_app)
+            else:
+                shutil.rmtree(current_app, ignore_errors=True)
 
         log.debug(u'Moving app to new location')
         shutil.move(app_update, os.path.dirname(current_app))
+
+    def _get_mac_dot_app_dir(self, dir_):
+        return os.path.dirname(os.path.dirname(os.path.dirname(dir_)))
 
     def _restart(self):
         # Oh yes i did just pull that new binary into
@@ -376,10 +389,14 @@ class Client(object):
                 mac_app_binary_dir = os.path.join(current_app, u'Contents',
                                                   u'MacOS')
                 current_app = os.path.join(mac_app_binary_dir, self.name)
+                log.debug('Mac .app exe path: {}'.format(current_app))
 
         os.execv(current_app, [current_app])
 
     def _win_overwrite_app_restart(self):
+        # Windows: Moves update to current directory of running
+        #          application then restarts application using
+        #          new update.
         # Pretty much went through this work to show love to
         # all platforms.  But sheeeeesh!
         current_app = os.path.join(self.current_app_dir, self.name)

@@ -38,7 +38,7 @@ class BaseUploader(object):
         self.files_completed = 1
         self.file_count = self._get_filelist_count()
         for f in self.file_list:
-            msg = u'Uploading: {}' .format(f)
+            msg = u'\n\nUploading: {}' .format(f)
             msg2 = u' - File {} of {}\n'.format(self.files_completed,
                                                 self.file_count)
             print(msg + msg2)
