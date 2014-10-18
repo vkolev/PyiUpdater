@@ -1,9 +1,9 @@
 from __future__ import print_function
-import gzip
 import optparse
 import os
 import shutil
 import sys
+import tarfile
 from zipfile import ZipFile
 
 from jms_utils.terminal import get_terminal_size, terminal_formatter
@@ -28,12 +28,6 @@ kw = {
     'conflict_handler': 'resolve',
     }
 parser = optparse.OptionParser(**kw)
-parser.add_option('-c', '--archiver',
-                  default='gzip',
-                  type='choice',
-                  # choices=['zip', 'gzip', 'g', 'z'],
-                  choices['gzip', 'gz', 'g'],
-                  help='Type of archive compression to use')
 
 parser.add_option('-n', '--name', help='Name of update')
 
@@ -55,13 +49,11 @@ def main(my_opts=None):
         keep = opts.keep
         version = check_version(opts)
         name = check_name(opts)
-        archiver = opts.archiver
     # Used for testing purposes
     else:
         version = check_version(my_opts)
         name = check_name(my_opts)
         args = my_opts.args
-        archiver = my_opts.archiver
 
     files = []
     not_found_files = []
@@ -81,7 +73,7 @@ def main(my_opts=None):
         return False
 
     for f in files:
-        if archiver == 'zip' or archiver == 'z':
+        if parse_platform(f) == u'win':
             make_archive(name, version, f, 'zip')
         else:
             make_archive(name, version, f, 'gztar')
