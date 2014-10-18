@@ -191,8 +191,9 @@ class FileCrypt(object):
         self._update_timer()
         return self._gen_password(temp_password)
 
-    def _gen_password(self, password):
-        salt_info = self._get_salt()
+    def _gen_password(self, password, salt_info=None):
+        if salt_info is None:
+            salt_info = self._get_salt()
         iterations = SALT_VERSIONS[salt_info['version']]
         key = pbkdf2_bin(password, salt_info['salt'],
                          iterations=iterations, keylen=32)

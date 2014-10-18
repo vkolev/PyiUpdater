@@ -25,7 +25,6 @@ pub_key = None
 
 
 def setup_func():
-    global pub_key
     global test_data_dir
 
     config = TConfig()
@@ -69,7 +68,6 @@ def setup_func2():
 
 
 def test_setup():
-    global pub_key
     global test_data_dir
 
     config = TConfig()
@@ -94,7 +92,8 @@ def test_key_verify():
     sig = version_data[u'sig']
     del version_data[u'sig']
     version_data = json.dumps(version_data, sort_keys=True)
-    pub_key.verify(sig, version_data, encoding='base64')
+    verify_key = ed25519.VerifyingKey(pub_key, encoding="base64")
+    verify_key.verify(sig, version_data, encoding='base64')
 
 
 @with_setup(setup_func, teardown_func)
@@ -117,7 +116,6 @@ def test_key_creation():
 
 @with_setup(None, teardown_func)
 def test_execution():
-    global pub_key
     global test_data_dir
 
     config = TConfig()
@@ -128,7 +126,6 @@ def test_execution():
     ph.setup()
     kh.test = True
     kh.make_keys()
-    pub_key = kh.get_public_key()
 
     # Make zipfile
     with ChDir(test_data_dir):
