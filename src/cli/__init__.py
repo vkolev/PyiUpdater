@@ -6,7 +6,7 @@ import os
 import sys
 
 from jms_utils.paths import cwd
-from jms_utils.logging import log_format_string
+from jms_utils.logger import log_format_string
 
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
