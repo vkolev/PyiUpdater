@@ -45,6 +45,7 @@ class Config(dict):
         return u'<%s %s>' % (self.__class__.__name__, dict.__repr__(self))
 
 
+# This is the default config used
 class SetupConfig(object):
     # If left None "Not_So_TUF" will be used
     APP_NAME = None

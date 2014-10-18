@@ -5,30 +5,25 @@ from pyi_updater.key_handler import KeyHandler
 from pyi_updater.package_handler import PackageHandler
 
 
-# Not So TUF handles configuration with simple
+# PyiUpdater handles configuration with simple
 # class attributes.  They must be in all CAPS.
 # to be registered.  You may pass in custom
 # settings to be used later.
 class DefaultConfig(object):
-    # If left None "Not_So_TUF" will be used
+    # If left None "PyiUpdater App" will be used
     APP_NAME = None
-
-    # Name made for your private key. If left
-    # None "Not_So_TUF.pem" will be used
-    PRIVATE_KEY_NAME = None
 
     # Public Key used by your app to verify update data
     # REQUIRED
     PUBLIC_KEY = (17022351873105053147088163105983577257966692560663543347938383809747979750470266069914732864252844768385355907146386077123799054565611846357055920249193620195180631869615743769334796990192318489812142889414970955334254855590299723893423021589397127184769063465102962682096447452967415650677942469205402943507368208858916471188750637174661509489946569932170884064066442273331420184865693888703840905553949492223898597770128267763408408345292193296577459922276202765690561166119202208933879945227147091774656864580608582752643190913932634012968436576443560457625241838298968657806362615969869008716434463574851608691099L, 65537)
 
-    # Name made for your public key.  If left
-    # None "Not_So_TUF.pub" will be used
-    PUBLIC_KEY_NAME = None
-
     # Online repository where you host your packages
     # and version file
-    # REQUIRED
     UPDATE_URL = 'https://s3-us-west-1.amazonaws.com/not-so-tuf/'
+    # List of urls to check if version file & update data
+    # For each object need the urls will be used in succession
+    # until the required object is found
+
     UPDATE_PATCHES = True
 
     # Upload Setup

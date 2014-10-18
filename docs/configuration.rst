@@ -17,6 +17,7 @@ Configuration
                                   use a key length less then 2048.
 ``PUBLIC_KEY``                    Used on client side for authentication
 ``UPDATE_URL``                    Where clients search for updates
+``UPDATE_URLS``                   A list of url(s) where a client will looks                             for needed update objects.
 ``UPDATE_PATCHES``                nable/disable creation of patch updates
 ``REMOTE_DIR``                    Remote directory/Bucket name to place
                                   update files
