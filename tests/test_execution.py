@@ -52,9 +52,9 @@ def test_patch_creation():
     ph.process_packages()
     kh.sign_update()
     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
-                          u'Not So TUF-arm-2')) is True
+                          u'Not So TUF-arm-1')) is True
     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
-                          u'Not So TUF-mac-2')) is True
+                          u'Not So TUF-mac-1')) is True
 
 
 def test_move_to_deploy():
