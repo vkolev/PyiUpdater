@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Usage &mdash; PyiUpdater 0.9-dev1413144725 documentation</title>
+    <title>Usage &mdash; PyiUpdater 0.9-dev1413672813 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.9-dev1413144725',
+        VERSION:     '0.9-dev1413672813',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.9-dev1413144725 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9-dev1413672813 documentation" href="index.html" />
     <link rel="next" title="Folder Structure" href="folder_structure.html" />
     <link rel="prev" title="Configuration" href="configuration.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1413144725</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1413672813</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -213,117 +213,6 @@ Options:
 </div>
 <div class="section" id="example-updater">
 <h2>Example updater<a class="headerlink" href="#example-updater" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># You can update your apps and libs or binaries you app relies on.</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
-<span class="kn">from</span> <span class="nn">blinker</span> <span class="kn">import</span> <span class="n">Signal</span>
-
-<span class="kn">from</span> <span class="nn">pyi_updater</span> <span class="kn">import</span> <span class="n">Client</span>
-
-
-<span class="k">class</span> <span class="nc">ClientConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="n">APP_NAME</span> <span class="o">=</span> <span class="s">&#39;App name&#39;</span>
-    <span class="n">COMPANY_NAME</span> <span class="o">=</span> <span class="s">&#39;Your name or company&#39;</span>
-    <span class="n">PUBLIC_KEY</span> <span class="o">=</span> <span class="p">(</span><span class="il">26810719857825024839344902213073312263506443291817742739127949147323743659423081696962181574485073366946821823656546710698255775467708598618269670406584294193972684367702826926688139841968731194015789180684686551768298110771590605237915611408133047956218865434660274610222609095554041517443565839110764395166743158953027083690492927575231987598020768390433860118087169346203942443062194554114528508192560088005644912398573361844543757472527724779977152153381024599977904605796890617980849686972801453252752148799208320716467436186778883537406884501769657736396569192751657230762919699367606205570509492855308457559271L</span><span class="p">,</span> <span class="mi">65537</span><span class="p">)</span>
-    <span class="n">UPDATE_URL</span> <span class="o">=</span> <span class="s">&#39;https://s3-us-west-1.amazonaws.com/PyiUpdater/&#39;</span>
-
-<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">ClientConfig</span><span class="p">())</span>
-<span class="c"># Install and restart with one method call</span>
-<span class="c"># install_restart() and restart() will fail if update is not</span>
-<span class="c"># an executable.</span>
-<span class="c"># If updating a lib just use install and take over from there</span>
-<span class="n">updates_available</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_check</span><span class="p">(</span><span class="s">&#39;7-zip&#39;</span><span class="p">,</span> <span class="s">&#39;0.0.1&#39;</span><span class="p">)</span>
-
-<span class="c"># Example of download on a background thread with</span>
-<span class="c"># a callback</span>
-<span class="n">progress_signal</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="s">&#39;progress_info&#39;</span><span class="p">)</span>
-
-
-<span class="nd">@progress_signal.connect</span>
-<span class="k">def</span> <span class="nf">install_restart</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-    <span class="c"># Here you could as the user here if they would</span>
-    <span class="c"># like to install the new update and restart</span>
-    <span class="k">if</span> <span class="n">sender</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;progress_info&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s">&#39;Successful&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">[</span><span class="s">&#39;info&#39;</span><span class="p">]:</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">install_restart</span><span class="p">()</span>
-
-<span class="n">t</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">download</span><span class="p">)</span>
-<span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-<span class="c"># Example of downloading on the main thread</span>
-<span class="k">if</span> <span class="n">updates_available</span><span class="p">:</span>
-    <span class="n">downloaded</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">downloaded</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">client</span><span class="o">.</span><span class="n">up_to_date</span><span class="p">:</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">install_restart</span><span class="p">()</span>
-
-<span class="c"># Install then restart later</span>
-<span class="n">success</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_check</span><span class="p">(</span><span class="s">&#39;gist&#39;</span><span class="p">,</span> <span class="s">&#39;11.0.1&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">success</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">client</span><span class="o">.</span><span class="n">up_to_date</span><span class="p">:</span>
-    <span class="n">client</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-
-<span class="n">answer</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&#39;Would you like to install update now?&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="s">&#39;y&#39;</span> <span class="ow">in</span> <span class="n">answer</span><span class="p">:</span>
-    <span class="n">client</span><span class="o">.</span><span class="n">restart</span><span class="p">()</span>
-
-<span class="c"># Lastly to just download an update or lib and extract to update folder</span>
-<span class="n">updates_available</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_check</span><span class="p">(</span><span class="s">&#39;libfoo&#39;</span><span class="p">,</span> <span class="s">&#39;1.2.3&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">updates_available</span><span class="p">:</span>
-    <span class="n">client</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
-</pre></div>
-</td></tr></table></div>
 </div>
 </div>
 
@@ -340,7 +229,7 @@ Options:
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Oct 12, 2014.<br/>
+      Last updated on Oct 18, 2014.<br/>
     </p>
   </div>
 </footer>

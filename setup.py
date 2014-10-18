@@ -30,7 +30,7 @@ setup(
         'certifi',
         'cryptography',
         'ed25519',
-        'jms-utils >= 0.3',
+        'jms-utils >= 0.3.2',
         # 'pyinstaller >= 2.1.1',
         'pyinstaller',
         'six',
