@@ -136,6 +136,7 @@ def make_archive(name, version, file_, archive_format=u'zip', platform=None):
 
     file_dir = os.path.dirname(os.path.abspath(file_))
     filename = '{}-{}-{}'.format(name, plat, version)
+    filename_path = os.path.join(file_dir, filename)
 
     print('starting archive')
 
@@ -148,10 +149,10 @@ def make_archive(name, version, file_, archive_format=u'zip', platform=None):
         shutil.copytree(file_, temp_file)
     if os.path.isfile(file_):
         if archive_format == u'zip':
-            with ZipFile(filename + '.zip', 'w') as zf:
+            with ZipFile(filename_path + '.zip', 'w') as zf:
                 zf.write(file_, temp_file)
         else:
-            with tarfile.open(filename + '.tar.gz', 'w:gz') as tar:
+            with tarfile.open(filename_path + '.tar.gz', 'w:gz') as tar:
                 tar.add(file_, temp_file)
     else:
         shutil.make_archive(filename, archive_format, file_dir, temp_file)

@@ -1,3 +1,11 @@
+## Demos
+So if you opt not to use the cli interface & instead want to integrate PyiUpdater into your build check out the progmatically.py demo.
+
+PyiUpdater functions around the pyi-data folder.
+In your build system after you make your app your want to place it
+in the new folder.
+
+
 #### Config Options
 | ConfigClass Attribute | Description |
 | --------------------- | ----------- |
