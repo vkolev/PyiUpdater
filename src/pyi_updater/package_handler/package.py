@@ -46,8 +46,7 @@ class Package(object):
         # seems to produce the best diffs.
         # Tests on homepage: https://github.com/JohnyMoSwag/PyiUpdater
         # Zip doesn't keep +x permissions. Only using gz for now.
-        # self.supported_extensions = [u'.zip', u'.gz']
-        self.supported_extensions[u'.gz']
+        self.supported_extensions = [u'.zip', u'.gz']
         self.extract_info(file_)
 
     def extract_info(self, package):

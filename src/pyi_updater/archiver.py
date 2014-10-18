@@ -29,9 +29,10 @@ kw = {
     }
 parser = optparse.OptionParser(**kw)
 parser.add_option('-c', '--archiver',
-                  default='zip',
+                  default='gzip',
                   type='choice',
-                  choices=['zip', 'gzip', 'g', 'z'],
+                  # choices=['zip', 'gzip', 'g', 'z'],
+                  choices['gzip', 'gz', 'g'],
                   help='Type of archive compression to use')
 
 parser.add_option('-n', '--name', help='Name of update')
@@ -158,9 +159,8 @@ def make_archive(name, version, file_, archive_format=u'zip', platform=None):
             with ZipFile(filename + '.zip', 'w') as zf:
                 zf.write(file_, temp_file)
         else:
-            with open(file_, 'rb') as in_file:
-                with gzip.open(filename + '.gz', 'wb') as gz:
-                    gz.write(in_file.read())
+            with tarfile.open(filename + '.tar.gz', 'w:gz') as tar:
+                tar.add(file_, temp_file)
     else:
         shutil.make_archive(filename, archive_format, file_dir, temp_file)
 

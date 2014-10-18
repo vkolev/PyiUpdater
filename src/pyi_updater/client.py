@@ -320,16 +320,10 @@ class Client(object):
             archive_ext = os.path.splitext(filename)[1].lower()
             if archive_ext == u'.gz':
                 try:
-                    if filename.endswith('tar.gz'):
-                        with tarfile.open(filename, u'r:gz') as tfile:
-                            # Extract file update to current
-                            # directory.
-                            tfile.extractall()
-                    else:
-                        with gzip.open(filename, 'rb') as gz:
-                            with open(platform_name, 'wb') as out_file:
-                                out_file.write(gz.read())
-
+                    with tarfile.open(filename, u'r:gz') as tfile:
+                        # Extract file update to current
+                        # directory.
+                        tfile.extractall()
                 except Exception as err:
                     log.error(err, exc_info=True)
                     raise ClientError(u'Error reading gzip file')
