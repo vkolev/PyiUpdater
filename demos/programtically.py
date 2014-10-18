@@ -11,7 +11,9 @@ from pyi_updater.package_handler import PackageHandler
 # settings to be used later.
 class DefaultConfig(object):
     # If left None "PyiUpdater App" will be used
-    APP_NAME = None
+    APP_NAME = "My New App"
+
+    Company_Name = "Acme"
 
     # Public Key used by your app to verify update data
     # REQUIRED
@@ -26,10 +28,18 @@ class DefaultConfig(object):
 
     UPDATE_PATCHES = True
 
-    # Upload Setup
-    REMOTE_DIR = None
+    # This is a path on the remote server or bucket name
+    # on amazon s3
+    REMOTE_DIR = "my-new-bucket"
+
+    # The url or ip to remote host server.
+    # Mostly for scp uploads
     HOST = None
+
+    # Username or access ID
     USERNAME = None
+
+    # Password or path to keyfile if using scp
     PASSWORD = None
 
 
@@ -44,48 +54,48 @@ def setup():
     # Can also update config later
     pyi.update_config(default_config)
 
-    # Setting up Package Handler
-    # Getting config from updater
+    # Initializing Package Handler & Key Handler
+    # with config info
     package_handler = PackageHandler(pyi)
+    key_handler = KeyHandler(pyi)
+
+    # Can also be Initilized without config
+    package_handler = PackageHandler()
+    key_handler = KeyHandler()
+
+    # Then update handlers with config later
+    package_handler.init_app(pyi)
+    key_handler.init_app(pyi)
 
     # Setting up work directories
-    # Only need to run once but ok
-    # if ran multipule times
+    # Only need to run once on a new project but it's
+    # ok if ran multipule times
     package_handler.setup()
 
     # Now place new packages in the folder named
-    # "new" in the data directory
+    # "new" in the pyi-data directory
+    # Package Archive filename should be in the form
+    # AppName-platform-version.zip
     raw_input('Place updates in new folder then press enter.')
     # This updates the version file with the
-    # new packages
-    package_handler.update_version_file()
+    # new packages & moves them to the deploy folder.
+    package_handler.process_packages()
 
-    # Initializing KeyHandler and getting
-    # config from updater
-    key_handler = KeyHandler(pyi)
-
-    # After you have updated your package
-    # list sign your package list
+    # This signs the update manifest & copies it
+    # to the deploy folder
     key_handler.sign_update()
-
-    # Now copies your packages to their
-    # "files" directory by name and version
-    # number.
-    # Also moves files from the new folder to
-    # deploy folder ready for uploading
-    package_handler.deploy()
 
 
 def make_keys():
-    default_config = DefaultConfig()
-    pyi = PyiUpdater(default_config)
+    pyi = PyiUpdater(DefaultConfig())
     key_handler = KeyHandler(pyi)
     # Making a new set of keys
     # Keys will be place in the keys
-    # Directory, in the data folder
-    # ** Should not be ran again after
-    # ** you deploy your app!!!! **
-    # TODO: support multiple keys
+    # Directory, in the pyi-data folder
+    # *** Should not be ran again after
+    # you deploy your app!!!! ***
+    # If you need to make new keys pass
+    # overwrite=True to make_keys
     key_handler.make_keys()
 
 

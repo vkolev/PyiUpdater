@@ -4,7 +4,8 @@
 |APP_NAME         | Name of your app. Used with COMPANY_NAME to create an update cache dir on end user system.|
 |COMPANY_NAME     | Company or your name.  Used with APP_NAME to create an update cache dir on end user system.|
 |PUBLIC_KEY       | Used on client side for authentication |
-|UPDATE_URL       | Where clients search for updates |
+|UPDATE_URL       | Where clients search for updates - * Deprecated! You can put a single url in the list of UPDATE_URLS *|
+|UPDATE_URLS       | A list of url(s) where a client will look for needed update objects. |
 |UPDATE_PATCHES   | enable/disable creation of patch updates |
 |REMOTE_DIR       | Remote directory/Bucket name to place update files |
 |HOST             | Remote host to connect to for server uploads |
