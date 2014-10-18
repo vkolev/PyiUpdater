@@ -389,6 +389,8 @@ class PackageHandler(object):
                 # destination platform
                 for f in files:
                     if highest_version_str in f and platform in f:
+                        log.debug('Found src file to create patch')
+                        log.debug('Src file: {}'.format(f))
                         src_file_path = os.path.abspath(f)
                         break
             # if our list gets exhausted before finding
