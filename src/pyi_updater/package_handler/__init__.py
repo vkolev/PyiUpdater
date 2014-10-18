@@ -352,6 +352,7 @@ class PackageHandler(object):
         if bsdiff4 is None:
             return None
         src_file_path = None
+        highest_version_str = None
         data_dir = os.path.join(self.files_dir, name)
         if os.path.exists(data_dir):
             with ChDir(data_dir):
@@ -369,12 +370,29 @@ class PackageHandler(object):
                 if len(fixed_version_dirs) < 1:
                     return None
 
-                highest_version = sorted(fixed_version_dirs)[-1]
-                highest_version_str = version_tuple_to_string(highest_version)
+                # highest_version = sorted(fixed_version_dirs)[-1]
+                # highest_version_str = version_tuple_to_string(highest_version)
 
-                if highest_version > version:
-                    return None
+                # # ToDo: Not sure if this is need.
+                # #       Will research later.
+                # if highest_version > version:
+                #     return None
 
+            found = False
+            versions_hi_to_low = sorted(fixed_version_dirs, reverse=True)
+            for v in versions_hi_to_low:
+                if found is True:
+                    break
+                files = os.listdir(os.path.join(data_dir,
+                                   version_tuple_to_string(v)))
+                for f in files:
+                    if platform in f:
+                        found = True
+                        highest_version_str = version_tuple_to_string(v)
+                        break
+
+            if highest_version_str is None:
+                return None
             # Chainging into directory to get absolute path of
             # source file for patch creation later
             target_dir = os.path.join(data_dir, highest_version_str)
