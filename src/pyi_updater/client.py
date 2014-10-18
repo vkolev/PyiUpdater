@@ -382,6 +382,8 @@ class Client(object):
                 mac_app_binary_dir = os.path.join(current_app, u'Contents',
                                                   u'MacOS')
                 file_ = os.listdir(mac_app_binary_dir)
+                # We are making an assumption here that only 1
+                # executable will be in the MacOS folder.
                 current_app = os.path.join(mac_app_binary_dir, file_[0])
                 log.debug('Mac .app exe path: {}'.format(current_app))
 
@@ -393,10 +395,10 @@ class Client(object):
         #          new update.
         # Pretty much went through this work to show love to
         # all platforms.  But sheeeeesh!
-        current_app = os.path.join(self.current_app_dir, self.name)
-        updated_app = os.path.join(self.update_folder, self.name)
-        current_app += u'.exe'
-        updated_app += u'.exe'
+        exe_name = self.name + u'.exe'
+        current_app = os.path.join(self.current_app_dir, exe_name)
+        updated_app = os.path.join(self.update_folder, exe_name)
+
         bat = os.path.join(self.current_app_dir, u'update.bat')
         with open(bat, u'w') as batfile:
             # Not sure whats going on here.  Next time will
@@ -451,7 +453,7 @@ DEL "%~f0" """.format(updated_app, current_app, fix, current_app))
         # available to patch If not we'll just do a full binary download
         if not os.path.exists(os.path.join(self.update_folder, filename)):
             log.debug(u'{} got deleted. No base binary to start patching '
-                        'form'.format(filename))
+                      'form'.format(filename))
             return False
 
         p = Patcher(name=name, json_data=self.json_data,
