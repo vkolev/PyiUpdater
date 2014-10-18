@@ -323,7 +323,7 @@ class PackageHandler(object):
                           self.deploy_dir))
 
                 if os.path.exists(os.path.join(version_path, p.filename)):
-                    os.remove(version_path + p.filename)
+                    os.remove(os.path.join(version_path, p.filename))
                 shutil.move(p.filename, version_path)
                 log.debug(u'Moving {} to {}'.format(p.filename,
                           version_path))
@@ -415,7 +415,7 @@ class PackageHandler(object):
             # source file then just return None
             if src_file_path is None:
                 return None
-            return src_file_path, len(fixed_version_dirs) + 1
+            return src_file_path, len(fixed_version_dirs)
 
 
 def _make_patch(patch_info):

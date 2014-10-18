@@ -1,9 +1,7 @@
-import gzip
 import json
 import logging
 import os
 import shutil
-import stat
 import sys
 import tarfile
 from zipfile import ZipFile
@@ -132,10 +130,6 @@ class Client(object):
             return False
         if FROZEN is True and self.name == self.app_name:
             self._archive_installed_binary()
-        # Removes old versions, of update being checked, from
-        # updates folder.  Since we only start patching from
-        # the current binary this shouldn't be a problem.
-        self._remove_old_updates()
 
         # Checking if version file is verified before
         # processing data contained in the version file.
@@ -185,6 +179,10 @@ class Client(object):
                 log.debug(u'Download successful')
             else:
                 return False
+        # Removes old versions, of update being checked, from
+        # updates folder.  Since we only start patching from
+        # the current binary this shouldn't be a problem.
+        self._remove_old_updates()
         return True
 
     def install_restart(self):
