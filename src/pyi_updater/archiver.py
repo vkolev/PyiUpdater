@@ -173,7 +173,8 @@ def make_archive(name, version, file_, archive_format=u'zip', platform=None):
 
 def support_files(f):
     try:
-        plat = parse_platform(f)
+        basename = os.path.basename(f)
+        plat = parse_platform(basename)
     except:
         plat = None
 

@@ -1,0 +1,14 @@
+=========================================
+             ***  ToDo's ***
+=========================================
+# PyiUpdater
+  - Document every function
+  - Clean up version to tuple and vice versa
+
+# KeyHandler
+  - support multiple keys
+
+# Test Suite
+  - Focus on client auto update tests
+  - Add more tests!
+    - Coverage is lacking
