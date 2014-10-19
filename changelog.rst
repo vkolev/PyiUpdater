@@ -1,7 +1,17 @@
-v0.9.0 - 2014/10/18
-~~~~~~~~~~~~
-
+v0.10.0 - master
+~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
+
+
+v0.9.1 - 2014/10/19
+~~~~~~~~~~~~~~~~~~~
+* Added
+
+  - Require PyInstaller 2.1.1 for PyiUpdater usage
+
+
+v0.9.0 - 2014/10/18
+~~~~~~~~~~~~~~~~~~~
 
 * Added
 
