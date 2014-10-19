@@ -38,7 +38,7 @@ class BaseUploader(object):
         self.files_completed = 1
         self.file_count = self._get_filelist_count()
         for f in self.file_list:
-            msg = u'Uploading: {}' .format(f)
+            msg = u'\n\nUploading: {}' .format(f)
             msg2 = u' - File {} of {}\n'.format(self.files_completed,
                                                 self.file_count)
             print(msg + msg2)
@@ -47,7 +47,7 @@ class BaseUploader(object):
                 log.debug('{} uploaded successfully'.format(f))
                 self.files_completed += 1
             else:
-                log.warning(u'{} failed to upload.  will retry'.format(f))
+                log.debug(u'{} failed to upload.  will retry'.format(f))
                 self.failed_uploads.append(f)
         if len(self.failed_uploads) > 0:
             self._retry_upload()

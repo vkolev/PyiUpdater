@@ -1,3 +1,3 @@
 Release History
 ===============
-.. literalinclude:: ../changelog.txt
+.. include:: ../changelog.rst

@@ -29,7 +29,7 @@ class Config(dict):
         Example usage::
 
             from yourapplication import default_config
-            app.config.from_object(default_config)
+            app.config.from_object(default_config())
         """
         for key in dir(obj):
             if key.isupper():
@@ -45,6 +45,7 @@ class Config(dict):
         return u'<%s %s>' % (self.__class__.__name__, dict.__repr__(self))
 
 
+# This is the default config used
 class SetupConfig(object):
     # If left None "Not_So_TUF" will be used
     APP_NAME = None
@@ -55,20 +56,13 @@ class SetupConfig(object):
     # If set more debug info will be printed to console
     DEBUG = False
 
-    # Name made for your private key. If left
-    # None "Not_So_TUF.pem" will be used
-    PRIVATE_KEY_NAME = None
-
     # Public Key used by your app to verify update data
     # REQUIRED
     PUBLIC_KEY = None
 
-    # Name made for your public key.  If left
-    # None "Not_So_TUF.pub" will be used
-    PUBLIC_KEY_NAME = None
-
     # Url to ping for updates
     UPDATE_URL = None
+
     # List of urls to ping for updates
     # REQUIRED
     UPDATE_URLS = None

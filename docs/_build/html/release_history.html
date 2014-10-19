@@ -5,17 +5,17 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release History &mdash; PyiUpdater 0.9-dev1411963414 documentation</title>
+    <title>Release History &mdash; PyiUpdater 0.9-dev1413672813 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.1.0/flatly/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.2.0/flatly/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.9-dev1411963414',
+        VERSION:     '0.9-dev1413672813',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,9 +26,9 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.9-dev1411963414 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9-dev1413672813 documentation" href="index.html" />
     <link rel="prev" title="API" href="api.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1411963414</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1413672813</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -86,7 +86,16 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Release History</a></li>
+<li><a class="reference internal" href="#">Release History</a><ul>
+<li><a class="reference internal" href="#v0-9-0-dev">v0.9.0 - DEV</a></li>
+<li><a class="reference internal" href="#v0-8-1-2014-9-3">v0.8.1 - 2014/9/3</a></li>
+<li><a class="reference internal" href="#v0-8-0-2014-8-31">v0.8.0 - 2014/8/31</a></li>
+<li><a class="reference internal" href="#v0-7-2-2014-8-10">v0.7.2 - 2014/8/10</a></li>
+<li><a class="reference internal" href="#v0-7-1-2014-8-10">v0.7.1 - 2014/8/10</a></li>
+<li><a class="reference internal" href="#v0-7-2014-8-3">v0.7 - 2014/8/3</a></li>
+<li><a class="reference internal" href="#v0-6-0-2014-7-27">v0.6.0 - 2014/7/27</a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -132,588 +141,230 @@
       
   <div class="section" id="release-history">
 <h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-python"><div class="highlight"><pre>=========================================
-             ***  ToDo&#39;s ***
-=========================================
-# Test Suite
-  - Focus on client auto update tests
-  - Add more tests!
-    - Coverage is lacking
-
-=========================================
-           *** Change Log ***
-=========================================
-v0.9.0 - DEV
--------------------
-* Added
-  - Support for multiple update urls
-  - Auto generated client config
-
-* Updated
-  - Client updater
-    - Support Mac GUI app bundles
-    - Better error handling
-    - Less failed application execution
-      when updater has errors
-    - Patcher
-      - Now verifies patched update integrity
-        against version file
-  - Https verification
-    - on by default
-    - Can disable in config file
-    - VERIFY_SERVER_CERT
-  - Archive Extraction
-    - More reliable
-  - Archive creator
-    - Works with mac GUI apps
-
-
-v0.8.1 - 9/3/2014
--------------------
-* Added
-  - jms-utils
-
-* Fixed
-  - Packaging setup.py installation
-
-* Removed
-  - Unused tests
-
-v0.8.0 - 8/31/2014
--------------------
-* Added
-  - Archive Maker utility
-    - Makes zip &amp; gzip archives with name, version
-      and platform in correct format for package handler
-
-  - Signals
-    - If you want to run updater in background
-      thread you can subscribe to signals for
-      download progress and completion
-
-  - CLI
-    - Option to change encryption password
-
-  - Initial py3 compat
-  - More code comments if you want to get your
-    hands dirty
-  - Option to enable https verification
-
-* Updated
-  - Package Handler
-    - Package metadata parsing is faster. Thanks
-      to a new &amp; shiny package object.
-
-  - File Crypt
-    - Uses simple encryption interface of
-      simple-crypt. Pycrypto in background.
-
-* Fixed
-  - CLI
-    - Initial setup didn&#39;t save settings
-      to correct class attributes
-
-  - Client
-    - Parsing of version file
-
-  - Patch creation
-    - Example:
-      1.9 &gt; 1.10 was True
-      1.9 &gt; 1.10 is now False
-
-* Removed
-  - Cryptography dependency
-  - License text from individual files
-  - Unused imports
-
-v0.7.2 - 8/10/2014
--------------------
-* Fixed
-  - Error on load cli
-
-v0.7.1 - 8/10/2014
--------------------
-* Added
-  - Utils
-    - Utils specific errors
-  - KeyHandler
-    - Error if DevDataDir not setup
-
-* Updated
-  - Client
-    - Better parsing of old updates to remove
-    - More error checking
-    - More error reporting
-    - Dynamic creation of archive format
-
-  - Utils
-    - Better parsing of dot files for removal
-
-* Removed
-  - Client
-    - Some old transition code
-
-v0.7 - 8/3/2014
--------------------
-* Added
-  - Uploader plugin support
-  - Default S3 &amp; SCP plugins
-  - Support for gzipped archives
-
-* Updated
-  - Menu option handling
-
-* Remove
-  - Upload code for s3 and scp
-  - Unused config options
-  - Redundant upload checks
-
-v0.6.0 - 7/27/2014
--------------------
-*** Renamed to PyiUpdater ***
-
-* Removed
-  - Old transition code
-  - Binary support
-    - only pip &amp; src install
-
-
-v0.5.5 - 6/19/2014
--------------------
-* Added
-  - More tests
-
-* Fixed
-  - Uploader
-    - scp user-name error
-  - Misc. bug fixes
-
-* Removed
-  - NotSoTuf
-    - Unused/Redundant code
-
-v0.5.4 - 6/14/14
--------------------
-** Backwards Incompatible Changes **
-  - Make sure you have a decrypted copy of your
-    config.data &amp; private key file
-
-* Updated
-  - Using PBDKF instead of my own implementation
-  - KeyHandler
-    - More error checking
-  - Client
-    - Dynamically generates urls for update files
-    - Easier testing of updater
-
-* Fixed
-  - Client
-    - Patch updater now working
-
-v0.5.3 - 6/10/2013
--------------------
-* Added
-  - Cleanup of temp files while nst was running
-
-* Fixed
-  - CLI
-    - Leaving input blank when no default
-  - nst-lib
-    - Using mac cache dir on all platforms
-
-
-* Updated
-  - Client
-    - Dynamically generates cache dir on load
-  - ClI
-    - Can update company/user name from settings
-    - Checks if you have write permission for dev
-      data directory
-
-v0.5.2 - 6/8/2014
--------------------
-* Fixed
-  - Error updating to new data dir
-
-* Updated
-  - UI
-    - More descriptive when no default available
-
-v0.5.1 - 6/7/2014
--------------------
-* Added
-  - Arm support
-    - Only test on raspberry pi
-
-* Fixed
-  - Loading decrypted config file
-  - Util error on load
-    - Visual error only
-
-* Updated
-  - Another try for wrong password input
-  - More py3 compat
-  - App data dir
-    - Used standardized location on each platform
-  - Naming of keys
-    - Defaults to appname
-
-* Removed
-  - Asking to name your keys
-
-v0.5.0 - 6/5/2014
--------------------
-** Backwards Incompatible Changes **
-  - Before updating make sure to make a
-    decrypt copy of your config and private
-    key.  This is very important. Encryption used
-    to be cross platform but TripleSec&#39;s scrypt dependency
-    won&#39;t compile on windows.
-
-  - Now using AES encryption by way of the Cryptography
-    python library.
-
-* Updated
-  - Now uses sha256 for file hashes
-  - User Interface
-    - Removed unused options
-
-* Fixed
-  - Encryption
-    - Using one library across platforms
-
-
-v0.4.11 - 4/12/2014
--------------------
-* Fixed
-  - Crash on startup when not connected to the web
-  - Crash when trying do decrypt non existent file.
-
-
-v0.4.10 - 4/11/2014
--------------------
-* Added
-  - Triplesec encryption
-    - Just use not-so-tuf normally and your
-      encrypted files will be converted automatically
-
-  - Update notification for pip installs
-
-* Fixed
-  - Client error handling
-    - Wont blow up if client cannot find patches
-
-
-v0.4.9 - 4/6/2014
--------------------
-* Updated
-  - Code optimizations
-    - Some performance
-    - More error resilient
-
-  - Docs
-    - Removed a lot of noise from api docs
-
-* Fixed
-  - Can now update platforms independently and
-    updates latest in version file accordingly
-
-
-v0.4.8 - 4/4/2014
---------------------
-* Fixed
-  - Client updater
-
-
-v0.4.7 - 4/4/2014
---------------------
-* Added
-  - Client refresh method
-    - Gets updated version file without initializing
-      a new client object
-  - Deploy folder cleanup after successful upload
-    - Files already safe in files folder
-
-  - Initial plugin support *Experimental*
-    - Now its easy to add your own upload providers.
-      Plugins are loaded with uploader.set_uploader(&#39;mega&#39;)
-      Example entry point section for plugin setup.py
-      entry_points {
-      &#39;not_so_tuf.uploader&#39;:[
-      &#39;mega = not_so_tuf.uplaoder.mega:Mega&#39;,
-      ]}
-
-* Updated
-  - All internal libs used Not So TUF
-  - Client only makes a network request on initialization
-    or on refresh call
-  - Version File Format
-    - Backwards compatible
-    - Can update an app or lib up to 8 times before the
-      package handler will stop adding duplicate entries
-      in your version file
-    - Old format will be dropped once stable
-
-* Fixed
-  - App signing on windows - (Binary only)
-    - Multiprocessing wall failing hard!
-  - Adding .exe extension to libs on windows
-
-
-v0.4.6 - 4/3/2014
---------------------
-* Fixed
-  - S3 Uploader
-
-
-v0.4.5 - 4/3/2014
---------------------
-* Updated
-  - Client
-    - Places current version in cache if not already present
-    - Removes old updates from cache
-
-
-v0.4.4 - 4/3/2014
---------------------
-* Fixed
-  - Missing uploader package on
-    pypi
-
-
-v0.4.3 - 4/3/2014
---------------------
-* Added
-  - More py3 compatibility
-
-* Updated
-  - Client
-    - Can initialize client with config object directly. Is backwards
-      compatible.
-
-* Fixed
-  - Output during updates of nst binary
-
-
-v0.4.2 - 3/31/2013
---------------------
-* Fixed
-  - Missing lib in client package
-
-
-v0.4.1 - 3/29/2014
---------------------
-* Added
-  - More py3 compat
-
-* Updated
-  - CLI: Initial Setup
-    - Make sure keys are divisible of 256
-  - Version File Output
-    - indent 2 instead of 4
-
-* Removed
-  - Duplicate library
-
-
-v0.4.0 - 3/21/2014
---------------------
-* Added
-  - More tests
-  - Open Source Software declaration
-  - Some python3 compatibility
-    - Only usable if your not using a pyinstaller app
-
-* Updated
-  - Docs
-  - Example Scripts
-  - CLI
-    - More descriptive menu options
-
-  - Can now import modules from not_so_tuf
-    - from not_so_tuf import Client instead of
-      from not_so_tuf.client import Client
-
-* Fixed
-  - Deletion of folder password
-
-* Removed
-  - Dependency
-    - beefish
-    - scp
-  - Duplicate code
-
-
-v0.3.3 - No Release
---------------------
-* Fixed
-  - Only write client config when
-    frozen
-
-
-v0.3.2 - 3/16/2014
---------------------
-* Fixed
-  - Writing config for client
-  - Copying decrypted config file
-  - Copying decrypted private key
-
-
-v0.3.1 - 3/16/2014
---------------------
-* Fixed
-  - Internal changes to fix build
-    on windows
-
-
-v0.3.0 - 3/14/2014
---------------------
-* Added
-  - not_so_tuf package creation
-    - automatically creates package
-    - automatically creates client config
-      - based off inputs during initial setup or settings updates
-
-* Updated
-  - Package Handler
-    - Only allow supported platforms
-
-* Fixed
-  - Exit after upload
-
-
-v0.2.8 - 3/9/2014
---------------------
-* Fixed
-  - Uploader
-
-
-v0.2.7 - 3/9/2014
---------------------
-* Added
-  - S3 Uploader
-  - Upload progress indicator for S3 and scp
-  - Parallel package patching
-  - Option to delete password for current folder. Make sure you have a
-    decrypted copy of your config and private key.
-
-* Fixed
-  - redundant status messages
-
-* Removed
-  - More unused code...
-
-
-v0.2.5 - 3/8/2014
---------------------
-* Added
-  - Option to separately install then restart later.
-
-* Updated
-  - UI
-    - Shows more output of whats going on behind the scenes
-  - Required packages
-
-* Removed
-  - Some duplicate code.
-
-
-v0.2.4 - 3/5/2014
---------------------
-* Fixed
-  - Reboot Loop
-
-
-v0.2.3 - 3/5/2014
---------------------
-* Fixed
-  - Patch updates
-
-
-v0.2.2 - 3/5/2014
---------------------
-* Fixed
-  - Import Error when recommended packages are not installed.
-
-
-v0.2.1 - 3/4/2014
---------------------
-* Added
-  - CLI
-    - Make decrypted copy of config file
-  - Client
-    - client can now install updates and restart the app
-
-* Updated
-  - Cross Platform support
-
-* Fixed
-  - Incorrect handling of version numbers
-
-
-v0.2.0 - 2/28/2014
---------------------
-* Added
-  - Uploading
-    - Can upload to server right after signing updates
-  - CLI options
-    - Update/add SSH settings
-    - View current settings
-  - Config file encryption
-    - If you forget your password there is no recovery option
-  - Frozen App support
-
-* Updated
-  - File Encryption
-    - More secure password hashing
-      - Uses PBKDF2
-    - Uses system keyring to store hashed password
-    - Will exit app on more then 2 failed login attempts
-
-* Fixed
-  - Finding current dir
-    - In frozen app
-  - Logger
-
-* Removed
-  - Some unused code
-
-
-v0.1.2 - 2/18/2014
---------------------
-* Added
-  - Private key encryption
-    - If you forget your password there is no recovery option
-  - Make copy of decrypted private key
-    - for backup purposes
-  - CLI test
-
-* Fixed
-  - CLI
-    - paths given with spaces are now handled correctly.
-    - config file loading
-
-* Removed
-  - Some old unused code
-
-
-v0.1.1 - 2/8/2014
---------------------
-* Added
-  - Changelog
-  - Todo to change-log
-
-* Updated
-  - CLI
-    - Can update config from CLI
-
-* Removed
-  - ToDo.txt
-
-v0.1.0 - 1/3/2014
---------------------
-* Initial Release *
-</pre></div>
+<div class="section" id="v0-9-0-dev">
+<h2>v0.9.0 - DEV<a class="headerlink" href="#v0-9-0-dev" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This version is not yet released and is under active development.</p>
+</div>
+<ul class="simple">
+<li>Added<ul>
+<li>Support for multiple update urls</li>
+<li>Auto generated client config</li>
+<li>ed25529 Update verification<ul>
+<li>Using instead of RSA</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Updated<ul>
+<li>Client updater<ul>
+<li>Support Mac GUI app bundles</li>
+<li>Better error handling</li>
+<li>Less failed application execution when updater
+has errors</li>
+<li>Patcher<ul>
+<li>Now verifies patched update integrity
+against version file</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Downloader<ul>
+<li>Https verification<ul>
+<li>on by default</li>
+<li>Can disable in config file</li>
+<li>VERIFY_SERVER_CERT</li>
+</ul>
+</li>
+<li>Dynamic block resizing</li>
+</ul>
+</li>
+<li>Archive Extraction<ul>
+<li>More reliable</li>
+</ul>
+</li>
+<li>Archive creator<ul>
+<li>Works with mac GUI apps</li>
+</ul>
+</li>
+<li>Private methods<ul>
+<li>Refactored to make testing easier</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="v0-8-1-2014-9-3">
+<h2>v0.8.1 - 2014/9/3<a class="headerlink" href="#v0-8-1-2014-9-3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Added<ul>
+<li>jms-utils</li>
+</ul>
+</li>
+<li>Fixed<ul>
+<li>Packaging setup.py installation</li>
+</ul>
+</li>
+<li>Removed<ul>
+<li>Unused tests</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="v0-8-0-2014-8-31">
+<h2>v0.8.0 - 2014/8/31<a class="headerlink" href="#v0-8-0-2014-8-31" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Added</p>
+<ul class="simple">
+<li>Archive Maker utility<ul>
+<li>Makes zip &amp; gzip archives with name, version
+and platform in correct format for package handler</li>
+</ul>
+</li>
+<li>Signals<ul>
+<li>If you want to run updater in background
+thread you can subscribe to signals for
+download progress and completion</li>
+</ul>
+</li>
+<li>CLI<ul>
+<li>Option to change encryption password</li>
+</ul>
+</li>
+<li>Initial py3 compat</li>
+<li>More code comments if you want to get your
+hands dirty</li>
+<li>Option to enable https verification</li>
+</ul>
+</li>
+<li><p class="first">Updated</p>
+<ul class="simple">
+<li>Package Handler<ul>
+<li>Package metadata parsing is faster. Thanks
+to a new &amp; shiny package object.</li>
+</ul>
+</li>
+<li>File Crypt<ul>
+<li>Uses simple encryption interface of
+simple-crypt. Pycrypto in background.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">Fixed</p>
+<ul>
+<li><p class="first">CLI</p>
+<ul class="simple">
+<li>Initial setup didn&#8217;t save settings
+to correct class attributes</li>
+</ul>
+</li>
+<li><p class="first">Client</p>
+<ul class="simple">
+<li>Parsing of version file</li>
+</ul>
+</li>
+<li><p class="first">Patch creation</p>
+<ul>
+<li><p class="first">Example:</p>
+<p>1.9 &gt; 1.10 was True</p>
+<p>1.9 &gt; 1.10 is now False</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">Removed</p>
+<ul class="simple">
+<li>Cryptography dependency</li>
+<li>License text from individual files</li>
+<li>Unused imports</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="v0-7-2-2014-8-10">
+<h2>v0.7.2 - 2014/8/10<a class="headerlink" href="#v0-7-2-2014-8-10" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed<ul>
+<li>Error on load cli</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="v0-7-1-2014-8-10">
+<h2>v0.7.1 - 2014/8/10<a class="headerlink" href="#v0-7-1-2014-8-10" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Added<ul>
+<li>Utils<ul>
+<li>Utils specific errors</li>
+</ul>
+</li>
+<li>KeyHandler<ul>
+<li>Error if DevDataDir not setup</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Updated<ul>
+<li>Client<ul>
+<li>Better parsing of old updates to remove</li>
+<li>More error checking</li>
+<li>More error reporting</li>
+<li>Dynamic creation of archive format</li>
+</ul>
+</li>
+<li>Utils<ul>
+<li>Better parsing of dot files for removal</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Removed<ul>
+<li>Client<ul>
+<li>Some old transition code</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="v0-7-2014-8-3">
+<h2>v0.7 - 2014/8/3<a class="headerlink" href="#v0-7-2014-8-3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Added<ul>
+<li>Uploader plugin support</li>
+<li>Default S3 &amp; SCP plugins</li>
+<li>Support for gzipped archives</li>
+</ul>
+</li>
+<li>Updated<ul>
+<li>Menu option handling</li>
+</ul>
+</li>
+<li>Remove<ul>
+<li>Upload code for s3 and scp</li>
+<li>Unused config options</li>
+<li>Redundant upload checks</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="v0-6-0-2014-7-27">
+<h2>v0.6.0 - 2014/7/27<a class="headerlink" href="#v0-6-0-2014-7-27" title="Permalink to this headline">¶</a></h2>
+<p><strong>* Renamed to PyiUpdater *</strong></p>
+<ul class="simple">
+<li>Removed<ul>
+<li>Old transition code</li>
+<li>Binary support<ul>
+<li>only pip &amp; src install</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 
@@ -730,7 +381,7 @@ v0.1.0 - 1/3/2014
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.3.<br/>
+      Last updated on Oct 18, 2014.<br/>
     </p>
   </div>
 </footer>

@@ -25,7 +25,6 @@ pub_key = None
 
 
 def setup_func():
-    global pub_key
     global test_data_dir
 
     config = TConfig()
@@ -64,12 +63,11 @@ def setup_func2():
                 f.write(u'I am so happy' * 1000)
         shutil.make_archive(u'Test App-mac-0.2.0', u'zip', u'test-app')
         shutil.move(u'Test App-mac-0.2.0.zip', u'new')
-    ph.update_package_list()
+    ph.process_packages()
     kh.sign_update()
 
 
 def test_setup():
-    global pub_key
     global test_data_dir
 
     config = TConfig()
@@ -77,9 +75,6 @@ def test_setup():
     ph = PackageHandler(updater)
     key_dir = os.path.join(ph.data_dir, u'keys')
 
-    updater.config.PRIVATE_KEY_NAME = None
-    updater.config.PUBLIC_KEY_NAME = None
-    updater.config.KEY_LENGTH = None
     kh = KeyHandler(updater)
     kh.test = True
     assert os.path.exists(os.path.abspath(key_dir))
@@ -97,7 +92,8 @@ def test_key_verify():
     sig = version_data[u'sig']
     del version_data[u'sig']
     version_data = json.dumps(version_data, sort_keys=True)
-    pub_key.verify(sig, version_data, encoding='base64')
+    verify_key = ed25519.VerifyingKey(pub_key, encoding="base64")
+    verify_key.verify(sig, version_data, encoding='base64')
 
 
 @with_setup(setup_func, teardown_func)
@@ -120,7 +116,6 @@ def test_key_creation():
 
 @with_setup(None, teardown_func)
 def test_execution():
-    global pub_key
     global test_data_dir
 
     config = TConfig()
@@ -131,7 +126,6 @@ def test_execution():
     ph.setup()
     kh.test = True
     kh.make_keys()
-    pub_key = kh.get_public_key()
 
     # Make zipfile
     with ChDir(test_data_dir):
@@ -141,5 +135,5 @@ def test_execution():
                 f.write(u'I am so happy' * 1000)
         shutil.make_archive(u'Test App-mac-0.2.0', u'zip', u'test-app')
         shutil.move(u'Test App-mac-0.2.0.zip', u'new')
-    ph.update_package_list()
+    ph.process_packages()
     kh.sign_update()

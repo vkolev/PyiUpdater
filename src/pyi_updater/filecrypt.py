@@ -1,16 +1,23 @@
+from base64 import (urlsafe_b64encode as b_encode)
 import getpass
 import logging
 import os
 import time
 
-from simplecrypt import encrypt as s_encrypt
-from simplecrypt import decrypt as s_decrypt
+from cryptography.fernet import Fernet
+from pbkdf2 import pbkdf2_bin
 from six.moves import input
 
 from pyi_updater.exceptions import FileCryptError, FileCryptPasswordError
 
 
 log = logging.getLogger(__name__)
+
+SALT_VESION = '1'
+
+SALT_VERSIONS = {
+    '1': 1000,
+    }
 
 
 class FileCrypt(object):
@@ -28,11 +35,19 @@ class FileCrypt(object):
     """
 
     def __init__(self, filename=None, password_timeout=30, max_tries=3):
+        self.data_dir = None
+        self.salt_file = None
         self.password = None
         self.password_timer = 0
         self.password_max_tries = max_tries
         self.passwrod_timeout = password_timeout
         self.new_file(filename)
+
+    def init_app(self, pyi):
+        self.data_dir = pyi.config.get(u'DEV_DATA_DIR')
+        if self.data_dir is not None:
+            self.salt_file = os.path.join(self.data_dir, u'pyi-data',
+                                          u'keys', u'salt')
 
     def new_file(self, filename=None):
         """Adds filename internally to be used for encryption and
@@ -50,7 +65,7 @@ class FileCrypt(object):
         else:
             self.filename = None
             self.enc_filename = None
-            log.warning(u'No file to process yet.')
+            log.debug(u'No file to process yet.')
 
     def encrypt(self):
         """Will encrypt the file"""
@@ -68,9 +83,10 @@ class FileCrypt(object):
 
         log.debug(u'Lets start this encryption process.')
         if self.password is None:
-            self._get_password()
+            self.password = self._get_password()
+        fernet = Fernet(self.password)
 
-        enc_data = s_encrypt(self.password, plain_data)
+        enc_data = fernet.encrypt(plain_data)
 
         with open(self.enc_filename, u'w') as f:
             f.write(enc_data)
@@ -97,19 +113,20 @@ class FileCrypt(object):
 
         plain_data = None
         tries = 0
+        if self.password is None:
+                self.password = self._get_password()
         while tries < self.password_max_tries:
             log.debug(u'Tries = {}'.format(tries))
-            if self.password is None:
-                self._get_password()
+            fernet = Fernet(self.password)
             try:
                 log.debug(u'Going to attempt to decrypt the file')
 
-                plain_data = s_decrypt(self.password, enc_data)
+                plain_data = fernet.decrypt(enc_data)
                 break
             except Exception as e:
                 self.password = None
                 input(u'\nInvalid Password.  Press enter to try again')
-                log.warning(u'Invalid Password')
+                log.debug(u'Invalid Password')
                 log.error(str(e), exc_info=True)
                 tries += 1
 
@@ -127,6 +144,19 @@ class FileCrypt(object):
                 raise FileCryptError('Wrong password')
 
     def change_password(self, old_pass, new_pass):
+        """Will change password for encrypted file
+
+        Args:
+            old_pass (str): Old Password
+            new_pass (str): New Password
+
+        Returns:
+            (bool) Meanings::
+
+                True - Password change successful
+
+                False - Password change failed
+        """
         default_tries = self.password_max_tries
         self.password_max_tries = 1
         self.password = old_pass
@@ -156,9 +186,39 @@ class FileCrypt(object):
     def _get_password(self):
         # Gets user password without echoing to the console
         log.debug(u'Getting user password')
-        self.password = getpass.getpass(u'Enter password:\n-->')
+        temp_password = getpass.getpass(u'Enter password:\n-->')
         log.debug(u'Got you pass')
         self._update_timer()
+        return self._gen_password(temp_password)
+
+    def _gen_password(self, password, salt_info=None):
+        if salt_info is None:
+            salt_info = self._get_salt()
+        iterations = SALT_VERSIONS[salt_info['version']]
+        key = pbkdf2_bin(password, salt_info['salt'],
+                         iterations=iterations, keylen=32)
+        return b_encode(key)
+
+    def _get_salt(self):
+        for v in sorted(map(int, SALT_VERSIONS.keys()), reverse=True):
+            v = str(v)
+            salt_file = self.salt_file + u'.' + v
+            if os.path.exists(salt_file):
+                log.debug(u'Found salt file: {}'.format(salt_file))
+                self.salt_file = salt_file
+                with open(self.salt_file, u'r') as f:
+                    salt = f.read()
+                version = v
+                break
+        else:
+            log.debug(u'Did not find salt file')
+            salt = os.urandom(16)
+            self.salt_file = self.salt_file + u'.' + SALT_VESION
+            with open(self.salt_file, u'w') as f:
+                f.write(salt)
+            log.debug(u'Created salt file: {}'.format(self.salt_file))
+            version = SALT_VESION
+        return {u'salt': salt, 'version': version}
 
     def _update_timer(self):
         # Updates internal timer if not already past current time

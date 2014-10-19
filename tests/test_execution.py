@@ -32,38 +32,29 @@ def setup_func():
         files = remove_dot_files(os.listdir(os.getcwd()))
         for f in files:
             shutil.copy(f, ph.new_dir)
-    ph.update_package_list()
+    ph.process_packages()
     kh.sign_update()
-    ph.deploy()
 
 
 @with_setup(setup_func, None)
 def test_exe1():
-    assert os.path.exists(PYI_DATA) is True
+    assert os.path.exists(ph.new_dir) is True
+    assert os.path.exists(ph.deploy_dir) is True
 
 
-def setup_func2():
+def test_patch_creation():
     test_data_dir = os.path.abspath(os.path.join(u'tests', u'test data',
                                     u'5.3'))
     with ChDir(test_data_dir):
         files = remove_dot_files(os.listdir(os.getcwd()))
         for f in files:
             shutil.copy(f, ph.new_dir)
-    ph.update_package_list()
+    ph.process_packages()
     kh.sign_update()
-    ph.deploy()
-
-
-@with_setup(setup_func2, None)
-def test_exe2():
-    assert os.path.exists(PYI_DATA) is True
-
-
-def test_patch_creation():
     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
-                          u'Not So TUF-arm-2')) is True
+                          u'Not So TUF-arm-1')) is True
     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
-                          u'Not So TUF-mac-2')) is True
+                          u'Not So TUF-mac-1')) is True
 
 
 def test_move_to_deploy():

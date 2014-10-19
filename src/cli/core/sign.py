@@ -27,9 +27,8 @@ class Sign(CommonLogic, Menu):
         s_menu.display_msg(u'Please wait...')
 
         self.package_handler.setup()
-        self.package_handler.update_package_list()
+        self.package_handler.process_packages()
         self.key_handler.sign_update()
-        self.package_handler.deploy()
 
         s_menu.display_msg(u'Update signing complete...')
         time.sleep(3)

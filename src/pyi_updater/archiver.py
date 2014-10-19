@@ -3,6 +3,8 @@ import optparse
 import os
 import shutil
 import sys
+import tarfile
+from zipfile import ZipFile
 
 from jms_utils.terminal import get_terminal_size, terminal_formatter
 
@@ -18,7 +20,7 @@ max_width = get_terminal_size()[0]
 fmt = terminal_formatter()
 
 usage = ('usage: pyi-archive -n "My App" -v 1.0.1 FILE [FILE...]\n'
-         'Usage: pyi-archive -i gzip -n "My App" -v 1.0.1 FILE [FILE...]')
+         'Usage: pyi-archive -c gzip -n "My App" -v 1.0.1 FILE [FILE...]')
 kw = {
     'version': get_version(),
     'usage': usage,
@@ -26,11 +28,6 @@ kw = {
     'conflict_handler': 'resolve',
     }
 parser = optparse.OptionParser(**kw)
-parser.add_option('-c', '--archiver',
-                  default='zip',
-                  type='choice',
-                  choices=['zip', 'gzip', 'g', 'z'],
-                  help='Type of archive compression to use')
 
 parser.add_option('-n', '--name', help='Name of update')
 
@@ -52,13 +49,11 @@ def main(my_opts=None):
         keep = opts.keep
         version = check_version(opts)
         name = check_name(opts)
-        archiver = opts.archiver
     # Used for testing purposes
     else:
         version = check_version(my_opts)
         name = check_name(my_opts)
         args = my_opts.args
-        archiver = my_opts.archiver
 
     files = []
     not_found_files = []
@@ -69,15 +64,16 @@ def main(my_opts=None):
         if not os.path.exists(f):
             not_found_files.append(f)
         elif support_files(f) is False:
-            not_supported.appned(f)
+            not_supported.append(f)
         else:
             files.append(f)
+    print(files)
     # Used for testing purposes
     if len(files) < 1:
         return False
 
     for f in files:
-        if archiver == 'zip' or archiver == 'z':
+        if parse_platform(f) == u'win':
             make_archive(name, version, f, 'zip')
         else:
             make_archive(name, version, f, 'gztar')
@@ -137,13 +133,12 @@ def make_archive(name, version, file_, archive_format=u'zip', platform=None):
         plat = parse_platform(file_)
     else:
         plat = platform
-    if archive_format == u'zip':
-        ext = u'.zip'
-    else:
-        ext = u'.tar.gz'
 
     file_dir = os.path.dirname(os.path.abspath(file_))
     filename = '{}-{}-{}'.format(name, plat, version)
+    filename_path = os.path.join(file_dir, filename)
+
+    print('starting archive')
 
     ext = os.path.splitext(file_)[1]
     temp_file = name + ext
@@ -152,8 +147,15 @@ def make_archive(name, version, file_, archive_format=u'zip', platform=None):
         shutil.copy(file_, temp_file)
     else:
         shutil.copytree(file_, temp_file)
-
-    shutil.make_archive(filename, archive_format, file_dir, temp_file)
+    if os.path.isfile(file_):
+        if archive_format == u'zip':
+            with ZipFile(filename_path + '.zip', 'w') as zf:
+                zf.write(file_, temp_file)
+        else:
+            with tarfile.open(filename_path + '.tar.gz', 'w:gz') as tar:
+                tar.add(file_, temp_file)
+    else:
+        shutil.make_archive(filename, archive_format, file_dir, temp_file)
 
     if os.path.isfile(temp_file):
         os.remove(temp_file)
@@ -161,14 +163,18 @@ def make_archive(name, version, file_, archive_format=u'zip', platform=None):
         shutil.rmtree(temp_file, ignore_errors=True)
 
     if keep is False:
-        os.remove(file_)
+        if os.path.isfile(file_):
+            os.remove(file_)
+        else:
+            shutil.rmtree(file_, ignore_errors=True)
 
     return filename + ext
 
 
 def support_files(f):
     try:
-        plat = parse_platform(f)
+        basename = os.path.basename(f)
+        plat = parse_platform(basename)
     except:
         plat = None
 

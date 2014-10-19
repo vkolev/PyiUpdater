@@ -2,15 +2,17 @@ import os
 from random import choice
 import sys
 
+from jms_utils.paths import cwd
 from nose import with_setup
 from nose.tools import raises
+import six
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from pyi_updater.exceptions import FileCryptError
 from pyi_updater.filecrypt import FileCrypt
 
-PASSWORD = u'This is my password'
+PASSWORD = six.b('This is my password')
 FILENAME = u'test.txt'
 FILENAME_ENC = u'test.txt.enc'
 RANDOM_DATA = u'This is some stuff that i want to test'.split(u' ')
@@ -20,6 +22,15 @@ LENGHTS = [8, 9, 10, 11]
 for i in xrange(100):
     a = u' '.join(choice(RANDOM_DATA) for x in range(choice(LENGHTS)))
     FILE_DATA.append(a + u'\n')
+
+setup_fc = FileCrypt()
+setup_fc.data_dir = cwd
+salt = os.urandom(16)
+salt_version = '1'
+salt_info = {
+    u'salt': salt,
+    'version': salt_version
+    }
 
 
 def setup_func():
@@ -33,6 +44,8 @@ def teardown_func():
         os.remove(FILENAME)
     if os.path.exists(FILENAME_ENC):
         os.remove(FILENAME_ENC)
+    # if os.path.exists(setup_fc.salt_file):
+    #     os.remove(setup_fc.salt_file)
 
 
 @raises(FileCryptError)
@@ -44,7 +57,7 @@ def test_encrypt_no_filename():
 @raises(FileCryptError)
 def test_encrypt_no_file():
     fc = FileCrypt(FILENAME)
-    fc.password = PASSWORD
+    fc.password = setup_fc._gen_password(PASSWORD, salt_info)
     fc.encrypt()
 
 
@@ -57,7 +70,7 @@ def test_decrypt_no_filename():
 @raises(FileCryptError)
 def test_decrypt_no_file():
     fc = FileCrypt(FILENAME)
-    fc.password = PASSWORD
+    fc.password = setup_fc._gen_password(PASSWORD, salt_info)
     fc.decrypt()
 
 
@@ -73,9 +86,12 @@ def test_decrypt_no_file():
 @with_setup(setup_func, teardown_func)
 def test_change_password():
     fc = FileCrypt(FILENAME)
-    fc.password = PASSWORD
+    test_password = setup_fc._gen_password(PASSWORD, salt_info)
+    fc.password = test_password
     fc.encrypt()
-    assert fc.change_password(PASSWORD, 'new password') is True
+    assert fc.change_password(test_password,
+                              setup_fc._gen_password('new password',
+                                                     salt_info)) is True
 
 
 def test_update_password_timer():
@@ -95,9 +111,9 @@ def test_no_update_timer():
 @with_setup(setup_func, teardown_func)
 def test_file_enc_dec():
     fc = FileCrypt(FILENAME)
-    fc.password = PASSWORD
+    fc.password = setup_fc._gen_password(PASSWORD, salt_info)
     fc.encrypt()
-    fc.password = PASSWORD
+    fc.password = setup_fc._gen_password(PASSWORD, salt_info)
     fc.decrypt()
     with open(FILENAME, u'r') as f:
         og_data = f.readlines()
@@ -108,7 +124,7 @@ def test_file_enc_dec():
 @with_setup(setup_func, teardown_func)
 def test_enc_file_name():
     fc = FileCrypt(FILENAME)
-    fc.password = PASSWORD
+    fc.password = setup_fc._gen_password(PASSWORD, salt_info)
     fc.encrypt()
     assert os.path.exists(FILENAME_ENC) is True
 

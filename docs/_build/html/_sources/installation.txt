@@ -17,6 +17,6 @@ S3 & SCP uploaders are available with::
 
     $ pip install PyiUpdater[scp]
 
-If you want the bleeding edge download a pre-release version::
+If you want the bleeding edge download a pre-release version. WARNING - pre released version may not work as expected::
 
     $ pip install PyiUpdater --pre

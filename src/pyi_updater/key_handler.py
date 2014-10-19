@@ -6,17 +6,12 @@ import shutil
 import sys
 
 import ed25519
-from Crypto.PublicKey import RSA
-import Crypto.Signature.PKCS1_v1_5
-import Crypto.Hash.SHA256
+from jms_utils.paths import ChDir
 import six
 
 from pyi_updater.exceptions import FileCryptPasswordError, KeyHandlerError
 from pyi_updater.filecrypt import FileCrypt
 
-if Crypto is None:  # pragma: no cover
-    KeyHandlerError(u'You must have PyCrypto installed.',
-                    expected=True)
 if six.PY3 is True:
     long = int
 
@@ -31,6 +26,7 @@ class KeyHandler(object):
     """
 
     def __init__(self, app=None):
+        self.fc = None
         if app:
             self.init_app(app)
 
@@ -47,6 +43,7 @@ class KeyHandler(object):
         if self.data_dir is not None:
             self.data_dir = os.path.join(self.data_dir, u'pyi-data')
             self.keys_dir = os.path.join(self.data_dir, u'keys')
+            self.deploy_dir = os.path.join(self.data_dir, u'deploy')
             self.version_file = os.path.join(self.data_dir, u'version.json')
             if not os.path.exists(self.keys_dir):
                 log.debug(u'Creating keys directory')
@@ -63,8 +60,6 @@ class KeyHandler(object):
 
         self.key_encoding = 'base64'
 
-        # FileCrypt object
-        self.fc = None
         # Set to true when running tests
         self.test = False
 
@@ -96,6 +91,8 @@ class KeyHandler(object):
         self._write_update_data()
 
     def get_public_key(self):
+        """Returns (object): Public Key
+        """
         public_key_path = os.path.join(self.keys_dir, self.public_key_name)
         log.debug(u'Public key path: {}'.format(public_key_path))
         if not os.path.exists(public_key_path):
@@ -104,7 +101,7 @@ class KeyHandler(object):
         public_key_path = os.path.join(self.keys_dir, self.public_key_name)
         with open(public_key_path, u'r') as f:
             pub_key_data = f.read()
-        return ed25519.VerifyingKey(pub_key_data, encoding='base64')
+        return pub_key_data
 
     def copy_decrypted_private_key(self):
         """Copies decrypted private key."""
@@ -134,7 +131,7 @@ class KeyHandler(object):
         priv_key_path = os.path.join(self.keys_dir, self.private_key_name)
         log.debug(u'private key path: {}'.format(priv_key_path))
         if not os.path.exists(priv_key_path):
-            if not not os.path.exists(priv_key_path + u'.enc'):
+            if not os.path.exists(priv_key_path + u'.enc'):
                 raise KeyHandlerError(u"You don't have any keys",
                                       expected=True)
         privkey = os.path.join(self.keys_dir, self.private_key_name)
@@ -153,7 +150,7 @@ class KeyHandler(object):
         except FileCryptPasswordError:
             sys.exit(u'Too many failed password attempts')
         except:
-            log.warning(u'Nothing to decrypt')
+            log.debug(u'Nothing to decrypt')
 
         if os.path.exists(privkey):
             try:
@@ -173,7 +170,7 @@ class KeyHandler(object):
         # Adding new signature to version file
         log.debug(u'Adding signature to version file...')
         if not self.privkey:
-            log.warning(u'Private key not loaded')
+            log.debug(u'Private key not loaded')
             raise KeyHandlerError(u'You must load your privkey first',
                                   expected=True)
 
@@ -198,6 +195,8 @@ class KeyHandler(object):
             with open(self.version_file, u'w') as f:
                 f.write(json.dumps(self.update_data, indent=2,
                         sort_keys=True))
+            with ChDir(self.data_dir):
+                shutil.copy(u'version.json', self.deploy_dir)
         else:
             msg = u'You must sign update data first'
             raise KeyHandlerError(msg, expected=True)
@@ -217,7 +216,7 @@ class KeyHandler(object):
                 log.debug(u'Pass overwrite=True to make_keys to overwrite')
                 return
             else:
-                log.warning(u'About to overwrite old keys')
+                log.debug(u'About to overwrite old keys')
         log.debug(u'Writing keys to file')
         with open(private, u'w') as f:
             f.write(self.privkey.to_ascii(encoding=self.key_encoding))

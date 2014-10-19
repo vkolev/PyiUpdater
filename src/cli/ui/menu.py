@@ -3,10 +3,9 @@ import logging
 import os
 import sys
 
-from jms_utils.terminal import get_terminal_size
+from jms_utils.terminal import get_terminal_size, GetCh
 from six.moves import xrange
 
-from cli.ui.menu_utils import _Getch
 from pyi_updater import get_version
 
 if sys.platform == u'win32':
@@ -107,7 +106,7 @@ class Menu(object):
         log.debug(u'Passed in options: {}'.format(options))
 
         def add_options():
-            getch = _Getch()
+            getch = GetCh()
             menu = []
             count = 1
             for s in options:

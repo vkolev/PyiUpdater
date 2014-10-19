@@ -11,6 +11,27 @@ from pyi_updater.utils import (get_package_hashes,
 log = logging.getLogger(__name__)
 
 
+class Patch(object):
+
+    def __init__(self, patch_info):
+        self.dst_path = patch_info.get(u'dst')
+        self.patch_name = patch_info.get(u'patch_name')
+        self.dst_filename = patch_info.get(u'package')
+        self.ready = self._check_attrs()
+
+    def _check_attrs(self):
+        if self.dst_path is not None:
+            if not os.path.exists(self.dst_path):
+                return False
+        else:
+            return False
+        if self.patch_name is None:
+            return False
+        if self.dst_filename is None:
+            return False
+        return True
+
+
 class Package(object):
 
     def __init__(self, file_):
@@ -24,10 +45,16 @@ class Package(object):
         self.patch_info = {}
         # seems to produce the best diffs.
         # Tests on homepage: https://github.com/JohnyMoSwag/PyiUpdater
+        # Zip doesn't keep +x permissions. Only using gz for now.
         self.supported_extensions = [u'.zip', u'.gz']
         self.extract_info(file_)
 
     def extract_info(self, package):
+        """Gets version number, platform & hash for package.
+
+        Args:
+            package (str): filename
+        """
         if os.path.splitext(package)[1].lower() not in \
                 self.supported_extensions:
             msg = u'Not a supported archive format: {}'.format(package)

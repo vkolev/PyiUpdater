@@ -1,3 +1,4 @@
+import bz2
 from getpass import getpass
 import hashlib
 import logging
@@ -5,28 +6,25 @@ import os
 import re
 import sys
 
+from six import BytesIO
 from six.moves import input
 
 from pyi_updater.exceptions import UtilsError
 
 log = logging.getLogger(__name__)
-FROZEN = getattr(sys, u'frozen', False)
 
 
-if FROZEN:  # pragma: no cover
-    # we are running in a |PyInstaller| bundle
-    cwd_ = os.path.dirname(sys.argv[0])
-else:
-    # we are running in a normal Python environment
-    cwd_ = os.getcwd()
+class EasyAccessDict(object):
 
+    def __init__(self, dict_=None, sep='*'):
+        self.load(dict_, sep)
 
-class StarAccessDict(object):
+    # Because I always for get call the get method
+    def __call__(self, key):
+        return self.get(key)
 
-    def __init__(self, dict_=None):
-        self.load(dict_)
-
-    def load(self, dict_):
+    def load(self, dict_, sep='*'):
+        self.sep = sep
         if not isinstance(dict_, dict):
             self.dict = dict()
         else:
@@ -34,7 +32,7 @@ class StarAccessDict(object):
 
     def get(self, key):
         try:
-            layers = key.split('*')
+            layers = key.split(self.sep)
             value = self.dict
             for key in layers:
                 value = value[key]
@@ -113,3 +111,67 @@ def parse_platform(name):
             raise UtilsError('')
 
         return platform_name
+
+
+class bsdiff4_py(object):
+    """Pure-python version of bsdiff4 module that can only patch, not diff.
+
+    By providing a pure-python fallback, we don't force frozen apps to
+    bundle the bsdiff module in order to make use of patches.  Besides,
+    the patch-applying algorithm is very simple.
+    """
+    @staticmethod
+    def patch(source, patch):
+        #  Read the length headers
+        l_bcontrol = _decode_offt(patch[8:16])
+        l_bdiff = _decode_offt(patch[16:24])
+        l_target = _decode_offt(patch[24:32])
+        #  Read the three data blocks
+        e_bcontrol = 32 + l_bcontrol
+        e_bdiff = e_bcontrol + l_bdiff
+        bcontrol = bz2.decompress(patch[32:e_bcontrol])
+        bdiff = bz2.decompress(patch[e_bcontrol:e_bdiff])
+        bextra = bz2.decompress(patch[e_bdiff:])
+        #  Decode the control tuples
+        tcontrol = []
+        for i in xrange(0, len(bcontrol), 24):
+            tcontrol.append((
+                _decode_offt(bcontrol[i:i+8]),
+                _decode_offt(bcontrol[i+8:i+16]),
+                _decode_offt(bcontrol[i+16:i+24]),
+            ))
+        #  Actually do the patching.
+        #  This is the bdiff4 patch algorithm in slow, pure python.
+        source = BytesIO(source)
+        result = BytesIO()
+        bdiff = BytesIO(bdiff)
+        bextra = BytesIO(bextra)
+        for (x, y, z) in tcontrol:
+            diff_data = bdiff.read(x)
+            orig_data = source.read(x)
+            if sys.version_info[0] < 3:
+                for i in xrange(len(diff_data)):
+                    result.write(chr((ord(diff_data[i]) +
+                                 ord(orig_data[i])) % 256))
+            else:
+                for i in xrange(len(diff_data)):
+                    result.write(bytes([(diff_data[i] + orig_data[i]) % 256]))
+            result.write(bextra.read(y))
+            source.seek(z, os.SEEK_CUR)
+        return result.getvalue()
+
+
+def _decode_offt(bytes):
+    """Decode an off_t value from a string.
+
+    This decodes a signed integer into 8 bytes.  I'd prefer some sort of
+    signed vint representation, but this is the format used by bsdiff4.
+    """
+    if sys.version_info[0] < 3:
+        bytes = map(ord, bytes)
+    x = bytes[7] & 0x7F
+    for b in xrange(6, -1, -1):
+        x = x * 256 + bytes[b]
+    if bytes[7] & 0x80:
+        x = -x
+    return x

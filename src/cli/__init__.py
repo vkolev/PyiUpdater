@@ -5,8 +5,8 @@ import logging
 import os
 import sys
 
+from jms_utils.paths import cwd
 from jms_utils.logger import log_format_string
-from pyi_updater.utils import cwd_
 
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
@@ -15,8 +15,8 @@ nh = logging.NullHandler()
 nh.setLevel(logging.DEBUG)
 log.addHandler(nh)
 
-if os.path.exists(os.path.join(cwd_, u'pyi.log')):
-    ch = logging.FileHandler(os.path.join(cwd_, u'pyi.log'))
+if os.path.exists(os.path.join(cwd, u'pyi.log')):
+    ch = logging.FileHandler(os.path.join(cwd, u'pyi.log'))
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(fmt_str)
     log.addHandler(ch)

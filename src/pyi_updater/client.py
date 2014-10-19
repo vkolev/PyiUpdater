@@ -7,19 +7,22 @@ import tarfile
 from zipfile import ZipFile
 
 from appdirs import user_cache_dir
+import certifi
 import ed25519
+from jms_utils import FROZEN
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
-import requests
 import six
+import urllib3
 
 from pyi_updater.archiver import make_archive
 from pyi_updater.config import Config
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.patcher import Patcher
-from pyi_updater.utils import (FROZEN, get_version_number,
-                               StarAccessDict, version_string_to_tuple)
+from pyi_updater.utils import (get_version_number,
+                               EasyAccessDict,
+                               version_string_to_tuple)
 
 log = logging.getLogger(__name__)
 
@@ -37,6 +40,7 @@ class Client(object):
         self.version = None
         self.json_data = None
         self.verified = False
+        self.ready = False
         self.ready_to_update = False
         self.updates_key = u'updates'
         if obj:
@@ -79,6 +83,11 @@ class Client(object):
         self.public_key = config.get(u'PUBLIC_KEY', None)
         self.debug = config.get(u'DEBUG', False)
         self.verify = config.get(u'VERIFY_SERVER_CERT', True)
+        if self.verify is True:
+            self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
+                                                 ca_certs=certifi.where())
+        else:
+            self.http_pool = urllib3.PoolManager()
         self.version_file = u'version.json'
 
         self.current_app_dir = os.path.dirname(sys.argv[0])
@@ -116,14 +125,11 @@ class Client(object):
         """
         self.name = name
         self.version = version
-
+        if self.ready is False:
+            log.debug('No update manifest found')
+            return False
         if FROZEN is True and self.name == self.app_name:
-            # We only add .exe to app executable.  Not libs or dll
             self._archive_installed_binary()
-        # Removes old versions, of update being checked, from
-        # updates folder.  Since we only start patching from
-        # the current binary this shouldn't be a problem.
-        self._remove_old_updates()
 
         # Checking if version file is verified before
         # processing data contained in the version file.
@@ -154,6 +160,13 @@ class Client(object):
         with check update.
 
         Proxy method for :meth:`_patch_update` & :meth:`_full_update`.
+
+        Returns:
+            (bool) Meanings::
+
+                True - Download successful
+
+                False - Download failed
         """
         if self.ready_to_update is False:
             return False
@@ -166,6 +179,10 @@ class Client(object):
                 log.debug(u'Download successful')
             else:
                 return False
+        # Removes old versions, of update being checked, from
+        # updates folder.  Since we only start patching from
+        # the current binary this shouldn't be a problem.
+        self._remove_old_updates()
         return True
 
     def install_restart(self):
@@ -196,9 +213,16 @@ class Client(object):
         complete update.
 
         Proxy method for :meth:`_extract_update`.
+
+        Returns:
+            (bool) Meanings::
+
+                True - Install successful
+
+                False - Install failed
         """
         if get_system() == u'win':
-            log.warning('Only supported on Unix like systems')
+            log.debug('Only supported on Unix like systems')
             return False
         try:
             self._extract_update()
@@ -214,7 +238,7 @@ class Client(object):
         Proxy method for :meth:`_overwrite_app` & :meth:`_restart`.
         """
         if get_system() == u'win':
-            log.warning(u'Only supported on Unix like systems')
+            log.debug(u'Only supported on Unix like systems')
             return
         try:
             self._overwrite_app()
@@ -228,17 +252,22 @@ class Client(object):
         for u in self.update_urls:
             url = u + self.version_file
             try:
-                v = requests.get(url, verify=self.verify)
-                self.json_data = v.json()
-            except requests.exceptions.SSLError:
+                # v = self.http_pool.urlopen('GET', url, preload_content=False)
+                v = self.http_pool.urlopen('GET', url)
+                log.debug('Data type: {}'.format(type(v.data)))
+                self.json_data = json.loads(v.data)
+                self.ready = True
+            except urllib3.exceptions.SSLError:
                 log.error(u'SSL cert not verified')
             except ValueError:
                 log.error(u'Json failed to load')
             except Exception as e:
                 log.error(str(e))
-            finally:
-                if self.json_data is None:
-                    self.json_data = {}
+            else:
+                break
+
+        if self.json_data is None:
+            self.json_data = {}
 
         # Checking to see if there is a sig in the version file.
         if u'sig' in self.json_data.keys():
@@ -261,26 +290,27 @@ class Client(object):
             except Exception as e:
                 log.error(str(e))
                 self.json_data = None
-                log.warning(u'Version file not verified')
+                log.debug(u'Version file not verified')
             else:
                 log.debug(u'Version file verified')
                 self.verified = True
 
         else:
             log.error(u'No sig in version file')
-        self.star_access_update_data = StarAccessDict(self.json_data)
+        self.star_access_update_data = EasyAccessDict(self.json_data)
 
     def _extract_update(self):
-        platform_name = self.name
-        if sys.platform == u'win32' and self.name == self.app_name:
-            # We only add .exe to app executable.  Not libs or dll
-            log.debug(u'Adding .exe to filename for windows main app udpate.')
-            platform_name += u'.exe'
-        latest = self._get_highest_version(self.name)
-        filename = self._get_filename(self.name,
-                                      latest)
-
         with ChDir(self.update_folder):
+            platform_name = self.name
+            if sys.platform == u'win32' and self.name == self.app_name:
+                # We only add .exe to app executable.  Not libs or dll
+                log.debug(u'Adding .exe to filename for windows main '
+                          'app udpate.')
+                platform_name += u'.exe'
+
+            latest = self._get_highest_version(self.name)
+            filename = self._get_filename(self.name,
+                                          latest)
             if not os.path.exists(filename):
                 raise ClientError(u'File does not exists')
 
@@ -311,25 +341,34 @@ class Client(object):
         # Unix: Overwrites the running applications binary,
         #       then starts the updated binary in the currently
         #       running applications process memory.
-        # Windows: Moves update to current directory of running
-        #          application then restarts application using
-        #          new update.
-        current_app = os.path.join(self.current_app_dir, self.name)
-        app_update = os.path.join(self.update_folder, self.name)
-        log.debug(u'Current App location:\n\n{}'.format(current_app))
-        log.debug(u'Update Location:\n\n{}'.format(app_update))
-
         if get_system() == u'mac':
-            if not os.path.exists(app_update):
-                app_update += u'.app'
+            if self.current_app_dir.endswith('MacOS') is True:
+                log.debug('Looks like we\'re dealing with a Mac Gui')
+                temp_dir = self._get_mac_dot_app_dir(self.current_app_dir)
+                self.current_app_dir = temp_dir
 
+        app_update = os.path.join(self.update_folder, self.name)
+        if not os.path.exists(app_update):
+            app_update += u'.app'
+        log.debug(u'Update Location'
+                  ':\n{}'.format(os.path.dirname(app_update)))
+        log.debug(u'Update Name: {}'.format(os.path.basename(app_update)))
+
+        current_app = os.path.join(self.current_app_dir, self.name)
+        if not os.path.exists(current_app):
+            current_app += u'.app'
+        log.debug(u'Current App location:\n\n{}'.format(current_app))
         if os.path.exists(current_app):
-            os.remove(current_app)
-        if os.path.exists(current_app + u'.app'):
-            shutil.rmtree(current_app + u'.app', ignore_errors=True)
+            if os.path.isfile(current_app):
+                os.remove(current_app)
+            else:
+                shutil.rmtree(current_app, ignore_errors=True)
 
         log.debug(u'Moving app to new location')
         shutil.move(app_update, os.path.dirname(current_app))
+
+    def _get_mac_dot_app_dir(self, dir_):
+        return os.path.dirname(os.path.dirname(os.path.dirname(dir_)))
 
     def _restart(self):
         # Oh yes i did just pull that new binary into
@@ -342,17 +381,24 @@ class Client(object):
                 current_app += u'.app'
                 mac_app_binary_dir = os.path.join(current_app, u'Contents',
                                                   u'MacOS')
-                current_app = os.path.join(mac_app_binary_dir, self.name)
+                file_ = os.listdir(mac_app_binary_dir)
+                # We are making an assumption here that only 1
+                # executable will be in the MacOS folder.
+                current_app = os.path.join(mac_app_binary_dir, file_[0])
+                log.debug('Mac .app exe path: {}'.format(current_app))
 
-        os.execv(current_app, [current_app])
+        os.execv(current_app, [self.name])
 
     def _win_overwrite_app_restart(self):
+        # Windows: Moves update to current directory of running
+        #          application then restarts application using
+        #          new update.
         # Pretty much went through this work to show love to
         # all platforms.  But sheeeeesh!
-        current_app = os.path.join(self.current_app_dir, self.name)
-        updated_app = os.path.join(self.update_folder, self.name)
-        current_app += u'.exe'
-        updated_app += u'.exe'
+        exe_name = self.name + u'.exe'
+        current_app = os.path.join(self.current_app_dir, exe_name)
+        updated_app = os.path.join(self.update_folder, exe_name)
+
         bat = os.path.join(self.current_app_dir, u'update.bat')
         with open(bat, u'w') as batfile:
             # Not sure whats going on here.  Next time will
@@ -368,7 +414,8 @@ echo Updating to latest version...
 ping 127.0.0.1 -n 5 -w 1000 > NUL
 move /Y "{}" "{}" > NUL
 echo restarting...
-start {} "{}" """.format(updated_app, current_app, fix, current_app))
+start {} "{}"
+DEL "%~f0" """.format(updated_app, current_app, fix, current_app))
         log.debug(u'Starting bat file')
         os.startfile(bat)
         sys.exit(0)
@@ -405,8 +452,8 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         # Just checking to see if the zip for the current version is
         # available to patch If not we'll just do a full binary download
         if not os.path.exists(os.path.join(self.update_folder, filename)):
-            log.warning(u'{} got deleted. No base binary to start patching '
-                        'form'.format(filename))
+            log.debug(u'{} got deleted. No base binary to start patching '
+                      'form'.format(filename))
             return False
 
         p = Patcher(name=name, json_data=self.json_data,
@@ -510,7 +557,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
         try:
             current_version_str = get_version_number(filename)
         except UtilsError:
-            log.warning(u'Cannot parse version info')
+            log.debug(u'Cannot parse version info')
             current_version_str = u'0.0.0'
 
         current_version = version_string_to_tuple(current_version_str)
@@ -519,7 +566,7 @@ start {} "{}" """.format(updated_app, current_app, fix, current_app))
                 try:
                     t_versoin_str = get_version_number(t)
                 except UtilsError:
-                    log.warning(u'Cannot parse version info')
+                    log.debug(u'Cannot parse version info')
                     t_versoin_str = u'0.0.0'
                 t_version = version_string_to_tuple(t_versoin_str)
 

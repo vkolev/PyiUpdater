@@ -34,7 +34,7 @@ class Uploader(object):
             self.data_dir = os.path.join(self.data_dir, u'pyi-data')
             self.deploy_dir = os.path.join(self.data_dir, u'deploy')
         else:
-            log.warning(u'DEV_DATA_DIR is None. Setup failed.')
+            log.debug(u'DEV_DATA_DIR is None. Setup failed.')
 
         self.remote_dir = obj.config.get(u'REMOTE_DIR', None)
         self.host = obj.config.get(u'HOST', None)
@@ -57,7 +57,7 @@ class Uploader(object):
         """Proxy function that calls the upload method on the received uploader
         Only calls the upload method if an uploader is set.
         """
-        if self.uploader is not None:
+        if self.uploader is not None:  # pragma: no cover
             self.uploader.deploy_dir = self.deploy_dir
             self.uploader.upload()
         else:
@@ -77,21 +77,21 @@ class Uploader(object):
             raise UploaderError(u'Must pass str to set_uploader',
                                 expected=True)
 
-        try:
+        try:  # pragma: no cover
             plugin = self.mgr[requested_uploader]
-        except Exception as err:
+        except Exception as err:  # pragma: no cover
             log.debug(u'EP CACHE: {}'.format(self.mgr.ENTRY_POINT_CACHE))
             log.error(str(err))
             raise UploaderError(u'Requested uploader is not installed',
                                 expected=True)
 
-        self.uploader = plugin.plugin()
+        self.uploader = plugin.plugin()  # pragma: no cover
+        msg = u'Requested uploader: {}'.format(requested_uploader)
+        log.debug(msg)  # pragma: no cover
 
-        log.debug(u'Requested uploader: {}'.format(requested_uploader))
-
-        files = remove_dot_files(os.listdir(self.deploy_dir))
+        files = remove_dot_files(os.listdir(self.deploy_dir))  # pragma: no cover
         self.uploader.init(username=self.username,
                            password=self.password,
                            remote_dir=self.remote_dir,
                            host=self.host,
-                           files=files)
+                           files=files)  # pragma: no cover
