@@ -1,4 +1,4 @@
-v0.9.0 - DEV
+v0.9.0 - 2014/10/18
 ~~~~~~~~~~~~
 
 .. note:: This version is not yet released and is under active development.

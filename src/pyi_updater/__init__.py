@@ -6,8 +6,8 @@ logger = logging.getLogger(__name__)
 from pyi_updater.config import Config
 
 
-VERSION = (0, 9, 0, u'dev', int(time.time()))
-# VERSION = (0, 9, 0)
+# VERSION = (0, 9, 1, u'dev', int(time.time()))
+VERSION = (0, 9, 0)
 
 
 def get_version():
