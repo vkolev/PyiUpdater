@@ -24,7 +24,7 @@ You'll first be greeted with a Setup Assistant.
 What you should see::
 
     *******************************************************
-                PyiUpdater v0.7 - Setup Assistant
+                PyiUpdater v0.9 - Setup Assistant
     *******************************************************
 
 
@@ -51,7 +51,7 @@ What you should see::
 After setup is complete you'll be greeted with the screen below::
 
     *******************************************************
-                    PyiUpdater v0.7 - Main Menu
+                    PyiUpdater v0.9 - Main Menu
     *******************************************************
 
     1. Sign Updates
@@ -63,28 +63,32 @@ After setup is complete you'll be greeted with the screen below::
 
 Archive maker utility usage
 ---------------------------
-The filename for an update must include mac, win, arm, nix or nix64. For example, FILE1 could be myapp-mac & FILE2 mylib-nix::
+The filename for an update must include mac, win, arm, nix or nix64. For example, FILE1 could be myapp-mac & FILE2 mylib-nix. The archiver uses this for selecting the correct archive format and naming the final archive::
 
     $ pyi-archiver -h
     Usage: pyi-archive -n "My App" -v 1.0.1 FILE1 FILE2
-    Usage: pyi-archive -i gzip -n "My App" -v 1.0.1 FILE1 FILE2
+    Usage: pyi-archive -n "My App" -v 1.0.1 FILE1 FILE2
 
     Options:
       -h, --help            show this help message and exit
-      -c ARCHIVER, --archiver=ARCHIVER
-                            Type of archive compression to use
       -n NAME, --name=NAME  Name of update
       -v VERSION, --version=VERSION
                             Version # of update. Must have Major.Minor.Patch even if it's 0 eg. 1.1.0
       --keep                Do not delete source file
 
 
-Check out the examples folder to see how to use the framework programmatically, to easily PyiUpdater into your existing setup.
+Demos
+-----
+So if you opt not to use the cli interface & instead want to integrate PyiUpdater into your build, check out the progmatically.py demo.
 
-The cli tool uses the framework almost exactly the same as the dev script but is easier for beginners. A guided setup example is also provided.
+PyiUpdater make heavy use of the pyi-data folder.
 
-Example updater
----------------
+Steps
 
-.. literalinclude:: ../examples/client_update.py
-   :linenos:
+1. Build your app and place in new folder
+
+2. Use pyi-archiver to archive you files
+
+3. Use PackageHandler process_packages method. Will move copy app updates to version folder in the files dir & also move udpate form new folder to deploy folder
+
+4. Now use KeyHanlder sign_update method to add a signature to the version file & copies it to the deploy dir.

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Usage &mdash; PyiUpdater 0.9-dev1413672813 documentation</title>
+    <title>Usage &mdash; PyiUpdater 0.9 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.9-dev1413672813',
+        VERSION:     '0.9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.9-dev1413672813 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9 documentation" href="index.html" />
     <link rel="next" title="Folder Structure" href="folder_structure.html" />
     <link rel="prev" title="Configuration" href="configuration.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1413672813</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -90,7 +90,7 @@
 <li><a class="reference internal" href="#">Usage</a><ul>
 <li><a class="reference internal" href="#initial-setup">Initial Setup</a></li>
 <li><a class="reference internal" href="#archive-maker-utility-usage">Archive maker utility usage</a></li>
-<li><a class="reference internal" href="#example-updater">Example updater</a></li>
+<li><a class="reference internal" href="#demos">Demos</a></li>
 </ul>
 </li>
 </ul>
@@ -156,7 +156,7 @@
 <p>You&#8217;ll first be greeted with a Setup Assistant.</p>
 <p>What you should see:</p>
 <div class="highlight-python"><div class="highlight"><pre>*******************************************************
-            PyiUpdater v0.7 - Setup Assistant
+            PyiUpdater v0.9 - Setup Assistant
 *******************************************************
 
 
@@ -180,7 +180,7 @@ Enter password
 </div>
 <p>After setup is complete you&#8217;ll be greeted with the screen below:</p>
 <div class="highlight-python"><div class="highlight"><pre>*******************************************************
-                PyiUpdater v0.7 - Main Menu
+                PyiUpdater v0.9 - Main Menu
 *******************************************************
 
 1. Sign Updates
@@ -193,26 +193,31 @@ Enter password
 </div>
 <div class="section" id="archive-maker-utility-usage">
 <h2>Archive maker utility usage<a class="headerlink" href="#archive-maker-utility-usage" title="Permalink to this headline">¶</a></h2>
-<p>The filename for an update must include mac, win, arm, nix or nix64. For example, FILE1 could be myapp-mac &amp; FILE2 mylib-nix:</p>
+<p>The filename for an update must include mac, win, arm, nix or nix64. For example, FILE1 could be myapp-mac &amp; FILE2 mylib-nix. The archiver uses this for selecting the correct archive format and naming the final archive:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ pyi-archiver -h
 Usage: pyi-archive -n &quot;My App&quot; -v 1.0.1 FILE1 FILE2
-Usage: pyi-archive -i gzip -n &quot;My App&quot; -v 1.0.1 FILE1 FILE2
+Usage: pyi-archive -n &quot;My App&quot; -v 1.0.1 FILE1 FILE2
 
 Options:
   -h, --help            show this help message and exit
-  -c ARCHIVER, --archiver=ARCHIVER
-                        Type of archive compression to use
   -n NAME, --name=NAME  Name of update
   -v VERSION, --version=VERSION
                         Version # of update. Must have Major.Minor.Patch even if it&#39;s 0 eg. 1.1.0
   --keep                Do not delete source file
 </pre></div>
 </div>
-<p>Check out the examples folder to see how to use the framework programmatically, to easily PyiUpdater into your existing setup.</p>
-<p>The cli tool uses the framework almost exactly the same as the dev script but is easier for beginners. A guided setup example is also provided.</p>
 </div>
-<div class="section" id="example-updater">
-<h2>Example updater<a class="headerlink" href="#example-updater" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="demos">
+<h2>Demos<a class="headerlink" href="#demos" title="Permalink to this headline">¶</a></h2>
+<p>So if you opt not to use the cli interface &amp; instead want to integrate PyiUpdater into your build, check out the progmatically.py demo.</p>
+<p>PyiUpdater make heavy use of the pyi-data folder.</p>
+<p>Steps</p>
+<ol class="arabic simple">
+<li>Build your app and place in new folder</li>
+<li>Use pyi-archiver to archive you files</li>
+<li>Use PackageHandler process_packages method. Will move copy app updates to version folder in the files dir &amp; also move udpate form new folder to deploy folder</li>
+<li>Now use KeyHanlder sign_update method to add a signature to the version file &amp; copies it to the deploy dir.</li>
+</ol>
 </div>
 </div>
 

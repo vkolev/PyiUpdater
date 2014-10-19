@@ -3,21 +3,36 @@ import time
 
 logger = logging.getLogger(__name__)
 
+try:
+    from PyInstaller import VERSION as temp_version
+    pyi_version = (temp_version[0], temp_version[1], temp_version[2])
+except ImportError:
+    pyi_version = (0, 0, 0)
+
 from pyi_updater.config import Config
+from pyi_updater.exceptions import PyiUpdaterError
 
 
-# VERSION = (0, 9, 1, u'dev', int(time.time()))
-VERSION = (0, 9, 0)
+if pyi_version < (2, 1, 1):
+    raise PyiUpdaterError('Must have at least PyInstaller v2.1.1',
+                          expected=True)
+
+# VERSION = (0, 9, 2, u'dev', int(time.time()))
+VERSION = (0, 9, 1)
 
 
 def get_version():
-    version = '{}.{}'.format(VERSION[0], VERSION[1])
-    if VERSION[2]:
-        version = '{}.{}'.format(version, VERSION[2])
-    if len(VERSION) >= 4 and VERSION[3]:
-        version = '{}-{}'.format(version, VERSION[3])
-        if VERSION[3] == 'dev' and len(VERSION) >= 5 and VERSION[4] > 0:
-            version = '{}{}'.format(version, VERSION[4])
+    return _get_version(VERSION)
+
+
+def _get_version(v):
+    version = '{}.{}'.format(v[0], v[1])
+    if v[2]:
+        version = '{}.{}'.format(version, v[2])
+    if len(VERSION) >= 4 and v[3]:
+        version = '{}-{}'.format(version, v[3])
+        if v[3] == 'dev' and len(VERSION) >= 5 and v[4] > 0:
+            version = '{}{}'.format(version, v[4])
     return version
 
 

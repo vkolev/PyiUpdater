@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.9-dev1413672813 documentation</title>
+    <title>API &mdash; PyiUpdater 0.9 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.9-dev1413672813',
+        VERSION:     '0.9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.9-dev1413672813 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9 documentation" href="index.html" />
     <link rel="next" title="Release History" href="release_history.html" />
     <link rel="prev" title="Folder Structure" href="folder_structure.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.9-dev1413672813</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -171,6 +171,111 @@ app.update_config(Config())
 <dt>Args:</dt>
 <dd>obj (instance): config object</dd>
 </dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pyi_updater.client"></span><dl class="class">
+<dt id="pyi_updater.client.Client">
+<em class="property">class </em><tt class="descclassname">pyi_updater.client.</tt><tt class="descname">Client</tt><big>(</big><em>obj=None</em>, <em>test=False</em><big>)</big><a class="headerlink" href="#pyi_updater.client.Client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used on client side to update files</p>
+<p>Kwargs:</p>
+<blockquote>
+<div>obj (instance): config object</div></blockquote>
+<dl class="method">
+<dt id="pyi_updater.client.Client.init_app">
+<tt class="descname">init_app</tt><big>(</big><em>obj</em>, <em>test=False</em><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.init_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up client with config values from obj</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>obj (instance): config object</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.client.Client.refresh">
+<tt class="descname">refresh</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will download and verify your updates version file.</p>
+<p>Proxy method from <tt class="xref py py-meth docutils literal"><span class="pre">_get_update_manifest()</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.client.Client.update_check">
+<tt class="descname">update_check</tt><big>(</big><em>name</em>, <em>version</em><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.update_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will try to patch binary if all check pass.  IE hash verified
+signature verified.  If any check doesn&#8217;t pass then falls back to
+full update</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">name (str): Name of file to update</p>
+<p class="last">version (str): Current version number of file to update</p>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">(bool) Meanings:</p>
+<div class="last highlight-python"><div class="highlight"><pre>True - Update Successful
+
+False - Update Failed
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.client.Client.download">
+<tt class="descname">download</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will download the package update that was referenced
+with check update.</p>
+<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_patch_update()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_full_update()</span></tt>.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><p class="first">(bool) Meanings:</p>
+<div class="last highlight-python"><div class="highlight"><pre>True - Download successful
+
+False - Download failed
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.client.Client.install_restart">
+<tt class="descname">install_restart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.install_restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will install (unzip) the update, overwrite the current app,
+then restart the app using the updated binary.</p>
+<p>On windows Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_extract_update()</span></tt> &amp;
+<tt class="xref py py-meth docutils literal"><span class="pre">_win_overwrite_app_restart()</span></tt></p>
+<p>On unix Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_extract_update()</span></tt>,
+<tt class="xref py py-meth docutils literal"><span class="pre">_overwrite_app()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_restart()</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.client.Client.install">
+<tt class="descname">install</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.install" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will extract archived update and leave in update folder.
+If updating a lib you can take over from there. If updating
+an app this call should be followed by <a class="reference internal" href="#pyi_updater.client.Client.restart" title="pyi_updater.client.Client.restart"><tt class="xref py py-meth docutils literal"><span class="pre">restart()</span></tt></a> to
+complete update.</p>
+<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_extract_update()</span></tt>.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><p class="first">(bool) Meanings:</p>
+<div class="last highlight-python"><div class="highlight"><pre>True - Install successful
+
+False - Install failed
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.client.Client.restart">
+<tt class="descname">restart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will overwrite old binary with updated binary and
+restart using the updated binary.</p>
+<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_overwrite_app()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_restart()</span></tt>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -416,6 +521,123 @@ False - Password change failed
 
 </dd></dl>
 
+<span class="target" id="module-pyi_updater.key_handler"></span><dl class="class">
+<dt id="pyi_updater.key_handler.KeyHandler">
+<em class="property">class </em><tt class="descclassname">pyi_updater.key_handler.</tt><tt class="descname">KeyHandler</tt><big>(</big><em>app=None</em><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>KeyHanlder object is used to manage keys used for signing updates</p>
+<dl class="docutils">
+<dt>Kwargs:</dt>
+<dd>app (obj): Config object to get config values from</dd>
+</dl>
+<dl class="method">
+<dt id="pyi_updater.key_handler.KeyHandler.init_app">
+<tt class="descname">init_app</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler.init_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up client with config values from obj</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>obj (instance): config object</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.key_handler.KeyHandler.make_keys">
+<tt class="descname">make_keys</tt><big>(</big><em>overwrite=False</em><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler.make_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes public and private keys for signing and verification</p>
+<dl class="docutils">
+<dt>Kwargs:</dt>
+<dd>overwrite (bool): Determines if existing keys are overwritten</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.key_handler.KeyHandler.sign_update">
+<tt class="descname">sign_update</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler.sign_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signs version file with private key</p>
+<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_load_private_key()</span></tt>, <tt class="xref py py-meth docutils literal"><span class="pre">_add_sig()</span></tt> &amp;
+<tt class="xref py py-meth docutils literal"><span class="pre">_write_update_data()</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.key_handler.KeyHandler.get_public_key">
+<tt class="descname">get_public_key</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler.get_public_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns (object): Public Key</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.key_handler.KeyHandler.copy_decrypted_private_key">
+<tt class="descname">copy_decrypted_private_key</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler.copy_decrypted_private_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies decrypted private key.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.key_handler.KeyHandler.print_public_key">
+<tt class="descname">print_public_key</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler.print_public_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints public key data to console</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pyi_updater.package_handler"></span><dl class="class">
+<dt id="pyi_updater.package_handler.PackageHandler">
+<em class="property">class </em><tt class="descclassname">pyi_updater.package_handler.</tt><tt class="descname">PackageHandler</tt><big>(</big><em>app=None</em><big>)</big><a class="headerlink" href="#pyi_updater.package_handler.PackageHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles finding, sorting, getting meta-data, moving packages.</p>
+<dl class="docutils">
+<dt>Kwargs:</dt>
+<dd>app (instance): Config object to get config values from</dd>
+</dl>
+<dl class="method">
+<dt id="pyi_updater.package_handler.PackageHandler.init_app">
+<tt class="descname">init_app</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.package_handler.PackageHandler.init_app" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up client with config values from obj</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>obj (instance): config object</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.package_handler.PackageHandler.setup">
+<tt class="descname">setup</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.package_handler.PackageHandler.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates all needed working directories &amp; loads version file.</p>
+<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_setup_work_dirs()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_load_version_file()</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.package_handler.PackageHandler.process_packages">
+<tt class="descname">process_packages</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.package_handler.PackageHandler.process_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a list of updates to process.  Adds the name of an
+update to the version file if not already present.  Processes
+all packages.  Updates the version file meta-data. Then writes
+version file back to disk.</p>
+<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_get_package_list()</span></tt>,
+<tt class="xref py py-meth docutils literal"><span class="pre">_make_patches()</span></tt>, <tt class="xref py py-meth docutils literal"><span class="pre">_add_patches_to_packages()</span></tt>,
+<tt class="xref py py-meth docutils literal"><span class="pre">_setup_file_dirs()</span></tt>, <tt class="xref py py-meth docutils literal"><span class="pre">_update_version_file()</span></tt>,
+<tt class="xref py py-meth docutils literal"><span class="pre">_write_json_to_file()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_move_packages()</span></tt>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pyi_updater.package_handler.package"></span><span class="target" id="module-pyi_updater.patcher"></span><dl class="class">
+<dt id="pyi_updater.patcher.Patcher">
+<em class="property">class </em><tt class="descclassname">pyi_updater.patcher.</tt><tt class="descname">Patcher</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.patcher.Patcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads, verifies, and patches binaries</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">name (str): Name of binary to patch</p>
+<p>json_data (dict): Info dict with all package meta data</p>
+<p>current_version (str): Version number of currently installed binary</p>
+<p>highest_version (str): Newest version available</p>
+<p class="last">update_folder (str): Path to update folder to place updated binary in</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pyi_updater.patcher.Patcher.start">
+<tt class="descname">start</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.patcher.Patcher.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts patching process</p>
+</dd></dl>
+
+</dd></dl>
+
 <span class="target" id="module-pyi_updater.utils"></span><dl class="class">
 <dt id="pyi_updater.utils.bsdiff4_py">
 <em class="property">class </em><tt class="descclassname">pyi_updater.utils.</tt><tt class="descname">bsdiff4_py</tt><a class="headerlink" href="#pyi_updater.utils.bsdiff4_py" title="Permalink to this definition">¶</a></dt>
@@ -423,14 +645,6 @@ False - Password change failed
 <p>By providing a pure-python fallback, we don&#8217;t force frozen apps to
 bundle the bsdiff module in order to make use of patches.  Besides,
 the patch-applying algorithm is very simple.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyi_updater.utils._decode_offt">
-<tt class="descclassname">pyi_updater.utils.</tt><tt class="descname">_decode_offt</tt><big>(</big><em>bytes</em><big>)</big><a class="headerlink" href="#pyi_updater.utils._decode_offt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decode an off_t value from a string.</p>
-<p>This decodes a signed integer into 8 bytes.  I&#8217;d prefer some sort of
-signed vint representation, but this is the format used by bsdiff4.</p>
 </dd></dl>
 
 <span class="target" id="module-pyi_updater.uploader"></span><dl class="class">
@@ -506,36 +720,6 @@ info you need.</p>
 <dt id="pyi_updater.uploader.common.BaseUploader.upload">
 <tt class="descname">upload</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.uploader.common.BaseUploader.upload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uploads all files in file_list</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyi_updater.uploader.common.BaseUploader._retry_upload">
-<tt class="descname">_retry_upload</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.uploader.common.BaseUploader._retry_upload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes list of failed downloads and try&#8217;s to reupload them</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyi_updater.uploader.common.BaseUploader._connect">
-<tt class="descname">_connect</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.uploader.common.BaseUploader._connect" title="Permalink to this definition">¶</a></dt>
-<dd><p>Connects client attribute to service</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyi_updater.uploader.common.BaseUploader._upload_file">
-<tt class="descname">_upload_file</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#pyi_updater.uploader.common.BaseUploader._upload_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uploads file to remote repository</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>filename (str): file to upload</dd>
-<dt>Returns:</dt>
-<dd><p class="first">(bool) Meaning:</p>
-<div class="last highlight-python"><div class="highlight"><pre>True - Upload Successful
-
-False - Upload Failed
-</pre></div>
-</div>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>
