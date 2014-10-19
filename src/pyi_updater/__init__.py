@@ -12,11 +12,6 @@ except ImportError:
 from pyi_updater.config import Config
 from pyi_updater.exceptions import PyiUpdaterError
 
-
-if pyi_version < (2, 1, 1):
-    raise PyiUpdaterError('Must have at least PyInstaller v2.1.1',
-                          expected=True)
-
 # VERSION = (0, 9, 2, u'dev', int(time.time()))
 VERSION = (0, 9, 1)
 
@@ -60,6 +55,9 @@ class PyiUpdater(object):
         cfg_obj (instance): object with config attributes
     """
     def __init__(self, cfg_obj=None):
+        if pyi_version < (2, 1, 1):
+            raise PyiUpdaterError('Must have at least PyInstaller v2.1.1',
+                                  expected=True)
         self.config = Config()
         if cfg_obj:
             self.update_config(cfg_obj)
