@@ -12,8 +12,8 @@ except ImportError:
 from pyi_updater.config import Config
 from pyi_updater.exceptions import PyiUpdaterError
 
-# VERSION = (0, 9, 3, u'dev', int(time.time()))
-VERSION = (0, 9, 2)
+VERSION = (0, 9, 3, u'dev', int(time.time()))
+# VERSION = (0, 9, 2)
 
 
 def get_version():
