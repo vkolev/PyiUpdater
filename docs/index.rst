@@ -6,15 +6,15 @@ Welcome to PyiUpdater
 What is PyiUpdater?
 ~~~~~~~~~~~~~~~~~~~
 
-In its simplest form PyiUpdater is a collection of modules, when used together, makes its super simple to add auto-update functionality to your app.
+In its simplest form PyiUpdater is a collection of modules, when used together, makes its super simple to add auto-update functionality to your app. Support for patch updates are included out of the box :)
 
 A high level break down of the framework consists of 3 parts.
 
 Client
-    Is the module you import into your app that provides the update functionality.
+    Is the module you import into your app that provides the update functionality. It also uses the Patcher module internally.
 
 Core
-    Consists of the Archiver, Downloader, FileCrypt, KeyHandler, Patcher & Utils.
+    Consists of the Archiver, Downloader, FileCrypt, KeyHandler, PackageHandler & Utils.
 
 CLI
     A terminal app that provides menu driven access to meta-data grabbing, update diff's, signing & uploading of application updates. The CLI uses the core to provide this functionality.
@@ -35,6 +35,7 @@ Contents:
     usage
     architecture
     folder_structure
+    contributing
     api
     release_history
 
