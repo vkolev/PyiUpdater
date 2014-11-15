@@ -28,7 +28,7 @@ class FileDownloader(object):
 
         hexdigest str(str): The hash checksum of the file to download
     """
-    def __init__(self, filename, urls, hexdigest, verify=True):
+    def __init__(self, filename, urls, hexdigest=None, verify=True):
         self.filename = filename
         if isinstance(urls, list) is False:
             self.urls = [urls]
@@ -143,8 +143,8 @@ class FileDownloader(object):
         # Downloads file to memory.  Keeps internal reference
         data = None
         for url in self.urls:
-            print url
             file_url = url + self.filename
+            log.debug('Url for request: {}'.format(file_url))
             try:
                 data = self.http_pool.urlopen('GET', file_url,
                                               preload_content=False)
@@ -167,6 +167,7 @@ class FileDownloader(object):
             else:
                 break
 
+            # Try request again with with ' ' in url replaced with +
             if data is None:
                 # Let's try one more time with the fixed url
                 try:
@@ -179,6 +180,7 @@ class FileDownloader(object):
                     self.file_binary_data = None
                 else:
                     break
+
         log.debug(u'Downloading {} from:\n{}'.format(self.filename, file_url))
         return data
 
@@ -189,7 +191,14 @@ class FileDownloader(object):
 
     def _check_hash(self):
         # Checks hash of downloaded file
+        if self.hexdigest is None:
+            # No hash provided to check.
+            # So just return any data recieved
+            return True
         if self.file_binary_data is None:
+            # Exit quickly if we got nohting to compare
+            # Also I'm sure we'll get an exception trying to
+            # pass None to get hash :)
             return False
         log.debug(u'Checking file hash')
         log.debug(u'Update hash: {}'.format(self.hexdigest))

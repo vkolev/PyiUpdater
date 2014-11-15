@@ -59,7 +59,7 @@ class Client(object):
         #       Updated how client is initialized.  Can still be
         #       used the old way but the new way is way more efficient
         #       Just pass in the config object and the client takes care
-        #       of the rest.  No need to initialize NotSoTuf object first!
+        #       of the rest.  No need to initialize PyiUpater object first!
         if hasattr(obj, 'config'):
             config = obj.config.copy()
         else:
@@ -246,25 +246,55 @@ class Client(object):
         except ClientError as err:
             log.error(str(err), exc_info=True)
 
+    def _get_manifest_filesystem(self):
+        with ChDir(self.data_dir):
+            if not os.path.exists(self.version_file):
+                return None
+            else:
+                try:
+                    with open(self.version_file, u'r') as f:
+                        data = f.read()
+                except Exception as err:
+                    log.debug(str(err))
+                    data = None
+
+                return data
+
+    def _get_manifest_online(self):
+        try:
+            fd = FileDownloader(self.version_file, self.update_urls)
+            data = fd.download_verify_return()
+            return data
+        except Exception as err:
+            log.debug(str(err))
+            return None
+
+    def _write_manifest_2_filesystem(self, data):
+        with ChDir(self.data_dir):
+            with open(self.version_file, u'w') as f:
+                f.write(data)
+
     def _get_update_manifest(self):
         #  Downloads & Verifies version file signature.
         log.debug(u'Loading version file...')
-        for u in self.update_urls:
-            url = u + self.version_file
-            try:
-                # v = self.http_pool.urlopen('GET', url, preload_content=False)
-                v = self.http_pool.urlopen('GET', url)
-                log.debug('Data type: {}'.format(type(v.data)))
-                self.json_data = json.loads(v.data)
-                self.ready = True
-            except urllib3.exceptions.SSLError:
-                log.error(u'SSL cert not verified')
-            except ValueError:
-                log.error(u'Json failed to load')
-            except Exception as e:
-                log.error(str(e))
-            else:
-                break
+
+        data = self._get_manifest_online()
+        if data is None:
+            data = self._get_manifest_filesystem()
+        else:
+            self._write_manifest_2_filesystem(data)
+
+        try:
+            log.debug('Data type: {}'.format(type(data)))
+            self.json_data = json.loads(data)
+            self.ready = True
+        except ValueError:
+            log.error(u'Json failed to load')
+        except Exception as e:
+            # Catch all for debugging purposes.
+            # If seeing this line come up a lot in debug logs
+            # please open an issue on github or submit a pull request
+            log.error(str(e))
 
         if self.json_data is None:
             self.json_data = {}
@@ -297,7 +327,12 @@ class Client(object):
 
         else:
             log.error(u'No sig in version file')
-        self.star_access_update_data = EasyAccessDict(self.json_data)
+
+        if self.json_data is None:
+            j_data = {}
+        else:
+            j_data = self.json_data.copy()
+        self.star_access_update_data = EasyAccessDict(j_data)
 
     def _extract_update(self):
         with ChDir(self.update_folder):
@@ -515,7 +550,19 @@ DEL "%~f0" """.format(updated_app, current_app, fix, current_app))
             log.debug(u'Adding base binary v{} to updates '
                       u'folder'.format(self.version))
             # Changing in to directory of currently running exe
-            with ChDir(os.path.dirname(sys.argv[0])):
+
+            if get_system() == u'mac':
+                # We are in an application bundle. Must get parent
+                # dir of bundle.
+                if self.current_app_dir.endswith('MacOS') is True:
+                    log.debug('Looks like we\'re dealing with a Mac Gui')
+                    p_dir = self._get_mac_dot_app_dir(self.current_app_dir)
+                else:
+                    p_dir = os.path.dirname(sys.agrv[0])
+            else:
+                p_dir = os.path.dirname(sys.agrv[0])
+
+            with ChDir(p_dir):
                 name = self.name
                 if get_system() == u'win':
                     name += u'.exe'
@@ -524,6 +571,7 @@ DEL "%~f0" """.format(updated_app, current_app, fix, current_app))
                     if not os.path.exists(name):
                         name += u'.app'
 
+                # Grabbing ext from filename from manifest
                 archive_ext = os.path.splitext(current_archive_filename)[1]
                 if u'gz' in archive_ext:
                     archive_format = u'gztar'
@@ -631,31 +679,33 @@ DEL "%~f0" """.format(updated_app, current_app, fix, current_app))
         return filename
 
     def _sanatize_update_url(self, url, urls):
-        # Adds trailing slash to urls provided in config if
-        # not already present
-        #
-        # Args:
-        #    url (str)/(list): urls to process
-        #
-        # Returns:
-        #    (list) Urls with trailing slash
-        if not isinstance(url, six.string_types):
-            url = ''
-        if not isinstance(urls, list):
-            # If by accident some passes sting to update_urls
-            # instead of update_url
-            if isinstance(urls, six.string_types):
-                urls = [urls]
-            else:
-                urls = []
-        urls.append(url)
+        _urls = []
+        if isinstance(url, list):
+            log.debug('WARNING UPDATE_URL value should only be string.')
+            _urls += url
+        elif isinstance(url, six.string_types):
+            _urls.append(url)
+        else:
+            log.debug('UPDATE_URL should be type "{}" got '
+                      '"{}"'.format(type(''), type(url)))
+
+        if isinstance(urls, list):
+            _urls += urls
+        elif isinstance(urls, six.string_types):
+            log.debug('WARNING UPDATE_URLS value should only be a list.')
+            _urls.append(urls)
+        else:
+            log.debug('UPDATE_URLS should be type "{}" got '
+                      '"{}"'.format(type([]), type('')))
+
         sanatized_urls = []
-        # Adds trailing slash to end of url
-        # if not already provided
-        for u in urls:
+        # Adds trailing slash to end of url if not already provided.
+        # Doing this so when requesting online resources we only
+        # need to add the resouce name to the end of the request.
+        for u in _urls:
             if not u.endswith(u'/'):
                 sanatized_urls.append(u + u'/')
             else:
                 sanatized_urls.append(u)
-
+        # Just removing duplicates
         return list(set(sanatized_urls))
