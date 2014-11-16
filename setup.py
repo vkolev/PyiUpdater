@@ -31,7 +31,7 @@ setup(
         'certifi',
         'cryptography',
         'ed25519',
-        'jms-utils >= 0.3.2',
+        'jms-utils >= 0.4',
         'pyinstaller >= 2.1.1dev',
         'simple-pbkdf2',
         'six',

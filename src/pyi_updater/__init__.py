@@ -1,7 +1,8 @@
 import logging
-import time
 
 logger = logging.getLogger(__name__)
+
+from jms_utils.version import _get_version, get_build
 
 try:
     from PyInstaller import VERSION as temp_version
@@ -12,23 +13,13 @@ except ImportError:
 from pyi_updater.config import Config
 from pyi_updater.exceptions import PyiUpdaterError
 
-VERSION = (0, 9, 3, u'dev', int(time.time()))
-# VERSION = (0, 9, 2)
+
+VERSION = (0, 10, 0, u'dev', get_build())
+# VERSION = (0, 10, 0)
 
 
 def get_version():
     return _get_version(VERSION)
-
-
-def _get_version(v):
-    version = '{}.{}'.format(v[0], v[1])
-    if v[2]:
-        version = '{}.{}'.format(version, v[2])
-    if len(VERSION) >= 4 and v[3]:
-        version = '{}-{}'.format(version, v[3])
-        if v[3] == 'dev' and len(VERSION) >= 5 and v[4] > 0:
-            version = '{}{}'.format(version, v[4])
-    return version
 
 
 class PyiUpdater(object):
