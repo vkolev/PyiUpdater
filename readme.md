@@ -23,7 +23,8 @@
 
     $ pip install PyiUpdater --pre --process-dependency-links
 
-###### S3 & SCP uploaders are available with
+#### Extras:
+######S3 & SCP uploaders are available with
 
     $ pip install PyiUpdater[s3] --process-dependency-links
 
@@ -39,7 +40,7 @@ or
     $ pyiupdater app.py --app-name=APP --app-version=0.1.0
 
 
-#### For updating version file & creating update diff's
+#### For creating update diff's, updating your version file & uploading your update
 
 ###### Using the UI
 
@@ -60,22 +61,6 @@ or
 
 ## Support Archive Formats
 ###### Zip for Windows and GZip for Mac & Linux.  Constraints being on patch size.
-
-#### Archive maker utility usage
-The filename for an update must include system version in form of mac, win, arm, nix or nix64. For example, FILE1 could be myapp-mac & FILE2 could be mylib-nix.
-
-    $ pyi-archiver -h
-    Usage: pyi-archive -n "My App" -v 1.0.1 FILE [FILE...]
-    Usage: pyi-archive -i gzip -n "My App" -v 1.0.1 FILE [FILE...]
-
-    Options:
-      -h, --help            show this help message and exit
-      -c ARCHIVER, --archiver=ARCHIVER
-                            Type of archive compression to use
-      -n NAME, --name=NAME  Name of update
-      -v VERSION, --version=VERSION
-                            Version # of update. Must have Major.Minor.Patch even if it's 0 eg. 1.1.0
-      --keep                Do not delete source file
 
 #### Archive Patch Tests:
 Format  -  Src  -  Dst  -  Patch
