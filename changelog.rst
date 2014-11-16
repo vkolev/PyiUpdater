@@ -3,11 +3,14 @@ v0.10.0 - master
 .. note:: This version is not yet released and is under active development.
 
 * Added
+
   - Secure downloading of manifest
   - Initial support for offline update
 
 * Updated
+
   - URL sanitizing
+
     - Better handling of types passed to config
       class attributes
 

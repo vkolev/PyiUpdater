@@ -17,19 +17,19 @@
 
 #### Stable:
 
-    $ pip install PyiUpdater
+    $ pip install PyiUpdater --process-dependency-links
 
 #### Dev:
 
-    $ pip install PyiUpdater --pre
+    $ pip install PyiUpdater --pre --process-dependency-links
 
 ###### S3 & SCP uploaders are available with
 
-    $ pip install PyiUpdater[s3]
+    $ pip install PyiUpdater[s3] --process-dependency-links
 
 or
 
-    $ pip install PyiUpdater[scp]
+    $ pip install PyiUpdater[scp] --process-dependency-links
 
 
 ## Usage:

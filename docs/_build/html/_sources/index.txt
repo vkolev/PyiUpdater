@@ -37,6 +37,7 @@ Contents:
     folder_structure
     contributing
     api
+    license
     release_history
 
 

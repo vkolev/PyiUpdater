@@ -19,7 +19,7 @@ setup(
     license='Apache License 2.0',
     dependency_links = [
         'https://github.com/pyinstaller/pyinstaller/tarball/'
-        'develop#egg=pyinstaller-2.1.1'],
+        'develop#egg=pyinstaller-2.1.1dev'],
     extras_require = {
         's3': 'PyiUpdater-s3-Plugin>=0.11',
         'scp': 'PyiUpdater-scp-Plugin>=0.9',
@@ -33,8 +33,8 @@ setup(
         'ed25519',
         'jms-utils >= 0.3.2',
         'pyinstaller >= 2.1.1dev',
-        'six',
         'simple-pbkdf2',
+        'six',
         'stevedore',
         'urllib3',
         ],

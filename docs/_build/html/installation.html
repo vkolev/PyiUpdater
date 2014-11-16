@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installation &mdash; PyiUpdater 0.9.3-dev1415934819 documentation</title>
+    <title>Installation &mdash; PyiUpdater 0.9.3-dev1416111525 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.9.3-dev1415934819',
+        VERSION:     '0.9.3-dev1416111525',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.9.3-dev1415934819 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9.3-dev1416111525 documentation" href="index.html" />
     <link rel="next" title="Configuration" href="configuration.html" />
     <link rel="prev" title="Downloads" href="downloads.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.9.3-dev1415934819</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9.3-dev1416111525</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -75,6 +75,7 @@
 <li class="toctree-l1"><a class="reference internal" href="folder_structure.html">Folder Structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release_history.html">Release History</a></li>
 </ul>
 </ul>
@@ -139,20 +140,20 @@
       
   <div class="section" id="installation">
 <span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>PyiUpdater depends on a few external libraries: <a class="reference external" href="http://aws.amazon.com/sdkforpython/">boto</a>,  <a class="reference external" href="https://github.com/ilanschnell/bsdiff4">bsdiff4</a>, <a class="reference external" href="https://cryptography.io/en/latest/">cryptography</a>, <a class="reference external" href="https://github.com/paramiko/paramiko">paramiko</a>, <a class="reference external" href="http://www.dlitz.net/software/python-pbkdf2/">pbkdf2</a> , <a class="reference external" href="https://www.dlitz.net/software/pycrypto/">pycrypto</a> &amp; <a class="reference external" href="https://github.com/jbardin/scp.py">scp</a>. Bsdiff4 is only required to make patches, not to apply them.  These libraries are not documented here.</p>
+<p>PyiUpdater depends on a few external libraries: <a class="reference external" href="https://pypi.python.org/pypi/appdirs/">appdirs</a>, <a class="reference external" href="https://pypi.python.org/pypi/blinker">blinker</a>, <a class="reference external" href="http://aws.amazon.com/sdkforpython/">boto</a>,  <a class="reference external" href="https://github.com/ilanschnell/bsdiff4">bsdiff4</a>, <a class="reference external" href="https://pypi.python.org/pypi/certifi">certifi</a>, <a class="reference external" href="https://cryptography.io/en/latest/">cryptography</a>, <a class="reference external" href="https://pypi.python.org/pypi/ed25519">ed25519</a>, <a class="reference external" href="https://pypi.python.org/pypi/JMS-Utils">jms_utils</a> , <a class="reference external" href="https://github.com/pyinstaller/pyinstaller">pyinstaller</a>, <a class="reference external" href="https://pypi.python.org/pypi/simple-pbkdf2">simple_pbkdf2</a>, <a class="reference external" href="https://pypi.python.org/pypi/six">six</a>, <a class="reference external" href="https://pypi.python.org/pypi/stevedore">stevedore</a> &amp; <a class="reference external" href="https://pypi.python.org/pypi/urllib3">urllib3</a>. Bsdiff4 is only required to make patches, not to apply them.  These libraries are not documented here.</p>
 <p>So how do you get all that on your computer quickly?</p>
 <p>Install from pip:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ pip install PyiUpdater
+<div class="highlight-python"><div class="highlight"><pre>$ pip install PyiUpdater --process-dependency-links
 </pre></div>
 </div>
 <p>S3 &amp; SCP uploaders are available with:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ pip install PyiUpdater[s3]
+<div class="highlight-python"><div class="highlight"><pre>$ pip install PyiUpdater[s3] --process-dependency-links
 
-$ pip install PyiUpdater[scp]
+$ pip install PyiUpdater[scp] --process-dependency-links
 </pre></div>
 </div>
 <p>If you want the bleeding edge download a pre-release version. WARNING - pre released version may not work as expected:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ pip install PyiUpdater --pre
+<div class="highlight-python"><div class="highlight"><pre>$ pip install PyiUpdater --pre --process-dependency-links
 </pre></div>
 </div>
 </div>
@@ -170,7 +171,7 @@ $ pip install PyiUpdater[scp]
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Nov 13, 2014.<br/>
+      Last updated on Nov 15, 2014.<br/>
     </p>
   </div>
 </footer>
