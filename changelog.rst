@@ -5,23 +5,36 @@ v0.10.0 - master
 * Added
 
   - Secure downloading of manifest
-  - Initial support for offline update
+  - Offline update
+
+    - Upon successful online version manifest signature verification, the version file manifest will be written to the app data folder.
+
+    - Calls to client.download() will check if update has already been downloaded & return True if the checksum verifies before attempting to download update.
+
   - Pyinstaller wrapper
-    - Using the following command compiles your script
-      and compress it ready for file diff and upload::
+
+    - Using the following command compiles your script and archives it ready for file diff and upload::
 
       $ pyiupdater app.py --app-name=APP --app-version=0.1.0
+
+  - Deprecated Warnings
+
+    - use client.extract() instead of client.install()
+    - use client.extract_restart() instead of client.install_restart()
 
 * Updated
 
   - URL sanitizing
 
-    - Better handling of types passed to config
-      class attributes
+    - Better handling of types passed to config class attributes
 
 * Fixed
 
 * Removed
+
+  - Common util functions
+
+    - They were added to jms-utils
 
 
 v0.9.2 - 2014/10/19

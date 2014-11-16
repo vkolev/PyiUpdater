@@ -721,22 +721,27 @@ DEL "%~f0" """.format(updated_app, current_app, fix, current_app))
     def _sanatize_update_url(self, url, urls):
         _urls = []
         if isinstance(url, list):
-            log.debug('WARNING UPDATE_URL value should only be string.')
+            log.debug(u'WARNING UPDATE_URL value should only be string.')
             _urls += url
+        elif isinstance(url, tuple):
+            log.debug(u'WARNING UPDATE_URL value should only be string.')
+            _urls += list(url)
         elif isinstance(url, six.string_types):
             _urls.append(url)
         else:
-            log.debug('UPDATE_URL should be type "{}" got '
-                      '"{}"'.format(type(''), type(url)))
+            log.debug(u'UPDATE_URL should be type "{}" got '
+                      u'"{}"'.format(type(''), type(url)))
 
         if isinstance(urls, list):
             _urls += urls
+        elif isinstance(url, tuple):
+            _urls += list(url)
         elif isinstance(urls, six.string_types):
-            log.debug('WARNING UPDATE_URLS value should only be a list.')
+            log.debug(u'WARNING UPDATE_URLS value should only be a list.')
             _urls.append(urls)
         else:
-            log.debug('UPDATE_URLS should be type "{}" got '
-                      '"{}"'.format(type([]), type('')))
+            log.debug(u'UPDATE_URLS should be type "{}" got '
+                      u'"{}"'.format(type([]), type('')))
 
         sanatized_urls = []
         # Adds trailing slash to end of url if not already provided.
