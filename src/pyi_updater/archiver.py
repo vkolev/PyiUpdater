@@ -78,16 +78,15 @@ def main(my_opts=None):
             elif os.path.exists(f + '.app'):
                 f += '.app'
                 files.append(f)
-        else:
-            if not os.path.exists(f):
-                not_found_files.append(f)
-            elif support_files(f) is False:
-                not_supported.append(f)
             else:
-                files.append(f)
-    print(files)
+                if not os.path.exists(f):
+                    not_found_files.append(f)
+                elif support_files(f) is False:
+                    not_supported.append(f)
+                else:
+                    files.append(f)
     warnings.warn('Will be replace with pyiupdater command',
-                 DeprecationWarning)
+                  DeprecationWarning)
     # Used for testing purposes
     if len(files) < 1:
         return False

@@ -157,7 +157,9 @@ class Client(object):
         return True
 
     def is_downloaded(self):
-        return self._is_downloaded()
+        if self.name is None:
+            return False
+        return self._is_downloaded(self.name)
 
     def download(self):
         """Will download the package update that was referenced
@@ -172,8 +174,9 @@ class Client(object):
 
                 False - Download failed
         """
-        if self._is_downloaded() is True:
-            return True
+        if self.name is not None:
+            if self._is_downloaded(self.name) is True:
+                return True
 
         if self.ready_to_update is False:
             return False
