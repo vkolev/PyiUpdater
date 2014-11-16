@@ -4,6 +4,7 @@ import os
 import shutil
 import sys
 import tarfile
+import warnings
 from zipfile import ZipFile
 
 from jms_utils.terminal import get_terminal_size, terminal_formatter
@@ -61,13 +62,31 @@ def main(my_opts=None):
     for f in args[1:]:
         # If I cant find the file or it isn't a supported
         # platform then it gets put on the naughty list
-        if not os.path.exists(f):
-            not_found_files.append(f)
-        elif support_files(f) is False:
-            not_supported.append(f)
-        else:
+        f_split = os.path.splitext(f)
+        basename = f_split[0]
+        ext = f_split[1]
+        if ext == '.app':
+            # Removing binary built alongside mac
+            # bundled apps
+            if os.path.exists(basename):
+                os.remove(basename)
             files.append(f)
-    print(files)
+        elif ext == '':
+            if os.path.exists(f + '.exe'):
+                f += '.exe'
+                files.append(f)
+            elif os.path.exists(f + '.app'):
+                f += '.app'
+                files.append(f)
+            else:
+                if not os.path.exists(f):
+                    not_found_files.append(f)
+                elif support_files(f) is False:
+                    not_supported.append(f)
+                else:
+                    files.append(f)
+    warnings.warn('Will be replace with pyiupdater command',
+                  DeprecationWarning)
     # Used for testing purposes
     if len(files) < 1:
         return False

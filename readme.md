@@ -17,29 +17,38 @@
 
 #### Stable:
 
-    $ pip install PyiUpdater
+    $ pip install PyiUpdater --process-dependency-links
 
 #### Dev:
 
-    $ pip install PyiUpdater --pre
+    $ pip install PyiUpdater --pre --process-dependency-links
 
-###### S3 & SCP uploaders are available with
+#### Extras:
+######S3 & SCP uploaders are available with
 
-    $ pip install PyiUpdater[s3]
+    $ pip install PyiUpdater[s3] --process-dependency-links
 
 or
 
-    $ pip install PyiUpdater[scp]
+    $ pip install PyiUpdater[scp] --process-dependency-links
 
 
 ## Usage:
 
-#### Start guided setup with pip or setup.py install
+#### To compile & package your script
+
+    $ pyiupdater app.py --app-name=APP --app-version=0.1.0
+
+
+#### For creating update diff's, updating your version file & uploading your update
+
+###### Using the UI
 
     $ pyi-cli
 
-#### Can also be used programmatically
-######[Click Here To See Example Work Flow](https://github.com/JohnyMoSwag/PyiUpdater/tree/master/examples "Example Usage")
+
+###### Using programmatically
+######[Click Here To See Example Work Flow](https://github.com/JohnyMoSwag/PyiUpdater/tree/master/demos "Example Usage")
 
 
 ## Write your own upload plugin
@@ -51,23 +60,7 @@ or
 ###### [SCP Plugin](https://github.com/JohnyMoSwag/pyiupdater-scp-plugin "SCP Plugin")
 
 ## Support Archive Formats
-###### Only zip and gzipped for now.  Constraints being on patch size.
-
-#### Archive maker utility usage
-The filename for an update must include system version in form of mac, win, arm, nix or nix64. For example, FILE1 could be myapp-mac & FILE2 could be mylib-nix.
-
-    $ pyi-archiver -h
-    Usage: pyi-archive -n "My App" -v 1.0.1 FILE [FILE...]
-    Usage: pyi-archive -i gzip -n "My App" -v 1.0.1 FILE [FILE...]
-
-    Options:
-      -h, --help            show this help message and exit
-      -c ARCHIVER, --archiver=ARCHIVER
-                            Type of archive compression to use
-      -n NAME, --name=NAME  Name of update
-      -v VERSION, --version=VERSION
-                            Version # of update. Must have Major.Minor.Patch even if it's 0 eg. 1.1.0
-      --keep                Do not delete source file
+###### Zip for Windows and GZip for Mac & Linux.  Constraints being on patch size.
 
 #### Archive Patch Tests:
 Format  -  Src  -  Dst  -  Patch

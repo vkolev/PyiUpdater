@@ -4,6 +4,7 @@ import os
 import shutil
 import sys
 import tarfile
+import warnings
 from zipfile import ZipFile
 
 from appdirs import user_cache_dir
@@ -20,7 +21,7 @@ from pyi_updater.config import Config
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.patcher import Patcher
-from pyi_updater.utils import (get_version_number,
+from pyi_updater.utils import (get_hash, get_version_number,
                                EasyAccessDict,
                                version_string_to_tuple)
 
@@ -155,6 +156,11 @@ class Client(object):
         self.ready_to_update = True
         return True
 
+    def is_downloaded(self):
+        if self.name is None:
+            return False
+        return self._is_downloaded(self.name)
+
     def download(self):
         """Will download the package update that was referenced
         with check update.
@@ -168,6 +174,10 @@ class Client(object):
 
                 False - Download failed
         """
+        if self.name is not None:
+            if self._is_downloaded(self.name) is True:
+                return True
+
         if self.ready_to_update is False:
             return False
         patch_success = self._patch_update(self.name, self.version)
@@ -185,8 +195,8 @@ class Client(object):
         self._remove_old_updates()
         return True
 
-    def install_restart(self):
-        """ Will install (unzip) the update, overwrite the current app,
+    def extract_restart(self):
+        """ Will extract (unzip) the update, overwrite the current app,
         then restart the app using the updated binary.
 
         On windows Proxy method for :meth:`_extract_update` &
@@ -206,20 +216,25 @@ class Client(object):
         except ClientError as err:
             log.error(str(err), exc_info=True)
 
-    def install(self):
+    def install_restart(self):
+        warnings.warn('Will be removed in v1.0, use extract_restart',
+                      DeprecationWarning)
+        self.extract_restart()
+
+    def extract(self):
         """Will extract archived update and leave in update folder.
-        If updating a lib you can take over from there. If updating
-        an app this call should be followed by :meth:`restart` to
-        complete update.
+            If updating a lib you can take over from there. If updating
+            an app this call should be followed by :meth:`restart` to
+            complete update.
 
-        Proxy method for :meth:`_extract_update`.
+            Proxy method for :meth:`_extract_update`.
 
-        Returns:
-            (bool) Meanings::
+            Returns:
+                (bool) Meanings::
 
-                True - Install successful
+                    True - Install successful
 
-                False - Install failed
+                    False - Install failed
         """
         if get_system() == u'win':
             log.debug('Only supported on Unix like systems')
@@ -230,6 +245,11 @@ class Client(object):
             log.error(str(err), exc_info=True)
             return False
         return True
+
+    def install(self):
+        warnings.warn('Will be removed in v1.0, use the extract method',
+                      DeprecationWarning)
+        self.extract()
 
     def restart(self):
         """Will overwrite old binary with updated binary and
@@ -466,6 +486,26 @@ DEL "%~f0" """.format(updated_app, current_app, fix, current_app))
                 log.debug(u'Creating directory: {}'.format(d))
                 os.makedirs(d)
 
+    def _is_downloaded(self, name):
+        latest = self._get_highest_version(name)
+
+        filename = self._get_filename(name,
+                                      latest)
+
+        hash_key = u'{}*{}*{}*{}*{}'.format(self.updates_key, name,
+                                            latest, self.platform,
+                                            u'file_hash')
+        _hash = self.star_access_update_data.get(hash_key)
+        with ChDir(self.update_folder):
+            if not os.path.exists(filename):
+                return False
+            with open(filename, u'rb') as f:
+                data = f.read()
+            if _hash == get_hash(data):
+                return True
+            else:
+                return False
+
     def _patch_update(self, name, version):
         # Updates the binary by patching
         #
@@ -681,22 +721,27 @@ DEL "%~f0" """.format(updated_app, current_app, fix, current_app))
     def _sanatize_update_url(self, url, urls):
         _urls = []
         if isinstance(url, list):
-            log.debug('WARNING UPDATE_URL value should only be string.')
+            log.debug(u'WARNING UPDATE_URL value should only be string.')
             _urls += url
+        elif isinstance(url, tuple):
+            log.debug(u'WARNING UPDATE_URL value should only be string.')
+            _urls += list(url)
         elif isinstance(url, six.string_types):
             _urls.append(url)
         else:
-            log.debug('UPDATE_URL should be type "{}" got '
-                      '"{}"'.format(type(''), type(url)))
+            log.debug(u'UPDATE_URL should be type "{}" got '
+                      u'"{}"'.format(type(''), type(url)))
 
         if isinstance(urls, list):
             _urls += urls
+        elif isinstance(url, tuple):
+            _urls += list(url)
         elif isinstance(urls, six.string_types):
-            log.debug('WARNING UPDATE_URLS value should only be a list.')
+            log.debug(u'WARNING UPDATE_URLS value should only be a list.')
             _urls.append(urls)
         else:
-            log.debug('UPDATE_URLS should be type "{}" got '
-                      '"{}"'.format(type([]), type('')))
+            log.debug(u'UPDATE_URLS should be type "{}" got '
+                      u'"{}"'.format(type([]), type('')))
 
         sanatized_urls = []
         # Adds trailing slash to end of url if not already provided.

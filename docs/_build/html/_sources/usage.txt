@@ -61,22 +61,6 @@ After setup is complete you'll be greeted with the screen below::
     5. Quit
 
 
-Archive maker utility usage
----------------------------
-The filename for an update must include mac, win, arm, nix or nix64. For example, FILE1 could be myapp-mac & FILE2 mylib-nix. The archiver uses this for selecting the correct archive format and naming the final archive::
-
-    $ pyi-archiver -h
-    Usage: pyi-archive -n "My App" -v 1.0.1 FILE1 FILE2
-    Usage: pyi-archive -n "My App" -v 1.0.1 FILE1 FILE2
-
-    Options:
-      -h, --help            show this help message and exit
-      -n NAME, --name=NAME  Name of update
-      -v VERSION, --version=VERSION
-                            Version # of update. Must have Major.Minor.Patch even if it's 0 eg. 1.1.0
-      --keep                Do not delete source file
-
-
 Demos
 -----
 So if you opt not to use the cli interface & instead want to integrate PyiUpdater into your build, check out the progmatically.py demo.

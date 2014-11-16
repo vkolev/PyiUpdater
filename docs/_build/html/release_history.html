@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release History &mdash; PyiUpdater 0.9.3-dev1415934819 documentation</title>
+    <title>Release History &mdash; PyiUpdater 0.10 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.9.3-dev1415934819',
+        VERSION:     '0.10',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,8 +28,8 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.9.3-dev1415934819 documentation" href="index.html" />
-    <link rel="prev" title="API" href="api.html" />
+    <link rel="top" title="PyiUpdater 0.10 documentation" href="index.html" />
+    <link rel="prev" title="License" href="license.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -49,12 +49,11 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.9.3-dev1415934819</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
-            <li class="divider-vertical"></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -74,6 +73,7 @@
 <li class="toctree-l1"><a class="reference internal" href="folder_structure.html">Folder Structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Release History</a></li>
 </ul>
 </ul>
@@ -110,7 +110,7 @@
               
                 
   <li>
-    <a href="api.html" title="Previous Chapter: API"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; API</span>
+    <a href="license.html" title="Previous Chapter: License"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; License</span>
     </a>
   </li>
               
@@ -152,6 +152,59 @@
 <p class="first admonition-title">Note</p>
 <p class="last">This version is not yet released and is under active development.</p>
 </div>
+<ul>
+<li><p class="first">Added</p>
+<ul>
+<li><p class="first">Secure downloading of manifest</p>
+</li>
+<li><p class="first">Offline update</p>
+<ul class="simple">
+<li>Upon successful online version manifest signature verification, the version file manifest will be written to the app data folder.</li>
+<li>Calls to client.download() will check if update has already been downloaded &amp; return True if the checksum verifies before attempting to download update.</li>
+</ul>
+</li>
+<li><p class="first">Pyinstaller wrapper</p>
+<ul>
+<li><p class="first">Using the following command compiles your script and archives it ready for file diff and upload:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pyiupdater app.py --app-name=APP --app-version=0.1.0
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first">Deprecated Warnings</p>
+<ul class="simple">
+<li>use client.extract() instead of client.install()</li>
+<li>use client.extract_restart() instead of client.install_restart()</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">Updated</p>
+<ul class="simple">
+<li>URL sanitizing<ul>
+<li>Better handling of types passed to config class attributes</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">Fixed</p>
+<ul class="simple">
+<li>Archiving currently running app<ul>
+<li>Will now archive Mac.app apps</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">Removed</p>
+<ul class="simple">
+<li>Common util functions<ul>
+<li>They were added to jms-utils</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 <div class="section" id="v0-9-2-2014-10-19">
 <h2>v0.9.2 - 2014/10/19<a class="headerlink" href="#v0-9-2-2014-10-19" title="Permalink to this headline">¶</a></h2>
@@ -407,7 +460,7 @@ to correct class attributes</li>
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Nov 13, 2014.<br/>
+      Last updated on Nov 16, 2014.<br/>
     </p>
   </div>
 </footer>

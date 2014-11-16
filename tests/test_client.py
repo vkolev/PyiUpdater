@@ -67,4 +67,4 @@ def test_download():
     assert client.app_name == u'jms'
     assert client.update_check(client.app_name, '0.0.1') is True
     assert client.download() is True
-    assert client.install() is True
+    assert client.extract() is True

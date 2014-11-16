@@ -1,5 +1,3 @@
-import sys
-
 from pyi_updater import PyiUpdater
 from pyi_updater.key_handler import KeyHandler
 from pyi_updater.package_handler import PackageHandler
@@ -15,17 +13,18 @@ class DefaultConfig(object):
 
     Company_Name = "Acme"
 
-    # Public Key used by your app to verify update data
-    # REQUIRED
+    # Used for verion file signature verification
     PUBLIC_KEY = (17022351873105053147088163105983577257966692560663543347938383809747979750470266069914732864252844768385355907146386077123799054565611846357055920249193620195180631869615743769334796990192318489812142889414970955334254855590299723893423021589397127184769063465102962682096447452967415650677942469205402943507368208858916471188750637174661509489946569932170884064066442273331420184865693888703840905553949492223898597770128267763408408345292193296577459922276202765690561166119202208933879945227147091774656864580608582752643190913932634012968436576443560457625241838298968657806362615969869008716434463574851608691099L, 65537)
 
     # Online repository where you host your packages
     # and version file
-    UPDATE_URL = 'https://s3-us-west-1.amazonaws.com/not-so-tuf/'
+    UPDATE_URL = 'https://acme.com/updates'
     # List of urls to check if version file & update data
     # For each object need the urls will be used in succession
     # until the required object is found
-
+    UPDATE_URLS = ['https://acme.com/updates',
+                   'https://mirror.acme.com/updates',
+                   'https://acme.amazon.com/updates']
     UPDATE_PATCHES = True
 
     # This is a path on the remote server or bucket name
@@ -43,7 +42,7 @@ class DefaultConfig(object):
     PASSWORD = None
 
 
-def setup():
+def main():
     # Setting up Config object
     default_config = DefaultConfig()
 
@@ -71,6 +70,7 @@ def setup():
     # Only need to run once on a new project but it's
     # ok if ran multipule times
     package_handler.setup()
+    key_handler.make_keys()
 
     # Now place new packages in the folder named
     # "new" in the pyi-data directory
@@ -84,29 +84,6 @@ def setup():
     # This signs the update manifest & copies it
     # to the deploy folder
     key_handler.sign_update()
-
-
-def make_keys():
-    pyi = PyiUpdater(DefaultConfig())
-    key_handler = KeyHandler(pyi)
-    # Making a new set of keys
-    # Keys will be place in the keys
-    # Directory, in the pyi-data folder
-    # *** Should not be ran again after
-    # you deploy your app!!!! ***
-    # If you need to make new keys pass
-    # overwrite=True to make_keys
-    key_handler.make_keys()
-
-
-def main():
-    ans = raw_input('1. Setup\n2. Make Keys\n*. Exit\n-->')
-    if ans == '1':
-        setup()
-    elif ans == '2':
-        make_keys()
-    else:
-        sys.exit(0)
 
 if __name__ == '__main__':
     main()
