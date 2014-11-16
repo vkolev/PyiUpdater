@@ -14,8 +14,8 @@ from pyi_updater.config import Config
 from pyi_updater.exceptions import PyiUpdaterError
 
 
-VERSION = (0, 10, 0, u'dev', get_build())
-# VERSION = (0, 10, 0)
+# VERSION = (0, 10, 0, u'dev', get_build())
+VERSION = (0, 10, 0)
 
 
 def get_version():
