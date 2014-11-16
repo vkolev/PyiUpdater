@@ -6,6 +6,11 @@ v0.10.0 - master
 
   - Secure downloading of manifest
   - Initial support for offline update
+  - Pyinstaller wrapper
+    - Using the following command compiles your script
+      and compress it ready for file diff and upload::
+
+      $ pyiupdater app.py --app-name=APP --app-version=0.1.0
 
 * Updated
 

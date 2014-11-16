@@ -6,24 +6,24 @@ Configuration
 .. tabularcolumns:: |p{6.5cm}|p{8.5cm}|
 
 ================================= =========================================
-``APP_NAME``                      Name of your app. Used with COMPANY_NAME
-                                  to create an update cache dir on end user
-                                  system.
-``COMPANY_NAME``                  Company or your name.  Used with APP_NAME
-                                  to create an update cache dir on end user
-                                  system.
-``PUBLIC_KEY``                    Used on client side for authentication
-``UPDATE_URL``                    Where clients search for updates
+``APP_NAME``                      (str) Name of your app. Used with
+                                  COMPANY_NAME to create an update cache dir on end user system.
+``COMPANY_NAME``                  (str) Company or your name.  Used with
+                                  APP_NAME to create an update cache dir on end user system.
+``PUBLIC_KEY``                    (tuple) Used on client side for
+                                  authentication
+``UPDATE_URL``                    (str) Where clients search for updates
                                   - * Deprecated! You can put a single url
                                   in the list of UPDATE_URLS *
-``UPDATE_URLS``                   A list of url(s) where a client will look
-                                  for needed update objects.
-``UPDATE_PATCHES``                nable/disable creation of patch updates
-``REMOTE_DIR``                    Remote directory/Bucket name to place
+``UPDATE_URLS``                   (list) A list of url(s) where a client will
+                                  look for needed update objects.
+``UPDATE_PATCHES``                (bool) Enable/disable creation of patch
+                                  updates
+``REMOTE_DIR``                    (str) Remote directory/Bucket name to place
                                   update files
-``HOST``                          Remote host to connect to for server
+``HOST``                          (str) Remote host to connect to for server
                                   uploads
-``USERNAME``                      Username/API Key for uploading updates
-``PASSWORD``                      Password/API Secret/Path to ssh private
+``USERNAME``                      (str) Username/API Key for uploading updates
+``PASSWORD``                      (str) Password/API Secret/Path to ssh private
                                   key or uploading updates
 ================================= =========================================

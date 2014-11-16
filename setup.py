@@ -45,6 +45,7 @@ setup(
     [console_scripts]
     pyi-cli=cli:main
     pyi-archiver = pyi_updater.archiver:main
+    pyiupdater = pyi_updater.pyiwrapper:wrapper
     """,
     classifiers=[
         'Development Status :: 4 - Beta',

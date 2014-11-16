@@ -34,12 +34,20 @@ or
 
 ## Usage:
 
-#### Start guided setup with pip or setup.py install
+#### To compile & package your script
+
+    $ pyiupdater app.py --app-name=APP --app-version=0.1.0
+
+
+#### For updating version file & creating update diff's
+
+###### Using the UI
 
     $ pyi-cli
 
-#### Can also be used programmatically
-######[Click Here To See Example Work Flow](https://github.com/JohnyMoSwag/PyiUpdater/tree/master/examples "Example Usage")
+
+###### Using programmatically
+######[Click Here To See Example Work Flow](https://github.com/JohnyMoSwag/PyiUpdater/tree/master/demos "Example Usage")
 
 
 ## Write your own upload plugin
@@ -51,7 +59,7 @@ or
 ###### [SCP Plugin](https://github.com/JohnyMoSwag/pyiupdater-scp-plugin "SCP Plugin")
 
 ## Support Archive Formats
-###### Only zip and gzipped for now.  Constraints being on patch size.
+###### Zip for Windows and GZip for Mac & Linux.  Constraints being on patch size.
 
 #### Archive maker utility usage
 The filename for an update must include system version in form of mac, win, arm, nix or nix64. For example, FILE1 could be myapp-mac & FILE2 could be mylib-nix.
