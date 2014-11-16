@@ -8,11 +8,9 @@ deps-upgrade:
 	pip install -r requirements.txt --upgrade
 
 deps-dev: deps
-	pip install -r requirements.txt
 	pip install -r dev/requirements.txt
 
 deps-dev-upgrade: deps-upgrade
-	pip install -r requirements.txt --upgrade
 	pip install -r dev/requirements.txt --upgrade
 
 pypi:

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Configuration &mdash; PyiUpdater 0.9.3-dev1416111525 documentation</title>
+    <title>Configuration &mdash; PyiUpdater 0.9.3-dev1416128257 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.9.3-dev1416111525',
+        VERSION:     '0.9.3-dev1416128257',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.9.3-dev1416111525 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9.3-dev1416128257 documentation" href="index.html" />
     <link rel="next" title="Usage" href="usage.html" />
     <link rel="prev" title="Installation" href="installation.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.9.3-dev1416111525</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9.3-dev1416128257</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -142,48 +142,48 @@
 <span id="id1"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
 <table border="1" class="docutils">
 <colgroup>
-<col width="45%" />
-<col width="55%" />
+<col width="35%" />
+<col width="65%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><tt class="docutils literal"><span class="pre">APP_NAME</span></tt></td>
-<td>Name of your app. Used with COMPANY_NAME
-to create an update cache dir on end user
-system.</td>
+<td>(str) Name of your app. Used with
+COMPANY_NAME to create an update cache dir on end user system.</td>
 </tr>
 <tr class="row-even"><td><tt class="docutils literal"><span class="pre">COMPANY_NAME</span></tt></td>
-<td>Company or your name.  Used with APP_NAME
-to create an update cache dir on end user
-system.</td>
+<td>(str) Company or your name.  Used with
+APP_NAME to create an update cache dir on end user system.</td>
 </tr>
 <tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PUBLIC_KEY</span></tt></td>
-<td>Used on client side for authentication</td>
+<td>(tuple) Used on client side for
+authentication</td>
 </tr>
 <tr class="row-even"><td><tt class="docutils literal"><span class="pre">UPDATE_URL</span></tt></td>
-<td>Where clients search for updates
+<td>(str) Where clients search for updates
 - * Deprecated! You can put a single url
 in the list of UPDATE_URLS *</td>
 </tr>
 <tr class="row-odd"><td><tt class="docutils literal"><span class="pre">UPDATE_URLS</span></tt></td>
-<td>A list of url(s) where a client will look
-for needed update objects.</td>
+<td>(list) A list of url(s) where a client will
+look for needed update objects.</td>
 </tr>
 <tr class="row-even"><td><tt class="docutils literal"><span class="pre">UPDATE_PATCHES</span></tt></td>
-<td>nable/disable creation of patch updates</td>
+<td>(bool) Enable/disable creation of patch
+updates</td>
 </tr>
 <tr class="row-odd"><td><tt class="docutils literal"><span class="pre">REMOTE_DIR</span></tt></td>
-<td>Remote directory/Bucket name to place
+<td>(str) Remote directory/Bucket name to place
 update files</td>
 </tr>
 <tr class="row-even"><td><tt class="docutils literal"><span class="pre">HOST</span></tt></td>
-<td>Remote host to connect to for server
+<td>(str) Remote host to connect to for server
 uploads</td>
 </tr>
 <tr class="row-odd"><td><tt class="docutils literal"><span class="pre">USERNAME</span></tt></td>
-<td>Username/API Key for uploading updates</td>
+<td>(str) Username/API Key for uploading updates</td>
 </tr>
 <tr class="row-even"><td><tt class="docutils literal"><span class="pre">PASSWORD</span></tt></td>
-<td>Password/API Secret/Path to ssh private
+<td>(str) Password/API Secret/Path to ssh private
 key or uploading updates</td>
 </tr>
 </tbody>
@@ -203,7 +203,7 @@ key or uploading updates</td>
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Nov 15, 2014.<br/>
+      Last updated on Nov 16, 2014.<br/>
     </p>
   </div>
 </footer>

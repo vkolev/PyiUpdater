@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.9.3-dev1416111525 documentation</title>
+    <title>API &mdash; PyiUpdater 0.9.3-dev1416128257 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.9.3-dev1416111525',
+        VERSION:     '0.9.3-dev1416128257',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.9.3-dev1416111525 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.9.3-dev1416128257 documentation" href="index.html" />
     <link rel="next" title="License" href="license.html" />
     <link rel="prev" title="Contributing" href="contributing.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.9.3-dev1416111525</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.9.3-dev1416128257</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -243,9 +243,9 @@ False - Download failed
 </dd></dl>
 
 <dl class="method">
-<dt id="pyi_updater.client.Client.install_restart">
-<tt class="descname">install_restart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.install_restart" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will install (unzip) the update, overwrite the current app,
+<dt id="pyi_updater.client.Client.extract_restart">
+<tt class="descname">extract_restart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.extract_restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will extract (unzip) the update, overwrite the current app,
 then restart the app using the updated binary.</p>
 <p>On windows Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_extract_update()</span></tt> &amp;
 <tt class="xref py py-meth docutils literal"><span class="pre">_win_overwrite_app_restart()</span></tt></p>
@@ -254,8 +254,8 @@ then restart the app using the updated binary.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyi_updater.client.Client.install">
-<tt class="descname">install</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.install" title="Permalink to this definition">¶</a></dt>
+<dt id="pyi_updater.client.Client.extract">
+<tt class="descname">extract</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.extract" title="Permalink to this definition">¶</a></dt>
 <dd><p>Will extract archived update and leave in update folder.
 If updating a lib you can take over from there. If updating
 an app this call should be followed by <a class="reference internal" href="#pyi_updater.client.Client.restart" title="pyi_updater.client.Client.restart"><tt class="xref py py-meth docutils literal"><span class="pre">restart()</span></tt></a> to
@@ -742,7 +742,7 @@ info you need.</p>
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Nov 15, 2014.<br/>
+      Last updated on Nov 16, 2014.<br/>
     </p>
   </div>
 </footer>
