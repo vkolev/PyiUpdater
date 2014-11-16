@@ -30,6 +30,10 @@ v0.10.0 - master
 
 * Fixed
 
+  - Archiving currently running app
+
+    - Will now archive Mac.app apps
+
 * Removed
 
   - Common util functions
