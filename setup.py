@@ -43,9 +43,8 @@ setup(
     # py_modules=['archiver'],
     entry_points="""
     [console_scripts]
-    pyi-cli=cli:main
-    pyi-archiver = pyi_updater.archiver:main
-    pyiupdater = pyi_updater.pyiwrapper:wrapper
+    pyiupdater-cli=cli:main
+    pyiupdater=pyi_updater.pyiwrapper:wrapper
     """,
     classifiers=[
         'Development Status :: 4 - Beta',
