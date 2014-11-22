@@ -4,8 +4,8 @@ import time
 from six.moves import input
 from stevedore.extension import ExtensionManager
 
-from cli.core.common import CommonLogic
-from cli.ui.menu import Menu
+from cli_ui.core.common import CommonLogic
+from cli_ui.ui.menu import Menu
 
 
 log = logging.getLogger(__name__)

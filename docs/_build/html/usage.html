@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Usage &mdash; PyiUpdater 0.10.2-dev1122915 documentation</title>
+    <title>Usage &mdash; PyiUpdater 0.10.2-dev11221344 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.10.2-dev1122915',
+        VERSION:     '0.10.2-dev11221344',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.10.2-dev1122915 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.10.2-dev11221344 documentation" href="index.html" />
     <link rel="next" title="Architecture" href="architecture.html" />
     <link rel="prev" title="Configuration" href="configuration.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.10.2-dev1122915</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.10.2-dev11221344</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -194,15 +194,110 @@ Enter password
 </div>
 <div class="section" id="demos">
 <h2>Demos<a class="headerlink" href="#demos" title="Permalink to this headline">¶</a></h2>
-<p>So if you opt not to use the cli interface &amp; instead want to integrate PyiUpdater into your build, check out the progmatically.py demo.</p>
-<p>PyiUpdater make heavy use of the pyi-data folder.</p>
-<p>Steps</p>
-<ol class="arabic simple">
-<li>Build your app and place in new folder</li>
-<li>Use pyi-archiver to archive you files</li>
-<li>Use PackageHandler process_packages method. Will move copy app updates to version folder in the files dir &amp; also move udpate form new folder to deploy folder</li>
-<li>Now use KeyHanlder sign_update method to add a signature to the version file &amp; copies it to the deploy dir.</li>
-</ol>
+<p>So if you opt not to use the cli interface &amp; instead want to integrate PyiUpdater into your build, look below.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyi_updater</span> <span class="kn">import</span> <span class="n">PyiUpdater</span>
+<span class="kn">from</span> <span class="nn">pyi_updater.key_handler</span> <span class="kn">import</span> <span class="n">KeyHandler</span>
+<span class="kn">from</span> <span class="nn">pyi_updater.package_handler</span> <span class="kn">import</span> <span class="n">PackageHandler</span>
+<span class="kn">from</span> <span class="nn">pyi_updater.uploader</span> <span class="kn">import</span> <span class="n">Uploader</span>
+
+
+<span class="c"># PyiUpdater handles configuration with simple</span>
+<span class="c"># class attributes.  They must be in all CAPS.</span>
+<span class="c"># to be registered.  You may pass in custom</span>
+<span class="c"># settings to be used later.</span>
+<span class="k">class</span> <span class="nc">DefaultConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="c"># If left None &quot;PyiUpdater App&quot; will be used</span>
+    <span class="n">APP_NAME</span> <span class="o">=</span> <span class="s">&quot;My New App&quot;</span>
+
+    <span class="n">Company_Name</span> <span class="o">=</span> <span class="s">&quot;Acme&quot;</span>
+
+    <span class="c"># Used for verion file signature verification</span>
+    <span class="n">PUBLIC_KEY</span> <span class="o">=</span> <span class="p">(</span><span class="il">17022351873105053147088163105983577257966692560663543347938383809747979750470266069914732864252844768385355907146386077123799054565611846357055920249193620195180631869615743769334796990192318489812142889414970955334254855590299723893423021589397127184769063465102962682096447452967415650677942469205402943507368208858916471188750637174661509489946569932170884064066442273331420184865693888703840905553949492223898597770128267763408408345292193296577459922276202765690561166119202208933879945227147091774656864580608582752643190913932634012968436576443560457625241838298968657806362615969869008716434463574851608691099L</span><span class="p">,</span> <span class="mi">65537</span><span class="p">)</span>
+
+    <span class="c"># Online repository where you host your packages</span>
+    <span class="c"># and version file</span>
+    <span class="n">UPDATE_URL</span> <span class="o">=</span> <span class="s">&#39;https://acme.com/updates&#39;</span>
+    <span class="c"># List of urls to check if version file &amp; update data</span>
+    <span class="c"># For each object need the urls will be used in succession</span>
+    <span class="c"># until the required object is found</span>
+    <span class="n">UPDATE_URLS</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;https://acme.com/updates&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;https://mirror.acme.com/updates&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;https://acme.amazon.com/updates&#39;</span><span class="p">]</span>
+    <span class="n">UPDATE_PATCHES</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="c"># This is a path on the remote server or bucket name</span>
+    <span class="c"># on amazon s3</span>
+    <span class="n">REMOTE_DIR</span> <span class="o">=</span> <span class="s">&quot;my-new-bucket&quot;</span>
+
+    <span class="c"># The url or ip to remote host server.</span>
+    <span class="c"># Mostly for scp uploads</span>
+    <span class="n">HOST</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="c"># Username or access ID</span>
+    <span class="n">USERNAME</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="c"># Password or path to keyfile if using scp</span>
+    <span class="n">PASSWORD</span> <span class="o">=</span> <span class="bp">None</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c"># Setting up Config object</span>
+    <span class="n">default_config</span> <span class="o">=</span> <span class="n">DefaultConfig</span><span class="p">()</span>
+
+    <span class="c"># Initilizing Main object and configuring</span>
+    <span class="c"># in one step</span>
+    <span class="n">pyi</span> <span class="o">=</span> <span class="n">PyiUpdater</span><span class="p">(</span><span class="n">DefaultConfig</span><span class="p">())</span>
+
+    <span class="c"># Can also update config later</span>
+    <span class="n">pyi</span><span class="o">.</span><span class="n">update_config</span><span class="p">(</span><span class="n">default_config</span><span class="p">)</span>
+
+    <span class="c"># Initializing Package Handler &amp; Key Handler</span>
+    <span class="c"># with config info</span>
+    <span class="n">package_handler</span> <span class="o">=</span> <span class="n">PackageHandler</span><span class="p">(</span><span class="n">pyi</span><span class="p">)</span>
+    <span class="n">key_handler</span> <span class="o">=</span> <span class="n">KeyHandler</span><span class="p">(</span><span class="n">pyi</span><span class="p">)</span>
+    <span class="n">uploader</span> <span class="o">=</span> <span class="n">Uploader</span><span class="p">(</span><span class="n">pyi</span><span class="p">)</span>
+
+    <span class="c"># Can also be Initilized without config</span>
+    <span class="n">package_handler</span> <span class="o">=</span> <span class="n">PackageHandler</span><span class="p">()</span>
+    <span class="n">key_handler</span> <span class="o">=</span> <span class="n">KeyHandler</span><span class="p">()</span>
+
+    <span class="c"># Then update handlers with config later</span>
+    <span class="n">package_handler</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">pyi</span><span class="p">)</span>
+    <span class="n">key_handler</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">pyi</span><span class="p">)</span>
+
+    <span class="c"># Setting up work directories</span>
+    <span class="c"># Only need to run once on a new project but it&#39;s</span>
+    <span class="c"># ok if ran multipule times</span>
+    <span class="n">package_handler</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+    <span class="n">key_handler</span><span class="o">.</span><span class="n">make_keys</span><span class="p">()</span>
+
+    <span class="c"># Now place new packages in the folder named</span>
+    <span class="c"># &quot;new&quot; in the pyi-data directory</span>
+    <span class="c"># Package Archive filename should be in the form</span>
+    <span class="c"># AppName-platform-version.zip</span>
+    <span class="nb">raw_input</span><span class="p">(</span><span class="s">&#39;Place updates in new folder then press enter.&#39;</span><span class="p">)</span>
+    <span class="c"># This updates the version file with the</span>
+    <span class="c"># new packages &amp; moves them to the deploy folder.</span>
+    <span class="n">package_handler</span><span class="o">.</span><span class="n">process_packages</span><span class="p">()</span>
+
+    <span class="c"># This signs the update manifest &amp; copies it</span>
+    <span class="c"># to the deploy folder</span>
+    <span class="n">key_handler</span><span class="o">.</span><span class="n">sign_update</span><span class="p">()</span>
+
+    <span class="c"># Load desired uploader</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">uploader</span><span class="o">.</span><span class="n">set_uploader</span><span class="p">(</span><span class="s">&#39;s3&#39;</span><span class="p">)</span>
+        <span class="n">uploader</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c"># Make sure you have the requested uploader installed</span>
+        <span class="c"># pyiupdater[&#39;s3&#39;] for Amazon S3</span>
+        <span class="c"># pyiupdater[&#39;scp&#39;] for server uploads</span>
+        <span class="k">print</span> <span class="s">&#39;upload failed&#39;</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 </div>
 

@@ -13,12 +13,20 @@ class ClientConfig(object):
     UPDATE_URLS = ['https://s3-us-west-1.amazonaws.com/ACME',
                    'https://acme.com/updates']
 
+
+# Initialize the client
 client = Client(ClientConfig())
+client.refresh()
+
+# Or initialize & refresh in one step
+client = Client(ClientConfig(), refresh=True)
+
+
 # Install and restart with one method call
 # install_restart() and restart() will fail if update is not
 # an executable.
 # If updating a lib just use install and take over from there
-updates_available = client.update_check('7-zip', '0.0.1')
+zip_update = client.update_check('7-zip', '0.0.1')
 
 # Using this signal your can download in a
 # background thread
@@ -37,16 +45,15 @@ t = Thread(target=client.download)
 t.start()
 
 # Example of downloading on the main thread
-if updates_available:
-    downloaded = client.download()
+if zip_update is not None:
+    downloaded = zip_update.download()
     if downloaded:
-        client.extract_restart()
+        zip_update.extract_restart()
 
 # Install then restart later.
 # Not available on windows
-updates_available = client.update_check('gist', '11.0.1')
-if updates_available:
-    client.extract()
+if zip_update is not None:
+    zip_update.extract()
 
 answer = raw_input('Would you like to update now?')
 if 'y' in answer.lower():
@@ -55,6 +62,8 @@ if 'y' in answer.lower():
 # Lastly to just download a library you app uses and
 # extract to the update folder for further processing
 # by you.
-updates_available = client.update_check('libfoo', '1.2.3')
-if updates_available:
-    downloaded = client.download()
+libfoo = client.update_check('libfoo', '1.2.3')
+if libfoo is not None:
+    downloaded = libfoo.download()
+    if downloaded is True:
+        libfoo.extract()

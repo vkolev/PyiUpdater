@@ -23,7 +23,7 @@ if os.path.exists(os.path.join(cwd, u'pyi.log')):
 
 
 # Interface
-from cli.core import Worker
+from cli_ui.core import Worker
 
 
 def main():
