@@ -90,17 +90,46 @@ def wrapper(args):
         http://semver.org/
                   """)
 
+    app_type = None
     for p in pyi_args:
         if p.endswith(u'.py'):
+            app_type = u'script'
+            break
+        elif p.endswith(u'.spec'):
+            spec_file = p
+            app_type = u'spec'
             break
     else:
-        sys.exit(u'Must pass a python script')
+        sys.exit(u'Must pass a python script or spec file')
 
-    pyi_args.append(u'-F')
+    if app_type == u'spec':
+        fix = "\t\t\t\t\tname='{}',".format(get_system())
+
+        # Sanitizing spec file
+        with open(spec_file, u'r') as f:
+            spec_data = f.readlines()
+
+        new_spec = []
+        for s in spec_data:
+            # Will replace name with system arch
+            # Used for later archiving
+            if 'name=' in s:
+                new_spec.append(fix)
+            elif 'coll' in s or 'COLLECT' in s:
+                sys.exit('Onedir mode is not supported')
+            else:
+                new_spec.append(s)
+        with open(spec_file, u'w') as f:
+            for n in new_spec:
+                f.write(n)
+        # End spec file sanitation
+    else:
+        pyi_args.append(u'-F')
+        pyi_args.append(u'--name={}'.format(get_system()))
+        pyi_args.append(u'--specpath={}'.format(spec_dir))
+
     pyi_args.append(u'--distpath={}'.format(new_dir))
-    pyi_args.append(u'--specpath={}'.format(spec_dir))
     pyi_args.append(u'--workpath={}'.format(work_dir))
-    pyi_args.append(u'--name={}'.format(get_system()))
     pyi_args.append(u'-y')
 
     cmds = [u'pyinstaller'] + pyi_args
