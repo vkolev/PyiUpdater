@@ -1,4 +1,4 @@
-v0.10.2 - master
+v0.10.2 - develop
 ~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
 
@@ -27,7 +27,9 @@ v0.10.2 - master
 
 * Removed
 
-  - Archiver
+  - CLI
+
+    - Archiver Utility
 
 v0.10.0 - 2014/11/16
 ~~~~~~~~~~~~~~~~~~~
