@@ -16,13 +16,13 @@ from jms_utils.system import get_system
 import six
 import urllib3
 
-from pyi_updater.archiver import make_archive
 from pyi_updater.config import Config
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.patcher import Patcher
 from pyi_updater.utils import (get_hash, get_version_number,
                                EasyAccessDict,
+                               make_archive,
                                version_string_to_tuple)
 
 log = logging.getLogger(__name__)
@@ -611,17 +611,8 @@ DEL "%~f0" """.format(updated_app, current_app, fix, current_app))
                     if not os.path.exists(name):
                         name += u'.app'
 
-                # Grabbing ext from filename from manifest
-                archive_ext = os.path.splitext(current_archive_filename)[1]
-                if u'gz' in archive_ext:
-                    archive_format = u'gztar'
-                else:
-                    archive_format = u'zip'
-
                 try:
-                    plat = get_system()
-                    filename = make_archive(self.name, self.version, name,
-                                            archive_format, platfrom=plat)
+                    filename = make_archive(self.name, self.version, name)
                 except Exception as err:
                     filename = None
                     log.error(str(err), exc_info=True)

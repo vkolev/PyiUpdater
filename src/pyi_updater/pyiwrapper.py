@@ -2,50 +2,79 @@ import argparse
 import os
 import re
 import sys
+import time
 
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 
-from pyi_updater.archiver import make_archive
+from pyi_updater.utils import make_archive
 
 
+start = time.time()
 parser = argparse.ArgumentParser(usage='%(prog)s [opts] <scriptname>')
+
+# Start of args override
+# This will be set to the pyi-data/new directory.
+# When we make the final compressed archive we will look
+# for an exe in that dir.
 parser.add_argument('-o')
 parser.add_argument('--distpath')
 
+# Will be set to .pyiupdater/spec/
+# Trying to keep root dir clean
 parser.add_argument('--specpath')
 
+# Will be set to .pyiupdater/build
+# Trying to keep root dir clean
 parser.add_argument('--workpath')
 
+# Will be set to platform name i.e. mac, win, nix, nix64, arm\
+# When archiving we will change the name to the value passed to
+# --app-name
 parser.add_argument('-n')
 parser.add_argument('--name')
 
+# Just capturing these argument.
+# PyiUpdater only supports onefile mode at the moment
 parser.add_argument('-D', action="store_true", default=False)
 parser.add_argument('--onedir', action="store_true", default=False)
 
+# Just capturing these argument.
+# Will be added later to pyinstaller build command
 parser.add_argument('-F', action="store_true", default=False)
 parser.add_argument('--onefile', action="store_true", default=False)
 
+# Just capturing these arguments
+# ToDo: Take a closer look at this switch
 parser.add_argument('-c', action="store_true", default=False)
 parser.add_argument('--console', action="store_true", default=False)
 parser.add_argument('--nowindowed', action="store_true", default=False)
 
+# Potentially harmful for cygwin on windows
+# ToDo: Maybe do a check for cygwin and disable if cygwin is true
 parser.add_argument('-s', action="store_true", default=False)
 parser.add_argument('--strip', action="store_true", default=False)
+# End of args override
 
-
+# Used by PyiWrapper
 parser.add_argument('--app-name', dest="app_name", required=True)
 parser.add_argument('--app-version', dest="app_version", required=True)
 
 
-def wrapper():
-    global sys
+def main():
     args = sys.argv[1:]
+    wrapper(args)
+
+
+def wrapper(args):
     pyi_dir = os.path.join(os.getcwd(), u'pyi-data')
     new_dir = os.path.join(pyi_dir, u'new')
-    build_dir = os.path.join(os.getcwd(), '.pyi-cache')
-    if not os.path.exists(build_dir):
-        os.mkdir(build_dir)
+    build_dir = os.path.join(os.getcwd(), u'.pyiupdater')
+    spec_dir = os.path.join(build_dir, u'spec')
+    work_dir = os.path.join(build_dir, u'work')
+    for d in [build_dir, spec_dir, work_dir]:
+        if not os.path.exists(d):
+            os.mkdir(d)
 
     if not os.path.exists(pyi_dir):
         sys.exit(u'pyi-data folder not found')
@@ -69,8 +98,8 @@ def wrapper():
 
     pyi_args.append(u'-F')
     pyi_args.append(u'--distpath={}'.format(new_dir))
-    pyi_args.append(u'--specpath={}'.format(build_dir))
-    pyi_args.append(u'--workpath={}'.format(build_dir))
+    pyi_args.append(u'--specpath={}'.format(spec_dir))
+    pyi_args.append(u'--workpath={}'.format(work_dir))
     pyi_args.append(u'--name={}'.format(get_system()))
     pyi_args.append(u'-y')
 
@@ -80,20 +109,20 @@ def wrapper():
 
     # Now archive the file
     with ChDir(new_dir):
-        sys = get_system()
-        if os.path.exists(sys + u'.exe'):
-            sys += u'.exe'
-        elif os.path.exists(sys + u'.app'):
-            os.remove(sys)
-            sys += u'.app'
+        sys_name = get_system()
+        if os.path.exists(sys_name + u'.exe'):
+            sys_name += u'.exe'
+        elif os.path.exists(sys_name + u'.app'):
+            os.remove(sys_name)
+            sys_name += u'.app'
         name = args.app_name
         version = args.app_version
-        if sys == u'win':
-            arch = u'zip'
-        else:
-            arch = u'gzip'
 
-        make_archive(name, version, sys, arch, get_system())
+        # Time for some archive creation!
+        file_name = make_archive(name, version, sys_name)
+    print('\n{} has been placed in your new folder\n'.format(file_name))
+    finished = time.time() - start
+    print('Build finished in {:.2f} seconds.'.format(finished))
 
 
 def check_version(version):
@@ -106,4 +135,5 @@ def check_version(version):
 
 
 if __name__ == u'__main__':
-    wrapper()
+    args = sys.argv[1:]
+    wrapper(args)

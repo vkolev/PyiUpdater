@@ -31,7 +31,7 @@ setup(
         'certifi',
         'cryptography',
         'ed25519',
-        'jms-utils >= 0.4',
+        'jms-utils >= 0.4.5',
         'pyinstaller >= 2.1.1dev',
         'simple-pbkdf2',
         'six',
@@ -43,8 +43,8 @@ setup(
     # py_modules=['archiver'],
     entry_points="""
     [console_scripts]
+    pyiupdater=pyi_updater.pyiwrapper:main
     pyiupdater-cli=cli:main
-    pyiupdater=pyi_updater.pyiwrapper:wrapper
     """,
     classifiers=[
         'Development Status :: 4 - Beta',

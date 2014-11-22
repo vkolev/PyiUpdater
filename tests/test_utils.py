@@ -3,6 +3,7 @@ import sys
 
 from jms_utils import FROZEN
 from jms_utils.paths import cwd
+from jms_utils.system import get_system
 from nose import with_setup
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -11,11 +12,41 @@ from cli.ui.menu_utils import ask_yes_no
 
 from pyi_updater.utils import (get_hash,
                                get_package_hashes,
+                               make_archive,
                                version_string_to_tuple,
                                version_tuple_to_string
                                )
 
 home_dir = os.path.expanduser('~')
+
+FILENAME = U'{}-archive'.format(get_system())
+
+
+def setup_archive():
+    with open(FILENAME, u'w') as f:
+        msg = 'This is the life\n\n'
+        for i in range(50):
+            f.write(msg)
+
+
+def teardown_archive():
+    arch = get_system()
+    name = u'done-{}-0.1.1.tar.gz'.format(arch)
+    if os.path.exists(name):
+        os.remove(name)
+    if os.path.exists(FILENAME):
+        os.remove(FILENAME)
+
+
+@with_setup(setup_archive, teardown_archive)
+def test_make_archive():
+    arch = get_system()
+    good_name = u'done-{}-0.1.1.tar.gz'.format(arch)
+    print good_name
+    name = make_archive(u'done', u'0.1.1', FILENAME)
+    print name
+    assert name == good_name
+    assert os.path.exists(name)
 
 
 def test_frozen():
