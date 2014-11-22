@@ -10,9 +10,10 @@ import ed25519
 from jms_utils import FROZEN
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
+import six
 import urllib3
 
-from pyi_updater.client.update import AppUpdate, LibUpdate
+from pyi_updater.client.updates import AppUpdate, LibUpdate
 from pyi_updater.client.utils import (get_highest_version,
                                       get_mac_dot_app_dir)
 from pyi_updater.config import Config
@@ -33,19 +34,18 @@ class Client(object):
         obj (instance): config object
     """
 
-    def __init__(self, obj=None, test=False):
+    def __init__(self, obj=None, refresh=False, test=False):
         self.name = None
         self.version = None
         self.json_data = None
         self.verified = False
         self.ready = False
-        self.updates_key = u'updates'
         if obj:
-            self.init_app(obj, test)
+            self.init_app(obj, refresh, test)
         if obj is None and test is True:
-            self.init_app(None, test)
+            self.init_app(None, refresh, test)
 
-    def init_app(self, obj, test=False):
+    def init_app(self, obj, refresh=False, test=False):
         """Sets up client with config values from obj
 
         Args:
@@ -90,6 +90,8 @@ class Client(object):
         self.current_app_dir = os.path.dirname(sys.argv[0])
 
         self._setup()
+        if refresh is True:
+            self.refresh()
 
     def refresh(self):
         """Will download and verify your updates version file.
@@ -121,6 +123,7 @@ class Client(object):
         """
         self.name = name
         self.version = version
+        app = False
         if self.ready is False:
             log.debug('No update manifest found')
             return None
@@ -158,6 +161,7 @@ class Client(object):
             u'data_dir': self.data_dir,
             u'platform': self.platform,
             u'app_name': self.app_name,
+            u'verify': self.verify,
             }
         if app is True:
             return AppUpdate(data)
@@ -308,3 +312,40 @@ class Client(object):
 
                 if filename is not None:
                     shutil.move(filename, self.update_folder)
+
+    def _sanatize_update_url(self, url, urls):
+        _urls = []
+        if isinstance(url, list):
+            log.debug(u'WARNING UPDATE_URL value should only be string.')
+            _urls += url
+        elif isinstance(url, tuple):
+            log.debug(u'WARNING UPDATE_URL value should only be string.')
+            _urls += list(url)
+        elif isinstance(url, six.string_types):
+            _urls.append(url)
+        else:
+            log.debug(u'UPDATE_URL should be type "{}" got '
+                      u'"{}"'.format(type(''), type(url)))
+
+        if isinstance(urls, list):
+            _urls += urls
+        elif isinstance(url, tuple):
+            _urls += list(url)
+        elif isinstance(urls, six.string_types):
+            log.debug(u'WARNING UPDATE_URLS value should only be a list.')
+            _urls.append(urls)
+        else:
+            log.debug(u'UPDATE_URLS should be type "{}" got '
+                      u'"{}"'.format(type([]), type('')))
+
+        sanatized_urls = []
+        # Adds trailing slash to end of url if not already provided.
+        # Doing this so when requesting online resources we only
+        # need to add the resouce name to the end of the request.
+        for u in _urls:
+            if not u.endswith(u'/'):
+                sanatized_urls.append(u + u'/')
+            else:
+                sanatized_urls.append(u)
+        # Just removing duplicates
+        return list(set(sanatized_urls))

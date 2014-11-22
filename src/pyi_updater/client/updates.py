@@ -10,7 +10,6 @@ import certifi
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 import urllib3
-import six
 
 from pyi_updater.client.utils import (get_highest_version,
                                       get_mac_dot_app_dir)
@@ -32,6 +31,7 @@ class LibUpdate(object):
     """
 
     def __init__(self, data):
+        self.updates_key = u'updates'
         self.update_urls = data.get(u'update_urls')
         self.name = data.get(u'name')
         self.version = data.get(u'version')
@@ -39,8 +39,8 @@ class LibUpdate(object):
         self.data_dir = data.get(u'data_dir')
         self.platform = data.get(u'platform')
         self.app_name = data.get(u'app_name')
-        self.update_folder = os.path.join(self.data_dir, u'updates')
-        self.verify = data.get(u'VERIFY_SERVER_CERT')
+        self.update_folder = os.path.join(self.data_dir, u'update')
+        self.verify = data.get(u'verify')
         if self.verify is True:
             self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
                                                  ca_certs=certifi.where())
@@ -123,7 +123,8 @@ class LibUpdate(object):
                           'app udpate.')
                 platform_name += u'.exe'
 
-            latest = get_highest_version(self.name)
+            latest = get_highest_version(self.name, self.platform,
+                                         self.easy_data)
             filename = self._get_filename(self.name,
                                           latest)
             if not os.path.exists(filename):
@@ -315,43 +316,6 @@ class LibUpdate(object):
 
         log.debug(u"Filename for {}-{}: {}".format(name, version, filename))
         return filename
-
-    def _sanatize_update_url(self, url, urls):
-        _urls = []
-        if isinstance(url, list):
-            log.debug(u'WARNING UPDATE_URL value should only be string.')
-            _urls += url
-        elif isinstance(url, tuple):
-            log.debug(u'WARNING UPDATE_URL value should only be string.')
-            _urls += list(url)
-        elif isinstance(url, six.string_types):
-            _urls.append(url)
-        else:
-            log.debug(u'UPDATE_URL should be type "{}" got '
-                      u'"{}"'.format(type(''), type(url)))
-
-        if isinstance(urls, list):
-            _urls += urls
-        elif isinstance(url, tuple):
-            _urls += list(url)
-        elif isinstance(urls, six.string_types):
-            log.debug(u'WARNING UPDATE_URLS value should only be a list.')
-            _urls.append(urls)
-        else:
-            log.debug(u'UPDATE_URLS should be type "{}" got '
-                      u'"{}"'.format(type([]), type('')))
-
-        sanatized_urls = []
-        # Adds trailing slash to end of url if not already provided.
-        # Doing this so when requesting online resources we only
-        # need to add the resouce name to the end of the request.
-        for u in _urls:
-            if not u.endswith(u'/'):
-                sanatized_urls.append(u + u'/')
-            else:
-                sanatized_urls.append(u)
-        # Just removing duplicates
-        return list(set(sanatized_urls))
 
 
 class AppUpdate(LibUpdate):
