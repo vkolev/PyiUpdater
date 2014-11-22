@@ -1,7 +1,10 @@
-v0.10.2 - develop
-~~~~~~~~~~~~~~~~
+v0.11.1 - develop
+~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
 
+
+v0.11.0 - 2014/11/22
+~~~~~~~~~~~~~~~~~~~~
 * Added
 
   - PyiWrapper
@@ -23,8 +26,6 @@ v0.10.2 - develop
     - start cli with pyiupdater-cli instead of pyi-cli
 
 
-* Fixed
-
 * Removed
 
   - CLI
@@ -32,7 +33,7 @@ v0.10.2 - develop
     - Archiver Utility
 
 v0.10.0 - 2014/11/16
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 * Added
 
   - Secure downloading of manifest
