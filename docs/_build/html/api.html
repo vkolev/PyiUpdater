@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.10 documentation</title>
+    <title>API &mdash; PyiUpdater 0.10.2-dev1122915 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.10',
+        VERSION:     '0.10.2-dev1122915',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.10 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.10.2-dev1122915 documentation" href="index.html" />
     <link rel="next" title="License" href="license.html" />
     <link rel="prev" title="Contributing" href="contributing.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.10</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.10.2-dev1122915</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -649,6 +649,22 @@ bundle the bsdiff module in order to make use of patches.  Besides,
 the patch-applying algorithm is very simple.</p>
 </dd></dl>
 
+<dl class="function">
+<dt id="pyi_updater.utils.make_archive">
+<tt class="descclassname">pyi_updater.utils.</tt><tt class="descname">make_archive</tt><big>(</big><em>name</em>, <em>version</em>, <em>target</em><big>)</big><a class="headerlink" href="#pyi_updater.utils.make_archive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to make archives of file or dir. Zip on windows and tar.gz
+on all other platforms</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">name - Name of app. Used to create final archive name</p>
+<p>version - Version of app. Used to create final archive name</p>
+<p class="last">target - name of actual target file or dir.</p>
+</dd>
+<dt>Returns:</dt>
+<dd>(str) - name of archive</dd>
+</dl>
+</dd></dl>
+
 <span class="target" id="module-pyi_updater.uploader"></span><dl class="class">
 <dt id="pyi_updater.uploader.Uploader">
 <em class="property">class </em><tt class="descclassname">pyi_updater.uploader.</tt><tt class="descname">Uploader</tt><big>(</big><em>app=None</em><big>)</big><a class="headerlink" href="#pyi_updater.uploader.Uploader" title="Permalink to this definition">¶</a></dt>
@@ -741,7 +757,7 @@ info you need.</p>
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Nov 16, 2014.<br/>
+      Last updated on Nov 22, 2014.<br/>
     </p>
   </div>
 </footer>

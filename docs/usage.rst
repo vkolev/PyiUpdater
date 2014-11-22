@@ -15,7 +15,7 @@ The easiest way to get started quickly is to use to command line tool.
 
 From Pip::
 
-    $ pyi-cli
+    $ pyiupdater-cli
 
 Initial Setup
 -------------
