@@ -18,7 +18,6 @@ from pyi_updater.client.utils import (get_highest_version,
                                       get_mac_dot_app_dir)
 from pyi_updater.config import Config
 from pyi_updater.downloader import FileDownloader
-from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.utils import (EasyAccessDict,
                                make_archive,
                                version_string_to_tuple)

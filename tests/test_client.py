@@ -40,6 +40,15 @@ def test_new_init():
                                      'aws.com/pyi-test/')
 
 
+def test_no_cert():
+    config = TConfig()
+    client = Client(config, refresh=True, test=True)
+    client.verify = False
+    assert client.app_name == u'jms'
+    assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
+                                     'aws.com/pyi-test/')
+
+
 def test_bad_pub_key():
     config = TConfig()
     config.PUBLIC_KEY = 'bad key'
