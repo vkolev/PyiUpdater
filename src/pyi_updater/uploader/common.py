@@ -54,11 +54,13 @@ class BaseUploader(object):
         if len(self.failed_uploads) < 1:
             print(u"\nUpload Complete")
             time.sleep(3)
+            return True
         else:
             print(u'The following files were not uploaded')
             for i in self.failed_uploads:
                 log.error(u'{} failed to upload'.format(i))
                 print(i)
+            return False
 
     def _retry_upload(self):
         """Takes list of failed downloads and try's to reupload them"""
@@ -77,13 +79,15 @@ class BaseUploader(object):
                 count += 1
             else:
                 self.failed_uploads.append(f)
-        if len(self.failed_uploads) > 0:
+        if len(self.failed_uploads) >= 1:
             print(u'\nThe following files failed to upload...')
             for f in self.failed_uploads:
                 print(f)
             time.sleep(3)
+            return False
         else:
             print('\nUpload complete')
+            return True
 
     def _connect(self):
         """Connects client attribute to service"""

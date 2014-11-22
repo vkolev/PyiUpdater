@@ -44,16 +44,22 @@ def test_baseuploader_upload_file():
     base._upload_file('test')
 
 
-@raises(NotImplementedError)
 def test_baseuploader_upload():
     base = BaseUploader()
-    base.upload()
+    base.file_list = []
+    base.upload() is True
 
 
 @raises(NotImplementedError)
+def test_baseuploader_upload_fail():
+    base = BaseUploader()
+    base.file_list = ['f']
+    base.upload() is True
+
+
 def test_baseuploader_retry_upload():
     base = BaseUploader()
-    base._retry_upload_file()
+    base._retry_upload() is True
 
 
 def setup_func():

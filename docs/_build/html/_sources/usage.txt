@@ -66,3 +66,4 @@ Demos
 So if you opt not to use the cli interface & instead want to integrate PyiUpdater into your build, look below.
 
 .. literalinclude:: ../demos/dev_machine.py
+    :linenos:
