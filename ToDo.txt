@@ -2,7 +2,6 @@
              ***  ToDo's ***
 =========================================
 # PyiUpdater
-  - Document every function
   - Clean up version to tuple and vice versa
 
 # KeyHandler

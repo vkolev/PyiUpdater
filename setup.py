@@ -40,7 +40,6 @@ setup(
         ],
     packages=find_packages('src'),
     package_dir={'': 'src'},
-    # py_modules=['archiver'],
     entry_points="""
     [console_scripts]
     pyiupdater=pyi_updater.pyiwrapper:main
