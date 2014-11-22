@@ -7,9 +7,9 @@ import time
 from jms_utils.paths import cwd
 from six.moves import input
 
-from cli.core.common import CommonLogic
-from cli.ui.menu import Menu
-from cli.ui.menu_utils import get_correct_answer
+from cli_ui.core.common import CommonLogic
+from cli_ui.ui.menu import Menu
+from cli_ui.ui.menu_utils import get_correct_answer
 from pyi_updater.utils import verify_password
 
 

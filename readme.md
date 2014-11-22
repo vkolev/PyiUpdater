@@ -44,7 +44,7 @@ or
 
 ###### Using the UI
 
-    $ pyi-cli
+    $ pyiupdater-cli
 
 
 ###### Using programmatically

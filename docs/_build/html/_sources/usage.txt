@@ -15,7 +15,7 @@ The easiest way to get started quickly is to use to command line tool.
 
 From Pip::
 
-    $ pyi-cli
+    $ pyiupdater-cli
 
 Initial Setup
 -------------
@@ -63,16 +63,7 @@ After setup is complete you'll be greeted with the screen below::
 
 Demos
 -----
-So if you opt not to use the cli interface & instead want to integrate PyiUpdater into your build, check out the progmatically.py demo.
+So if you opt not to use the cli interface & instead want to integrate PyiUpdater into your build, look below.
 
-PyiUpdater make heavy use of the pyi-data folder.
-
-Steps
-
-1. Build your app and place in new folder
-
-2. Use pyi-archiver to archive you files
-
-3. Use PackageHandler process_packages method. Will move copy app updates to version folder in the files dir & also move udpate form new folder to deploy folder
-
-4. Now use KeyHanlder sign_update method to add a signature to the version file & copies it to the deploy dir.
+.. literalinclude:: ../demos/dev_machine.py
+    :linenos:

@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)),
 from pyi_updater import PyiUpdater
 from pyi_updater.exceptions import UploaderError
 from pyi_updater.uploader import Uploader
+from pyi_updater.uploader.common import BaseUploader
 
 from tconfig import TConfig
 
@@ -17,6 +18,48 @@ my_config = TConfig()
 
 updater = PyiUpdater(my_config)
 uploader = Uploader(updater)
+
+
+def test_baseuploader_variables():
+    base = BaseUploader()
+    assert len(base.failed_uploads) == 0
+    assert base.deploy_dir is None
+
+
+@raises(NotImplementedError)
+def test_baseuploader_init():
+    base = BaseUploader()
+    base.init()
+
+
+@raises(NotImplementedError)
+def test_baseuploader_connect():
+    base = BaseUploader()
+    base._connect()
+
+
+@raises(NotImplementedError)
+def test_baseuploader_upload_file():
+    base = BaseUploader()
+    base._upload_file('test')
+
+
+def test_baseuploader_upload():
+    base = BaseUploader()
+    base.file_list = []
+    base.upload() is True
+
+
+@raises(NotImplementedError)
+def test_baseuploader_upload_fail():
+    base = BaseUploader()
+    base.file_list = ['f']
+    base.upload() is True
+
+
+def test_baseuploader_retry_upload():
+    base = BaseUploader()
+    base._retry_upload() is True
 
 
 def setup_func():

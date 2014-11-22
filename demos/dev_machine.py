@@ -1,6 +1,7 @@
 from pyi_updater import PyiUpdater
 from pyi_updater.key_handler import KeyHandler
 from pyi_updater.package_handler import PackageHandler
+from pyi_updater.uploader import Uploader
 
 
 # PyiUpdater handles configuration with simple
@@ -48,7 +49,7 @@ def main():
 
     # Initilizing Main object and configuring
     # in one step
-    pyi = PyiUpdater(default_config)
+    pyi = PyiUpdater(DefaultConfig())
 
     # Can also update config later
     pyi.update_config(default_config)
@@ -57,6 +58,7 @@ def main():
     # with config info
     package_handler = PackageHandler(pyi)
     key_handler = KeyHandler(pyi)
+    uploader = Uploader(pyi)
 
     # Can also be Initilized without config
     package_handler = PackageHandler()
@@ -84,6 +86,16 @@ def main():
     # This signs the update manifest & copies it
     # to the deploy folder
     key_handler.sign_update()
+
+    # Load desired uploader
+    try:
+        uploader.set_uploader('s3')
+        uploader.upload()
+    except:
+        # Make sure you have the requested uploader installed
+        # pyiupdater['s3'] for Amazon S3
+        # pyiupdater['scp'] for server uploads
+        print 'upload failed'
 
 if __name__ == '__main__':
     main()

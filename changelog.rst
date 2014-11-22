@@ -1,7 +1,39 @@
-v0.10.0 - master
-~~~~~~~~~~~~~~~~
+v0.11.1 - develop
+~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
 
+
+v0.11.0 - 2014/11/22
+~~~~~~~~~~~~~~~~~~~~
+* Added
+
+  - PyiWrapper
+
+    - Spec file support. Specs file will be rejected if onedir mode is specified.
+
+* Updated
+
+  - Client
+
+    - Now each call to update_check returns 1 of 2 update objects. AppUpdate or LibUpdate. The updated objects are nearly identical. The AppUpdate object has a few more methods like restart & extract_restart. Now instead of calling client.download() you will use app_update.download(). Check the demos for more info.
+
+  - PyiWrapper
+
+    - Increased stability of wrapper to better parse args
+
+  - CLI
+
+    - start cli with pyiupdater-cli instead of pyi-cli
+
+
+* Removed
+
+  - CLI
+
+    - Archiver Utility
+
+v0.10.0 - 2014/11/16
+~~~~~~~~~~~~~~~~~~~~
 * Added
 
   - Secure downloading of manifest

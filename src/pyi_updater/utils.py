@@ -1,11 +1,16 @@
+from __future__ import print_function
 import bz2
 from getpass import getpass
 import hashlib
 import logging
 import os
 import re
+import shutil
 import sys
+import tarfile
+import zipfile
 
+from jms_utils.system import get_system
 from six import BytesIO
 from six.moves import input
 
@@ -175,3 +180,64 @@ def _decode_offt(bytes):
     if bytes[7] & 0x80:
         x = -x
     return x
+
+
+def make_archive(name, version, target):
+    """Used to make archives of file or dir. Zip on windows and tar.gz
+    on all other platforms
+
+    Args:
+        name - Name of app. Used to create final archive name
+
+        version - Version of app. Used to create final archive name
+
+        target - name of actual target file or dir.
+
+    Returns:
+         (str) - name of archive
+    """
+    try:
+        plat = parse_platform(target)
+    except UtilsError:
+        log.debug(u'Cannot parse system name.')
+        sys.exit(u'Cannot parse system name.')
+
+    file_dir = os.path.dirname(os.path.abspath(target))
+    filename = '{}-{}-{}'.format(name, plat, version)
+    filename_path = os.path.join(file_dir, filename)
+
+    print('starting archive')
+
+    ext = os.path.splitext(target)[1]
+    temp_file = name + ext
+
+    if os.path.isfile(target):
+        shutil.copy(target, temp_file)
+    else:
+        shutil.copytree(target, temp_file)
+    # Only use zip on windows. Zip doens't preserve file
+    # permissions on nix & mac
+    if get_system() == u'win':
+        ext = u'.zip'
+        with zipfile.ZipFile(filename_path + '.zip', 'w') as zf:
+            zf.write(target, temp_file)
+    else:
+        ext = u'.tar.gz'
+        if os.path.isfile(target):
+            with tarfile.open(filename_path + '.tar.gz', 'w:gz') as tar:
+                tar.add(target, temp_file)
+        else:
+            shutil.make_archive(filename, 'gztar', file_dir, temp_file)
+
+    if os.path.isfile(temp_file):
+        os.remove(temp_file)
+    else:
+        shutil.rmtree(temp_file, ignore_errors=True)
+
+    # if keep is False:
+        # if os.path.isfile(target):
+            # os.remove(target)
+        # else:
+            # shutil.rmtree(target, ignore_errors=True)
+
+    return filename + ext

@@ -26,7 +26,7 @@ def test_data_dir():
 def test_original_init():
     config = TConfig()
     updater = PyiUpdater(config)
-    client = Client(updater, test=True)
+    client = Client(updater, refresh=True, test=True)
     assert client.app_name == u'jms'
     assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
                                      'aws.com/pyi-test/')
@@ -34,7 +34,16 @@ def test_original_init():
 
 def test_new_init():
     config = TConfig()
-    client = Client(config, test=True)
+    client = Client(config, refresh=True, test=True)
+    assert client.app_name == u'jms'
+    assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
+                                     'aws.com/pyi-test/')
+
+
+def test_no_cert():
+    config = TConfig()
+    client = Client(config, refresh=True, test=True)
+    client.verify = False
     assert client.app_name == u'jms'
     assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
                                      'aws.com/pyi-test/')
@@ -43,28 +52,29 @@ def test_new_init():
 def test_bad_pub_key():
     config = TConfig()
     config.PUBLIC_KEY = 'bad key'
-    client = Client(config, test=True)
-    assert client.update_check(u'jms', '0.0.0') is False
+    client = Client(config, refresh=True, test=True)
+    assert client.update_check(u'jms', '0.0.0') is None
 
 
 @with_setup(None, tear_down)
 def test_check_version():
     config = TConfig()
-    client = Client(config, test=True)
-    assert client.update_check(client.app_name, '0.0.2') is True
-    assert client.update_check(client.app_name, '6.0.0') is False
+    client = Client(config, refresh=True, test=True)
+    assert client.update_check(client.app_name, '0.0.2') is not None
+    assert client.update_check(client.app_name, '6.0.0') is None
 
 
 @with_setup(None, tear_down)
 def test_failed_refresh_download():
-    client = Client(None, test=True)
-    assert client.download() is False
+    client = Client(None, refresh=True, test=True)
+    assert client.ready is False
 
 
 @with_setup(None, tear_down)
 def test_download():
-    client = Client(TConfig(), test=True)
-    assert client.app_name == u'jms'
-    assert client.update_check(client.app_name, '0.0.1') is True
-    assert client.download() is True
-    assert client.extract() is True
+    client = Client(TConfig(), refresh=True, test=True)
+    update = client.update_check(client.app_name, '0.0.1')
+    assert update is not None
+    assert update.app_name == u'jms'
+    assert update.download() is True
+    assert update.extract() is True

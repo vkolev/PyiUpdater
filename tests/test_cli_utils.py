@@ -3,7 +3,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from cli.ui.menu_utils import (get_correct_answer, path_fixer,
+from cli_ui.ui.menu_utils import (get_correct_answer, path_fixer,
                                _directory_fixer)
 
 
