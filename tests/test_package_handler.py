@@ -24,6 +24,8 @@ def teardown_func():
     with ChDir('tests'):
         if os.path.exists(u'pyi-data'):
             shutil.rmtree(u'pyi-data', ignore_errors=True)
+        if os.path.exists(u'.pyiupdater'):
+            shutil.rmtree(u'.pyiupdater')
 
 
 @with_setup(setup_func, teardown_func)

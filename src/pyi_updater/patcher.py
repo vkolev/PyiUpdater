@@ -15,8 +15,8 @@ from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import PatcherError
 from pyi_updater.utils import (get_package_hashes,
                                EasyAccessDict,
-                               version_string_to_tuple,
-                               version_tuple_to_string)
+                               vstr_2_vtuple,
+                               vtuple_2_vstr)
 
 if bsdiff4 is None:
     from pyi_updater.utils import bsdiff4_py as bsdiff4
@@ -134,7 +134,7 @@ class Patcher(object):
 
         for p in required_patches:
             info = {}
-            v_num = version_tuple_to_string(p)
+            v_num = vtuple_2_vstr(p)
             plat_key = '{}*{}*{}*{}'.format(u'updates', name,
                                             v_num, self.plat)
             plat_info = self.star_access_update_data.get(plat_key)
@@ -153,7 +153,7 @@ class Patcher(object):
         needed_patches = []
         versions = []
         try:
-            u_versions = map(version_string_to_tuple,
+            u_versions = map(vstr_2_vtuple,
                              self.json_data[u'updates'][name].keys())
             versions.extend(u_versions)
         except KeyError:
@@ -165,7 +165,7 @@ class Patcher(object):
         versions = sorted(versions)
         log.debug(u'getting required patches')
         for i in versions:
-            if i > version_string_to_tuple(self.current_version):
+            if i > vstr_2_vtuple(self.current_version):
                 needed_patches.append(i)
         # Used to guarantee patches are only added once
         return list(set(needed_patches))

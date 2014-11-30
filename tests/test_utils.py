@@ -13,8 +13,8 @@ from cli_ui.ui.menu_utils import ask_yes_no
 from pyi_updater.utils import (get_hash,
                                get_package_hashes,
                                make_archive,
-                               version_string_to_tuple,
-                               version_tuple_to_string
+                               vstr_2_vtuple,
+                               vtuple_2_vstr
                                )
 
 home_dir = os.path.expanduser('~')
@@ -89,8 +89,8 @@ def test_get_hash():
 
 
 def test_string_to_tuple():
-    assert (1, 2, 3) == version_string_to_tuple('1.2.3')
+    assert (1, 2, 3) == vstr_2_vtuple('1.2.3')
 
 
 def test_tuple_to_stirng():
-    assert '1.2.3' == version_tuple_to_string((1, 2, 3))
+    assert '1.2.3' == vtuple_2_vstr((1, 2, 3))

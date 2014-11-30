@@ -36,12 +36,20 @@ def setup_func():
     kh.sign_update()
 
 
+def teardown_func():
+    path = os.path.join(u'.pyiupdater')
+    with ChDir(u'tests'):
+        if os.path.exists(path):
+            shutil.rmtree(path, ignore_errors=True)
+
+
 @with_setup(setup_func, None)
 def test_exe1():
     assert os.path.exists(ph.new_dir) is True
     assert os.path.exists(ph.deploy_dir) is True
 
 
+@with_setup(None, teardown_func)
 def test_patch_creation():
     test_data_dir = os.path.abspath(os.path.join(u'tests', u'test data',
                                     u'5.3'))
@@ -52,9 +60,9 @@ def test_patch_creation():
     ph.process_packages()
     kh.sign_update()
     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
-                          u'Not So TUF-arm-1')) is True
+                          u'Not So TUF-arm-101')) is True
     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
-                          u'Not So TUF-mac-1')) is True
+                          u'Not So TUF-mac-101')) is True
 
 
 def test_move_to_deploy():

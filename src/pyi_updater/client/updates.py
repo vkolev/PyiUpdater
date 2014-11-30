@@ -17,7 +17,7 @@ from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.patcher import Patcher
 from pyi_updater.utils import (get_hash, get_version_number,
-                               version_string_to_tuple)
+                               vstr_2_vtuple)
 
 log = logging.getLogger(__name__)
 
@@ -265,7 +265,7 @@ class LibUpdate(object):
             log.debug(u'Cannot parse version info')
             current_version_str = u'0.0.0'
 
-        current_version = version_string_to_tuple(current_version_str)
+        current_version = vstr_2_vtuple(current_version_str)
         with ChDir(self.update_folder):
             for t in temp:
                 try:
@@ -273,7 +273,7 @@ class LibUpdate(object):
                 except UtilsError:
                     log.debug(u'Cannot parse version info')
                     t_versoin_str = u'0.0.0'
-                t_version = version_string_to_tuple(t_versoin_str)
+                t_version = vstr_2_vtuple(t_versoin_str)
 
                 if self.name in t and t_version < current_version:
                     log.debug(u'Removing old update: {}'.format(t))
