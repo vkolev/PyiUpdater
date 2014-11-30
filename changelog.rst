@@ -1,6 +1,5 @@
-v0.11.1 - develop
-~~~~~~~~~~~~~~~~~
-.. note:: This version is not yet released and is under active development.
+v0.12.0 - 2014/11/29
+~~~~~~~~~~~~~~~~~~~~
 
 * Added
 
