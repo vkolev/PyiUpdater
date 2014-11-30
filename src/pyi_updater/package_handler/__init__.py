@@ -94,6 +94,7 @@ class PackageHandler(object):
         """
         package_manifest, patch_manifest = self._get_package_list()
         patches = self._make_patches(patch_manifest)
+        self._cleanup(patch_manifest)
         package_manifest = self._add_patches_to_packages(package_manifest,
                                                          patches)
         self.json_data = self._update_version_file(self.json_data,
@@ -253,6 +254,11 @@ class PackageHandler(object):
                     data['package'][p.name][p.platform] = p.version
         return data
 
+    def _cleanup(self, patch_manifest):
+        for p in patch_manifest:
+            if os.path.exists(p[u'src']):
+                os.remove(p[u'src'])
+
     def _make_patches(self, patch_manifest):
         # ToDo: Since not packing as an executable test
         #       to see if it multiprocessing works on windows
@@ -268,7 +274,7 @@ class PackageHandler(object):
         # else:
         cpu_count = multiprocessing.cpu_count() * 2
         pool = multiprocessing.Pool(processes=cpu_count)
-        pool_output = pool.map(_make_patch, patch_manifest)
+        pool_output = pool.map(self._make_patch, patch_manifest)
         return pool_output
 
     def _add_patches_to_packages(self, package_manifest, patches):
@@ -426,28 +432,27 @@ class PackageHandler(object):
             return src_file_path, num
         return None
 
+    def _make_patch(self, patch_info):
+        # Does with the name implies. Used with multiprocessing
+        patch = Patch(patch_info)
+        patch_name = patch_info[u'patch_name']
+        dst_path = patch_info[u'dst']
+        patch_number = patch_info[u'patch_num']
+        src_path = patch_info[u'src']
+        patch_name += u'-' + str(patch_number)
+        # Updating with full name - number included
+        patch.patch_name = patch_name
+        if not os.path.exists(src_path):
+            log.debug('Src file does not exist to create patch')
 
-def _make_patch(patch_info):
-    # Does with the name implies. Used with multiprocessing
-    patch = Patch(patch_info)
-    patch_name = patch_info[u'patch_name']
-    dst_path = patch_info[u'dst']
-    patch_number = patch_info[u'patch_num']
-    src_path = patch_info[u'src']
-    patch_name += u'-' + str(patch_number)
-    # Updating with full name - number included
-    patch.patch_name = patch_name
-    if not os.path.exists(src_path):
-        log.debug('Src file does not exist to create patch')
-
-    else:
-        print(u"Making patch... {}".format(os.path.basename(patch_name)))
-        log.debug(u'Patch source path:{}'.format(src_path))
-        log.debug(u'Patch destination path: {}'.format(dst_path))
-        if patch.ready is True:
-            log.debug(u'Creating patch')
-            bsdiff4.file_diff(src_path, patch.dst_path, patch.patch_name)
-            log.debug(u'Done creating patch')
         else:
-            log.debug('Missing patch attr')
-    return patch
+            print(u"Making patch... {}".format(os.path.basename(patch_name)))
+            log.debug(u'Patch source path:{}'.format(src_path))
+            log.debug(u'Patch destination path: {}'.format(dst_path))
+            if patch.ready is True:
+                log.debug(u'Creating patch')
+                bsdiff4.file_diff(src_path, patch.dst_path, patch.patch_name)
+                log.debug(u'Done creating patch')
+            else:
+                log.debug('Missing patch attr')
+        return patch
