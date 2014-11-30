@@ -89,12 +89,12 @@ def get_version_number(package_name):
             raise UtilsError('Can not find version number', expected=True)
 
 
-def version_string_to_tuple(version):
-        return tuple(map(int, version.split('.')))
+def vstr_2_vtuple(x):
+    return tuple(map(int, x.split('.')))
 
 
-def version_tuple_to_string(version):
-    return '.'.join(map(str, version))
+def vtuple_2_vstr(x):
+    return '.'.join(map(str, x))
 
 
 def get_package_hashes(filename):

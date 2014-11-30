@@ -11,7 +11,7 @@ from cli_ui.core import keys, settings, sign, upload
 from cli_ui.core.common import CommonLogic
 from cli_ui.ui.menu import Menu
 from cli_ui.ui.menu_utils import (ask_yes_no, get_correct_answer,
-                               _directory_fixer)
+                                  _directory_fixer)
 
 from pyi_updater import PyiUpdater
 from pyi_updater.config import SetupConfig

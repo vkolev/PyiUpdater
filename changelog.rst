@@ -1,7 +1,23 @@
-v0.11.1 - develop
-~~~~~~~~~~~~~~~~~
-.. note:: This version is not yet released and is under active development.
+v0.12.0 - 2014/11/29
+~~~~~~~~~~~~~~~~~~~~
 
+* Added
+
+  - .pyiupdater data directory. Used to keep track of packages & patch numbers.
+
+* Updated
+
+  - PackageHandler
+
+    - Will migrate packages in files directory to safe-to-remove folder.
+      Now only the most recent package will be kept in files directory for patch creation
+
+* Fixed
+
+  - Install from setup.py
+  - Failed password retry
+
+* Removed
 
 v0.11.0 - 2014/11/22
 ~~~~~~~~~~~~~~~~~~~~
@@ -9,7 +25,7 @@ v0.11.0 - 2014/11/22
 
   - PyiWrapper
 
-    - Spec file support. Specs file will be rejected if onedir mode is specified.
+    - Spec file support. Spec file will be rejected if onedir mode is specified.
 
 * Updated
 

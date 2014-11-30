@@ -20,7 +20,7 @@ from pyi_updater.config import Config
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.utils import (EasyAccessDict,
                                make_archive,
-                               version_string_to_tuple)
+                               vstr_2_vtuple)
 
 log = logging.getLogger(__name__)
 
@@ -144,8 +144,8 @@ class Client(object):
                                      self.star_access_update_data)
         if latest is None:
             return None
-        if version_string_to_tuple(latest) <= \
-                version_string_to_tuple(version):
+        if vstr_2_vtuple(latest) <= \
+                vstr_2_vtuple(version):
             log.debug(u'{} already updated to the latest version'.format(name))
             log.debug(u'Already up-to-date')
             return None
