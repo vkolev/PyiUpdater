@@ -113,9 +113,9 @@ class FileCrypt(object):
 
         plain_data = None
         tries = 0
-        if self.password is None:
-                self.password = self._get_password()
         while tries < self.password_max_tries:
+            if self.password is None:
+                self.password = self._get_password()
             log.debug(u'Tries = {}'.format(tries))
             fernet = Fernet(self.password)
             try:

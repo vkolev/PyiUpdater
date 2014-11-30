@@ -1,6 +1,7 @@
 v0.11.1 - develop
 ~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
+
 * Added
 
   - .pyiupdater data directory. Used to keep track of packages & patch numbers.
@@ -15,6 +16,7 @@ v0.11.1 - develop
 * Fixed
 
   - Install from setup.py
+  - Failed password retry
 
 * Removed
 

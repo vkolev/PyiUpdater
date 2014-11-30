@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release History &mdash; PyiUpdater 0.11 documentation</title>
+    <title>Release History &mdash; PyiUpdater 0.11.1-dev11292047 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.11',
+        VERSION:     '0.11.1-dev11292047',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.11 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.11.1-dev11292047 documentation" href="index.html" />
     <link rel="prev" title="License" href="license.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.11</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.11.1-dev11292047</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -154,13 +154,33 @@
 <p class="first admonition-title">Note</p>
 <p class="last">This version is not yet released and is under active development.</p>
 </div>
+<ul class="simple">
+<li>Added<ul>
+<li>.pyiupdater data directory. Used to keep track of packages &amp; patch numbers.</li>
+</ul>
+</li>
+<li>Updated<ul>
+<li>PackageHandler<ul>
+<li>Will migrate packages in files directory to safe-to-remove folder.
+Now only the most recent package will be kept in files directory for patch creation</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Fixed<ul>
+<li>Install from setup.py</li>
+<li>Failed password retry</li>
+</ul>
+</li>
+<li>Removed</li>
+</ul>
 </div>
 <div class="section" id="v0-11-0-2014-11-22">
 <h2>v0.11.0 - 2014/11/22<a class="headerlink" href="#v0-11-0-2014-11-22" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Added<ul>
 <li>PyiWrapper<ul>
-<li>Spec file support. Specs file will be rejected if onedir mode is specified.</li>
+<li>Spec file support. Spec file will be rejected if onedir mode is specified.</li>
 </ul>
 </li>
 </ul>
@@ -499,7 +519,7 @@ to correct class attributes</li>
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Nov 22, 2014.<br/>
+      Last updated on Nov 29, 2014.<br/>
     </p>
   </div>
 </footer>
