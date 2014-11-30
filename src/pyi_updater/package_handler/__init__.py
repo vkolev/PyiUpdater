@@ -16,8 +16,6 @@ from pyi_updater.package_handler.utils import migrate
 from pyi_updater.utils import (get_package_hashes as gph,
                                remove_dot_files,
                                EasyAccessDict,
-                               version_string_to_tuple,
-                               version_tuple_to_string,
                                )
 
 log = logging.getLogger(__name__)
@@ -58,7 +56,8 @@ class PackageHandler(object):
             self.files_dir = os.path.join(self.data_dir, u'files')
             self.deploy_dir = os.path.join(self.data_dir, u'deploy')
             self.new_dir = os.path.join(self.data_dir, u'new')
-            self.config_dir = os.path.join(os.getcwd(), u'.pyiupdater')
+            self.config_dir = os.path.join(os.path.dirname(self.data_dir),
+                                           u'.pyiupdater')
             self.config_file = os.path.join(self.config_dir, 'data.json')
             self.config = None
         else:
@@ -70,6 +69,8 @@ class PackageHandler(object):
         if self.data_dir is not None and \
                 os.path.exists(self.files_dir) is True:
             migrate(self.data_dir)
+        if self.data_dir is not None:
+            self.setup()
 
     def setup(self):
         """Creates all needed working directories & loads version file.
@@ -195,6 +196,8 @@ class PackageHandler(object):
                                                         package)
 
                 package_manifest.append(package)
+                self.config = self._add_package_to_config(package,
+                                                          self.config)
 
                 if self.patch_support:
                     # Will check if source file for patch exists
@@ -227,6 +230,28 @@ class PackageHandler(object):
                 print(b.name, b.info['reason'])
 
         return package_manifest, patch_manifest
+
+    def _add_package_to_config(self, p, data):
+        if 'package' not in data.keys():
+            data['package'] = {}
+            log.debug('Initilizing config for packages')
+        # First package with current name so add platform and version
+        if p.name not in data['package'].keys():
+            data['package'][p.name] = {p.platform: p.version}
+            log.debug('Adding new package to config')
+        else:
+            # Adding platform and version
+            if p.platform not in data['package'][p.name].keys():
+                data['package'][p.name][p.platform] = p.version
+                log.debug('Adding new arch to package-config')
+            else:
+                # Getting current version for platform
+                value = data['package'][p.name][p.platform]
+                # Updating version if applicable
+                if p.version > value:
+                    log.debug('Adding new version to package-config')
+                    data['package'][p.name][p.platform] = p.version
+        return data
 
     def _make_patches(self, patch_manifest):
         # ToDo: Since not packing as an executable test
@@ -316,7 +341,7 @@ class PackageHandler(object):
     def _write_config_to_file(self, json_data):
         log.debug(u'Writing config data to file')
         with open(self.config_file, u'w') as f:
-            f.write(json.dumps, sort_keys=True, indent=2)
+            f.write(json.dumps(json_data, sort_keys=True, indent=2))
 
     # ToDo: Explain whats going on below &/or clean up
     def _move_packages(self, package_manifest):
@@ -367,7 +392,7 @@ class PackageHandler(object):
         if bsdiff4 is None:
             return None
         src_file_path = None
-        if os.path.exists(self.file_dir):
+        if os.path.exists(self.files_dir):
             with ChDir(self.files_dir):
                 files = os.listdir(os.getcwd())
 
@@ -383,20 +408,20 @@ class PackageHandler(object):
                 filename = l_plat[u'filename']
             except:
                 return None
-            src_file_path = os.path.join(self.file_dir, filename)
+            src_file_path = os.path.join(self.files_dir, filename)
 
             try:
-                patch_num = self.config[u'patches'][name][platform]
-                self.config[u'patches'][name][platform] += 1
+                patch_num = self.config[u'patches'][name]
+                self.config[u'patches'][name] += 1
             except KeyError:
+                try:
+                    patch_num = self.config[u'boot_strap']
+                except KeyError:
+                    patch_num = 100
+                if u'patches' not in self.config.keys():
+                    self.config[u'patches'] = {}
                 if name not in self.config[u'patches'].keys():
-                    self.config[u'patches'][name] = {}
-                if platform not in self.config[u'patches'][name].keys():
-                    try:
-                        patch_num = self.config[u'boot_strap']
-                    except KeyError:
-                        patch_num = 1
-                    self.config[u'patches'][name][platform] = patch_num
+                    self.config[u'patches'][name] = patch_num
             num = patch_num + 1
             return src_file_path, num
         return None
