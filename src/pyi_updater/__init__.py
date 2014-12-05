@@ -35,7 +35,7 @@ def get_build():
     return total
 
 # VERSION = (0, 12, 1, u'dev', get_build())
-VERSION = (0, 12, 0)
+VERSION = (0, 12, 1)
 
 
 def get_version():
