@@ -1,3 +1,10 @@
+v0.12.1 - 2014/12/4
+~~~~~~~~~~~~~~~~~~~
+* Fixed
+
+  - Migrating to new patch numbering system
+
+
 v0.12.0 - 2014/11/29
 ~~~~~~~~~~~~~~~~~~~~
 
