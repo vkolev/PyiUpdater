@@ -1,6 +1,5 @@
-v0.12.1 - develop
-~~~~~~~~~~~~~~~~~
-.. note:: This version is not yet released and is under active development.
+v0.12.1 - 2014/12/4
+~~~~~~~~~~~~~~~~~~~
 * Fixed
 
   - Migrating to new patch numbering system
