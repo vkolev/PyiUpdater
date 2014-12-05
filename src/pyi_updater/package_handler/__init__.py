@@ -66,9 +66,10 @@ class PackageHandler(object):
         self.update_url = obj.config.get(u'UPDATE_URL')
 
         self.json_data = None
-        if self.data_dir is not None and \
-                os.path.exists(self.files_dir) is True:
-            migrate(self.data_dir)
+        if self.data_dir is not None:
+            if os.path.exists(self.config_file)and \
+                    os.path.exists(self.files_dir) is True:
+                migrate(self.data_dir)
         if self.data_dir is not None:
             self.setup()
 
