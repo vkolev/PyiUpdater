@@ -1,6 +1,15 @@
 v0.12.2 - Develop
 ~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
+* Updated
+
+  - PackageHandler
+
+    - Error reporting when calling methods
+
+* Removed
+
+  - Some unused code
 
 v0.12.1 - 2014/12/4
 ~~~~~~~~~~~~~~~~~~~

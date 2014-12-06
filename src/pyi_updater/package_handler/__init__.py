@@ -11,6 +11,7 @@ except ImportError:
     bsdiff4 = None
 from jms_utils.paths import ChDir
 
+from pyi_updater.exceptions import PackageHandlerError
 from pyi_updater.package_handler.package import Package, Patch
 from pyi_updater.package_handler.utils import migrate
 from pyi_updater.utils import (get_package_hashes as gph,
@@ -31,6 +32,8 @@ class PackageHandler(object):
     data_dir = None
 
     def __init__(self, app=None):
+        self.config_loaded = False
+        self.init = False
         if app:
             self.init_app(app)
 
@@ -41,8 +44,6 @@ class PackageHandler(object):
             obj (instance): config object
 
         """
-        self.app_dir = obj.config.get(u'APP_DIR')
-
         self.patches = obj.config.get(u'UPDATE_PATCHES', True)
         if self.patches:
             log.debug(u'Looks like were ready to make some patches')
@@ -63,24 +64,29 @@ class PackageHandler(object):
         else:
             log.debug('DEV_DATA_DIR is None. Setup Failed')
 
-        self.update_url = obj.config.get(u'UPDATE_URL')
-
         self.json_data = None
         if self.data_dir is not None:
+            self.init = True
             if os.path.exists(self.config_file)and \
                     os.path.exists(self.files_dir) is True:
                 migrate(self.data_dir)
-        if self.data_dir is not None:
-            self.setup()
+
+        self.setup()
 
     def setup(self):
-        """Creates all needed working directories & loads version file.
+        """Creates all needed working directories & loads json files.
 
         Proxy method for :meth:`_setup_work_dirs` & :meth:`_load_version_file`
         """
+        if self.data_dir is not None:
+            self._setup()
+
+    def _setup(self):
         self._setup_work_dirs()
-        self.json_data = self._load_version_file()
-        self.config = self._load_config()
+        if self.config_loaded is False:
+            self.json_data = self._load_version_file()
+            self.config = self._load_config()
+            self.config_loaded = True
 
     def process_packages(self):
         """Gets a list of updates to process.  Adds the name of an
@@ -93,6 +99,8 @@ class PackageHandler(object):
         :meth:`_update_version_file`,
         :meth:`_write_json_to_file` & :meth:`_move_packages`.
         """
+        if self.init is False:
+            raise PackageHandlerError('Must init first.', expected=True)
         package_manifest, patch_manifest = self._get_package_list()
         patches = self._make_patches(patch_manifest)
         self._cleanup(patch_manifest)

@@ -77,7 +77,6 @@ class Client(object):
             self.platform = get_system()
         self.update_folder = os.path.join(self.data_dir, u'update')
         self.public_key = config.get(u'PUBLIC_KEY', None)
-        self.debug = config.get(u'DEBUG', False)
         self.verify = config.get(u'VERIFY_SERVER_CERT', True)
         if self.verify is True:
             self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
