@@ -261,18 +261,8 @@ class PackageHandler(object):
                 os.remove(p[u'src'])
 
     def _make_patches(self, patch_manifest):
-        # ToDo: Since not packing as an executable test
-        #       to see if it multiprocessing works on windows
-        # When the framework is frozen with pyinstaller I got
-        # weird issues with multiprocessing. If you can fix
-        # the issue a PR is greatly appreciated
-        pool_output = []
+        pool_output = list()
         log.debug(u'Staring patch creation')
-        # if FROZEN and sys.platform == u'win32':
-            # for p in patch_manifest:
-                # patch_output = _make_patch(p)
-                # pool_output.append(patch_output)
-        # else:
         cpu_count = multiprocessing.cpu_count() * 2
         pool = multiprocessing.Pool(processes=cpu_count)
         pool_output = pool.map(_make_patch, patch_manifest)
@@ -280,7 +270,7 @@ class PackageHandler(object):
 
     def _add_patches_to_packages(self, package_manifest, patches):
         # ToDo: Increase the efficiency of this double for
-        #       loop. Not sure if it can be but though
+        #       loop. Not sure if it can be done though
         log.debug(u'Adding patches to package list')
         if patches is not None:
             log.debug('We got patches...')
@@ -350,13 +340,7 @@ class PackageHandler(object):
         with open(self.config_file, u'w') as f:
             f.write(json.dumps(json_data, sort_keys=True, indent=2))
 
-    # ToDo: Explain whats going on below &/or clean up
     def _move_packages(self, package_manifest):
-        # Moves all packages to their destination folder.
-        # Destination is figured by lib name and version number.
-        # Since we are copying files to the deploy folder then
-        # moving the updates to the files folder, we can safely
-        # delete files in deploy folder after uploading.
         log.debug(u'Moving packages to deploy folder')
         for p in package_manifest:
             patch = p.patch_info.get(u'patch_name', None)
@@ -404,8 +388,10 @@ class PackageHandler(object):
                 files = os.listdir(os.getcwd())
 
             files = remove_dot_files(files)
+            # No src files to patch from. Exit quickly
             if len(files) == 0:
                 return None
+            # If latest not available in version file. Exit
             try:
                 latest = json_data[u'latest'][name][platform]
             except KeyError:
@@ -421,6 +407,7 @@ class PackageHandler(object):
                 patch_num = self.config[u'patches'][name]
                 self.config[u'patches'][name] += 1
             except KeyError:
+                # If no patch number we will start at 100
                 try:
                     patch_num = self.config[u'boot_strap']
                 except KeyError:
