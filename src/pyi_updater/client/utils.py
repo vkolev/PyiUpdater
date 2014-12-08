@@ -1,11 +1,6 @@
 import logging
-import os
 
 log = logging.getLogger(__name__)
-
-
-def get_mac_dot_app_dir(dir_):
-    return os.path.dirname(os.path.dirname(os.path.dirname(dir_)))
 
 
 def get_highest_version(name, plat, easy_data):

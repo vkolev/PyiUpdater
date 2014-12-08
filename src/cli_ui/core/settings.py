@@ -4,7 +4,6 @@ import shutil
 import os
 import time
 
-from jms_utils.paths import cwd
 from six.moves import input
 
 from cli_ui.core.common import CommonLogic
@@ -14,6 +13,8 @@ from pyi_updater.utils import verify_password
 
 
 log = logging.getLogger(__name__)
+
+CWD = os.getcwd()
 
 
 class Settings(CommonLogic, Menu):
@@ -110,7 +111,7 @@ class Settings(CommonLogic, Menu):
 
     def copy_decrypted_config(self):
         log.debug(u'Attempting to copy decrypted config')
-        filename = os.path.join(cwd, u'config.data')
+        filename = os.path.join(CWD, u'config.data')
         self.file_crypt.new_file(filename)
         self.file_crypt.decrypt()
         try:
@@ -128,7 +129,7 @@ class Settings(CommonLogic, Menu):
     def change_password(self):
         private_key_path = os.path.join(self.key_handler.keys_dir,
                                         self.key_handler.private_key_name)
-        config_path = os.path.join(cwd, u'config.data')
+        config_path = os.path.join(CWD, u'config.data')
 
         old_pass = verify_password('Enter old password')
         new_pass = verify_password('Enter new password')

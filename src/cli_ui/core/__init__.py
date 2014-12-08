@@ -5,8 +5,6 @@ import pickle
 import sys
 import time
 
-from jms_utils.paths import cwd
-
 from cli_ui.core import keys, settings, sign, upload
 from cli_ui.core.common import CommonLogic
 from cli_ui.ui.menu import Menu
@@ -23,6 +21,9 @@ from pyi_updater.uploader import Uploader
 from pyi_updater.utils import verify_password
 
 log = logging.getLogger(__name__)
+
+
+CWD = os.getcwd()
 
 
 class Worker(Menu, CommonLogic):
@@ -67,8 +68,8 @@ class Worker(Menu, CommonLogic):
 
     def start(self):
         while 1:
-            dec_path = os.path.join(cwd, u'config.data')
-            enc_path = os.path.join(cwd, u'config.data.enc')
+            dec_path = os.path.join(CWD, u'config.data')
+            enc_path = os.path.join(CWD, u'config.data.enc')
             if not os.path.exists(dec_path) and not os.path.exists(enc_path):
                 self.initial_setup()
 
@@ -85,8 +86,8 @@ class Worker(Menu, CommonLogic):
                 func(name)
 
     def quit(self):
-        lex_file = os.path.join(cwd, u'lextab.py')
-        yac_file = os.path.join(cwd, u'yacctab.py')
+        lex_file = os.path.join(CWD, u'lextab.py')
+        yac_file = os.path.join(CWD, u'yacctab.py')
         if os.path.exists(lex_file):
             os.remove(lex_file)
         if os.path.exists(yac_file):
@@ -108,7 +109,7 @@ class Worker(Menu, CommonLogic):
                                                       'company or name',
                                                       required=True)
 
-        self.config.DEV_DATA_DIR = cwd
+        self.config.DEV_DATA_DIR = CWD
 
         url = get_correct_answer(u'Enter a url to ping for updates.',
                                  required=True)
@@ -170,7 +171,7 @@ class Worker(Menu, CommonLogic):
         self.pyi_updater.update_config(obj)
         self.update_helpers(self.pyi_updater)
         log.debug(u'Saving Config')
-        filename = os.path.join(cwd, u'config.data')
+        filename = os.path.join(CWD, u'config.data')
         self.file_crypt.new_file(filename)
         # We do this here to keep from asking users
         # password again when we encrypt the file
@@ -184,8 +185,8 @@ class Worker(Menu, CommonLogic):
 
     def load_config(self):
         log.debug(u'Loading Config')
-        filename = os.path.join(cwd, u'config.data')
-        salt_file = os.path.join(cwd, u'pyi-data', u'keys', u'salt')
+        filename = os.path.join(CWD, u'config.data')
+        salt_file = os.path.join(CWD, u'pyi-data', u'keys', u'salt')
         self.file_crypt.salt_file = salt_file
         self.file_crypt.new_file(filename)
         try:
@@ -206,7 +207,7 @@ class Worker(Menu, CommonLogic):
         return config_data
 
     def write_config_py(self, obj):
-        filename = os.path.join(cwd, u'client_config.py')
+        filename = os.path.join(CWD, u'client_config.py')
         attr_str_format = "    {} = '{}'\n"
         attr_format = "    {} = {}\n"
         with open(filename, u'w') as f:

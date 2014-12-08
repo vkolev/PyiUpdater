@@ -1,3 +1,23 @@
+v0.12.4 - develop
+~~~~~~~~~~~~~~~~~~~
+.. note:: This version is not yet released and is under active development.
+* Fixed
+
+  - PyiUpdater
+
+    - Logging when pyi.log is next to Mac .app bundles
+
+* Removed
+
+  - Client
+
+    - Redundant code
+
+  - PyiUpdater
+
+    - Redundant system calls
+
+
 v0.12.3 - 2014/12/7
 ~~~~~~~~~~~~~~~~~~~
 * Updated
@@ -5,9 +25,12 @@ v0.12.3 - 2014/12/7
   - Client
 
     - Handling version numbers passed to update_check
-    - Missing var
 
 * Fixed
+
+  - Client
+
+    - Missing var
 
   - PackageHandler
 

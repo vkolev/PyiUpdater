@@ -2,20 +2,18 @@ import json
 import logging
 import os
 import shutil
-import sys
 
 from appdirs import user_cache_dir
 import certifi
 import ed25519
 from jms_utils import FROZEN
-from jms_utils.paths import ChDir
+from jms_utils.paths import app_cwd, ChDir
 from jms_utils.system import get_system
 import six
 import urllib3
 
 from pyi_updater.client.updates import AppUpdate, LibUpdate
-from pyi_updater.client.utils import (get_filename, get_highest_version,
-                                      get_mac_dot_app_dir)
+from pyi_updater.client.utils import (get_filename, get_highest_version)
 from pyi_updater.config import Config
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.utils import (EasyAccessDict,
@@ -84,8 +82,6 @@ class Client(object):
         else:
             self.http_pool = urllib3.PoolManager()
         self.version_file = u'version.json'
-
-        self.current_app_dir = os.path.dirname(sys.argv[0])
 
         self._setup()
         if refresh is True:
@@ -310,17 +306,7 @@ class Client(object):
             log.debug(u'Adding base binary v{} to updates '
                       u'folder'.format(self.version))
             # Changing in to directory of currently running exe
-
-            if get_system() == u'mac':
-                # We are in an application bundle. Must get parent
-                # dir of bundle.
-                if self.current_app_dir.endswith('MacOS') is True:
-                    log.debug('Looks like we\'re dealing with a Mac Gui')
-                    p_dir = get_mac_dot_app_dir(self.current_app_dir)
-                else:
-                    p_dir = os.path.dirname(sys.agrv[0])
-            else:
-                p_dir = os.path.dirname(sys.agrv[0])
+            p_dir = app_cwd
 
             with ChDir(p_dir):
                 name = self.name

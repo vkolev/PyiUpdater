@@ -34,8 +34,8 @@ def get_build():
     total += str(a.tm_min)
     return total
 
-# VERSION = (0, 12, 3, u'dev', get_build())
-VERSION = (0, 12, 3)
+VERSION = (0, 12, 4, u'dev', get_build())
+# VERSION = (0, 12, 4)
 
 
 def get_version():
