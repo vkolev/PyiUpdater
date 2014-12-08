@@ -14,7 +14,7 @@ import six
 import urllib3
 
 from pyi_updater.client.updates import AppUpdate, LibUpdate
-from pyi_updater.client.utils import (get_highest_version,
+from pyi_updater.client.utils import (get_filename, get_highest_version,
                                       get_mac_dot_app_dir)
 from pyi_updater.config import Config
 from pyi_updater.downloader import FileDownloader
@@ -101,6 +101,29 @@ class Client(object):
         except Exception as err:
             log.debug(str(err), exc_info=True)
 
+    def _sanatize_version_to_str(self, version):
+        def length_check(v):
+            if len(v) == 1:
+                v = (v[0], 0, 0)
+            elif len(v) == 2:
+                v = (v[0], v[1], 0)
+            # ToDo: Once we add support for pre release versions
+            #       We will have to update this. Can't fix now.
+            #       Have bigger fish to fry. 2014/12/7 6:51pm
+            elif len(v) > 3:
+                v = (v[0], v[1], v[2])
+            return v
+
+        if isinstance(version, tuple):
+            version = length_check(version)
+            version = '.'.join(map(str, version))
+        elif isinstance(version, list):
+            version = tuple(map(int, version.split('.')))
+            version = length_check(version)
+            version = '.'.join(version)
+
+        return version
+
     def update_check(self, name, version):
         """
         Will try to patch binary if all check pass.  IE hash verified
@@ -120,7 +143,8 @@ class Client(object):
                 False - Update Failed
         """
         self.name = name
-        self.version = version
+        self.version = self._sanatize_version_to_str(version)
+
         app = False
         if self.ready is False:
             log.debug('No update manifest found')
@@ -140,7 +164,7 @@ class Client(object):
         # If None is returned self._get_highest_version could
         # not find the supplied name in the version file
         latest = get_highest_version(name, self.platform,
-                                     self.star_access_update_data)
+                                     self.easy_data)
         if latest is None:
             return None
         if vstr_2_vtuple(latest) <= \
@@ -155,7 +179,8 @@ class Client(object):
             u'update_urls': self.update_urls,
             u'name': self.name,
             u'version': self.version,
-            u'easy_data': self.star_access_update_data,
+            u'easy_data': self.easy_data,
+            u'json_data': self.json_data,
             u'data_dir': self.data_dir,
             u'platform': self.platform,
             u'app_name': self.app_name,
@@ -255,7 +280,7 @@ class Client(object):
             j_data = {}
         else:
             j_data = self.json_data.copy()
-        self.star_access_update_data = EasyAccessDict(j_data)
+        self.easy_data = EasyAccessDict(j_data)
         return True
 
     def _setup(self):
@@ -272,12 +297,16 @@ class Client(object):
     def _archive_installed_binary(self):
         # Archives current app and places in cache for future patch updates
 
-        current_archive_filename = self._get_filename(self.name, self.version)
+        current_archive_filename = get_filename(self.name, self.version,
+                                                self.platform, self.easy_data)
 
+        if current_archive_filename is None:
+            current_archive_filename = ''
         current_archvie_path = os.path.join(self.update_folder,
                                             current_archive_filename)
 
-        if not os.path.exists(current_archvie_path):
+        if current_archive_filename != '' and \
+                not os.path.exists(current_archvie_path):
             log.debug(u'Adding base binary v{} to updates '
                       u'folder'.format(self.version))
             # Changing in to directory of currently running exe
@@ -303,7 +332,8 @@ class Client(object):
                         name += u'.app'
 
                 try:
-                    filename = make_archive(self.name, self.version, name)
+                    filename = make_archive(self.name, self.version,
+                                            name)
                 except Exception as err:
                     filename = None
                     log.error(str(err), exc_info=True)

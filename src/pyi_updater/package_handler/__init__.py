@@ -67,7 +67,7 @@ class PackageHandler(object):
         self.json_data = None
         if self.data_dir is not None:
             self.init = True
-            if os.path.exists(self.config_file)and \
+            if os.path.exists(self.config_file) is False and \
                     os.path.exists(self.files_dir) is True:
                 migrate(self.data_dir)
 
@@ -289,7 +289,11 @@ class PackageHandler(object):
                     if p.dst_filename == pm.filename:
                         pm.patch_info[u'patch_name'] = \
                             os.path.basename(p.patch_name)
-                        pm.patch_info[u'patch_hash'] = gph(p.patch_name)
+                        if not os.path.exists(p.patch_name):
+                            p_name = ''
+                        else:
+                            p_name = gph(p.patch_name)
+                        pm.patch_info[u'patch_hash'] = p_name
                         break
                     else:
                         log.debug('No patch match found')
@@ -354,9 +358,12 @@ class PackageHandler(object):
             patch = p.patch_info.get(u'patch_name', None)
             with ChDir(self.new_dir):
                 if patch:
-                    shutil.move(patch, self.deploy_dir)
-                    log.debug(u'Copying {} to {}'.format(patch,
+                    if os.path.exists(os.path.join(self.deploy_dir, patch)):
+                        os.remove(os.path.join(self.deploy_dir, patch))
+                    log.debug(u'Moving {} to {}'.format(patch,
                               self.deploy_dir))
+                    if os.path.exists(patch):
+                        shutil.move(patch, self.deploy_dir)
 
                 shutil.copy(p.filename, self.deploy_dir)
                 log.debug(u'Copying {} to {}'.format(p.filename,
@@ -423,8 +430,9 @@ class PackageHandler(object):
                 if u'patches' not in self.config.keys():
                     self.config[u'patches'] = {}
                 if name not in self.config[u'patches'].keys():
-                    self.config[u'patches'][name] = patch_num
+                    self.config[u'patches'][name] = patch_num + 1
             num = patch_num + 1
+            log.debug('Patch Number: {}'.format(num))
             return src_file_path, num
         return None
 

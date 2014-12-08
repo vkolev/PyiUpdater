@@ -11,7 +11,7 @@ from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 import urllib3
 
-from pyi_updater.client.utils import (get_highest_version,
+from pyi_updater.client.utils import (get_filename, get_highest_version,
                                       get_mac_dot_app_dir)
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
@@ -36,11 +36,14 @@ class LibUpdate(object):
         self.name = data.get(u'name')
         self.version = data.get(u'version')
         self.easy_data = data.get(u'easy_data')
+        # Raw form of easy_data
+        self.json_data = data.get(u'json_data')
         self.data_dir = data.get(u'data_dir')
         self.platform = data.get(u'platform')
         self.app_name = data.get(u'app_name')
         self.update_folder = os.path.join(self.data_dir, u'update')
         self.verify = data.get(u'verify')
+        self.current_app_dir = os.path.dirname(sys.argv[0])
         if self.verify is True:
             self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
                                                  ca_certs=certifi.where())
@@ -125,8 +128,8 @@ class LibUpdate(object):
 
             latest = get_highest_version(self.name, self.platform,
                                          self.easy_data)
-            filename = self._get_filename(self.name,
-                                          latest)
+            filename = get_filename(self.name, latest, self.platform,
+                                    self.easy_data)
             if not os.path.exists(filename):
                 raise ClientError(u'File does not exists')
 
@@ -156,8 +159,7 @@ class LibUpdate(object):
     def _is_downloaded(self, name):
         latest = get_highest_version(name, self.platform, self.easy_data)
 
-        filename = self._get_filename(name,
-                                      latest)
+        filename = get_filename(name, latest, self.platform, self.easy_data)
 
         hash_key = u'{}*{}*{}*{}*{}'.format(self.updates_key, name,
                                             latest, self.platform,
@@ -189,11 +191,12 @@ class LibUpdate(object):
         #        False - Either failed to patch or no base binary to patch
 
         log.debug(u'Starting patch update')
-        filename = self._get_filename(name, version)
+        filename = get_filename(name, version, self.platform, self.easy_data)
         latest = get_highest_version(name, self.platform,
                                      self.easy_data)
         # Just checking to see if the zip for the current version is
         # available to patch If not we'll just do a full binary download
+
         if not os.path.exists(os.path.join(self.update_folder, filename)):
             log.debug(u'{} got deleted. No base binary to start patching '
                       'form'.format(filename))
@@ -226,8 +229,7 @@ class LibUpdate(object):
         log.debug(u'Starting full update')
         latest = get_highest_version(name, self.platform, self.easy_data)
 
-        filename = self._get_filename(name,
-                                      latest)
+        filename = get_filename(name, latest, self.platform, self.easy_data)
 
         hash_key = u'{}*{}*{}*{}*{}'.format(self.updates_key, name,
                                             latest, self.platform,
@@ -255,7 +257,8 @@ class LibUpdate(object):
         #       Will remove todo if so...
         temp = os.listdir(self.update_folder)
         try:
-            filename = self._get_filename(self.name, self.version)
+            filename = get_filename(self.name, self.version,
+                                    self.platform, self.easy_data)
         except KeyError:
             filename = u'0.0.0'
 
@@ -264,7 +267,7 @@ class LibUpdate(object):
         except UtilsError:
             log.debug(u'Cannot parse version info')
             current_version_str = u'0.0.0'
-
+        log.debug('Current verion: {}'.format(current_version_str))
         current_version = vstr_2_vtuple(current_version_str)
         with ChDir(self.update_folder):
             for t in temp:
@@ -273,6 +276,7 @@ class LibUpdate(object):
                 except UtilsError:
                     log.debug(u'Cannot parse version info')
                     t_versoin_str = u'0.0.0'
+                log.debug('Other versoin: {}'.format(t_versoin_str))
                 t_version = vstr_2_vtuple(t_versoin_str)
 
                 if self.name in t and t_version < current_version:
@@ -297,24 +301,6 @@ class LibUpdate(object):
         url = self.easy_data.get(url_key)
         return url
 
-    def _get_filename(self, name, version):
-        # Gets full filename for given name & version combo
-        #
-        #Args:
-        #    name (str): name of file to get full filename for
-        #
-        #    version (str): version of file to get full filename for
-        #
-        #Returns:
-        #    (str) Filename with extension
-
-        filename_key = u'{}*{}*{}*{}*{}'.format(u'updates', name, version,
-                                                self.platform, u'filename')
-        filename = self.easy_data.get(filename_key)
-
-        log.debug(u"Filename for {}-{}: {}".format(name, version, filename))
-        return filename
-
 
 class AppUpdate(LibUpdate):
     """Used on client side to update files
@@ -325,7 +311,7 @@ class AppUpdate(LibUpdate):
     """
 
     def __init__(self, data):
-        super(AppUpdate).__init__(self, data)
+        super(AppUpdate, self).__init__(data)
 
     def extract_restart(self):
         """ Will extract (unzip) the update, overwrite the current app,

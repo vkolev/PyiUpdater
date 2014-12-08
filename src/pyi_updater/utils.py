@@ -196,14 +196,8 @@ def make_archive(name, version, target):
     Returns:
          (str) - name of archive
     """
-    try:
-        plat = parse_platform(target)
-    except UtilsError:
-        log.debug(u'Cannot parse system name.')
-        sys.exit(u'Cannot parse system name.')
-
     file_dir = os.path.dirname(os.path.abspath(target))
-    filename = '{}-{}-{}'.format(name, plat, version)
+    filename = '{}-{}-{}'.format(name, get_system(), version)
     filename_path = os.path.join(file_dir, filename)
 
     print('starting archive')
@@ -211,6 +205,12 @@ def make_archive(name, version, target):
     ext = os.path.splitext(target)[1]
     temp_file = name + ext
 
+    # Remove file if it exists. Found during testing...
+    if os.path.exists(temp_file):
+        if os.path.isdir(temp_file):
+            shutil.rmtree(temp_file, ignore_errors=True)
+        else:
+            os.remove(temp_file)
     if os.path.isfile(target):
         shutil.copy(target, temp_file)
     else:
