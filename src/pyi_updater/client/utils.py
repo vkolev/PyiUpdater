@@ -25,3 +25,22 @@ def get_highest_version(name, plat, easy_data):
     else:
         log.error(u'No updates named "{}" exists'.format(name))
     return version
+
+
+def get_filename(name, version, platform, data):
+        # Gets full filename for given name & version combo
+        #
+        #Args:
+        #    name (str): name of file to get full filename for
+        #
+        #    version (str): version of file to get full filename for
+        #
+        #Returns:
+        #    (str) Filename with extension
+
+        filename_key = u'{}*{}*{}*{}*{}'.format(u'updates', name, version,
+                                                platform, u'filename')
+        filename = data.get(filename_key)
+
+        log.debug(u"Filename for {}-{}: {}".format(name, version, filename))
+        return filename

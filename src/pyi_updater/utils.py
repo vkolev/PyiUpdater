@@ -196,14 +196,8 @@ def make_archive(name, version, target):
     Returns:
          (str) - name of archive
     """
-    try:
-        plat = parse_platform(target)
-    except UtilsError:
-        log.debug(u'Cannot parse system name.')
-        sys.exit(u'Cannot parse system name.')
-
     file_dir = os.path.dirname(os.path.abspath(target))
-    filename = '{}-{}-{}'.format(name, plat, version)
+    filename = '{}-{}-{}'.format(name, get_system(), version)
     filename_path = os.path.join(file_dir, filename)
 
     print('starting archive')

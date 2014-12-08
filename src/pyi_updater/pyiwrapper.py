@@ -1,12 +1,14 @@
 import argparse
 import os
 import re
+import subprocess
 import sys
 import time
 
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 
+from pyi_updater import get_version
 from pyi_updater.utils import make_archive
 
 
@@ -59,6 +61,9 @@ parser.add_argument('--strip', action="store_true", default=False)
 # Used by PyiWrapper
 parser.add_argument('--app-name', dest="app_name", required=True)
 parser.add_argument('--app-version', dest="app_version", required=True)
+
+parser.add_argument('--version', action='version',
+                    version='PyiUpdater {}'.format(get_version()))
 
 
 def main():
@@ -133,8 +138,10 @@ def wrapper(args):
     pyi_args.append(u'-y')
 
     cmds = [u'pyinstaller'] + pyi_args
-    command = ' '.join(cmds)
-    os.system(command)
+    exit_code = subprocess.call(cmds)
+
+    if exit_code != 0:
+        sys.exit('Build Failed')
 
     # Now archive the file
     with ChDir(new_dir):

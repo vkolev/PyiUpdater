@@ -1,3 +1,12 @@
+v0.12.3 - develop
+~~~~~~~~~~~~~~~~~
+.. note:: This version is not yet released and is under active development.
+* Updated
+
+  - Client
+
+    - Handling version numbers passed to update_check
+
 v0.12.2 - 2014/12/7
 ~~~~~~~~~~~~~~~~~~~
 * Updated
