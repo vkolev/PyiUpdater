@@ -7,6 +7,15 @@ v0.12.3 - develop
 
     - Handling version numbers passed to update_check
 
+* Fixed
+
+  - PackageHandler
+
+    - Incrementing patch number
+    - Trying to move a file that doesn't exist
+    - Doing migrate on every run
+    - Getting hash of file that doesn't exists
+
 v0.12.2 - 2014/12/7
 ~~~~~~~~~~~~~~~~~~~
 * Updated

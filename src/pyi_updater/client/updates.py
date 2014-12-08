@@ -41,6 +41,7 @@ class LibUpdate(object):
         self.app_name = data.get(u'app_name')
         self.update_folder = os.path.join(self.data_dir, u'update')
         self.verify = data.get(u'verify')
+        self.current_app_dir = os.path.dirname(sys.argv[0])
         if self.verify is True:
             self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
                                                  ca_certs=certifi.where())
