@@ -1,6 +1,5 @@
-v0.12.3 - develop
-~~~~~~~~~~~~~~~~~
-.. note:: This version is not yet released and is under active development.
+v0.12.3 - 2014/12/7
+~~~~~~~~~~~~~~~~~~~
 * Updated
 
   - Client
