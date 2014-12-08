@@ -180,6 +180,7 @@ class Client(object):
             u'name': self.name,
             u'version': self.version,
             u'easy_data': self.easy_data,
+            u'json_data': self.json_data,
             u'data_dir': self.data_dir,
             u'platform': self.platform,
             u'app_name': self.app_name,

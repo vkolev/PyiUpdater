@@ -36,6 +36,8 @@ class LibUpdate(object):
         self.name = data.get(u'name')
         self.version = data.get(u'version')
         self.easy_data = data.get(u'easy_data')
+        # Raw form of easy_data
+        self.json_data = data.get(u'json_data')
         self.data_dir = data.get(u'data_dir')
         self.platform = data.get(u'platform')
         self.app_name = data.get(u'app_name')
@@ -265,7 +267,7 @@ class LibUpdate(object):
         except UtilsError:
             log.debug(u'Cannot parse version info')
             current_version_str = u'0.0.0'
-
+        log.debug('Current verion: {}'.format(current_version_str))
         current_version = vstr_2_vtuple(current_version_str)
         with ChDir(self.update_folder):
             for t in temp:
@@ -274,6 +276,7 @@ class LibUpdate(object):
                 except UtilsError:
                     log.debug(u'Cannot parse version info')
                     t_versoin_str = u'0.0.0'
+                log.debug('Other versoin: {}'.format(t_versoin_str))
                 t_version = vstr_2_vtuple(t_versoin_str)
 
                 if self.name in t and t_version < current_version:
