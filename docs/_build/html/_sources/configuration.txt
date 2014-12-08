@@ -10,6 +10,9 @@ Configuration
                                   COMPANY_NAME to create an update cache dir on end user system.
 ``COMPANY_NAME``                  (str) Company or your name.  Used with
                                   APP_NAME to create an update cache dir on end user system.
+``DEV_DATA_DIR``                  (str) Full path to directory where
+                                  pyiupdater will keep work files. i.e signing
+                                  keys, src file for patch creation, etc.
 ``PUBLIC_KEY``                    (tuple) Used on client side for
                                   authentication
 ``UPDATE_URL``                    (str) Where clients search for updates

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Usage &mdash; PyiUpdater 0.12.2-dev1261232 documentation</title>
+    <title>Usage &mdash; PyiUpdater 0.12.2 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.12.2-dev1261232',
+        VERSION:     '0.12.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.12.2-dev1261232 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.12.2 documentation" href="index.html" />
     <link rel="next" title="Architecture" href="architecture.html" />
     <link rel="prev" title="Configuration" href="configuration.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.12.2-dev1261232</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.12.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -295,15 +295,21 @@ Enter password
  98
  99
 100
-101</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pyi_updater</span> <span class="kn">import</span> <span class="n">PyiUpdater</span>
+101
+102
+103
+104
+105</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">pyi_updater</span> <span class="kn">import</span> <span class="n">PyiUpdater</span>
 <span class="kn">from</span> <span class="nn">pyi_updater.key_handler</span> <span class="kn">import</span> <span class="n">KeyHandler</span>
 <span class="kn">from</span> <span class="nn">pyi_updater.package_handler</span> <span class="kn">import</span> <span class="n">PackageHandler</span>
 <span class="kn">from</span> <span class="nn">pyi_updater.uploader</span> <span class="kn">import</span> <span class="n">Uploader</span>
 
 
 <span class="c"># PyiUpdater handles configuration with simple</span>
-<span class="c"># class attributes.  They must be in all CAPS.</span>
-<span class="c"># to be registered.  You may pass in custom</span>
+<span class="c"># class attributes. They must be in all CAPS.</span>
+<span class="c"># to be registered. You may pass in custom</span>
 <span class="c"># settings to be used later.</span>
 <span class="k">class</span> <span class="nc">DefaultConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="c"># If left None &quot;PyiUpdater App&quot; will be used</span>
@@ -312,8 +318,10 @@ Enter password
     <span class="n">Company_Name</span> <span class="o">=</span> <span class="s">&quot;Acme&quot;</span>
 
     <span class="c"># Used for verion file signature verification</span>
-    <span class="n">PUBLIC_KEY</span> <span class="o">=</span> <span class="p">(</span><span class="il">17022351873105053147088163105983577257966692560663543347938383809747979750470266069914732864252844768385355907146386077123799054565611846357055920249193620195180631869615743769334796990192318489812142889414970955334254855590299723893423021589397127184769063465102962682096447452967415650677942469205402943507368208858916471188750637174661509489946569932170884064066442273331420184865693888703840905553949492223898597770128267763408408345292193296577459922276202765690561166119202208933879945227147091774656864580608582752643190913932634012968436576443560457625241838298968657806362615969869008716434463574851608691099L</span><span class="p">,</span> <span class="mi">65537</span><span class="p">)</span>
+    <span class="c"># base64 encoded ed25519 key</span>
+    <span class="n">PUBLIC_KEY</span> <span class="o">=</span> <span class="s">&#39;zZiCrUaXDwd9pT5FpjoeYCDfO8nBeZGPcpxIkRE2dXg&#39;</span>
 
+    <span class="n">DEV_DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
     <span class="c"># Online repository where you host your packages</span>
     <span class="c"># and version file</span>
     <span class="n">UPDATE_URL</span> <span class="o">=</span> <span class="s">&#39;https://acme.com/updates&#39;</span>
@@ -414,7 +422,7 @@ Enter password
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Dec 06, 2014.<br/>
+      Last updated on Dec 07, 2014.<br/>
     </p>
   </div>
 </footer>
