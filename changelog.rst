@@ -6,6 +6,7 @@ v0.12.3 - develop
   - Client
 
     - Handling version numbers passed to update_check
+    - Missing var
 
 * Fixed
 
