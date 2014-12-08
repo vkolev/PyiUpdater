@@ -1,4 +1,5 @@
 from nose import with_setup
+from nose.tools import raises
 import os
 import shutil
 import sys
@@ -8,6 +9,7 @@ from jms_utils.paths import ChDir
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from pyi_updater import PyiUpdater
+from pyi_updater.exceptions import PackageHandlerError
 from pyi_updater.package_handler import PackageHandler
 
 from tconfig import TConfig
@@ -37,3 +39,9 @@ def test_folder_layout():
         assert os.path.exists(u'new') is True
         assert os.path.exists(u'deploy') is True
         assert os.path.exists(u'files') is True
+
+
+@raises(PackageHandlerError)
+def test_process_packages_no_init():
+    ph = PackageHandler()
+    ph.process_packages()

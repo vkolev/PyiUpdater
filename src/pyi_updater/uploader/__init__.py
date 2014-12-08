@@ -41,11 +41,8 @@ class Uploader(object):
 
         self.username = obj.config.get(u'USERNAME', None)
 
-        # If password is now get ssh key path
+        # If password is none get ssh key path
         self.password = obj.config.get(u'PASSWORD', None)
-        if self.password is None:
-            self.password = obj.config.get(u'SSH_KEY_PATH')
-
         self.uploader = None
         self.test = False
 

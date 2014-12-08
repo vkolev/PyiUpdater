@@ -1,3 +1,19 @@
+v0.12.2 - 2014/12/7
+~~~~~~~~~~~~~~~~~~~
+* Updated
+
+  - PackageHandler
+
+    - Error reporting when calling methods
+
+* Fixed
+
+  - CLI scripts
+
+* Removed
+
+  - Some unused code
+
 v0.12.1 - 2014/12/4
 ~~~~~~~~~~~~~~~~~~~
 * Fixed

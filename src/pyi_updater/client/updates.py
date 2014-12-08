@@ -308,8 +308,6 @@ class LibUpdate(object):
         #Returns:
         #    (str) Filename with extension
 
-        # ToDo: Remove once stable.  Used to help with transition
-        #       to new version file format.
         filename_key = u'{}*{}*{}*{}*{}'.format(u'updates', name, version,
                                                 self.platform, u'filename')
         filename = self.easy_data.get(filename_key)

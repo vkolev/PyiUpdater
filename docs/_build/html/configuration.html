@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Configuration &mdash; PyiUpdater 0.12.1 documentation</title>
+    <title>Configuration &mdash; PyiUpdater 0.12.2 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.12.1',
+        VERSION:     '0.12.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.12.1 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.12.2 documentation" href="index.html" />
     <link rel="next" title="Usage" href="usage.html" />
     <link rel="prev" title="Installation" href="installation.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.12.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.12.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -153,35 +153,40 @@ COMPANY_NAME to create an update cache dir on end user system.</td>
 <td>(str) Company or your name.  Used with
 APP_NAME to create an update cache dir on end user system.</td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PUBLIC_KEY</span></tt></td>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">DEV_DATA_DIR</span></tt></td>
+<td>(str) Full path to directory where
+pyiupdater will keep work files. i.e signing
+keys, src file for patch creation, etc.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PUBLIC_KEY</span></tt></td>
 <td>(tuple) Used on client side for
 authentication</td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">UPDATE_URL</span></tt></td>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">UPDATE_URL</span></tt></td>
 <td>(str) Where clients search for updates
 - * Deprecated! You can put a single url
 in the list of UPDATE_URLS *</td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">UPDATE_URLS</span></tt></td>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">UPDATE_URLS</span></tt></td>
 <td>(list) A list of url(s) where a client will
 look for needed update objects.</td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">UPDATE_PATCHES</span></tt></td>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">UPDATE_PATCHES</span></tt></td>
 <td>(bool) Enable/disable creation of patch
 updates</td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">REMOTE_DIR</span></tt></td>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">REMOTE_DIR</span></tt></td>
 <td>(str) Remote directory/Bucket name to place
 update files</td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">HOST</span></tt></td>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">HOST</span></tt></td>
 <td>(str) Remote host to connect to for server
 uploads</td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">USERNAME</span></tt></td>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">USERNAME</span></tt></td>
 <td>(str) Username/API Key for uploading updates</td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">PASSWORD</span></tt></td>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PASSWORD</span></tt></td>
 <td>(str) Password/API Secret/Path to ssh private
 key or uploading updates</td>
 </tr>
@@ -202,7 +207,7 @@ key or uploading updates</td>
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Dec 04, 2014.<br/>
+      Last updated on Dec 07, 2014.<br/>
     </p>
   </div>
 </footer>

@@ -11,6 +11,7 @@ except ImportError:
     bsdiff4 = None
 from jms_utils.paths import ChDir
 
+from pyi_updater.exceptions import PackageHandlerError
 from pyi_updater.package_handler.package import Package, Patch
 from pyi_updater.package_handler.utils import migrate
 from pyi_updater.utils import (get_package_hashes as gph,
@@ -31,6 +32,8 @@ class PackageHandler(object):
     data_dir = None
 
     def __init__(self, app=None):
+        self.config_loaded = False
+        self.init = False
         if app:
             self.init_app(app)
 
@@ -41,8 +44,6 @@ class PackageHandler(object):
             obj (instance): config object
 
         """
-        self.app_dir = obj.config.get(u'APP_DIR')
-
         self.patches = obj.config.get(u'UPDATE_PATCHES', True)
         if self.patches:
             log.debug(u'Looks like were ready to make some patches')
@@ -63,24 +64,29 @@ class PackageHandler(object):
         else:
             log.debug('DEV_DATA_DIR is None. Setup Failed')
 
-        self.update_url = obj.config.get(u'UPDATE_URL')
-
         self.json_data = None
         if self.data_dir is not None:
+            self.init = True
             if os.path.exists(self.config_file)and \
                     os.path.exists(self.files_dir) is True:
                 migrate(self.data_dir)
-        if self.data_dir is not None:
-            self.setup()
+
+        self.setup()
 
     def setup(self):
-        """Creates all needed working directories & loads version file.
+        """Creates all needed working directories & loads json files.
 
         Proxy method for :meth:`_setup_work_dirs` & :meth:`_load_version_file`
         """
+        if self.data_dir is not None:
+            self._setup()
+
+    def _setup(self):
         self._setup_work_dirs()
-        self.json_data = self._load_version_file()
-        self.config = self._load_config()
+        if self.config_loaded is False:
+            self.json_data = self._load_version_file()
+            self.config = self._load_config()
+            self.config_loaded = True
 
     def process_packages(self):
         """Gets a list of updates to process.  Adds the name of an
@@ -93,6 +99,8 @@ class PackageHandler(object):
         :meth:`_update_version_file`,
         :meth:`_write_json_to_file` & :meth:`_move_packages`.
         """
+        if self.init is False:
+            raise PackageHandlerError('Must init first.', expected=True)
         package_manifest, patch_manifest = self._get_package_list()
         patches = self._make_patches(patch_manifest)
         self._cleanup(patch_manifest)
@@ -261,18 +269,8 @@ class PackageHandler(object):
                 os.remove(p[u'src'])
 
     def _make_patches(self, patch_manifest):
-        # ToDo: Since not packing as an executable test
-        #       to see if it multiprocessing works on windows
-        # When the framework is frozen with pyinstaller I got
-        # weird issues with multiprocessing. If you can fix
-        # the issue a PR is greatly appreciated
-        pool_output = []
+        pool_output = list()
         log.debug(u'Staring patch creation')
-        # if FROZEN and sys.platform == u'win32':
-            # for p in patch_manifest:
-                # patch_output = _make_patch(p)
-                # pool_output.append(patch_output)
-        # else:
         cpu_count = multiprocessing.cpu_count() * 2
         pool = multiprocessing.Pool(processes=cpu_count)
         pool_output = pool.map(_make_patch, patch_manifest)
@@ -280,7 +278,7 @@ class PackageHandler(object):
 
     def _add_patches_to_packages(self, package_manifest, patches):
         # ToDo: Increase the efficiency of this double for
-        #       loop. Not sure if it can be but though
+        #       loop. Not sure if it can be done though
         log.debug(u'Adding patches to package list')
         if patches is not None:
             log.debug('We got patches...')
@@ -350,13 +348,7 @@ class PackageHandler(object):
         with open(self.config_file, u'w') as f:
             f.write(json.dumps(json_data, sort_keys=True, indent=2))
 
-    # ToDo: Explain whats going on below &/or clean up
     def _move_packages(self, package_manifest):
-        # Moves all packages to their destination folder.
-        # Destination is figured by lib name and version number.
-        # Since we are copying files to the deploy folder then
-        # moving the updates to the files folder, we can safely
-        # delete files in deploy folder after uploading.
         log.debug(u'Moving packages to deploy folder')
         for p in package_manifest:
             patch = p.patch_info.get(u'patch_name', None)
@@ -404,8 +396,10 @@ class PackageHandler(object):
                 files = os.listdir(os.getcwd())
 
             files = remove_dot_files(files)
+            # No src files to patch from. Exit quickly
             if len(files) == 0:
                 return None
+            # If latest not available in version file. Exit
             try:
                 latest = json_data[u'latest'][name][platform]
             except KeyError:
@@ -421,6 +415,7 @@ class PackageHandler(object):
                 patch_num = self.config[u'patches'][name]
                 self.config[u'patches'][name] += 1
             except KeyError:
+                # If no patch number we will start at 100
                 try:
                     patch_num = self.config[u'boot_strap']
                 except KeyError:
