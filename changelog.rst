@@ -1,6 +1,7 @@
 v0.12.4 - develop
 ~~~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
+
 * Fixed
 
   - PyiUpdater
