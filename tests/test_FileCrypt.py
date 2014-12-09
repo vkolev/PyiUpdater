@@ -2,7 +2,6 @@ import os
 from random import choice
 import sys
 
-from jms_utils.paths import cwd
 from nose import with_setup
 from nose.tools import raises
 import six
@@ -24,7 +23,7 @@ for i in xrange(100):
     FILE_DATA.append(a + u'\n')
 
 setup_fc = FileCrypt()
-setup_fc.data_dir = cwd
+setup_fc.data_dir = os.getcwd()
 salt = os.urandom(16)
 salt_version = '1'
 salt_info = {

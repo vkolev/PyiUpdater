@@ -2,7 +2,6 @@ import os
 import sys
 
 from jms_utils import FROZEN
-from jms_utils.paths import cwd
 from jms_utils.system import get_system
 from nose import with_setup
 
@@ -51,10 +50,6 @@ def test_make_archive():
 
 def test_frozen():
     assert FROZEN is False
-
-
-def test_cwd():
-    assert cwd == os.getcwd()
 
 
 def test_ask_yes_no_true():
