@@ -12,6 +12,3 @@ class CommonLogic(object):
         self.package_handler.init_app(self.config)
         self.key_handler.init_app(self.config)
         self.uploader.init_app(self.config)
-
-    def done(self):
-        pass

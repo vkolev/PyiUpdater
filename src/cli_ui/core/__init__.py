@@ -61,7 +61,7 @@ class Worker(Menu, CommonLogic):
     def update_helpers(self, pyi_updater):
         self.file_crypt.init_app(pyi_updater)
         self.key_handler.init_app(pyi_updater)
-        self.key_handler._add_filecrypt(self.file_crypt)
+        self.key_handler.add_filecrypt(self.file_crypt)
         self.package_handler.init_app(pyi_updater)
         self.uploader.init_app(pyi_updater)
         log.debug(u'Updated helpers')

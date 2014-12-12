@@ -1,4 +1,4 @@
-v0.12.4 - develop
+v0.13.0 - develop
 ~~~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
 

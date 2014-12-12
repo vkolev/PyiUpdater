@@ -62,6 +62,12 @@ class KeyHandler(object):
         # Set to true when running tests
         self.test = False
 
+    def add_filecrypt(self, fc=None):
+        # Using a single file crypt object module wide.
+        # Helps with password timeout
+        if fc is not None:
+            self.fc = fc
+
     def make_keys(self, overwrite=False):
         """Makes public and private keys for signing and verification
 
@@ -241,9 +247,3 @@ class KeyHandler(object):
             log.error(e)
             raise KeyHandlerError(u'Version file not found',
                                   expected=True)
-
-    def _add_filecrypt(self, fc=None):
-        # Using a single file crypt object module wide.
-        # Helps with password timeout
-        if fc is not None:
-            self.fc = fc

@@ -45,6 +45,44 @@ class Config(dict):
         return u'<%s %s>' % (self.__class__.__name__, dict.__repr__(self))
 
 
+class PyiUpdaterConfig(object):
+    """There are 2 ways to load config.  The first was is during
+    object initialization. The second way is later with :meth:`update_config`
+
+    Examples are shown below::
+
+        Config(object):
+            APP_NAME = "My App"
+            COMPANY_NAME = "MY COMPANY"
+            UPDATE_URL = http://www.example.com/updates
+
+
+        app = PyiUpdater(Config())
+
+        app = PyInstaller()
+        app.update_config(Config())
+
+    Kwargs:
+        import_name (str): used to get current directory
+
+        cfg_obj (instance): object with config attributes
+    """
+    def __init__(self, cfg_obj=None):
+        self.config = Config()
+        if cfg_obj:
+            self.update_config(cfg_obj)
+
+    def update_config(self, obj):
+        """Proxy method to update internal config dict
+
+        Args:
+            obj (instance): config object
+        """
+        self.config.from_object(obj)
+        if self.config.get(u'APP_NAME', None) is None:
+            self.config[u'APP_NAME'] = u'PyiUpdater App'
+
+
 # This is the default config used
 class SetupConfig(object):
     # If left None "Not_So_TUF" will be used
