@@ -10,7 +10,6 @@ from jms_utils.paths import ChDir
 import six
 
 from pyi_updater.exceptions import FileCryptPasswordError, KeyHandlerError
-from pyi_updater.filecrypt import FileCrypt
 
 if six.PY3 is True:
     long = int
@@ -246,7 +245,5 @@ class KeyHandler(object):
     def _add_filecrypt(self, fc=None):
         # Using a single file crypt object module wide.
         # Helps with password timeout
-        if fc is None:
-            self.fc = FileCrypt()
-        else:
+        if fc is not None:
             self.fc = fc
