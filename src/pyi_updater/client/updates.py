@@ -283,24 +283,6 @@ class LibUpdate(object):
                     log.debug(u'Removing old update: {}'.format(t))
                     os.remove(t)
 
-    def _get_new_update_url(self, name):
-        # Returns url for given name & version combo
-        #
-        # Args:
-        #    name (str): name of file to get url for
-        #
-        #    version (str): version of file to get url for
-        #
-        # Returns:
-        #    (str) Url
-        latest_key = u'{}*{}*{}'.format(u'latest', name, self.platform)
-        latest = self.easy_data.get(latest_key)
-
-        url_key = u'{}*{}*{}*{}*{}'.format(self.updates_key, name, latest,
-                                           self.platform, u'url')
-        url = self.easy_data.get(url_key)
-        return url
-
 
 class AppUpdate(LibUpdate):
     """Used on client side to update files

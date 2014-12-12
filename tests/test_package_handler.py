@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pyi_updater import PyiUpdater
 from pyi_updater.exceptions import PackageHandlerError
 from pyi_updater.package_handler import PackageHandler
+from pyi_updater.package_handler.utils import count_contents
 
 from tconfig import TConfig
 
@@ -45,3 +46,23 @@ def test_folder_layout():
 def test_process_packages_no_init():
     ph = PackageHandler()
     ph.process_packages()
+
+
+def setup_dir():
+    os.mkdir('count-test')
+    with ChDir('count-test'):
+        count = 0
+        while count < 4:
+            with open(str(count), u'w') as f:
+                f.write('A test')
+            count += 1
+
+
+def teardown_dir():
+    if os.path.exists('count-test'):
+        shutil.rmtree('count-test', ignore_errors=True)
+
+
+@with_setup(setup_dir, teardown_dir)
+def test_count_contents():
+    assert count_contents('count-test') == 4

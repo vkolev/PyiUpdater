@@ -77,4 +77,5 @@ def test_download():
     assert update is not None
     assert update.app_name == u'jms'
     assert update.download() is True
+    assert update.is_downloaded() is True
     assert update.extract() is True

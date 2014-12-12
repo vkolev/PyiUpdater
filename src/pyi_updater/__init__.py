@@ -49,15 +49,14 @@ class PyiUpdater(object):
     Examples are shown below::
 
         Config(object):
-            APP_NAME = "NST"
+            APP_NAME = "My App"
+            COMPANY_NAME = "MY COMPANY"
+            UPDATE_URL = http://www.example.com/updates
 
-            APP_DATA_DIR = None
 
-            UPDATE_URL = http://www.test-nst.com/updates
+        app = PyiUpdater(Config())
 
-        app = NotSoTuf(__name__, Config())
-
-        app = NotSoTuf(__name__)
+        app = PyInstaller()
         app.update_config(Config())
 
     Kwargs:
