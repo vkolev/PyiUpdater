@@ -8,7 +8,7 @@ from jms_utils.paths import ChDir
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pyi_updater import PyiUpdater
+from pyi_updater import PyiUpdaterConfig
 from pyi_updater.exceptions import PackageHandlerError
 from pyi_updater.package_handler import PackageHandler
 from pyi_updater.package_handler.utils import count_contents
@@ -18,7 +18,7 @@ from tconfig import TConfig
 
 def setup_func():
     config = TConfig()
-    updater = PyiUpdater(config)
+    updater = PyiUpdaterConfig(config)
     ph = PackageHandler(updater)
     ph.setup()
 

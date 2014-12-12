@@ -7,7 +7,7 @@ from nose.tools import raises, with_setup
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)),
                 u'src'))
 
-from pyi_updater import PyiUpdater
+from pyi_updater import PyiUpdaterConfig
 from pyi_updater.exceptions import UploaderError
 from pyi_updater.uploader import Uploader
 from pyi_updater.uploader.common import BaseUploader
@@ -16,7 +16,7 @@ from tconfig import TConfig
 
 my_config = TConfig()
 
-updater = PyiUpdater(my_config)
+updater = PyiUpdaterConfig(my_config)
 uploader = Uploader(updater)
 
 
@@ -100,6 +100,6 @@ def test_set_uploader_bad_settings():
     config.ACCESS_KEY_ID = None
     config.SECRET_ACCESS_KEY = u'Not an actual secret'
     config.BUCKET_NAME = u'Bucket Name'
-    s_nst = PyiUpdater(config)
-    uploader = Uploader(s_nst)
+    pyiconfig = PyiUpdaterConfig(config)
+    uploader = Uploader(pyiconfig)
     uploader.set_uploader(u's3')

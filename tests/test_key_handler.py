@@ -9,7 +9,7 @@ from nose.tools import with_setup
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pyi_updater import PyiUpdater
+from pyi_updater import PyiUpdaterConfig
 from pyi_updater.key_handler import KeyHandler
 from pyi_updater.package_handler import PackageHandler
 
@@ -28,7 +28,7 @@ def setup_func():
     global test_data_dir
 
     config = TConfig()
-    updater = PyiUpdater(config)
+    updater = PyiUpdaterConfig(config)
     ph = PackageHandler(updater)
     kh = KeyHandler(updater)
     kh.test = True
@@ -46,7 +46,7 @@ def setup_func2():
     global test_data_dir
 
     config = TConfig()
-    updater = PyiUpdater(config)
+    updater = PyiUpdaterConfig(config)
     ph = PackageHandler(updater)
     kh = KeyHandler(updater)
 
@@ -71,7 +71,7 @@ def test_setup():
     global test_data_dir
 
     config = TConfig()
-    updater = PyiUpdater(config)
+    updater = PyiUpdaterConfig(config)
     ph = PackageHandler(updater)
     key_dir = os.path.join(ph.data_dir, u'keys')
 
@@ -119,7 +119,7 @@ def test_execution():
     global test_data_dir
 
     config = TConfig()
-    updater = PyiUpdater(config)
+    updater = PyiUpdaterConfig(config)
     ph = PackageHandler(updater)
     kh = KeyHandler(updater)
 

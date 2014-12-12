@@ -6,7 +6,7 @@ from nose import with_setup
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pyi_updater import PyiUpdater
+from pyi_updater import PyiUpdaterConfig
 from pyi_updater.client import Client
 from tconfig import TConfig
 
@@ -25,8 +25,8 @@ def test_data_dir():
 
 def test_original_init():
     config = TConfig()
-    updater = PyiUpdater(config)
-    client = Client(updater, refresh=True, test=True)
+    pyiconfig = PyiUpdaterConfig(config)
+    client = Client(pyiconfig, refresh=True, test=True)
     assert client.app_name == u'jms'
     assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
                                      'aws.com/pyi-test/')
@@ -41,8 +41,7 @@ def test_new_init():
 
 
 def test_no_cert():
-    config = TConfig()
-    client = Client(config, refresh=True, test=True)
+    client = Client(TConfig(), refresh=True, test=True)
     client.verify = False
     assert client.app_name == u'jms'
     assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
@@ -58,8 +57,7 @@ def test_bad_pub_key():
 
 @with_setup(None, tear_down)
 def test_check_version():
-    config = TConfig()
-    client = Client(config, refresh=True, test=True)
+    client = Client(TConfig(), refresh=True, test=True)
     assert client.update_check(client.app_name, '0.0.2') is not None
     assert client.update_check(client.app_name, '6.0.0') is None
 

@@ -3,13 +3,13 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pyi_updater import PyiUpdater
+from pyi_updater import PyiUpdaterConfig
 
 from tconfig import TConfig
 
 
 def test_dev_dir_none():
-    updater = PyiUpdater(__name__)
+    updater = PyiUpdaterConfig()
     myconfig = TConfig()
     myconfig.APP_NAME = None
     updater.update_config(myconfig)
