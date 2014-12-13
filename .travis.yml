@@ -10,7 +10,7 @@ install:
 
 # command to run tests
 script:
-    coverage run --source=src/pyi_updater setup.py test
+    py.test -v --cov src/pyi_updater -n 1
 
 after_success:
   coveralls
