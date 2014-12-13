@@ -8,9 +8,8 @@ import time
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 
-from pyi_updater import get_version
 from pyi_updater.utils import make_archive
-
+from pyi_updater.version import get_version
 
 start = time.time()
 parser = argparse.ArgumentParser(usage='%(prog)s')

@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, 'src')
 
-from pyi_updater import get_version
+from pyi_updater.version import get_version
 
 
 class PyTest(Command):

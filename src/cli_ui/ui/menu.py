@@ -6,7 +6,7 @@ import sys
 from jms_utils.terminal import get_terminal_size, GetCh
 from six.moves import xrange
 
-from pyi_updater import get_version
+from pyi_updater.version import get_version
 
 if sys.platform == u'win32':
     clear = u'cls'

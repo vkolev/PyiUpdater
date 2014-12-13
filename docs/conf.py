@@ -24,7 +24,7 @@ import sphinx_bootstrap_theme
 #sys.path.insert(0, os.path.abspath('.'))
 path = os.path.realpath(os.path.abspath(__file__))
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(path)), 'src'))
-from pyi_updater import get_version
+from pyi_updater.version import get_version
 
 # -- General configuration ------------------------------------------------
 
