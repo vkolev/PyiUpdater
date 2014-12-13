@@ -5,11 +5,11 @@ python:
 # command to install dependencies
 install:
     - "pip install -r requirements.txt"
-    - "pip install coveralls pytest pytest-cov"
+    - "pip install coveralls pytest pytest-cov pytest-xdist"
 
 # command to run tests
 script:
-    py.test -v --cov src/pyi_updater
+    py.test -v --cov src/pyi_updater -n 1
 
 after_success:
   coveralls
