@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release History &mdash; PyiUpdater 0.12.3 documentation</title>
+    <title>Release History &mdash; PyiUpdater 0.13-dev12131344 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.12.3',
+        VERSION:     '0.13-dev12131344',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.12.3 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.13-dev12131344 documentation" href="index.html" />
     <link rel="prev" title="License" href="license.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.12.3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12131344</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -89,6 +89,7 @@
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">Release History</a><ul>
+<li><a class="reference internal" href="#v0-13-0-develop">v0.13.0 - develop</a></li>
 <li><a class="reference internal" href="#v0-12-3-2014-12-7">v0.12.3 - 2014/12/7</a></li>
 <li><a class="reference internal" href="#v0-12-2-2014-12-7">v0.12.2 - 2014/12/7</a></li>
 <li><a class="reference internal" href="#v0-12-1-2014-12-4">v0.12.1 - 2014/12/4</a></li>
@@ -115,7 +116,7 @@
               
                 
   <li>
-    <a href="license.html" title="Previous Chapter: License"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; License</span>
+    <a href="license.html" title="Previous Chapter: License"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; License</span>
     </a>
   </li>
               
@@ -151,18 +152,60 @@
       
   <div class="section" id="release-history">
 <h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="v0-13-0-develop">
+<h2>v0.13.0 - develop<a class="headerlink" href="#v0-13-0-develop" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This version is not yet released and is under active development.</p>
+</div>
+<ul class="simple">
+<li>Updated<ul>
+<li>CLI<ul>
+<li>Updated with subcommands</li>
+</ul>
+</li>
+<li>TUI<ul>
+<li>Formerly know as the cli. Simplified the use of
+the different helper modules</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Fixed<ul>
+<li>PyiUpdater<ul>
+<li>Logging when pyi.log is next to Mac .app bundles</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Removed<ul>
+<li>Client<ul>
+<li>Redundant code</li>
+</ul>
+</li>
+<li>PyiUpdater<ul>
+<li>Redundant system calls</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="v0-12-3-2014-12-7">
 <h2>v0.12.3 - 2014/12/7<a class="headerlink" href="#v0-12-3-2014-12-7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Updated<ul>
 <li>Client<ul>
 <li>Handling version numbers passed to update_check</li>
-<li>Missing var</li>
 </ul>
 </li>
 </ul>
 </li>
 <li>Fixed<ul>
+<li>Client<ul>
+<li>Missing var</li>
+</ul>
+</li>
 <li>PackageHandler<ul>
 <li>Incrementing patch number</li>
 <li>Trying to move a file that doesn&#8217;t exist</li>
@@ -570,7 +613,7 @@ to correct class attributes</li>
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Dec 07, 2014.<br/>
+      Last updated on Dec 13, 2014.<br/>
     </p>
   </div>
 </footer>

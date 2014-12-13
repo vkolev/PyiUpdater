@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.12.3 documentation</title>
+    <title>API &mdash; PyiUpdater 0.13-dev12131344 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.12.3',
+        VERSION:     '0.13-dev12131344',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.12.3 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.13-dev12131344 documentation" href="index.html" />
     <link rel="next" title="License" href="license.html" />
     <link rel="prev" title="Contributing" href="contributing.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.12.3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12131344</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -99,11 +99,11 @@
               
                 
   <li>
-    <a href="contributing.html" title="Previous Chapter: Contributing"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Contributing</span>
+    <a href="contributing.html" title="Previous Chapter: Contributing"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Contributing</span>
     </a>
   </li>
   <li>
-    <a href="license.html" title="Next Chapter: License"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">License &raquo;</span>
+    <a href="license.html" title="Next Chapter: License"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">License &raquo;</span>
     </a>
   </li>
               
@@ -140,44 +140,7 @@
   <div class="section" id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
 <p>If you want to dive into their documentation, scroll down:</p>
-<span class="target" id="module-pyi_updater"></span><dl class="class">
-<dt id="pyi_updater.PyiUpdater">
-<em class="property">class </em><tt class="descclassname">pyi_updater.</tt><tt class="descname">PyiUpdater</tt><big>(</big><em>cfg_obj=None</em><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater" title="Permalink to this definition">¶</a></dt>
-<dd><p>There are 2 ways to load config.  The first was is during
-object initialization. The second way is later with <a class="reference internal" href="#pyi_updater.PyiUpdater.update_config" title="pyi_updater.PyiUpdater.update_config"><tt class="xref py py-meth docutils literal"><span class="pre">update_config()</span></tt></a></p>
-<p>Examples are shown below:</p>
-<div class="highlight-python"><div class="highlight"><pre>Config(object):
-    APP_NAME = &quot;NST&quot;
-
-    APP_DATA_DIR = None
-
-    UPDATE_URL = http://www.test-nst.com/updates
-
-app = NotSoTuf(__name__, Config())
-
-app = NotSoTuf(__name__)
-app.update_config(Config())
-</pre></div>
-</div>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd><p class="first">import_name (str): used to get current directory</p>
-<p class="last">cfg_obj (instance): object with config attributes</p>
-</dd>
-</dl>
-<dl class="method">
-<dt id="pyi_updater.PyiUpdater.update_config">
-<tt class="descname">update_config</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater.update_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxy method to update internal config dict</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>obj (instance): config object</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<span class="target" id="module-pyi_updater.client"></span><dl class="class">
+<span class="target" id="module-pyi_updater"></span><span class="target" id="module-pyi_updater.client"></span><dl class="class">
 <dt id="pyi_updater.client.Client">
 <em class="property">class </em><tt class="descclassname">pyi_updater.client.</tt><tt class="descname">Client</tt><big>(</big><em>obj=None</em>, <em>refresh=False</em>, <em>test=False</em><big>)</big><a class="headerlink" href="#pyi_updater.client.Client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used on client side to update files</p>
@@ -254,6 +217,42 @@ Example usage:</p>
 <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">from_object</span><span class="p">(</span><span class="n">default_config</span><span class="p">())</span>
 </pre></div>
 </div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyi_updater.config.PyiUpdaterConfig">
+<em class="property">class </em><tt class="descclassname">pyi_updater.config.</tt><tt class="descname">PyiUpdaterConfig</tt><big>(</big><em>cfg_obj=None</em><big>)</big><a class="headerlink" href="#pyi_updater.config.PyiUpdaterConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>There are 2 ways to load config.  The first was is during
+object initialization. The second way is later with <a class="reference internal" href="#pyi_updater.config.PyiUpdaterConfig.update_config" title="pyi_updater.config.PyiUpdaterConfig.update_config"><tt class="xref py py-meth docutils literal"><span class="pre">update_config()</span></tt></a></p>
+<p>Examples are shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre>Config(object):
+    APP_NAME = &quot;My App&quot;
+    COMPANY_NAME = &quot;MY COMPANY&quot;
+    UPDATE_URL = http://www.example.com/updates
+
+
+app = PyiUpdater(Config())
+
+app = PyInstaller()
+app.update_config(Config())
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Kwargs:</dt>
+<dd><p class="first">import_name (str): used to get current directory</p>
+<p class="last">cfg_obj (instance): object with config attributes</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pyi_updater.config.PyiUpdaterConfig.update_config">
+<tt class="descname">update_config</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.config.PyiUpdaterConfig.update_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proxy method to update internal config dict</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>obj (instance): config object</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -700,7 +699,7 @@ info you need.</p>
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Dec 07, 2014.<br/>
+      Last updated on Dec 13, 2014.<br/>
     </p>
   </div>
 </footer>
