@@ -1,7 +1,8 @@
 # command to install dependencies
 dependencies:
-    - "pip install -r requirements.txt"
-    - "pip install coveralls pytest-cov pytest-xdist"
+    pre:
+        - pip install -r requirements.txt
+        - pip install coveralls pytest-cov pytest-xdist
 
 # command to run tests
 test:
