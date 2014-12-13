@@ -1,11 +1,30 @@
 #!/usr/bin/env python
 
-from setuptools import setup, find_packages
+try:
+    from setuptools import Command, find_packages, setup
+except ImportError:
+    from distutils.core import Command, find_packages, setup
+import subprocess
 import sys
+
 
 sys.path.insert(0, 'src')
 
 from pyi_updater import get_version
+
+
+class PyTest(Command):
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        errno = subprocess.call([sys.executable, 'runtests.py'])
+        raise SystemExit(errno)
 
 setup(
     name='PyiUpdater',
@@ -24,6 +43,7 @@ setup(
         's3': 'PyiUpdater-s3-Plugin>=0.11',
         'scp': 'PyiUpdater-scp-Plugin>=0.9',
         },
+    cmdclass = {'test': PyTest},
     install_requires=[
         'appdirs',
         'blinker',

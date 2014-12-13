@@ -6,10 +6,11 @@ python:
 install:
     - "pip install -r requirements.txt"
     - "pip install coveralls"
+    - "pip install pytest"
 
 # command to run tests
 script:
-    nosetests -v --with-coverage --cover-package=pyi_updater
+    coverage run --source=src/pyi_updater setup.py test
 
 after_success:
   coveralls
