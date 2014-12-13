@@ -9,12 +9,6 @@ try:
 except ImportError:
     pyi_version = (0, 0, 0)
 
-from pyi_updater.config import PyiUpdaterConfig
-from pyi_updater.exceptions import PyiUpdaterError
-from pyi_updater.key_handler import KeyHandler
-from pyi_updater.package_handler import PackageHandler
-from pyi_updater.uploader import Uploader
-
 
 def _get_version(v):
     version = '{}.{}'.format(v[0], v[1])
@@ -43,6 +37,13 @@ VERSION = (0, 13, 0, u'dev', get_build())
 
 def get_version():
     return _get_version(VERSION)
+
+
+from pyi_updater.config import PyiUpdaterConfig
+from pyi_updater.exceptions import PyiUpdaterError
+from pyi_updater.key_handler import KeyHandler
+from pyi_updater.package_handler import PackageHandler
+from pyi_updater.uploader import Uploader
 
 
 class PyiUpdater(object):
