@@ -13,65 +13,86 @@ from pyi_updater.utils import make_archive
 
 
 start = time.time()
-parser = argparse.ArgumentParser(usage='%(prog)s [opts] <scriptname>')
+parser = argparse.ArgumentParser(usage='%(prog)s')
+subparsers = parser.add_subparsers(help='commands', dest=u'command')
+
+init_parser = subparsers.add_parser(u'init', help=u'initializes a '
+                                    'src directory')
+
+build_parser = subparsers.add_parser(u'build', help=u'compiles script',
+                                     usage='%(prog)s <script> [opts]')
 
 # Start of args override
 # This will be set to the pyi-data/new directory.
 # When we make the final compressed archive we will look
 # for an exe in that dir.
-parser.add_argument('-o')
-parser.add_argument('--distpath')
+build_parser.add_argument('-o', help=argparse.SUPPRESS)
+build_parser.add_argument('--distpath', help=argparse.SUPPRESS)
 
 # Will be set to .pyiupdater/spec/
 # Trying to keep root dir clean
-parser.add_argument('--specpath')
+build_parser.add_argument('--specpath', help=argparse.SUPPRESS)
 
 # Will be set to .pyiupdater/build
 # Trying to keep root dir clean
-parser.add_argument('--workpath')
+build_parser.add_argument('--workpath', help=argparse.SUPPRESS)
 
 # Will be set to platform name i.e. mac, win, nix, nix64, arm\
 # When archiving we will change the name to the value passed to
 # --app-name
-parser.add_argument('-n')
-parser.add_argument('--name')
+build_parser.add_argument('-n', help=argparse.SUPPRESS)
+build_parser.add_argument('--name', help=argparse.SUPPRESS)
 
 # Just capturing these argument.
 # PyiUpdater only supports onefile mode at the moment
-parser.add_argument('-D', action="store_true", default=False)
-parser.add_argument('--onedir', action="store_true", default=False)
+build_parser.add_argument('-D', action="store_true",
+                          default=False, help=argparse.SUPPRESS)
+build_parser.add_argument('--onedir', action="store_true",
+                          default=False, help=argparse.SUPPRESS)
 
 # Just capturing these argument.
 # Will be added later to pyinstaller build command
-parser.add_argument('-F', action="store_true", default=False)
-parser.add_argument('--onefile', action="store_true", default=False)
+build_parser.add_argument('-F', action="store_true",
+                          default=False, help=argparse.SUPPRESS)
+build_parser.add_argument('--onefile', action="store_true",
+                          default=False, help=argparse.SUPPRESS)
 
 # Just capturing these arguments
 # ToDo: Take a closer look at this switch
-parser.add_argument('-c', action="store_true", default=False)
-parser.add_argument('--console', action="store_true", default=False)
-parser.add_argument('--nowindowed', action="store_true", default=False)
+build_parser.add_argument('-c', action="store_true",
+                          default=False, help=argparse.SUPPRESS)
+build_parser.add_argument('--console', action="store_true",
+                          default=False, help=argparse.SUPPRESS)
+build_parser.add_argument('--nowindowed', action="store_true",
+                          default=False, help=argparse.SUPPRESS)
 
 # Potentially harmful for cygwin on windows
 # ToDo: Maybe do a check for cygwin and disable if cygwin is true
-parser.add_argument('-s', action="store_true", default=False)
-parser.add_argument('--strip', action="store_true", default=False)
+build_parser.add_argument('-s', action="store_true",
+                          default=False, help=argparse.SUPPRESS)
+build_parser.add_argument('--strip', action="store_true",
+                          default=False, help=argparse.SUPPRESS)
 # End of args override
 
 # Used by PyiWrapper
-parser.add_argument('--app-name', dest="app_name", required=True)
-parser.add_argument('--app-version', dest="app_version", required=True)
+build_parser.add_argument('--app-name', dest="app_name", required=True)
+build_parser.add_argument('--app-version', dest="app_version", required=True)
 
-parser.add_argument('--version', action='version',
-                    version='PyiUpdater {}'.format(get_version()))
+build_parser.add_argument('--version', action='version',
+                          version='PyiUpdater {}'.format(get_version()))
 
 
 def main():
     args = sys.argv[1:]
-    wrapper(args)
+    args, pyi_args = parser.parse_known_args(args)
+    cmd = args.command
+    if cmd == u'build':
+        builder(args, pyi_args)
+    elif cmd == u'init':
+        pass
 
 
-def wrapper(args):
+def builder(args, pyi_args):
     pyi_dir = os.path.join(os.getcwd(), u'pyi-data')
     new_dir = os.path.join(pyi_dir, u'new')
     build_dir = os.path.join(os.getcwd(), u'.pyiupdater')
@@ -86,7 +107,6 @@ def wrapper(args):
     if not os.path.exists(new_dir):
         sys.exit(u'pyi-data/new folder not found')
 
-    args, pyi_args = parser.parse_known_args(args)
     if check_version(args.app_version) is False:
         sys.exit(u"""Error: version # needs to be in the form of "0.10.0"
 

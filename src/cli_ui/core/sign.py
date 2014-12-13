@@ -26,9 +26,9 @@ class Sign(CommonLogic, Menu):
         s_menu.display_menu_header(u'Signing updates...')
         s_menu.display_msg(u'Please wait...')
 
-        self.package_handler.setup()
-        self.package_handler.process_packages()
-        self.key_handler.sign_update()
+        self.pyiu.setup()
+        self.pyiu.process_packages()
+        self.pyiu.sign_update()
 
         s_menu.display_msg(u'Update signing complete...')
         time.sleep(3)

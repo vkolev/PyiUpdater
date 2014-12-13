@@ -24,8 +24,7 @@ def test_data_dir():
 
 
 def test_original_init():
-    config = TConfig()
-    pyiconfig = PyiUpdaterConfig(config)
+    pyiconfig = PyiUpdaterConfig(TConfig())
     client = Client(pyiconfig, refresh=True, test=True)
     assert client.app_name == u'jms'
     assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
@@ -33,8 +32,7 @@ def test_original_init():
 
 
 def test_new_init():
-    config = TConfig()
-    client = Client(config, refresh=True, test=True)
+    client = Client(TConfig(), refresh=True, test=True)
     assert client.app_name == u'jms'
     assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
                                      'aws.com/pyi-test/')

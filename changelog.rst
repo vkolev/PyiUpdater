@@ -2,6 +2,17 @@ v0.13.0 - develop
 ~~~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
 
+* Updated
+
+  - CLI
+
+    - More robust & can be used in place of TUI
+
+  - TUI
+
+    - Formerly know as the cli but simplified the use of
+      the different helper modules
+
 * Fixed
 
   - PyiUpdater
