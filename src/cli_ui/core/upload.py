@@ -43,10 +43,10 @@ class Upload(CommonLogic, Menu):
 
     def upload(self, name):
         # Load plugin & invoke upload method
-        self.uploader.set_uploader(name)
+        self.pyiu.set_uploader(name)
         self.display_menu_header(u'{} Uploader'.format(name))
         try:
-            self.uploader.upload()
+            self.pyiu.upload()
             time.sleep(3)
         except Exception as e:
             msg = (u'Looks like you forgot to add USERNAME, PASSWORD '

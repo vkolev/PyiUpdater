@@ -45,7 +45,7 @@ class Config(dict):
         return u'<%s %s>' % (self.__class__.__name__, dict.__repr__(self))
 
 
-class PyiUpdaterConfig(object):
+class PyiUpdaterConfig(dict):
     """There are 2 ways to load config.  The first was is during
     object initialization. The second way is later with :meth:`update_config`
 

@@ -89,7 +89,7 @@ class PyiUpdater(object):
         self.kh.sign_update()
 
     def get_public_key(self):
-        self.kh.get_public_key()
+        return self.kh.get_public_key()
 
     def copy_decrypted_private_key(self):
         self.kh.copy_decrypted_private_key()

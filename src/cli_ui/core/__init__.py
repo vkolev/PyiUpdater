@@ -11,13 +11,10 @@ from cli_ui.ui.menu import Menu
 from cli_ui.ui.menu_utils import (ask_yes_no, get_correct_answer,
                                   _directory_fixer)
 
-from pyi_updater import PyiUpdater
+from pyi_updater import PyiUpdater, PyiUpdaterConfig
 from pyi_updater.config import SetupConfig
 from pyi_updater.exceptions import FileCryptPasswordError
 from pyi_updater.filecrypt import FileCrypt
-from pyi_updater.key_handler import KeyHandler
-from pyi_updater.package_handler import PackageHandler
-from pyi_updater.uploader import Uploader
 from pyi_updater.utils import verify_password
 
 log = logging.getLogger(__name__)
@@ -31,19 +28,15 @@ class Worker(Menu, CommonLogic):
     def __init__(self):
         self.file_crypt = FileCrypt()
         self.config = self.load_config()
-        self.pyi_updater = PyiUpdater(self.config)
-        self.key_handler = KeyHandler()
-        self.package_handler = PackageHandler()
-        self.uploader = Uploader()
+        self.pyi_updater = PyiUpdaterConfig(self.config)
+        self.pyi = PyiUpdater()
         self.update_helpers(self.pyi_updater)
 
         helpers = {
-            u'key_handler': self.key_handler,
-            u'package_handler': self.package_handler,
-            u'uploader': self.uploader,
             u'file_crypt': self.file_crypt,
             u'config': self.config,
             u'save': self.save_config,
+            u'pyiu': self.pyiu
             }
 
         self.keys_menu = keys.Keys(helpers)
@@ -56,14 +49,11 @@ class Worker(Menu, CommonLogic):
                    (u'Upload', self.upload_menu), (u'Keys', self.keys_menu),
                    (u'Settings', self.settings_menu), (u'Quit', self.quit)]
         super(Worker, self).__init__(header, options)
-        # self.menu = Menu(header, options)
 
     def update_helpers(self, pyi_updater):
+        self.pyiu.update_config(pyi_updater)
         self.file_crypt.init_app(pyi_updater)
-        self.key_handler.init_app(pyi_updater)
-        self.key_handler.add_filecrypt(self.file_crypt)
-        self.package_handler.init_app(pyi_updater)
-        self.uploader.init_app(pyi_updater)
+        self.pyiu.add_filecrypt(self.file_crypt)
         log.debug(u'Updated helpers')
 
     def start(self):
