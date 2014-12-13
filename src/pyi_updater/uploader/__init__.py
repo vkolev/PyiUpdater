@@ -29,20 +29,20 @@ class Uploader(object):
         Args:
             obj (instance): config object
         """
-        self.data_dir = obj.config.get(u'DEV_DATA_DIR', None)
+        self.data_dir = obj.config.get(u'DEV_DATA_DIR')
         if self.data_dir is not None:
             self.data_dir = os.path.join(self.data_dir, u'pyi-data')
             self.deploy_dir = os.path.join(self.data_dir, u'deploy')
         else:
             log.debug(u'DEV_DATA_DIR is None. Setup failed.')
 
-        self.remote_dir = obj.config.get(u'REMOTE_DIR', None)
+        self.remote_dir = obj.config.get(u'REMOTE_DIR')
         self.host = obj.config.get(u'HOST', None)
 
-        self.username = obj.config.get(u'USERNAME', None)
+        self.username = obj.config.get(u'USERNAME')
 
         # If password is none get ssh key path
-        self.password = obj.config.get(u'PASSWORD', None)
+        self.password = obj.config.get(u'PASSWORD')
         self.uploader = None
         self.test = False
 

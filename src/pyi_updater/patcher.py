@@ -44,12 +44,12 @@ class Patcher(object):
     """
 
     def __init__(self, **kwargs):
-        self.name = kwargs.get(u'name', None)
-        self.json_data = kwargs.get(u'json_data', None)
+        self.name = kwargs.get(u'name')
+        self.json_data = kwargs.get(u'json_data')
         self.star_access_update_data = EasyAccessDict(self.json_data)
-        self.current_version = kwargs.get(u'current_version', None)
-        self.highest_version = kwargs.get(u'highest_version', None)
-        self.update_folder = kwargs.get(u'update_folder', None)
+        self.current_version = kwargs.get(u'current_version')
+        self.highest_version = kwargs.get(u'highest_version')
+        self.update_folder = kwargs.get(u'update_folder')
         self.update_urls = kwargs.get(u'update_urls', [])
         self.verify = kwargs.get(u'verify', True)
         self.patch_data = []
@@ -58,8 +58,8 @@ class Patcher(object):
         # ToDo: Update tests with linux archives.
         # Used for testing.
         self.plat = kwargs.get(u'platform', platform_)
-        self.current_filename = kwargs.get(u'current_filename', None)
-        self.current_file_hash = kwargs.get(u'current_file_hash', None)
+        self.current_filename = kwargs.get(u'current_filename')
+        self.current_file_hash = kwargs.get(u'current_file_hash')
 
         file_info = self._current_file_info(self.name,
                                             self.current_version)

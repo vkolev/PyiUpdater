@@ -63,8 +63,8 @@ class Client(object):
             config = pyi_config.config.copy()
 
         # Grabbing config information
-        update_url = config.get(u'UPDATE_URL', None)
-        update_urls = config.get(u'UPDATE_URLS', None)
+        update_url = config.get(u'UPDATE_URL')
+        update_urls = config.get(u'UPDATE_URLS')
 
         self.update_urls = self._sanatize_update_url(update_url, update_urls)
         self.app_name = config.get(u'APP_NAME', u'PyiUpdater')
@@ -76,7 +76,7 @@ class Client(object):
             self.data_dir = user_cache_dir(self.app_name, self.company_name)
             self.platform = get_system()
         self.update_folder = os.path.join(self.data_dir, u'update')
-        self.public_key = config.get(u'PUBLIC_KEY', None)
+        self.public_key = config.get(u'PUBLIC_KEY')
         self.verify = config.get(u'VERIFY_SERVER_CERT', True)
         if self.verify is True:
             self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',

@@ -145,7 +145,7 @@ class PackageHandler(object):
                     log.error(str(err))
 
             if json_data is not None:
-                updates = json_data.get(u'updates', None)
+                updates = json_data.get(u'updates')
                 log.debug(u'Checking for valid data in version file...')
                 if updates is None:
                     log.debug(u'Invalid data in version file...')
@@ -304,8 +304,8 @@ class PackageHandler(object):
         log.debug(u'Starting version file update')
         easy_dict = EasyAccessDict(json_data)
         for p in package_manifest:
-            patch_name = p.patch_info.get(u'patch_name', None)
-            patch_hash = p.patch_info.get(u'patch_hash', None)
+            patch_name = p.patch_info.get(u'patch_name')
+            patch_hash = p.patch_info.get(u'patch_hash')
 
             # Converting info to version file format
             info = {u'file_hash': p.file_hash,
@@ -355,7 +355,7 @@ class PackageHandler(object):
     def _move_packages(self, package_manifest):
         log.debug(u'Moving packages to deploy folder')
         for p in package_manifest:
-            patch = p.patch_info.get(u'patch_name', None)
+            patch = p.patch_info.get(u'patch_name')
             with ChDir(self.new_dir):
                 if patch:
                     if os.path.exists(os.path.join(self.deploy_dir, patch)):
@@ -377,15 +377,15 @@ class PackageHandler(object):
 
     def _update_file_list(self, json_data, package_info):
         files = json_data[u'updates']
-        latest = json_data.get(u'latest', None)
+        latest = json_data.get(u'latest')
         if latest is None:
             json_data[u'latest'] = {}
-        file_name = files.get(package_info.name, None)
+        file_name = files.get(package_info.name)
         if file_name is None:
             log.debug(u'Adding {} to file list'.format(package_info.name))
             json_data[u'updates'][package_info.name] = {}
 
-        latest_package = json_data[u'latest'].get(package_info.name, None)
+        latest_package = json_data[u'latest'].get(package_info.name)
         if latest_package is None:
             json_data[u'latest'][package_info.name] = {}
         return json_data
