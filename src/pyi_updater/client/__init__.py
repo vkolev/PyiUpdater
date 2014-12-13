@@ -14,7 +14,7 @@ import urllib3
 
 from pyi_updater.client.updates import AppUpdate, LibUpdate
 from pyi_updater.client.utils import (get_filename, get_highest_version)
-from pyi_updater.config import Config
+from pyi_updater.config import PyiUpdaterConfig
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.utils import (EasyAccessDict,
                                make_archive,
@@ -57,8 +57,10 @@ class Client(object):
         if hasattr(obj, 'config'):
             config = obj.config.copy()
         else:
-            config = Config()
-            config.from_object(obj)
+            # Used to add missing required information
+            # i.e. APP_NAME
+            pyi_config = PyiUpdaterConfig(obj)
+            config = pyi_config.config.copy()
 
         # Grabbing config information
         update_url = config.get(u'UPDATE_URL', None)

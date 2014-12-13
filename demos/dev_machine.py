@@ -1,9 +1,6 @@
 import os
 
-from pyi_updater import PyiUpdater
-from pyi_updater.key_handler import KeyHandler
-from pyi_updater.package_handler import PackageHandler
-from pyi_updater.uploader import Uploader
+from pyi_updater import PyiUpdater, PyiUpdaterConfig
 
 
 # PyiUpdater handles configuration with simple
@@ -53,30 +50,25 @@ def main():
 
     # Initilizing Main object and configuring
     # in one step
-    pyi = PyiUpdater(DefaultConfig())
+    pyiu_config = PyiUpdaterConfig(DefaultConfig())
 
     # Can also update config later
-    pyi.update_config(default_config)
+    pyiu_config.update_config(default_config)
 
-    # Initializing Package Handler & Key Handler
-    # with config info
-    package_handler = PackageHandler(pyi)
-    key_handler = KeyHandler(pyi)
-    uploader = Uploader(pyi)
+    # Initializing PyiUpdater with config info
+    pyiu = PyiUpdater(pyiu_config)
 
     # Can also be Initilized without config
-    package_handler = PackageHandler()
-    key_handler = KeyHandler()
+    pyiu = PyiUpdater()
 
-    # Then update handlers with config later
-    package_handler.init_app(pyi)
-    key_handler.init_app(pyi)
+    # Then update later with config
+    pyiu.update_config(pyiu_config)
 
     # Setting up work directories
     # Only need to run once on a new project but it's
     # ok if ran multipule times
-    package_handler.setup()
-    key_handler.make_keys()
+    pyiu.setup()
+    pyiu.make_keys()
 
     # Now place new packages in the folder named
     # "new" in the pyi-data directory
@@ -85,16 +77,16 @@ def main():
     raw_input('Place updates in new folder then press enter.')
     # This updates the version file with the
     # new packages & moves them to the deploy folder.
-    package_handler.process_packages()
+    pyiu.process_packages()
 
     # This signs the update manifest & copies it
     # to the deploy folder
-    key_handler.sign_update()
+    pyiu.sign_update()
 
     # Load desired uploader
     try:
-        uploader.set_uploader('s3')
-        uploader.upload()
+        pyiu.set_uploader('s3')
+        pyiu.upload()
     except:
         # Make sure you have the requested uploader installed
         # pyiupdater['s3'] for Amazon S3

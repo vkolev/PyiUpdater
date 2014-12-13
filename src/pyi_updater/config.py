@@ -79,8 +79,10 @@ class PyiUpdaterConfig(object):
             obj (instance): config object
         """
         self.config.from_object(obj)
-        if self.config.get(u'APP_NAME', None) is None:
+        if self.config.get(u'APP_NAME') is None:
             self.config[u'APP_NAME'] = u'PyiUpdater App'
+        if self.config.get(u'COMPANY_NAME') is None:
+            self.config[u'COMPANY_NAME'] = u'Digital Sapphire'
 
 
 # This is the default config used

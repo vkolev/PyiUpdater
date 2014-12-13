@@ -6,11 +6,11 @@ v0.13.0 - develop
 
   - CLI
 
-    - More robust & can be used in place of TUI
+    - Updated with subcommands
 
   - TUI
 
-    - Formerly know as the cli but simplified the use of
+    - Formerly know as the cli. Simplified the use of
       the different helper modules
 
 * Fixed

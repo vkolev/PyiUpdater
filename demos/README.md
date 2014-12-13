@@ -22,7 +22,7 @@ PyiUpdater make heavy use of the pyi-data folder.
 
 ######2. Build your app:
 
-    $ pyiupdater app.py --app-name=APP --app-version=0.1.0
+    $ pyiupdater build app.py --app-name=APP --app-version=0.1.0
 
 
 ######3. Use PackageHandler's process_packages method. Will move copy app updates to version folder in the files dir & also move udpate form new folder to deploy folder

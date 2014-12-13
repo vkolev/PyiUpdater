@@ -14,13 +14,26 @@ from pyi_updater.utils import make_archive
 
 start = time.time()
 parser = argparse.ArgumentParser(usage='%(prog)s')
+
 subparsers = parser.add_subparsers(help='commands', dest=u'command')
 
 init_parser = subparsers.add_parser(u'init', help=u'initializes a '
-                                    'src directory')
+                                    'src directory: Not Implemented')
 
 build_parser = subparsers.add_parser(u'build', help=u'compiles script',
-                                     usage='%(prog)s <script> [opts]')
+                                     usage=u'%(prog)s <script> [opts]')
+
+upload_parser = subparsers.add_parser(u'upload', help=u'Uploads files: '
+                                      'Not Implemented')
+
+keys_parser = subparsers.add_parser(u'keys', help=u'Manage signing keys: '
+                                    'Not Implemented')
+
+package_parser = subparsers.add_parser(u'pkg', help=u'Manages creation of '
+                                       u'file metadata: '
+                                       'Not Implemented')
+
+version_parser = subparsers.add_parser(u'version', help=u'Programs version')
 
 # Start of args override
 # This will be set to the pyi-data/new directory.
@@ -78,9 +91,6 @@ build_parser.add_argument('--strip', action="store_true",
 build_parser.add_argument('--app-name', dest="app_name", required=True)
 build_parser.add_argument('--app-version', dest="app_version", required=True)
 
-build_parser.add_argument('--version', action='version',
-                          version='PyiUpdater {}'.format(get_version()))
-
 
 def main():
     args = sys.argv[1:]
@@ -90,6 +100,19 @@ def main():
         builder(args, pyi_args)
     elif cmd == u'init':
         pass
+    elif cmd == u'upload':
+        upload(args)
+    elif cmd == u'version':
+        print('PyiUpdater {}'.format(get_version()))
+
+
+def upload(args):
+    if len(args) > 1:
+        sys.exit('Can only provide one uploader name')
+    try:
+        requested_uploader = args[0]
+    except IndexError:
+        sys.exit('Must give name of uploader')
 
 
 def builder(args, pyi_args):

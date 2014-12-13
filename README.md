@@ -37,7 +37,7 @@ or
 
 #### To compile & package your script
 
-    $ pyiupdater app.py --app-name=APP --app-version=0.1.0
+    $ pyiupdater build app.py --app-name=APP --app-version=0.1.0
 
 
 #### For creating update diff's, updating your version file & uploading your update

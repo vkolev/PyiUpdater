@@ -26,10 +26,13 @@ register-test:
 	python setup.py register -r pypitest
 
 test:
-	nosetests -v
+	py.test -v -n 1
 
 test-cover:
-	nosetests -v --with-coverage --cover-package=pyi_updater --cover-html
+	py.test -v --cov src/pyi_updater --cov-report html -n 1
+
+test-script:
+	py.test --genscript=runtests.py
 
 upload:
 	twine upload dist/*

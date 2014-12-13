@@ -4,6 +4,9 @@ line_profiler==1.0b3
 memory_profiler
 nose
 psutil
+pytest
+pytest-cov
+pytest-xdist
 sphinx
 sphinx-better-theme
 sphinx-bootstrap-theme
