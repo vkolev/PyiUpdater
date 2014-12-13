@@ -6,5 +6,7 @@ dependencies:
 
 # command to run tests
 test:
+    override:
+        - py.test -v --cov src/pyi_updater -n 1
     post:
-      - coveralls
+        - coveralls
