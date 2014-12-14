@@ -2,11 +2,18 @@ v0.13.0 - develop
 ~~~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
 
+Backwards incompatible release
+------------------------------
+Demos have been update with the changes
+=======================================
+
 * Updated
 
   - CLI
 
     - Updated with subcommands
+    - pyiupdater -h
+    - pyiupdater command -h
 
   - TUI
 
