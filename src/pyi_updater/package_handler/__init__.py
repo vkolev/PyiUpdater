@@ -96,7 +96,7 @@ class PackageHandler(object):
         :meth:`_update_version_file`,
         :meth:`_write_json_to_file` & :meth:`_move_packages`.
         """
-        if self.data_dir is not None:
+        if self.data_dir is None:
             raise PackageHandlerError('Must init first.', expected=True)
         package_manifest, patch_manifest = self._get_package_list()
         patches = self._make_patches(patch_manifest)

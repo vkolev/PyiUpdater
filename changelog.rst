@@ -15,6 +15,10 @@ Demos have been update with the changes
     - pyiupdater -h
     - pyiupdater command -h
 
+  - PyiUpdater
+
+    - Simplified config
+
   - TUI
 
     - Formerly know as the cli. Simplified the use of
