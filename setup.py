@@ -21,7 +21,7 @@ class PyTest(Command):
         pass
 
     def run(self):
-        errno = subprocess.call([sys.executable, 'runtests.py'])
+        errno = subprocess.call([sys.executable, 'runtests.py' u'-v'])
         raise SystemExit(errno)
 
 
@@ -35,7 +35,7 @@ class PyTestCover(Command):
         pass
 
     def run(self):
-        errno = subprocess.call([sys.executable, 'runtests.py', u'-v', 'tests',
+        errno = subprocess.call([sys.executable, 'runtests.py', u'tests',
                                 u'--cov', u'src{}pyi_updater'.format(os.sep),
                                 u'-n', u'1'])
         raise SystemExit(errno)
