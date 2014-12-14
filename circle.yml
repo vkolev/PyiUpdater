@@ -7,6 +7,6 @@ dependencies:
 # command to run tests
 test:
     override:
-        - coverage run setup.py cover-test
+        - coverage run setup.py ctest
     post:
         - coveralls
