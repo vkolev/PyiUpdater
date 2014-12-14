@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 
-try:
-    from setuptools import Command, find_packages, setup
-except ImportError:
-    from distutils.core import Command, find_packages, setup
+from setuptools import Command, find_packages, setup
 import subprocess
 import sys
 import os

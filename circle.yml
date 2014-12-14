@@ -1,4 +1,8 @@
 # command to install dependencies
+machine:
+  environment:
+    COVERALLS_REPO_TOKEN: T02aqvKONBtjwPW4Q4EI15qOVHTBxMkoj
+
 dependencies:
     pre:
         - make deps-dev-upgrade
