@@ -15,6 +15,8 @@ from pyi_updater.version import get_version
 
 
 class PyTest(Command):
+    user_options = []
+
     def initialize_options(self):
         pass
 
@@ -27,6 +29,8 @@ class PyTest(Command):
 
 
 class PyTestCover(Command):
+    user_options = []
+
     def initialize_options(self):
         pass
 
@@ -58,7 +62,7 @@ setup(
         },
     tests_require = ['pytest', ],
     cmdclass = {'test': PyTest,
-                'cover-test': PyTestCover},
+                'ctest': PyTestCover},
     install_requires=[
         'appdirs',
         'blinker',
