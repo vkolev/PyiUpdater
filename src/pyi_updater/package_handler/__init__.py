@@ -15,7 +15,6 @@ from pyi_updater.package_handler.package import Package, Patch
 from pyi_updater.utils import (EasyAccessDict,
                                get_package_hashes as gph,
                                lazy_import,
-                               migrate,
                                remove_dot_files
                                )
 
@@ -37,7 +36,6 @@ class PackageHandler(object):
         global jms_utils
         jms_utils = lazy_import('jms_utils')
         self.config_loaded = False
-        self.init = False
         if app:
             self.init_app(app)
 
@@ -69,11 +67,6 @@ class PackageHandler(object):
             log.debug('DEV_DATA_DIR is None. Setup Failed')
 
         self.json_data = None
-        if self.data_dir is not None:
-            self.init = True
-            if os.path.exists(self.config_file) is False and \
-                    os.path.exists(self.files_dir) is True:
-                migrate(self.data_dir)
 
         self.setup()
 
@@ -103,7 +96,7 @@ class PackageHandler(object):
         :meth:`_update_version_file`,
         :meth:`_write_json_to_file` & :meth:`_move_packages`.
         """
-        if self.init is False:
+        if self.data_dir is not None:
             raise PackageHandlerError('Must init first.', expected=True)
         package_manifest, patch_manifest = self._get_package_list()
         patches = self._make_patches(patch_manifest)

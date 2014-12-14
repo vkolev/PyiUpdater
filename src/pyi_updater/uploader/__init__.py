@@ -21,8 +21,8 @@ class Uploader(object):
             obj (instance): config object
     """
     def __init__(self, app=None):
-        stevedore = lazy_import(u'stevedore')
         global stevedore
+        stevedore = lazy_import(u'stevedore')
         if app:
             self.init_app(app)
 
