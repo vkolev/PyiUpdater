@@ -37,10 +37,11 @@ class Client(object):
         self.json_data = None
         self.verified = False
         self.ready = False
-        if obj:
+        if obj and test is True:
             self.init_app(obj, refresh, test)
-        if obj is None and test is True:
-            self.init_app(None, refresh, test)
+
+        if obj and test is False:
+            self.init_app(obj, refresh, test)
 
     def init_app(self, obj, refresh=False, test=False):
         """Sets up client with config values from obj
@@ -49,18 +50,10 @@ class Client(object):
             obj (instance): config object
 
         """
-        # ToDo: Remove once code is v1.0
-        #       Updated how client is initialized.  Can still be
-        #       used the old way but the new way is way more efficient
-        #       Just pass in the config object and the client takes care
-        #       of the rest.  No need to initialize PyiUpater object first!
-        if hasattr(obj, 'config'):
-            config = obj.config.copy()
-        else:
-            # Used to add missing required information
-            # i.e. APP_NAME
-            pyi_config = PyiUpdaterConfig(obj)
-            config = pyi_config.config.copy()
+        # Used to add missing required information
+        # i.e. APP_NAME
+        pyi_config = PyiUpdaterConfig(obj)
+        config = pyi_config.copy()
 
         # Grabbing config information
         update_url = config.get(u'UPDATE_URL')

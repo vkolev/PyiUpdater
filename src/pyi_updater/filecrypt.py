@@ -43,8 +43,8 @@ class FileCrypt(object):
         self.passwrod_timeout = password_timeout
         self.new_file(filename)
 
-    def init_app(self, pyi):
-        self.data_dir = pyi.config.get(u'DEV_DATA_DIR')
+    def init_app(self, obj):
+        self.data_dir = obj.get(u'DEV_DATA_DIR')
         if self.data_dir is not None:
             self.salt_file = os.path.join(self.data_dir, u'pyi-data',
                                           u'keys', u'salt')

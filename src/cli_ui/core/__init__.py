@@ -13,10 +13,7 @@ from pyi_updater import PyiUpdater, PyiUpdaterConfig
 from pyi_updater.config import SetupConfig
 from pyi_updater.exceptions import FileCryptPasswordError
 from pyi_updater.filecrypt import FileCrypt
-from pyi_updater.utils import (ask_yes_no,
-                               directory_fixer,
-                               get_correct_answer,
-                               initial_setup,
+from pyi_updater.utils import (initial_setup,
                                verify_password)
 
 log = logging.getLogger(__name__)
@@ -30,13 +27,13 @@ class Worker(Menu, CommonLogic):
     def __init__(self):
         self.file_crypt = FileCrypt()
         self.config = self.load_config()
-        self.pyi_updater = PyiUpdaterConfig(self.config)
+        self.pyi_config = PyiUpdaterConfig(self.config)
         self.pyiu = PyiUpdater()
-        self.update_helpers(self.pyi_updater)
+        self.update_helpers(self.pyi_config)
 
         helpers = {
             u'file_crypt': self.file_crypt,
-            u'config': self.config,
+            u'config': self.pyi_config,
             u'save': self.save_config,
             u'pyiu': self.pyiu
             }
@@ -94,12 +91,13 @@ class Worker(Menu, CommonLogic):
         self.display_menu_header(u'Setup Assistant')
         self.display_msg(u'Let\'s begin...')
 
-        self.config = initial_setup(self.config)
+        self.pyi_config = initial_setup(self.pyi_config)
+        self.update_helpers(self.pyi_config)
+        self.pyiu.setup()
 
         password = verify_password(u'Enter password')
         self.file_crypt._update_timer()
-        self.save_config(self.config, password)
-        self.package_handler.setup()
+        self.save_config(self.pyi_config, password)
         print(u'Making signing keys...')
         self.keys_menu.make_keys()
         self.display_menu_header(u'Setup Complete')
@@ -107,8 +105,8 @@ class Worker(Menu, CommonLogic):
         time.sleep(3)
 
     def save_config(self, obj, password=None):
-        self.pyi_updater.update_config(obj)
-        self.update_helpers(self.pyi_updater)
+        self.pyi_config.update_config(obj)
+        self.update_helpers(self.pyi_config)
         log.debug(u'Saving Config')
         filename = os.path.join(CWD, u'config.data')
         self.file_crypt.new_file(filename)

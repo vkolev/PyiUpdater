@@ -1,4 +1,4 @@
-class Config(dict):
+class PyiUpdaterConfig(dict):
     """Works exactly like a dict but provides ways to fill it from files
     or special dictionaries.  There are two common patterns to populate the
     config.
@@ -14,8 +14,10 @@ class Config(dict):
     keys in the same file that implements the application.
     """
 
-    def __init__(self, defaults=None):
-        super(Config, self).__init__(defaults or {})
+    def __init__(self, obj=None):
+        super(PyiUpdaterConfig, self).__init__(dict())
+        if obj is not None:
+            self.from_object(obj)
 
     def from_object(self, obj):
         """Updates the values from the given object
@@ -35,6 +37,18 @@ class Config(dict):
             if key.isupper():
                 self[key] = getattr(obj, key)
 
+    def update_config(self, obj):
+        """Proxy method to update internal config dict
+
+        Args:
+            obj (instance): config object
+        """
+        self.from_object(obj)
+        if self.get(u'APP_NAME') is None:
+            self[u'APP_NAME'] = u'PyiUpdater App'
+        if self.get(u'COMPANY_NAME') is None:
+            self[u'COMPANY_NAME'] = u'Digital Sapphire'
+
     def __str__(self):
         pass
 
@@ -43,46 +57,6 @@ class Config(dict):
 
     def __repr__(self):
         return u'<%s %s>' % (self.__class__.__name__, dict.__repr__(self))
-
-
-class PyiUpdaterConfig(object):
-    """There are 2 ways to load config.  The first was is during
-    object initialization. The second way is later with :meth:`update_config`
-
-    Examples are shown below::
-
-        Config(object):
-            APP_NAME = "My App"
-            COMPANY_NAME = "MY COMPANY"
-            UPDATE_URL = http://www.example.com/updates
-
-
-        app = PyiUpdater(Config())
-
-        app = PyInstaller()
-        app.update_config(Config())
-
-    Kwargs:
-        import_name (str): used to get current directory
-
-        cfg_obj (instance): object with config attributes
-    """
-    def __init__(self, cfg_obj=None):
-        self.config = Config()
-        if cfg_obj is not None:
-            self.update_config(cfg_obj)
-
-    def update_config(self, obj):
-        """Proxy method to update internal config dict
-
-        Args:
-            obj (instance): config object
-        """
-        self.config.from_object(obj)
-        if self.config.get(u'APP_NAME') is None:
-            self.config[u'APP_NAME'] = u'PyiUpdater App'
-        if self.config.get(u'COMPANY_NAME') is None:
-            self.config[u'COMPANY_NAME'] = u'Digital Sapphire'
 
 
 # This is the default config used

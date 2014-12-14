@@ -6,7 +6,6 @@ from nose import with_setup
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pyi_updater import PyiUpdaterConfig
 from pyi_updater.client import Client
 from tconfig import TConfig
 
@@ -21,14 +20,6 @@ def tear_down():
 def test_data_dir():
     client = Client(TConfig(), test=True)
     assert os.path.exists(client.data_dir) is True
-
-
-def test_original_init():
-    pyiconfig = PyiUpdaterConfig(TConfig())
-    client = Client(pyiconfig, refresh=True, test=True)
-    assert client.app_name == u'jms'
-    assert client.update_urls[0] == (u'https://s3-us-west-1.amazon'
-                                     'aws.com/pyi-test/')
 
 
 def test_new_init():

@@ -26,7 +26,7 @@ register-test:
 	python setup.py register -r pypitest
 
 test:
-	py.test -v -n 1
+	py.test -v -n 1 --durations=3 -x
 
 test-cover:
 	py.test -v --cov src/pyi_updater --cov-report html -n 1

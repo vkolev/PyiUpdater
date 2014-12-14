@@ -3,7 +3,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pyi_updater.config import Config
+from pyi_updater.config import PyiUpdaterConfig
 
 
 class DevConfig(object):
@@ -24,21 +24,21 @@ class BasicCofig(object):
 
 
 def test_dev_config():
-    config = Config()
+    config = PyiUpdaterConfig()
     test_config = DevConfig()
     config.from_object(test_config)
     assert config[u'TESTING'] is True
 
 
 def test_dev_config_bad_attr():
-    config = Config()
+    config = PyiUpdaterConfig()
     test_config = DevConfig()
     config.from_object(test_config)
     assert config.get(u'BAD_ATTR', None) is None
 
 
 def test_prod_config():
-    config = Config()
+    config = PyiUpdaterConfig()
     prod_config = ProdConfig()
     config.from_object(prod_config)
     assert config[u'MORE_INFO'] == u'Yes Please'
@@ -46,13 +46,13 @@ def test_prod_config():
 
 def test_prod_bad_atter():
     test_prod_config()
-    config = Config()
+    config = PyiUpdaterConfig()
     prod_config = ProdConfig()
     config.from_object(prod_config)
     assert config.get(u'DEBUG', None) is not None
 
 
 def test_config_str():
-    config = Config()
+    config = PyiUpdaterConfig()
     config.from_object(BasicCofig())
-    assert repr(config) == u"<Config {'APP_NAME': u'Tester'}>"
+    assert repr(config) == u"<PyiUpdaterConfig {'APP_NAME': u'Tester'}>"

@@ -9,17 +9,19 @@ try:
     import bsdiff4
 except ImportError:
     bsdiff4 = None
-from jms_utils.paths import ChDir
 
 from pyi_updater.exceptions import PackageHandlerError
 from pyi_updater.package_handler.package import Package, Patch
 from pyi_updater.utils import (EasyAccessDict,
                                get_package_hashes as gph,
+                               lazy_import,
                                migrate,
                                remove_dot_files
                                )
 
 log = logging.getLogger(__name__)
+
+jms_utils = None
 
 
 class PackageHandler(object):
@@ -32,6 +34,8 @@ class PackageHandler(object):
     data_dir = None
 
     def __init__(self, app=None):
+        global jms_utils
+        jms_utils = lazy_import('jms_utils')
         self.config_loaded = False
         self.init = False
         if app:
@@ -44,14 +48,14 @@ class PackageHandler(object):
             obj (instance): config object
 
         """
-        self.patches = obj.config.get(u'UPDATE_PATCHES', True)
+        self.patches = obj.get(u'UPDATE_PATCHES', True)
         if self.patches:
             log.debug(u'Looks like were ready to make some patches')
             self.patch_support = True
         else:
             log.debug(u'Looks like its not patch time.')
             self.patch_support = False
-        self.data_dir = obj.config.get(u'DEV_DATA_DIR')
+        self.data_dir = obj.get(u'DEV_DATA_DIR')
         if self.data_dir is not None:
             self.data_dir = os.path.join(self.data_dir, u'pyi-data')
             self.files_dir = os.path.join(self.data_dir, u'files')
@@ -186,7 +190,7 @@ class PackageHandler(object):
         package_manifest = list()
         patch_manifest = list()
         bad_packages = list()
-        with ChDir(self.new_dir):
+        with jms_utils.paths.ChDir(self.new_dir):
             # Getting a list of all files in the new dir
             packages = os.listdir(os.getcwd())
             for p in packages:
@@ -356,7 +360,7 @@ class PackageHandler(object):
         log.debug(u'Moving packages to deploy folder')
         for p in package_manifest:
             patch = p.patch_info.get(u'patch_name')
-            with ChDir(self.new_dir):
+            with jms_utils.paths.ChDir(self.new_dir):
                 if patch:
                     if os.path.exists(os.path.join(self.deploy_dir, patch)):
                         os.remove(os.path.join(self.deploy_dir, patch))
@@ -399,7 +403,7 @@ class PackageHandler(object):
             return None
         src_file_path = None
         if os.path.exists(self.files_dir):
-            with ChDir(self.files_dir):
+            with jms_utils.paths.ChDir(self.files_dir):
                 files = os.listdir(os.getcwd())
 
             files = remove_dot_files(files)

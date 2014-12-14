@@ -5,16 +5,15 @@ import os
 import shutil
 import sys
 
-import ed25519
-from jms_utils.paths import ChDir
-import six
-
 from pyi_updater.exceptions import FileCryptPasswordError, KeyHandlerError
+from pyi_updater.utils import lazy_import
 
-if six.PY3 is True:
-    long = int
 
 log = logging.getLogger(__name__)
+
+six = None
+ed25519 = None
+jms_utils = None
 
 
 class KeyHandler(object):
@@ -25,6 +24,12 @@ class KeyHandler(object):
     """
 
     def __init__(self, app=None):
+        global six
+        global ed25519
+        global jms_utils
+        six = lazy_import(u'six')
+        ed25519 = lazy_import(u'ed25519')
+        jms_utils = lazy_import(u'jms_utils')
         self.fc = None
         if app:
             self.init_app(app)
@@ -37,8 +42,8 @@ class KeyHandler(object):
         """
         # Copies and sets all needed config attributes
         # for this object
-        self.app_name = obj.config.get(u'APP_NAME')
-        self.data_dir = obj.config.get(u'DEV_DATA_DIR',)
+        self.app_name = obj.get(u'APP_NAME')
+        self.data_dir = obj.get(u'DEV_DATA_DIR',)
         if self.data_dir is not None:
             self.data_dir = os.path.join(self.data_dir, u'pyi-data')
             self.keys_dir = os.path.join(self.data_dir, u'keys')
@@ -200,7 +205,7 @@ class KeyHandler(object):
             with open(self.version_file, u'w') as f:
                 f.write(json.dumps(self.update_data, indent=2,
                         sort_keys=True))
-            with ChDir(self.data_dir):
+            with jms_utils.paths.ChDir(self.data_dir):
                 shutil.copy(u'version.json', self.deploy_dir)
         else:
             msg = u'You must sign update data first'

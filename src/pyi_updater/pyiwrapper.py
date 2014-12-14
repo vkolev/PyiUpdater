@@ -8,7 +8,7 @@ import time
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 
-from pyi_updater import PyiUpdater, PyiUpdaterConfig
+from pyi_updater import PyiUpdater
 from pyi_updater.config import SetupConfig
 from pyi_updater.utils import initial_setup, make_archive
 from pyi_updater.version import get_version
@@ -25,7 +25,7 @@ build_parser = subparsers.add_parser(u'build', help=u'compiles script',
                                      usage=u'%(prog)s <script> [opts]')
 
 init_parser = subparsers.add_parser(u'init', help=u'initializes a '
-                                    u'src directory: Not Implemented')
+                                    u'src directory')
 
 keys_parser = subparsers.add_parser(u'keys', help=u'Manage signing keys: '
                                     u'Not Implemented')
@@ -66,37 +66,45 @@ build_parser.add_argument(u'--name', help=argparse.SUPPRESS)
 # Just capturing these argument.
 # PyiUpdater only supports onefile mode at the moment
 build_parser.add_argument(u'-D', action=u"store_true",
-                          default=False, help=argparse.SUPPRESS)
+                          help=argparse.SUPPRESS)
 build_parser.add_argument(u'--onedir', action=u"store_true",
-                          default=False, help=argparse.SUPPRESS)
+                          help=argparse.SUPPRESS)
 
 # Just capturing these argument.
 # Will be added later to pyinstaller build command
 build_parser.add_argument(u'-F', action=u"store_true",
-                          default=False, help=argparse.SUPPRESS)
+                          help=argparse.SUPPRESS)
 build_parser.add_argument(u'--onefile', action=u"store_true",
-                          default=False, help=argparse.SUPPRESS)
+                          help=argparse.SUPPRESS)
 
 # Just capturing these arguments
 # ToDo: Take a closer look at this switch
 build_parser.add_argument(u'-c', action=u"store_true",
-                          default=False, help=argparse.SUPPRESS)
+                          help=argparse.SUPPRESS)
 build_parser.add_argument(u'--console', action=u"store_true",
-                          default=False, help=argparse.SUPPRESS)
+                          help=argparse.SUPPRESS)
 build_parser.add_argument(u'--nowindowed', action=u"store_true",
-                          default=False, help=argparse.SUPPRESS)
+                          help=argparse.SUPPRESS)
 
 # Potentially harmful for cygwin on windows
 # ToDo: Maybe do a check for cygwin and disable if cygwin is true
 build_parser.add_argument(u'-s', action=u"store_true",
-                          default=False, help=argparse.SUPPRESS)
+                          help=argparse.SUPPRESS)
 build_parser.add_argument(u'--strip', action=u"store_true",
-                          default=False, help=argparse.SUPPRESS)
+                          help=argparse.SUPPRESS)
 # End of args override
 
 # Used by PyiWrapper
 build_parser.add_argument(u'--app-name', dest=u"app_name", required=True)
 build_parser.add_argument(u'--app-version', dest=u"app_version", required=True)
+
+
+package_parser.add_argument(u'process', help=u'Adds update metadata to '
+                            u'version file', action=u'store_true',
+                            default=False)
+
+package_parser.add_argument(u'sign', help=u'Sign version file',
+                            action=u'store_true')
 
 
 def main():
@@ -109,21 +117,45 @@ def main():
         setup()
     elif cmd == u'_upload':
         upload(args)
+    elif cmd == u'_pkg':
+        process(args)
     elif cmd == u'version':
         print(u'PyiUpdater {}'.format(get_version()))
     else:
         sys.exit(u'Not Implemented')
 
 
+def process(args):
+    print args
+    if args.process is True and args.sign is True:
+        sys.exit(u'Can only use one command')
+    elif args.process is True:
+        pass
+    elif args.process is True:
+        pass
+    else:
+        sys.exit(u'You must specify a command')
+
+
 def setup():
-    if not os.path.exists(u'config.data') and not os.path.exists(u'config.data.enc'):
+    if not os.path.exists(u'config.data') and \
+            not os.path.exists(u'config.data.enc'):
         config = initial_setup(SetupConfig())
         print(u'\nCreating pyi-data dir...\n')
-        pyiu = PyiUpdater(PyiUpdaterConfig(config))
+        pyiu = PyiUpdater(config)
         pyiu.setup()
         print(u'\nMaking signing keys...')
         pyiu.make_keys()
+        print(u'\nCreating main config file...')
+        with open(u'config.py', u'w') as f:
+            f.write('class Config(object):')
+            template = '\t{} = {}'
+            for k, v in config.items():
+                f.write(template.format(k, v))
+
         print(u'\nSetup complete')
+    else:
+        sys.exit(u'Not an empty PyiUpdater repository')
 
 
 def upload(args):

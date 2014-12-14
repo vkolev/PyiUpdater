@@ -2,6 +2,7 @@ from __future__ import print_function
 import bz2
 from getpass import getpass
 import hashlib
+import json
 import logging
 import os
 import re
@@ -10,10 +11,6 @@ import sys
 import tarfile
 import zipfile
 
-from jms_utils.paths import ChDir
-from jms_utils.system import get_system
-from six import BytesIO
-from six.moves import input
 
 from pyi_updater.exceptions import UtilsError
 
@@ -53,13 +50,14 @@ class EasyAccessDict(object):
 
 
 def verify_password(message):
+    six = lazy_import(u'six')
     while 1:
         password1 = getpass('{}: '.format(message))
         password2 = getpass('{} again: '.format(message))
         if password1 == password2:
             return password1
         else:
-            input('\n\nPasswords do not match. Press Enter to try again.')
+            six.moves.input('\n\nPasswords do not match. Press Enter to try again.')
 
 
 def get_hash(data):
@@ -128,6 +126,7 @@ class bsdiff4_py(object):
     """
     @staticmethod
     def patch(source, patch):
+        six = lazy_import(u'six')
         #  Read the length headers
         l_bcontrol = _decode_offt(patch[8:16])
         l_bdiff = _decode_offt(patch[16:24])
@@ -148,10 +147,10 @@ class bsdiff4_py(object):
             ))
         #  Actually do the patching.
         #  This is the bdiff4 patch algorithm in slow, pure python.
-        source = BytesIO(source)
-        result = BytesIO()
-        bdiff = BytesIO(bdiff)
-        bextra = BytesIO(bextra)
+        source = six.BytesIO(source)
+        result = six.BytesIO()
+        bdiff = six.BytesIO(bdiff)
+        bextra = six.BytesIO(bextra)
         for (x, y, z) in tcontrol:
             diff_data = bdiff.read(x)
             orig_data = source.read(x)
@@ -197,8 +196,9 @@ def make_archive(name, version, target):
     Returns:
          (str) - name of archive
     """
+    jms_utils = lazy_import(u'jms_utils')
     file_dir = os.path.dirname(os.path.abspath(target))
-    filename = '{}-{}-{}'.format(name, get_system(), version)
+    filename = '{}-{}-{}'.format(name, jms_utils.system.get_system(), version)
     filename_path = os.path.join(file_dir, filename)
 
     print('starting archive')
@@ -218,7 +218,7 @@ def make_archive(name, version, target):
         shutil.copytree(target, temp_file)
     # Only use zip on windows. Zip doens't preserve file
     # permissions on nix & mac
-    if get_system() == u'win':
+    if jms_utils.system.get_system() == u'win':
         ext = u'.zip'
         with zipfile.ZipFile(filename_path + '.zip', 'w') as zf:
             zf.write(target, temp_file)
@@ -243,6 +243,7 @@ def make_archive(name, version, target):
 
     return filename + ext
 
+
 def ask_yes_no(question, default='no', answer=None):
     """Will ask a question and keeps prompting until
     answered.
@@ -260,6 +261,7 @@ def ask_yes_no(question, default='no', answer=None):
 
             False - Answer is no
     """
+    six = lazy_import(u'six')
     default = default.lower()
     yes = [u'yes', u'ye', u'y']
     no = [u'no', u'n']
@@ -273,7 +275,7 @@ def ask_yes_no(question, default='no', answer=None):
         display = question + '\n' + help_
         if answer is None:
             log.debug(u'Under None')
-            answer = input(display)
+            answer = six.moves.input(display)
             answer = answer.lower()
         if answer == u'':
             log.debug(u'Under blank')
@@ -288,13 +290,14 @@ def ask_yes_no(question, default='no', answer=None):
             sys.stdout.write(u'Please answer yes or no only!\n\n')
             sys.stdout.flush()
             answer = None
-            input(u'Press enter to continue')
+            six.moves.input(u'Press enter to continue')
             sys.stdout.write('\n\n\n\n\n')
             sys.stdout.flush()
 
 
 def get_correct_answer(question, default=None, required=False,
                        answer=None, is_answer_correct=None):
+    six = lazy_import(u'six')
     while 1:
         if default is None:
             msg = u' - No Default Available'
@@ -303,10 +306,10 @@ def get_correct_answer(question, default=None, required=False,
                    'Use Default'.format(default))
         prompt = question + msg + '\n--> '
         if answer is None:
-            answer = input(prompt)
+            answer = six.moves.input(prompt)
         if answer == '' and required and default is not None:
             print(u'You have to enter a value\n\n')
-            input(u'Press enter to continue')
+            six.moves.input(u'Press enter to continue')
             print('\n\n')
             answer = None
             continue
@@ -320,14 +323,15 @@ def get_correct_answer(question, default=None, required=False,
         else:
             answer = None
 
+
 def initial_setup(config):
     config.APP_NAME = get_correct_answer(u'Please enter app name',
-                                              required=True)
+                                         required=True)
 
     config.COMPANY_NAME = get_correct_answer(u'Please enter your '
                                              'company or name', required=True)
 
-    config.DEV_DATA_DIR = CWD
+    config.DEV_DATA_DIR = os.getcwd()
 
     url = get_correct_answer(u'Enter a url to ping for updates.',
                              required=True)
@@ -353,11 +357,11 @@ def initial_setup(config):
 
     if answer1:
         config.REMOTE_DIR = get_correct_answer(u'Enter remote dir',
-                                                    required=True)
+                                               required=True)
         config.HOST = get_correct_answer(u'Enter host', required=True)
 
         config.USERNAME = get_correct_answer(u'Enter usernmae',
-                                                  required=True)
+                                             required=True)
 
         key_path = get_correct_answer(u'Enter path to ssh key',
                                       required=True)
@@ -366,14 +370,14 @@ def initial_setup(config):
 
     if answer2:
         config.USERNAME = get_correct_answer(u'Enter access key ID',
-                                                  required=True)
-        config.PASSWORD = get_correct_answer(u'Enter secret '
-                                                  'Access Key',
-                                                  required=True)
+                                             required=True)
+        config.PASSWORD = get_correct_answer(u'Enter secret Access Key',
+                                             required=True)
 
         config.REMOTE_DIR = get_correct_answer(u'Enter bucket name',
-                                                    required=True)
+                                               required=True)
     return config
+
 
 # Makes inputting directory more like shell
 def directory_fixer(_dir):
@@ -383,8 +387,10 @@ def directory_fixer(_dir):
         _dir = os.path.join(os.path.expanduser(u'~'), _dir)
     return _dir
 
+
 def count_contents(d):
-    with ChDir(d):
+    jms_utils = lazy_import(u'jms_utils')
+    with jms_utils.paths.ChDir(d):
         count = len(os.listdir(os.getcwd()))
     return count
 
@@ -415,3 +421,5 @@ def migrate(data_dir):
     os.makedirs(files_dir)
 
 
+def lazy_import(mod):
+    return __import__(mod)

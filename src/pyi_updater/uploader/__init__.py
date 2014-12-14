@@ -1,12 +1,13 @@
 import logging
 import os
 
-from stevedore.extension import ExtensionManager
-
 from pyi_updater.exceptions import UploaderError
-from pyi_updater.utils import remove_dot_files
+from pyi_updater.utils import (lazy_import,
+                               remove_dot_files)
 
 log = logging.getLogger(__name__)
+
+stevedore = None
 
 
 class Uploader(object):
@@ -20,6 +21,8 @@ class Uploader(object):
             obj (instance): config object
     """
     def __init__(self, app=None):
+        stevedore = lazy_import(u'stevedore')
+        global stevedore
         if app:
             self.init_app(app)
 
@@ -29,26 +32,26 @@ class Uploader(object):
         Args:
             obj (instance): config object
         """
-        self.data_dir = obj.config.get(u'DEV_DATA_DIR')
+        self.data_dir = obj.get(u'DEV_DATA_DIR')
         if self.data_dir is not None:
             self.data_dir = os.path.join(self.data_dir, u'pyi-data')
             self.deploy_dir = os.path.join(self.data_dir, u'deploy')
         else:
             log.debug(u'DEV_DATA_DIR is None. Setup failed.')
 
-        self.remote_dir = obj.config.get(u'REMOTE_DIR')
-        self.host = obj.config.get(u'HOST', None)
+        self.remote_dir = obj.get(u'REMOTE_DIR')
+        self.host = obj.get(u'HOST', None)
 
-        self.username = obj.config.get(u'USERNAME')
+        self.username = obj.get(u'USERNAME')
 
         # If password is none get ssh key path
-        self.password = obj.config.get(u'PASSWORD')
+        self.password = obj.get(u'PASSWORD')
         self.uploader = None
         self.test = False
 
         # Extension Manager
-        self.mgr = ExtensionManager(namespace=u'pyiupdater.uploaders',
-                                    )
+        self.mgr = stevedore.extension.ExtensionManager(namespace=u'pyiupdat'
+                                                        'er.uploaders',)
 
     def upload(self):
         """Proxy function that calls the upload method on the received uploader

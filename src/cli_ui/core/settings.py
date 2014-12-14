@@ -8,8 +8,8 @@ from six.moves import input
 
 from cli_ui.core.common import CommonLogic
 from cli_ui.ui.menu import Menu
-from cli_ui.ui.menu_utils import get_correct_answer
-from pyi_updater.utils import verify_password
+from pyi_updater.utils import (get_correct_answer,
+                               verify_password)
 
 
 log = logging.getLogger(__name__)
