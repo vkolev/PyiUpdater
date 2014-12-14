@@ -1,12 +1,12 @@
 # command to install dependencies
 dependencies:
     pre:
-        - pip install -r requirements.txt --upgrade
+        - make deps-dev-upgrade
         - pip install coveralls pytest-cov pytest-xdist
 
 # command to run tests
 test:
     override:
-        - coverage run py.test -v tests --cov src/pyi_updater -n 1
+        - coverage run setup.py cover-test
     post:
         - coveralls

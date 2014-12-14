@@ -6,6 +6,7 @@ except ImportError:
     from distutils.core import Command, find_packages, setup
 import subprocess
 import sys
+import os
 
 
 sys.path.insert(0, 'src')
@@ -14,8 +15,6 @@ from pyi_updater.version import get_version
 
 
 class PyTest(Command):
-    user_options = []
-
     def initialize_options(self):
         pass
 
@@ -24,6 +23,20 @@ class PyTest(Command):
 
     def run(self):
         errno = subprocess.call([sys.executable, 'runtests.py'])
+        raise SystemExit(errno)
+
+
+class PyTestCover(Command):
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        errno = subprocess.call([sys.executable, 'runtests.py', u'-v', 'tests',
+                                u'--cov', u'src{}pyi_updater'.format(os.sep),
+                                u'-n', u'1'])
         raise SystemExit(errno)
 
 setup(
@@ -43,7 +56,9 @@ setup(
         's3': 'PyiUpdater-s3-Plugin>=0.11',
         'scp': 'PyiUpdater-scp-Plugin>=0.9',
         },
-    cmdclass = {'test': PyTest},
+    tests_require = ['pytest', ],
+    cmdclass = {'test': PyTest,
+                'cover-test': PyTestCover},
     install_requires=[
         'appdirs',
         'blinker',
