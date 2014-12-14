@@ -1,5 +1,4 @@
 asciinema
-circleci
 coverage
 line_profiler==1.0b3
 memory_profiler
