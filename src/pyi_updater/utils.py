@@ -10,6 +10,7 @@ import sys
 import tarfile
 import zipfile
 
+from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 from six import BytesIO
 from six.moves import input
@@ -241,3 +242,176 @@ def make_archive(name, version, target):
             # shutil.rmtree(target, ignore_errors=True)
 
     return filename + ext
+
+def ask_yes_no(question, default='no', answer=None):
+    """Will ask a question and keeps prompting until
+    answered.
+
+    Args:
+        question (str): Question to ask end user
+
+    Kwargs:
+        default (str): Default answer if user just press enter at prompt
+
+    Returns:
+        bool. Meaning::
+
+            True - Answer is  yes
+
+            False - Answer is no
+    """
+    default = default.lower()
+    yes = [u'yes', u'ye', u'y']
+    no = [u'no', u'n']
+    if default in no:
+        help_ = u'[N/y]?'
+        default = False
+    else:
+        default = True
+        help_ = u'[Y/n]?'
+    while 1:
+        display = question + '\n' + help_
+        if answer is None:
+            log.debug(u'Under None')
+            answer = input(display)
+            answer = answer.lower()
+        if answer == u'':
+            log.debug(u'Under blank')
+            return default
+        if answer in yes:
+            log.debug(u'Must be true')
+            return True
+        elif answer in no:
+            log.debug(u'Must be false')
+            return False
+        else:
+            sys.stdout.write(u'Please answer yes or no only!\n\n')
+            sys.stdout.flush()
+            answer = None
+            input(u'Press enter to continue')
+            sys.stdout.write('\n\n\n\n\n')
+            sys.stdout.flush()
+
+
+def get_correct_answer(question, default=None, required=False,
+                       answer=None, is_answer_correct=None):
+    while 1:
+        if default is None:
+            msg = u' - No Default Available'
+        else:
+            msg = (u'\n[DEFAULT] -> {}\nPress Enter To '
+                   'Use Default'.format(default))
+        prompt = question + msg + '\n--> '
+        if answer is None:
+            answer = input(prompt)
+        if answer == '' and required and default is not None:
+            print(u'You have to enter a value\n\n')
+            input(u'Press enter to continue')
+            print('\n\n')
+            answer = None
+            continue
+        if answer == u'' and default is not None:
+            answer = default
+        _ans = ask_yes_no(u'You entered {}, is this '
+                          'correct?'.format(answer),
+                          answer=is_answer_correct)
+        if _ans:
+            return answer
+        else:
+            answer = None
+
+def initial_setup(config):
+    config.APP_NAME = get_correct_answer(u'Please enter app name',
+                                              required=True)
+
+    config.COMPANY_NAME = get_correct_answer(u'Please enter your '
+                                             'company or name', required=True)
+
+    config.DEV_DATA_DIR = CWD
+
+    url = get_correct_answer(u'Enter a url to ping for updates.',
+                             required=True)
+    config.UPDATE_URLS = [url]
+    while 1:
+        answer = ask_yes_no(u'Would you like to add another '
+                            'url for backup?', default='no')
+        if answer is True:
+            url = get_correct_answer(u'Enter another url.',
+                                     required=True)
+            config.UPDATE_URLS.append(url)
+        else:
+            break
+
+    config.UPDATE_PATCHES = ask_yes_no(u'Would you like to enable patch '
+                                       'uupdates?', default='yes')
+
+    answer1 = ask_yes_no(u'Would you like to add scp settings?',
+                         default='no')
+
+    answer2 = ask_yes_no(u'Would you like to add S3 settings?',
+                         default='no')
+
+    if answer1:
+        config.REMOTE_DIR = get_correct_answer(u'Enter remote dir',
+                                                    required=True)
+        config.HOST = get_correct_answer(u'Enter host', required=True)
+
+        config.USERNAME = get_correct_answer(u'Enter usernmae',
+                                                  required=True)
+
+        key_path = get_correct_answer(u'Enter path to ssh key',
+                                      required=True)
+        # Path to private key
+        config.PASSWORD = directory_fixer(key_path)
+
+    if answer2:
+        config.USERNAME = get_correct_answer(u'Enter access key ID',
+                                                  required=True)
+        config.PASSWORD = get_correct_answer(u'Enter secret '
+                                                  'Access Key',
+                                                  required=True)
+
+        config.REMOTE_DIR = get_correct_answer(u'Enter bucket name',
+                                                    required=True)
+    return config
+
+# Makes inputting directory more like shell
+def directory_fixer(_dir):
+    if _dir.startswith(u'~'):
+        log.debug(u'Expanding ~ to full user path')
+        _dir = _dir[2:]
+        _dir = os.path.join(os.path.expanduser(u'~'), _dir)
+    return _dir
+
+def count_contents(d):
+    with ChDir(d):
+        count = len(os.listdir(os.getcwd()))
+    return count
+
+
+def migrate(data_dir):
+    info = {}
+    p_dir = os.path.dirname(data_dir)
+    log.debug('Parent directory: {}'.format(p_dir))
+    config_dir = os.path.join(p_dir, u'.pyiupdater')
+    config_file = os.path.join(config_dir, u'data.json')
+    if not os.path.exists(config_dir):
+        os.mkdir(config_dir)
+    if os.path.exists(config_file):
+        with open(config_file, u'r') as f:
+            try:
+                info = json.loads(f.read())
+            except ValueError:
+                log.debug("Could not load config file")
+    files_dir = os.path.join(data_dir, u'files')
+    info['boot_strap'] = 100
+    with open(config_file, u'w') as f:
+        f.write(json.dumps(info, indent=2, sort_keys=True))
+    # Moving files to be removed
+    old_dir = os.path.join(data_dir, u'safe-to-remove')
+    shutil.move(files_dir, old_dir)
+    if os.path.exists(files_dir):
+        shutil.rmtree(files_dir, ignore_errors=True)
+    os.makedirs(files_dir)
+
+

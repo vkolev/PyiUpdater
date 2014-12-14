@@ -8,87 +8,95 @@ import time
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 
-from pyi_updater.utils import make_archive
+from pyi_updater import PyiUpdater, PyiUpdaterConfig
+from pyi_updater.config import SetupConfig
+from pyi_updater.utils import initial_setup, make_archive
 from pyi_updater.version import get_version
 
 start = time.time()
-parser = argparse.ArgumentParser(usage='%(prog)s')
 
-subparsers = parser.add_subparsers(help='commands', dest=u'command')
+CWD = os.getcwd()
 
-init_parser = subparsers.add_parser(u'init', help=u'initializes a '
-                                    'src directory: Not Implemented')
+parser = argparse.ArgumentParser(usage=u'%(prog)s')
+
+subparsers = parser.add_subparsers(help=u'commands', dest=u'command')
 
 build_parser = subparsers.add_parser(u'build', help=u'compiles script',
                                      usage=u'%(prog)s <script> [opts]')
 
-upload_parser = subparsers.add_parser(u'upload', help=u'Uploads files: '
-                                      'Not Implemented')
+init_parser = subparsers.add_parser(u'init', help=u'initializes a '
+                                    u'src directory: Not Implemented')
 
 keys_parser = subparsers.add_parser(u'keys', help=u'Manage signing keys: '
-                                    'Not Implemented')
+                                    u'Not Implemented')
+
 
 package_parser = subparsers.add_parser(u'pkg', help=u'Manages creation of '
                                        u'file metadata: '
-                                       'Not Implemented')
+                                       u'Not Implemented')
+
+upload_parser = subparsers.add_parser(u'upload', help=u'Uploads files: '
+                                      u'Not Implemented')
+
 
 version_parser = subparsers.add_parser(u'version', help=u'Programs version')
+
 
 # Start of args override
 # This will be set to the pyi-data/new directory.
 # When we make the final compressed archive we will look
 # for an exe in that dir.
-build_parser.add_argument('-o', help=argparse.SUPPRESS)
-build_parser.add_argument('--distpath', help=argparse.SUPPRESS)
+build_parser.add_argument(u'-o', help=argparse.SUPPRESS)
+build_parser.add_argument(u'--distpath', help=argparse.SUPPRESS)
 
 # Will be set to .pyiupdater/spec/
 # Trying to keep root dir clean
-build_parser.add_argument('--specpath', help=argparse.SUPPRESS)
+build_parser.add_argument(u'--specpath', help=argparse.SUPPRESS)
 
 # Will be set to .pyiupdater/build
 # Trying to keep root dir clean
-build_parser.add_argument('--workpath', help=argparse.SUPPRESS)
+build_parser.add_argument(u'--workpath', help=argparse.SUPPRESS)
 
 # Will be set to platform name i.e. mac, win, nix, nix64, arm\
 # When archiving we will change the name to the value passed to
 # --app-name
-build_parser.add_argument('-n', help=argparse.SUPPRESS)
-build_parser.add_argument('--name', help=argparse.SUPPRESS)
+build_parser.add_argument(u'-n', help=argparse.SUPPRESS)
+build_parser.add_argument(u'--name', help=argparse.SUPPRESS)
 
 # Just capturing these argument.
 # PyiUpdater only supports onefile mode at the moment
-build_parser.add_argument('-D', action="store_true",
+build_parser.add_argument(u'-D', action=u"store_true",
                           default=False, help=argparse.SUPPRESS)
-build_parser.add_argument('--onedir', action="store_true",
+build_parser.add_argument(u'--onedir', action=u"store_true",
                           default=False, help=argparse.SUPPRESS)
 
 # Just capturing these argument.
 # Will be added later to pyinstaller build command
-build_parser.add_argument('-F', action="store_true",
+build_parser.add_argument(u'-F', action=u"store_true",
                           default=False, help=argparse.SUPPRESS)
-build_parser.add_argument('--onefile', action="store_true",
+build_parser.add_argument(u'--onefile', action=u"store_true",
                           default=False, help=argparse.SUPPRESS)
 
 # Just capturing these arguments
 # ToDo: Take a closer look at this switch
-build_parser.add_argument('-c', action="store_true",
+build_parser.add_argument(u'-c', action=u"store_true",
                           default=False, help=argparse.SUPPRESS)
-build_parser.add_argument('--console', action="store_true",
+build_parser.add_argument(u'--console', action=u"store_true",
                           default=False, help=argparse.SUPPRESS)
-build_parser.add_argument('--nowindowed', action="store_true",
+build_parser.add_argument(u'--nowindowed', action=u"store_true",
                           default=False, help=argparse.SUPPRESS)
 
 # Potentially harmful for cygwin on windows
 # ToDo: Maybe do a check for cygwin and disable if cygwin is true
-build_parser.add_argument('-s', action="store_true",
+build_parser.add_argument(u'-s', action=u"store_true",
                           default=False, help=argparse.SUPPRESS)
-build_parser.add_argument('--strip', action="store_true",
+build_parser.add_argument(u'--strip', action=u"store_true",
                           default=False, help=argparse.SUPPRESS)
 # End of args override
 
 # Used by PyiWrapper
-build_parser.add_argument('--app-name', dest="app_name", required=True)
-build_parser.add_argument('--app-version', dest="app_version", required=True)
+build_parser.add_argument(u'--app-name', dest=u"app_name", required=True)
+build_parser.add_argument(u'--app-version', dest=u"app_version", required=True)
 
 
 def main():
@@ -98,20 +106,33 @@ def main():
     if cmd == u'build':
         builder(args, pyi_args)
     elif cmd == u'init':
-        pass
-    elif cmd == u'upload':
+        setup()
+    elif cmd == u'_upload':
         upload(args)
     elif cmd == u'version':
-        print('PyiUpdater {}'.format(get_version()))
+        print(u'PyiUpdater {}'.format(get_version()))
+    else:
+        sys.exit(u'Not Implemented')
+
+
+def setup():
+    if not os.path.exists(u'config.data') and not os.path.exists(u'config.data.enc'):
+        config = initial_setup(SetupConfig())
+        print(u'\nCreating pyi-data dir...\n')
+        pyiu = PyiUpdater(PyiUpdaterConfig(config))
+        pyiu.setup()
+        print(u'\nMaking signing keys...')
+        pyiu.make_keys()
+        print(u'\nSetup complete')
 
 
 def upload(args):
     if len(args) > 1:
-        sys.exit('Can only provide one uploader name')
+        sys.exit(u'Can only provide one uploader name')
     try:
         requested_uploader = args[0]
     except IndexError:
-        sys.exit('Must give name of uploader')
+        sys.exit(u'Must give name of uploader')
 
 
 def builder(args, pyi_args):
@@ -150,7 +171,7 @@ def builder(args, pyi_args):
         sys.exit(u'Must pass a python script or spec file')
 
     if app_type == u'spec':
-        fix = "\t\t\t\t\tname='{}',".format(get_system())
+        fix = u"\t\t\t\t\tname='{}',".format(get_system())
 
         # Sanitizing spec file
         with open(spec_file, u'r') as f:
@@ -160,10 +181,10 @@ def builder(args, pyi_args):
         for s in spec_data:
             # Will replace name with system arch
             # Used for later archiving
-            if 'name=' in s:
+            if u'name=' in s:
                 new_spec.append(fix)
-            elif 'coll' in s or 'COLLECT' in s:
-                sys.exit('Onedir mode is not supported')
+            elif u'coll' in s or u'COLLECT' in s:
+                sys.exit(u'Onedir mode is not supported')
             else:
                 new_spec.append(s)
         with open(spec_file, u'w') as f:
@@ -183,7 +204,7 @@ def builder(args, pyi_args):
     exit_code = subprocess.call(cmds)
 
     if exit_code != 0:
-        sys.exit('Build Failed')
+        sys.exit(u'Build Failed')
 
     # Now archive the file
     with ChDir(new_dir):
@@ -198,13 +219,13 @@ def builder(args, pyi_args):
 
         # Time for some archive creation!
         file_name = make_archive(name, version, sys_name)
-    print('\n{} has been placed in your new folder\n'.format(file_name))
+    print(u'\n{} has been placed in your new folder\n'.format(file_name))
     finished = time.time() - start
-    print('Build finished in {:.2f} seconds.'.format(finished))
+    print(u'Build finished in {:.2f} seconds.'.format(finished))
 
 
 def check_version(version):
-    match = re.match('(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)',
+    match = re.match(u'(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)',
                      version)
     if match is None:
         return False

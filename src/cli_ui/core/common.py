@@ -5,3 +5,7 @@ class CommonLogic(object):
         self.pyiu = helpers[u'pyiu']
         self.config = helpers[u'config']
         self.save = helpers[u'save']
+
+    # Required: Used as empty command
+    def done(self):
+        pass

@@ -13,10 +13,10 @@ from jms_utils.paths import ChDir
 
 from pyi_updater.exceptions import PackageHandlerError
 from pyi_updater.package_handler.package import Package, Patch
-from pyi_updater.package_handler.utils import migrate
-from pyi_updater.utils import (get_package_hashes as gph,
-                               remove_dot_files,
-                               EasyAccessDict,
+from pyi_updater.utils import (EasyAccessDict,
+                               get_package_hashes as gph,
+                               migrate,
+                               remove_dot_files
                                )
 
 log = logging.getLogger(__name__)

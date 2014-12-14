@@ -8,14 +8,16 @@ import time
 from cli_ui.core import keys, settings, sign, upload
 from cli_ui.core.common import CommonLogic
 from cli_ui.ui.menu import Menu
-from cli_ui.ui.menu_utils import (ask_yes_no, get_correct_answer,
-                                  _directory_fixer)
 
 from pyi_updater import PyiUpdater, PyiUpdaterConfig
 from pyi_updater.config import SetupConfig
 from pyi_updater.exceptions import FileCryptPasswordError
 from pyi_updater.filecrypt import FileCrypt
-from pyi_updater.utils import verify_password
+from pyi_updater.utils import (ask_yes_no,
+                               directory_fixer,
+                               get_correct_answer,
+                               initial_setup,
+                               verify_password)
 
 log = logging.getLogger(__name__)
 
@@ -29,7 +31,7 @@ class Worker(Menu, CommonLogic):
         self.file_crypt = FileCrypt()
         self.config = self.load_config()
         self.pyi_updater = PyiUpdaterConfig(self.config)
-        self.pyi = PyiUpdater()
+        self.pyiu = PyiUpdater()
         self.update_helpers(self.pyi_updater)
 
         helpers = {
@@ -61,7 +63,7 @@ class Worker(Menu, CommonLogic):
             dec_path = os.path.join(CWD, u'config.data')
             enc_path = os.path.join(CWD, u'config.data.enc')
             if not os.path.exists(dec_path) and not os.path.exists(enc_path):
-                self.initial_setup()
+                self.setup()
 
             x = self.display()
             if len(x) == 2:
@@ -87,71 +89,18 @@ class Worker(Menu, CommonLogic):
         print('See Ya!')
         sys.exit()
 
-    def initial_setup(self):
+    def setup(self):
         log.debug(u'Starting initial setup')
         self.display_menu_header(u'Setup Assistant')
         self.display_msg(u'Let\'s begin...')
 
-        self.config.APP_NAME = get_correct_answer(u'Please enter app name',
-                                                  required=True)
-
-        self.config.COMPANY_NAME = get_correct_answer(u'Please enter your '
-                                                      'company or name',
-                                                      required=True)
-
-        self.config.DEV_DATA_DIR = CWD
-
-        url = get_correct_answer(u'Enter a url to ping for updates.',
-                                 required=True)
-        self.config.UPDATE_URLS = [url]
-        while 1:
-            answer = ask_yes_no(u'Would you like to add another '
-                                'url for backup?', default='no')
-            if answer is True:
-                url = get_correct_answer(u'Enter another url.',
-                                         required=True)
-                self.config.UPDATE_URLS.append(url)
-            else:
-                break
-
-        self.config.UPDATE_PATCHES = ask_yes_no(u'Would you like to enable '
-                                                'patch updates?',
-                                                default='yes')
-
-        answer1 = ask_yes_no(u'Would you like to add scp settings?',
-                             default='no')
-
-        answer2 = ask_yes_no(u'Would you like to add S3 settings?',
-                             default='no')
-
-        if answer1:
-            self.config.REMOTE_DIR = get_correct_answer(u'Enter remote dir',
-                                                        required=True)
-            self.config.HOST = get_correct_answer(u'Enter host', required=True)
-
-            self.config.USERNAME = get_correct_answer(u'Enter usernmae',
-                                                      required=True)
-
-            key_path = get_correct_answer(u'Enter path to ssh key',
-                                          required=True)
-            # Path to private key
-            self.config.PASSWORD = _directory_fixer(key_path)
-
-        if answer2:
-            self.config.USERNAME = get_correct_answer(u'Enter access key ID',
-                                                      required=True)
-            self.config.PASSWORD = get_correct_answer(u'Enter secret '
-                                                      'Access Key',
-                                                      required=True)
-
-            self.config.REMOTE_DIR = get_correct_answer(u'Enter bucket name',
-                                                        required=True)
+        self.config = initial_setup(self.config)
 
         password = verify_password(u'Enter password')
         self.file_crypt._update_timer()
         self.save_config(self.config, password)
         self.package_handler.setup()
-        print(u'Making keys...')
+        print(u'Making signing keys...')
         self.keys_menu.make_keys()
         self.display_menu_header(u'Setup Complete')
         self.display_msg(u'Now let\'s update some apps')

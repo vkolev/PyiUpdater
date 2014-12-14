@@ -7,9 +7,8 @@ from nose import with_setup
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from cli_ui.ui.menu_utils import ask_yes_no
-
-from pyi_updater.utils import (get_hash,
+from pyi_updater.utils import (ask_yes_no,
+                               get_hash,
                                get_package_hashes,
                                make_archive,
                                vstr_2_vtuple,
