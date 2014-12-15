@@ -74,8 +74,7 @@ setup(
         'stevedore',
         'urllib3',
         ],
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
+    packages=find_packages(),
     entry_points="""
     [console_scripts]
     pyiupdater=pyi_updater.pyiwrapper:main
