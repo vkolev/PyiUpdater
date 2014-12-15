@@ -3,10 +3,7 @@
 from setuptools import Command, find_packages, setup
 import subprocess
 import sys
-import os
 
-
-sys.path.insert(0, 'src')
 
 from pyi_updater.version import get_version
 
@@ -36,8 +33,7 @@ class PyTestCover(Command):
 
     def run(self):
         errno = subprocess.call([sys.executable, 'runtests.py', u'tests',
-                                u'--cov', u'src{}pyi_updater'.format(os.sep),
-                                u'-n', u'1'])
+                                u'--cov', u'pyi_updater', u'-n', u'1'])
         raise SystemExit(errno)
 
 setup(

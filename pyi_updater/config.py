@@ -1,8 +1,6 @@
 import logging
 import os
 import pickle
-import shutil
-import sys
 
 
 log = logging.getLogger(__name__)
@@ -28,6 +26,8 @@ class Loader(object):
 
     def save_config(self, obj, password=None):
         log.debug('Saving Config')
+        if not os.path.exists(self.config_dir):
+            os.mkdir(self.config_dir)
         with open(self.config_file, u'w') as f:
             f.write(str(pickle.dumps(obj)))
 

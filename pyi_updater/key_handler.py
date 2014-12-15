@@ -30,7 +30,6 @@ class KeyHandler(object):
         six = lazy_import(u'six')
         ed25519 = lazy_import(u'ed25519')
         jms_utils = lazy_import(u'jms_utils')
-        self.fc = None
         if app:
             self.init_app(app)
 
@@ -63,9 +62,6 @@ class KeyHandler(object):
         self.public_key_name = self.app_name + u'.pub'
 
         self.key_encoding = 'base64'
-
-        # Set to true when running tests
-        self.test = False
 
     def make_keys(self, overwrite=False):
         """Makes public and private keys for signing and verification
@@ -128,14 +124,6 @@ class KeyHandler(object):
                                       expected=True)
         privkey = os.path.join(self.keys_dir, self.private_key_name)
 
-        # If we are testing we can skip the decrypt set since nose
-        # cannot provide passwords.
-        if self.test:
-            with open(privkey, u'r') as pk:
-                self.privkey = ed25519.SigningKey(pk.read(),
-                                                  encoding='base64')
-            return
-
         if os.path.exists(privkey):
             try:
                 with open(privkey, u'r') as pk:
@@ -147,8 +135,6 @@ class KeyHandler(object):
                 raise KeyHandlerError(u'Invalid private key')
         else:
             raise KeyHandlerError(u'Private key not found')
-
-        self.fc.encrypt()
 
     def _add_sig(self):
         # Adding new signature to version file
@@ -205,11 +191,6 @@ class KeyHandler(object):
         with open(private, u'w') as f:
             f.write(self.privkey.to_ascii(encoding=self.key_encoding))
 
-        # If we are not testing, encrypt the file
-        # Only the private key.
-        if self.test is False:
-            self.fc.new_file(private)
-            self.fc.encrypt()
         with open(public, u'w') as f:
             f.write(self.pubkey.to_ascii(encoding=self.key_encoding))
 

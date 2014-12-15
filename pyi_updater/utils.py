@@ -363,17 +363,9 @@ def initial_setup(config):
         config.USERNAME = get_correct_answer(u'Enter usernmae',
                                              required=True)
 
-        key_path = get_correct_answer(u'Enter path to ssh key',
-                                      required=True)
-        # Path to private key
-        config.PASSWORD = directory_fixer(key_path)
-
     if answer2:
         config.USERNAME = get_correct_answer(u'Enter access key ID',
                                              required=True)
-        config.PASSWORD = get_correct_answer(u'Enter secret Access Key',
-                                             required=True)
-
         config.REMOTE_DIR = get_correct_answer(u'Enter bucket name',
                                                required=True)
     return config

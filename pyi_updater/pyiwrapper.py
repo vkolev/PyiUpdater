@@ -1,21 +1,38 @@
 import argparse
+import logging
 import os
 import re
 import subprocess
 import sys
 import time
 
-from jms_utils.paths import ChDir
+from jms_utils.logger import log_format_string
+from jms_utils.paths import app_cwd, ChDir
 from jms_utils.system import get_system
+import stevedore
+
+log = logging.getLogger()
+log.setLevel(logging.DEBUG)
+fmt_str = log_format_string()
+nh = logging.NullHandler()
+nh.setLevel(logging.DEBUG)
+log.addHandler(nh)
 
 from pyi_updater import PyiUpdater
-from pyi_updater.config import SetupConfig
+from pyi_updater.config import Loader, SetupConfig
+from pyi_updater.exceptions import UploaderError
 from pyi_updater.utils import initial_setup, make_archive
 from pyi_updater.version import get_version
 
-start = time.time()
+if os.path.exists(os.path.join(app_cwd, u'pyi.log')):
+    ch = logging.FileHandler(os.path.join(app_cwd, u'pyi.log'))
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(log_format_string())
+    log.addHandler(ch)
 
+start = time.time()
 CWD = os.getcwd()
+loader = Loader()
 
 parser = argparse.ArgumentParser(usage=u'%(prog)s')
 
@@ -32,11 +49,9 @@ keys_parser = subparsers.add_parser(u'keys', help=u'Manage signing keys: '
 
 
 package_parser = subparsers.add_parser(u'pkg', help=u'Manages creation of '
-                                       u'file metadata: '
-                                       u'Not Implemented')
+                                       u'file metadata & signing')
 
-upload_parser = subparsers.add_parser(u'upload', help=u'Uploads files: '
-                                      u'Not Implemented')
+upload_parser = subparsers.add_parser(u'up', help=u'Uploads files')
 
 
 version_parser = subparsers.add_parser(u'version', help=u'Programs version')
@@ -106,8 +121,13 @@ package_parser.add_argument(u'-p', u'--process',
 package_parser.add_argument(u'-s', u'--sign', help=u'Sign version file',
                             action=u'store_true', dest=u'sign')
 
-upload_parser.add_argument(u'-u', u'--upload', help=u'Where '
+upload_parser.add_argument(u'-s', u'--service', help=u'Where '
                            u'updates are stored', dest=u'uploader')
+
+
+def check_repo():
+    if not os.path.exists(u'.pyiupdater'):
+        sys.exit('Not a PyiUpdater repo: Must init first.')
 
 
 def main():
@@ -118,9 +138,9 @@ def main():
         builder(args, pyi_args)
     elif cmd == u'init':
         setup()
-    elif cmd == u'_upload':
+    elif cmd == u'up':
         upload(args)
-    elif cmd == u'_pkg':
+    elif cmd == u'pkg':
         process(args)
     elif cmd == u'version':
         print(u'PyiUpdater {}'.format(get_version()))
@@ -129,46 +149,65 @@ def main():
 
 
 def process(args):
-    print args
+    check_repo()
+    pyiu = PyiUpdater(loader.load_config())
     if args.process is True and args.sign is True:
         sys.exit(u'Can only use one command')
     elif args.process is True:
-        print('Processing packages...')
+        print(u'Processing packages...')
+        pyiu.process_packages()
     elif args.sign is True:
         print(u'Signing packages...')
+        pyiu.sign_update()
     else:
         sys.exit(u'You must specify a command')
 
 
 def setup():
-    if not os.path.exists(os.path.join(u'.pyiupdater', u'config.data')) and \
-            not os.path.exists(os.path.join(u'.pyiupdater',
-                               u'config.data.enc')):
+    if not os.path.exists(os.path.join(u'.pyiupdater', u'config.data')):
         config = initial_setup(SetupConfig())
         print(u'\nCreating pyi-data dir...\n')
         pyiu = PyiUpdater(config)
         pyiu.setup()
         print(u'\nMaking signing keys...')
         pyiu.make_keys()
-        print(u'\nCreating main config file...')
-        with open(u'config.py', u'w') as f:
-            f.write('class Config(object):')
-            template = '\t{} = {}'
-            for k, v in config.items():
-                f.write(template.format(k, v))
-
+        config.PUBLIC_KEY = pyiu.get_public_key()
+        loader.save_config(config)
         print(u'\nSetup complete')
     else:
         sys.exit(u'Not an empty PyiUpdater repository')
 
 
 def upload(args):
+    if args.uploader is None:
+        sys.exit('Must provide service name')
+    check_repo()
+    password = os.environ.get('PYIUPDATER_PASS')
+    if password is None:
+        sys.exit('You need to set PYIUPDATER_PASS env var')
+    pyiu = PyiUpdater(loader.load_config())
+    pyiu.config.PASSWORD = password
     if len(args) > 1:
         sys.exit(u'Can only provide one uploader name')
     try:
         requested_uploader = args[0]
     except IndexError:
         sys.exit(u'Must give name of uploader')
+    try:
+        pyiu.set_uploader(requested_uploader)
+    except UploaderError:
+        mgr = stevedore.ExtensionManager(u'pyiupdater.uploaders')
+        plugin_names = mgr.names()
+        log.debug(u'Plugin names: {}'.format(plugin_names))
+        sys.exit(u'Invalid Uploader\n\nAvailable options: '
+                 u'{}'.format(plugin_names))
+    try:
+        pyiu.upload()
+    except Exception as e:
+        msg = (u'Looks like you forgot to add USERNAME '
+               'and/or REMOTE_DIR')
+        log.debug(str(e), exc_info=True)
+        sys.exit(msg)
 
 
 def builder(args, pyi_args):
@@ -271,4 +310,4 @@ def check_version(version):
 
 if __name__ == u'__main__':
     args = sys.argv[1:]
-    wrapper(args)
+    main(args)
