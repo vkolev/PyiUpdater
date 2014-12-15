@@ -1,11 +1,7 @@
 import os
 import shutil
-import sys
 
 from nose.tools import raises, with_setup
-
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)),
-                u'src'))
 
 from pyi_updater import PyiUpdaterConfig
 from pyi_updater.exceptions import UploaderError

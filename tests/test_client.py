@@ -1,10 +1,7 @@
 import os
 import shutil
-import sys
 
 from nose import with_setup
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from pyi_updater.client import Client
 from tconfig import TConfig

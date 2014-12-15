@@ -1,14 +1,9 @@
 import json
 import os
 import shutil
-import sys
 import urllib2
-import time
 
-from nose.tools import with_setup
 import pytest
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from pyi_updater.patcher import Patcher
 
