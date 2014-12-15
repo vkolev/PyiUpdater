@@ -8,7 +8,6 @@ from jms_utils.paths import ChDir
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from pyi_updater import PyiUpdaterConfig
-from pyi_updater.filecrypt import FileCrypt
 from pyi_updater.key_handler import KeyHandler
 from pyi_updater.package_handler import PackageHandler
 from pyi_updater.utils import remove_dot_files
@@ -18,7 +17,6 @@ from tconfig import TConfig
 pyi_config = PyiUpdaterConfig(TConfig())
 kh = KeyHandler(pyi_config)
 kh.test = True
-kh.add_filecrypt(FileCrypt())
 ph = PackageHandler(pyi_config)
 
 PYI_DATA = os.path.abspath(os.path.join(u'tests', u'pyi-data'))

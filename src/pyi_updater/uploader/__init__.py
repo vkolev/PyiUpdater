@@ -88,8 +88,8 @@ class Uploader(object):
         self.uploader = plugin.plugin()  # pragma: no cover
         msg = u'Requested uploader: {}'.format(requested_uploader)
         log.debug(msg)  # pragma: no cover
-
-        files = remove_dot_files(os.listdir(self.deploy_dir))  # pragma: no cover
+        files = os.listdir(self.deploy_dir)
+        files = remove_dot_files(files)  # pragma: no cover
         self.uploader.init(username=self.username,
                            password=self.password,
                            remote_dir=self.remote_dir,

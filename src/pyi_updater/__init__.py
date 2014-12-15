@@ -23,10 +23,7 @@ class PyiUpdater(object):
                 raise PyiUpdaterError('Must have at least PyInstaller v2.1.1',
                                       expected=True)
         if config is not None:
-            self.init(config)
-
-    def init(self, config):
-        self.update_config(config)
+            self.update_config(config)
 
     def update_config(self, config):
         self.config.update_config(config)
@@ -48,9 +45,6 @@ class PyiUpdater(object):
 
     def upload(self):
         self.up.upload()
-
-    def add_filecrypt(self, fc):
-        self.kh.add_filecrypt(fc)
 
     def make_keys(self):
         self.kh.make_keys()

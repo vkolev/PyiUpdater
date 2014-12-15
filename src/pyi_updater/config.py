@@ -1,5 +1,57 @@
+import logging
+import os
+import pickle
+import shutil
+import sys
+
+
+log = logging.getLogger(__name__)
+
+
+class Loader(object):
+
+    def __init__(self):
+        self.cwd = os.getcwd()
+        self.config_dir = os.path.join(self.cwd, u'.pyiupdater')
+        self.config_file = os.path.join(self.config_dir, u'config.data')
+        self.password = os.environ.get('PYIUPDATER_PASS')
+
+    def load_config(self):
+        log.debug(u'Loading config')
+        try:
+            with open(self.config_file, u'r') as f:
+                config_data = pickle.loads(f.read())
+        except Exception as e:
+            log.error(e, exc_info=True)
+            config_data = SetupConfig()
+        return config_data
+
+    def save_config(self, obj, password=None):
+        log.debug('Saving Config')
+        with open(self.config_file, u'w') as f:
+            f.write(str(pickle.dumps(obj)))
+
+        self.write_config_py(obj)
+
+    def write_config_py(self, obj):
+        filename = os.path.join(self.cwd, u'client_config.py')
+        attr_str_format = "    {} = '{}'\n"
+        attr_format = "    {} = {}\n"
+        with open(filename, u'w') as f:
+            f.write('class ClientConfig(object):\n')
+            if hasattr(obj, 'APP_NAME') and obj.APP_NAME is not None:
+                f.write(attr_str_format.format('APP_NAME', obj.APP_NAME))
+            if hasattr(obj, 'COMPANY_NAME') and obj.COMPANY_NAME is not None:
+                f.write(attr_str_format.format('COMPANY_NAME',
+                        obj.COMPANY_NAME))
+            if hasattr(obj, 'UPDATE_URLS') and obj.UPDATE_URLS is not None:
+                f.write(attr_format.format('UPDATE_URLS', obj.UPDATE_URLS))
+            if hasattr(obj, 'PUBLIC_KEY') and obj.PUBLIC_KEY is not None:
+                f.write(attr_str_format.format('PUBLIC_KEY', obj.PUBLIC_KEY))
+
+
 class PyiUpdaterConfig(dict):
-    """Works exactly like a dict but provides ways to fill it from files
+    u"""Works exactly like a dict but provides ways to fill it from files
     or special dictionaries.  There are two common patterns to populate the
     config.
 
@@ -20,7 +72,7 @@ class PyiUpdaterConfig(dict):
             self.from_object(obj)
 
     def from_object(self, obj):
-        """Updates the values from the given object
+        u"""Updates the values from the given object
 
         Args:
             obj (instance): Object with config attributes
@@ -38,7 +90,7 @@ class PyiUpdaterConfig(dict):
                 self[key] = getattr(obj, key)
 
     def update_config(self, obj):
-        """Proxy method to update internal config dict
+        u"""Proxy method to update internal config dict
 
         Args:
             obj (instance): config object
@@ -50,7 +102,7 @@ class PyiUpdaterConfig(dict):
             self[u'COMPANY_NAME'] = u'Digital Sapphire'
 
     def __str__(self):
-        pass
+        return dict.__repr__(self)
 
     def __unicode__(self):
         pass

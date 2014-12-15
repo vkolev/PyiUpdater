@@ -42,9 +42,9 @@ or
 
 #### For creating update diff's, updating your version file & uploading your update
 
-###### Using the UI
+    $ pyiupdater pkg --process
 
-    $ pyiupdater-cli
+    $ pyiupdater pkg --sign
 
 
 ###### Using programmatically

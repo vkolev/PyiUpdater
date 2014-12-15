@@ -19,11 +19,6 @@ Demos have been update with the changes
 
     - Simplified config
 
-  - TUI
-
-    - Formerly know as the cli. Simplified the use of
-      the different helper modules
-
 * Fixed
 
   - PyiUpdater
@@ -36,9 +31,17 @@ Demos have been update with the changes
 
     - Redundant code
 
+  - FileCrypt
+
+    - Passwords for remote locations will need to be set as env vars
+
   - PyiUpdater
 
     - Redundant system calls
+
+  - TUI
+
+    - Removed in favor of cli
 
 
 v0.12.3 - 2014/12/7

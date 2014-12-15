@@ -79,8 +79,6 @@ setup(
     entry_points="""
     [console_scripts]
     pyiupdater=pyi_updater.pyiwrapper:main
-    pyiupdater-cli=cli_ui:main
-    pyi-cli=cli_ui:main
     """,
     classifiers=[
         'Development Status :: 4 - Beta',

@@ -2,7 +2,6 @@ from __future__ import print_function
 import bz2
 from getpass import getpass
 import hashlib
-import json
 import logging
 import os
 import re
@@ -19,14 +18,14 @@ log = logging.getLogger(__name__)
 
 class EasyAccessDict(object):
 
-    def __init__(self, dict_=None, sep='*'):
+    def __init__(self, dict_=None, sep=u'*'):
         self.load(dict_, sep)
 
     # Because I always for get call the get method
     def __call__(self, key):
         return self.get(key)
 
-    def load(self, dict_, sep='*'):
+    def load(self, dict_, sep=u'*'):
         self.sep = sep
         if not isinstance(dict_, dict):
             self.dict = dict()
@@ -39,10 +38,10 @@ class EasyAccessDict(object):
             value = self.dict
             for key in layers:
                 value = value[key]
-            log.debug('Found Key')
+            log.debug(u'Found Key')
             return value
         except KeyError:
-            log.debug('Key Not Found')
+            log.debug(u'Key Not Found')
             return None
         except Exception as err:
             log.error(str(err), exc_info=True)
@@ -52,12 +51,13 @@ class EasyAccessDict(object):
 def verify_password(message):
     six = lazy_import(u'six')
     while 1:
-        password1 = getpass('{}: '.format(message))
-        password2 = getpass('{} again: '.format(message))
+        password1 = getpass(u'{}: '.format(message))
+        password2 = getpass(u'{} again: '.format(message))
         if password1 == password2:
             return password1
         else:
-            six.moves.input('\n\nPasswords do not match. Press Enter to try again.')
+            six.moves.input(u'\n\nPasswords do not match. '
+                            u'Press Enter to try again.')
 
 
 def get_hash(data):
@@ -85,7 +85,7 @@ def get_version_number(package_name):
             return v_n
         except Exception as e:
             log.debug(str(e))
-            raise UtilsError('Can not find version number', expected=True)
+            raise UtilsError(u'Can not find version number', expected=True)
 
 
 def vstr_2_vtuple(x):
@@ -118,7 +118,7 @@ def parse_platform(name):
 
 
 class bsdiff4_py(object):
-    """Pure-python version of bsdiff4 module that can only patch, not diff.
+    u"""Pure-python version of bsdiff4 module that can only patch, not diff.
 
     By providing a pure-python fallback, we don't force frozen apps to
     bundle the bsdiff module in order to make use of patches.  Besides,
@@ -167,7 +167,7 @@ class bsdiff4_py(object):
 
 
 def _decode_offt(bytes):
-    """Decode an off_t value from a string.
+    u"""Decode an off_t value from a string.
 
     This decodes a signed integer into 8 bytes.  I'd prefer some sort of
     signed vint representation, but this is the format used by bsdiff4.
@@ -183,7 +183,7 @@ def _decode_offt(bytes):
 
 
 def make_archive(name, version, target):
-    """Used to make archives of file or dir. Zip on windows and tar.gz
+    u"""Used to make archives of file or dir. Zip on windows and tar.gz
     on all other platforms
 
     Args:
@@ -198,10 +198,10 @@ def make_archive(name, version, target):
     """
     jms_utils = lazy_import(u'jms_utils')
     file_dir = os.path.dirname(os.path.abspath(target))
-    filename = '{}-{}-{}'.format(name, jms_utils.system.get_system(), version)
+    filename = u'{}-{}-{}'.format(name, jms_utils.system.get_system(), version)
     filename_path = os.path.join(file_dir, filename)
 
-    print('starting archive')
+    print(u'starting archive')
 
     ext = os.path.splitext(target)[1]
     temp_file = name + ext
@@ -220,15 +220,15 @@ def make_archive(name, version, target):
     # permissions on nix & mac
     if jms_utils.system.get_system() == u'win':
         ext = u'.zip'
-        with zipfile.ZipFile(filename_path + '.zip', 'w') as zf:
+        with zipfile.ZipFile(filename_path + u'.zip', u'w') as zf:
             zf.write(target, temp_file)
     else:
         ext = u'.tar.gz'
         if os.path.isfile(target):
-            with tarfile.open(filename_path + '.tar.gz', 'w:gz') as tar:
+            with tarfile.open(filename_path + u'.tar.gz', u'w:gz') as tar:
                 tar.add(target, temp_file)
         else:
-            shutil.make_archive(filename, 'gztar', file_dir, temp_file)
+            shutil.make_archive(filename, u'gztar', file_dir, temp_file)
 
     if os.path.isfile(temp_file):
         os.remove(temp_file)
@@ -245,7 +245,7 @@ def make_archive(name, version, target):
 
 
 def ask_yes_no(question, default='no', answer=None):
-    """Will ask a question and keeps prompting until
+    u"""Will ask a question and keeps prompting until
     answered.
 
     Args:
@@ -303,20 +303,20 @@ def get_correct_answer(question, default=None, required=False,
             msg = u' - No Default Available'
         else:
             msg = (u'\n[DEFAULT] -> {}\nPress Enter To '
-                   'Use Default'.format(default))
-        prompt = question + msg + '\n--> '
+                   u'Use Default'.format(default))
+        prompt = question + msg + u'\n--> '
         if answer is None:
             answer = six.moves.input(prompt)
         if answer == '' and required and default is not None:
             print(u'You have to enter a value\n\n')
             six.moves.input(u'Press enter to continue')
-            print('\n\n')
+            print(u'\n\n')
             answer = None
             continue
         if answer == u'' and default is not None:
             answer = default
         _ans = ask_yes_no(u'You entered {}, is this '
-                          'correct?'.format(answer),
+                          u'correct?'.format(answer),
                           answer=is_answer_correct)
         if _ans:
             return answer

@@ -99,12 +99,15 @@ build_parser.add_argument(u'--app-name', dest=u"app_name", required=True)
 build_parser.add_argument(u'--app-version', dest=u"app_version", required=True)
 
 
-package_parser.add_argument(u'process', help=u'Adds update metadata to '
-                            u'version file', action=u'store_true',
-                            default=False)
+package_parser.add_argument(u'-p', u'--process',
+                            help=u'Adds update metadata to version file',
+                            action=u'store_true', dest=u'process')
 
-package_parser.add_argument(u'sign', help=u'Sign version file',
-                            action=u'store_true')
+package_parser.add_argument(u'-s', u'--sign', help=u'Sign version file',
+                            action=u'store_true', dest=u'sign')
+
+upload_parser.add_argument(u'-u', u'--upload', help=u'Where '
+                           u'updates are stored', dest=u'uploader')
 
 
 def main():
@@ -130,16 +133,17 @@ def process(args):
     if args.process is True and args.sign is True:
         sys.exit(u'Can only use one command')
     elif args.process is True:
-        pass
-    elif args.process is True:
-        pass
+        print('Processing packages...')
+    elif args.sign is True:
+        print(u'Signing packages...')
     else:
         sys.exit(u'You must specify a command')
 
 
 def setup():
-    if not os.path.exists(u'config.data') and \
-            not os.path.exists(u'config.data.enc'):
+    if not os.path.exists(os.path.join(u'.pyiupdater', u'config.data')) and \
+            not os.path.exists(os.path.join(u'.pyiupdater',
+                               u'config.data.enc')):
         config = initial_setup(SetupConfig())
         print(u'\nCreating pyi-data dir...\n')
         pyiu = PyiUpdater(config)

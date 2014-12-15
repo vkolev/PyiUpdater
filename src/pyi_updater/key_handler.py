@@ -5,7 +5,7 @@ import os
 import shutil
 import sys
 
-from pyi_updater.exceptions import FileCryptPasswordError, KeyHandlerError
+from pyi_updater.exceptions import KeyHandlerError
 from pyi_updater.utils import lazy_import
 
 
@@ -67,12 +67,6 @@ class KeyHandler(object):
         # Set to true when running tests
         self.test = False
 
-    def add_filecrypt(self, fc=None):
-        # Using a single file crypt object module wide.
-        # Helps with password timeout
-        if fc is not None:
-            self.fc = fc
-
     def make_keys(self, overwrite=False):
         """Makes public and private keys for signing and verification
 
@@ -113,18 +107,6 @@ class KeyHandler(object):
             pub_key_data = f.read()
         return pub_key_data
 
-    def copy_decrypted_private_key(self):
-        """Copies decrypted private key."""
-        privkey = os.path.join(self.keys_dir, self.private_key_name)
-        log.debug(u'Private Key Path: {}'.format(privkey))
-        self.fc.new_file(privkey)
-        try:
-            self.fc.decrypt()
-        except FileCryptPasswordError:
-            sys.exit(u'Too many failed password')
-        shutil.copy(privkey, privkey + u' copy')
-        self.fc.encrypt()
-
     def print_public_key(self):
         """Prints public key data to console"""
         public = os.path.join(self.keys_dir, self.public_key_name)
@@ -153,14 +135,6 @@ class KeyHandler(object):
                 self.privkey = ed25519.SigningKey(pk.read(),
                                                   encoding='base64')
             return
-
-        self.fc.new_file(privkey)
-        try:
-            self.fc.decrypt()
-        except FileCryptPasswordError:
-            sys.exit(u'Too many failed password attempts')
-        except:
-            log.debug(u'Nothing to decrypt')
 
         if os.path.exists(privkey):
             try:
