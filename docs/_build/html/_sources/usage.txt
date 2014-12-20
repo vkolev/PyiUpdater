@@ -13,9 +13,12 @@ Check `Semantic Versioning <http://semver.org/>`_ for more info
 
 The easiest way to get started quickly is to use to command line tool.
 
-From Pip::
+From a terminal::
 
     $ pyiupdater-cli
+
+
+One complete
 
 Initial Setup
 -------------

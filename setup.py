@@ -61,6 +61,7 @@ setup(
         'blinker',
         'bsdiff4',
         'certifi',
+        'click',
         'cryptography',
         'ed25519',
         'jms-utils >= 0.4.6',

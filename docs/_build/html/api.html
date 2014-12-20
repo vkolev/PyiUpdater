@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.13-dev12131714 documentation</title>
+    <title>API &mdash; PyiUpdater 0.13-dev12141737 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.13-dev12131714',
+        VERSION:     '0.13-dev12141737',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.13-dev12131714 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.13-dev12141737 documentation" href="index.html" />
     <link rel="next" title="License" href="license.html" />
     <link rel="prev" title="Contributing" href="contributing.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12131714</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12141737</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -76,7 +76,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release_history.html">Release History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_history.html#demos-have-been-update-with-the-changes">Demos have been update with the changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_history.html#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating">Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.</a></li>
 </ul>
 </ul>
 </li>
@@ -190,13 +190,13 @@ False - Update Failed
 </dd></dl>
 
 <span class="target" id="module-pyi_updater.config"></span><dl class="class">
-<dt id="pyi_updater.config.Config">
-<em class="property">class </em><tt class="descclassname">pyi_updater.config.</tt><tt class="descname">Config</tt><big>(</big><em>defaults=None</em><big>)</big><a class="headerlink" href="#pyi_updater.config.Config" title="Permalink to this definition">¶</a></dt>
+<dt id="pyi_updater.config.PyiUpdaterConfig">
+<em class="property">class </em><tt class="descclassname">pyi_updater.config.</tt><tt class="descname">PyiUpdaterConfig</tt><big>(</big><em>obj=None</em><big>)</big><a class="headerlink" href="#pyi_updater.config.PyiUpdaterConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Works exactly like a dict but provides ways to fill it from files
 or special dictionaries.  There are two common patterns to populate the
 config.</p>
 <p>You can define the configuration options in the
-module that calls <a class="reference internal" href="#pyi_updater.config.Config.from_object" title="pyi_updater.config.Config.from_object"><tt class="xref py py-meth docutils literal"><span class="pre">from_object()</span></tt></a>.  It is also possible to tell it
+module that calls <a class="reference internal" href="#pyi_updater.config.PyiUpdaterConfig.from_object" title="pyi_updater.config.PyiUpdaterConfig.from_object"><tt class="xref py py-meth docutils literal"><span class="pre">from_object()</span></tt></a>.  It is also possible to tell it
 to use the same module and with that provide the configuration values
 just before the call.</p>
 <p>Loading from modules, only uppercase keys are added to the config.
@@ -204,8 +204,8 @@ This makes it possible to use lowercase values in the config file for
 temporary values that are not added to the config or to define the config
 keys in the same file that implements the application.</p>
 <dl class="method">
-<dt id="pyi_updater.config.Config.from_object">
-<tt class="descname">from_object</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.config.Config.from_object" title="Permalink to this definition">¶</a></dt>
+<dt id="pyi_updater.config.PyiUpdaterConfig.from_object">
+<tt class="descname">from_object</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.config.PyiUpdaterConfig.from_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the values from the given object</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -220,32 +220,6 @@ Example usage:</p>
 </div>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="class">
-<dt id="pyi_updater.config.PyiUpdaterConfig">
-<em class="property">class </em><tt class="descclassname">pyi_updater.config.</tt><tt class="descname">PyiUpdaterConfig</tt><big>(</big><em>cfg_obj=None</em><big>)</big><a class="headerlink" href="#pyi_updater.config.PyiUpdaterConfig" title="Permalink to this definition">¶</a></dt>
-<dd><p>There are 2 ways to load config.  The first was is during
-object initialization. The second way is later with <a class="reference internal" href="#pyi_updater.config.PyiUpdaterConfig.update_config" title="pyi_updater.config.PyiUpdaterConfig.update_config"><tt class="xref py py-meth docutils literal"><span class="pre">update_config()</span></tt></a></p>
-<p>Examples are shown below:</p>
-<div class="highlight-python"><div class="highlight"><pre>Config(object):
-    APP_NAME = &quot;My App&quot;
-    COMPANY_NAME = &quot;MY COMPANY&quot;
-    UPDATE_URL = http://www.example.com/updates
-
-
-app = PyiUpdater(Config())
-
-app = PyInstaller()
-app.update_config(Config())
-</pre></div>
-</div>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd><p class="first">import_name (str): used to get current directory</p>
-<p class="last">cfg_obj (instance): object with config attributes</p>
-</dd>
-</dl>
 <dl class="method">
 <dt id="pyi_updater.config.PyiUpdaterConfig.update_config">
 <tt class="descname">update_config</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.config.PyiUpdaterConfig.update_config" title="Permalink to this definition">¶</a></dt>
@@ -343,18 +317,6 @@ None - If any verification didn&#39;t pass
 </dd></dl>
 
 <dl class="exception">
-<dt id="pyi_updater.exceptions.FileCryptError">
-<em class="property">exception </em><tt class="descclassname">pyi_updater.exceptions.</tt><tt class="descname">FileCryptError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.exceptions.FileCryptError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised for FileCrypt exceptions</p>
-</dd></dl>
-
-<dl class="exception">
-<dt id="pyi_updater.exceptions.FileCryptPasswordError">
-<em class="property">exception </em><tt class="descclassname">pyi_updater.exceptions.</tt><tt class="descname">FileCryptPasswordError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.exceptions.FileCryptPasswordError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised for FileCrypt exceptions</p>
-</dd></dl>
-
-<dl class="exception">
 <dt id="pyi_updater.exceptions.FileDownloaderError">
 <em class="property">exception </em><tt class="descclassname">pyi_updater.exceptions.</tt><tt class="descname">FileDownloaderError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.exceptions.FileDownloaderError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised for File Downloader exceptions</p>
@@ -408,64 +370,6 @@ None - If any verification didn&#39;t pass
 <dd><p>Raised for Uploader exceptions</p>
 </dd></dl>
 
-<span class="target" id="module-pyi_updater.filecrypt"></span><dl class="class">
-<dt id="pyi_updater.filecrypt.FileCrypt">
-<em class="property">class </em><tt class="descclassname">pyi_updater.filecrypt.</tt><tt class="descname">FileCrypt</tt><big>(</big><em>filename=None</em>, <em>password_timeout=30</em>, <em>max_tries=3</em><big>)</big><a class="headerlink" href="#pyi_updater.filecrypt.FileCrypt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Small wrapper around cryptography to make it easier to use
-with not-so-tuf.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><p class="first">filename (str): The name of the file to encrypt</p>
-<p>password_timeout (int): The number of seconds before
-needing to re-enter password. DEFAULT is 30.</p>
-<p class="last">max_tries (int): The number of password attempts before
-program exists.  DEFAULT is 3</p>
-</dd>
-</dl>
-<dl class="method">
-<dt id="pyi_updater.filecrypt.FileCrypt.new_file">
-<tt class="descname">new_file</tt><big>(</big><em>filename=None</em><big>)</big><a class="headerlink" href="#pyi_updater.filecrypt.FileCrypt.new_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds filename internally to be used for encryption and
-decryption. Also adds .enc to filename to be used  as
-encrypted filename.</p>
-<p>Args:</p>
-<blockquote>
-<div>filename (str): Path of file to be encrypted/decrypted</div></blockquote>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyi_updater.filecrypt.FileCrypt.encrypt">
-<tt class="descname">encrypt</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.filecrypt.FileCrypt.encrypt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will encrypt the file</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyi_updater.filecrypt.FileCrypt.decrypt">
-<tt class="descname">decrypt</tt><big>(</big><em>change_password=False</em><big>)</big><a class="headerlink" href="#pyi_updater.filecrypt.FileCrypt.decrypt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will decrypt the file</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyi_updater.filecrypt.FileCrypt.change_password">
-<tt class="descname">change_password</tt><big>(</big><em>old_pass</em>, <em>new_pass</em><big>)</big><a class="headerlink" href="#pyi_updater.filecrypt.FileCrypt.change_password" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will change password for encrypted file</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>old_pass (str): Old Password
-new_pass (str): New Password</dd>
-<dt>Returns:</dt>
-<dd><p class="first">(bool) Meanings:</p>
-<div class="last highlight-python"><div class="highlight"><pre>True - Password change successful
-
-False - Password change failed
-</pre></div>
-</div>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 <span class="target" id="module-pyi_updater.key_handler"></span><dl class="class">
 <dt id="pyi_updater.key_handler.KeyHandler">
 <em class="property">class </em><tt class="descclassname">pyi_updater.key_handler.</tt><tt class="descname">KeyHandler</tt><big>(</big><em>app=None</em><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler" title="Permalink to this definition">¶</a></dt>
@@ -506,12 +410,6 @@ False - Password change failed
 <dt id="pyi_updater.key_handler.KeyHandler.get_public_key">
 <tt class="descname">get_public_key</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler.get_public_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns (object): Public Key</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyi_updater.key_handler.KeyHandler.copy_decrypted_private_key">
-<tt class="descname">copy_decrypted_private_key</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler.copy_decrypted_private_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Copies decrypted private key.</p>
 </dd></dl>
 
 <dl class="method">
@@ -608,6 +506,27 @@ on all other platforms</p>
 </dl>
 </dd></dl>
 
+<dl class="function">
+<dt id="pyi_updater.utils.ask_yes_no">
+<tt class="descclassname">pyi_updater.utils.</tt><tt class="descname">ask_yes_no</tt><big>(</big><em>question</em>, <em>default='no'</em>, <em>answer=None</em><big>)</big><a class="headerlink" href="#pyi_updater.utils.ask_yes_no" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will ask a question and keeps prompting until
+answered.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>question (str): Question to ask end user</dd>
+<dt>Kwargs:</dt>
+<dd>default (str): Default answer if user just press enter at prompt</dd>
+<dt>Returns:</dt>
+<dd><p class="first">bool. Meaning:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="bp">True</span> <span class="o">-</span> <span class="n">Answer</span> <span class="ow">is</span>  <span class="n">yes</span>
+
+<span class="bp">False</span> <span class="o">-</span> <span class="n">Answer</span> <span class="ow">is</span> <span class="n">no</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
 <span class="target" id="module-pyi_updater.uploader"></span><dl class="class">
 <dt id="pyi_updater.uploader.Uploader">
 <em class="property">class </em><tt class="descclassname">pyi_updater.uploader.</tt><tt class="descname">Uploader</tt><big>(</big><em>app=None</em><big>)</big><a class="headerlink" href="#pyi_updater.uploader.Uploader" title="Permalink to this definition">¶</a></dt>
@@ -700,7 +619,7 @@ info you need.</p>
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Dec 13, 2014.<br/>
+      Last updated on Dec 14, 2014.<br/>
     </p>
   </div>
 </footer>
