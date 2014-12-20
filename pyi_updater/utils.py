@@ -329,7 +329,7 @@ def initial_setup(config):
                                          required=True)
 
     config.COMPANY_NAME = get_correct_answer(u'Please enter your '
-                                             'company or name', required=True)
+                                             u'company or name', required=True)
 
     config.DEV_DATA_DIR = os.getcwd()
 
@@ -338,7 +338,7 @@ def initial_setup(config):
     config.UPDATE_URLS = [url]
     while 1:
         answer = ask_yes_no(u'Would you like to add another '
-                            'url for backup?', default='no')
+                            u'url for backup?', default='no')
         if answer is True:
             url = get_correct_answer(u'Enter another url.',
                                      required=True)
@@ -347,7 +347,7 @@ def initial_setup(config):
             break
 
     config.UPDATE_PATCHES = ask_yes_no(u'Would you like to enable patch '
-                                       'uupdates?', default='yes')
+                                       u'updates?', default=u'yes')
 
     answer1 = ask_yes_no(u'Would you like to add scp settings?',
                          default='no')

@@ -15,6 +15,10 @@ Demos have been update with the changes. Also its very important to make a decry
     - pyiupdater -h
     - pyiupdater command -h
 
+  - KeyHandler
+
+    - Moved key storage to .pyiupdater folder
+
   - PyiUpdater
 
     - Simplified config

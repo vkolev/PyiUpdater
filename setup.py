@@ -18,7 +18,7 @@ class PyTest(Command):
         pass
 
     def run(self):
-        errno = subprocess.call([sys.executable, 'runtests.py' u'-v'])
+        errno = subprocess.call([sys.executable, u'runtests.py', u'-v'])
         raise SystemExit(errno)
 
 
@@ -32,7 +32,7 @@ class PyTestCover(Command):
         pass
 
     def run(self):
-        errno = subprocess.call([sys.executable, 'runtests.py', u'tests',
+        errno = subprocess.call([sys.executable, u'runtests.py', u'tests',
                                 u'--cov', u'pyi_updater', u'-n', u'1'])
         raise SystemExit(errno)
 
@@ -62,7 +62,6 @@ setup(
         'bsdiff4',
         'certifi',
         'click',
-        'cryptography',
         'ed25519',
         'jms-utils >= 0.4.6',
         'pyinstaller >= 2.1.1dev',

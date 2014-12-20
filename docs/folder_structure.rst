@@ -9,13 +9,19 @@ Program Src Directory
 
     \- deploy
 
-    \- keys
-
     \- files
 
       \- update name
 
         \- version number
+
+
+  \- .pyiupdater
+
+    \- config.data
+
+    \- keys
+
 
 Folder Explanations
 -------------------

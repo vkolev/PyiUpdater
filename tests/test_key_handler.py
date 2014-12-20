@@ -15,7 +15,7 @@ from tconfig import TConfig
 test_dir = u'tests'
 data_dir = u'pyi-data'
 test_data_dir = os.path.join(test_dir, data_dir)
-keys_dir = os.path.join(test_data_dir, u'keys')
+keys_dir = os.path.join(test_dir, u'.pyiupdater', u'keys')
 new_folder = os.path.join(test_data_dir, u'new')
 version_file = os.path.join(test_data_dir, u'version.json')
 pub_key = None
@@ -70,7 +70,8 @@ def test_setup():
     config = TConfig()
     updater = PyiUpdaterConfig(config)
     ph = PackageHandler(updater)
-    key_dir = os.path.join(ph.data_dir, u'keys')
+    key_dir = os.path.join(os.path.dirname(ph.data_dir),
+                           u'.pyiupdater', u'keys')
 
     kh = KeyHandler(updater)
     kh.test = True

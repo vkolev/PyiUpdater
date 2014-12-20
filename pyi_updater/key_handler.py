@@ -3,7 +3,6 @@ import json
 import logging
 import os
 import shutil
-import sys
 
 from pyi_updater.exceptions import KeyHandlerError
 from pyi_updater.utils import lazy_import
@@ -42,10 +41,10 @@ class KeyHandler(object):
         # Copies and sets all needed config attributes
         # for this object
         self.app_name = obj.get(u'APP_NAME')
-        self.data_dir = obj.get(u'DEV_DATA_DIR',)
-        if self.data_dir is not None:
-            self.data_dir = os.path.join(self.data_dir, u'pyi-data')
-            self.keys_dir = os.path.join(self.data_dir, u'keys')
+        data_dir = obj.get(u'DEV_DATA_DIR',)
+        if data_dir is not None:
+            self.keys_dir = os.path.join(data_dir, u'.pyiupdater', u'keys')
+            self.data_dir = os.path.join(data_dir, u'pyi-data')
             self.deploy_dir = os.path.join(self.data_dir, u'deploy')
             self.version_file = os.path.join(self.data_dir, u'version.json')
             if not os.path.exists(self.keys_dir):

@@ -179,9 +179,9 @@ def setup():
 
 
 def upload(args):
+    check_repo()
     if args.uploader is None:
         sys.exit('Must provide service name')
-    check_repo()
     password = os.environ.get('PYIUPDATER_PASS')
     if password is None:
         sys.exit('You need to set PYIUPDATER_PASS env var')
@@ -199,7 +199,7 @@ def upload(args):
         mgr = stevedore.ExtensionManager(u'pyiupdater.uploaders')
         plugin_names = mgr.names()
         log.debug(u'Plugin names: {}'.format(plugin_names))
-        sys.exit(u'Invalid Uploader\n\nAvailable options: '
+        sys.exit(u'Invalid Uploader\n\nAvailable options:\n'
                  u'{}'.format(plugin_names))
     try:
         pyiu.upload()
@@ -211,6 +211,7 @@ def upload(args):
 
 
 def builder(args, pyi_args):
+    check_repo()
     pyi_dir = os.path.join(os.getcwd(), u'pyi-data')
     new_dir = os.path.join(pyi_dir, u'new')
     build_dir = os.path.join(os.getcwd(), u'.pyiupdater')
