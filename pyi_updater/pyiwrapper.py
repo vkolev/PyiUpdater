@@ -122,7 +122,7 @@ package_parser.add_argument(u'-s', u'--sign', help=u'Sign version file',
                             action=u'store_true', dest=u'sign')
 
 upload_parser.add_argument(u'-s', u'--service', help=u'Where '
-                           u'updates are stored', dest=u'uploader')
+                           u'updates are stored', dest=u'service')
 
 
 def check_repo():
@@ -151,16 +151,17 @@ def main():
 def process(args):
     check_repo()
     pyiu = PyiUpdater(loader.load_config())
-    if args.process is True and args.sign is True:
-        sys.exit(u'Can only use one command')
-    elif args.process is True:
-        print(u'Processing packages...')
-        pyiu.process_packages()
-    elif args.sign is True:
-        print(u'Signing packages...')
-        pyiu.sign_update()
-    else:
+    if args.process is False and args.sign is False:
         sys.exit(u'You must specify a command')
+
+    if args.process is True:
+        print(u'Processing packages...\n')
+        pyiu.process_packages()
+        print(u'Processing packages complete\n')
+    if args.sign is True:
+        print(u'Signing packages...\n')
+        pyiu.sign_update()
+        print(u'Signing packages complete\n')
 
 
 def setup():
@@ -180,23 +181,23 @@ def setup():
 
 def upload(args):
     check_repo()
-    if args.uploader is None:
+    upload_service = args.service
+    if upload_service is None:
         sys.exit('Must provide service name')
     password = os.environ.get('PYIUPDATER_PASS')
     if password is None:
         sys.exit('You need to set PYIUPDATER_PASS env var')
     pyiu = PyiUpdater(loader.load_config())
-    pyiu.config.PASSWORD = password
-    if len(args) > 1:
-        sys.exit(u'Can only provide one uploader name')
+
+    class Pass(object):
+        PASSWORD = password
+
+    pyiu.update_config(Pass())
+
     try:
-        requested_uploader = args[0]
-    except IndexError:
-        sys.exit(u'Must give name of uploader')
-    try:
-        pyiu.set_uploader(requested_uploader)
+        pyiu.set_uploader(upload_service)
     except UploaderError:
-        mgr = stevedore.ExtensionManager(u'pyiupdater.uploaders')
+        mgr = stevedore.ExtensionManager(u'pyiupdater.plugins.uploaders')
         plugin_names = mgr.names()
         log.debug(u'Plugin names: {}'.format(plugin_names))
         sys.exit(u'Invalid Uploader\n\nAvailable options:\n'

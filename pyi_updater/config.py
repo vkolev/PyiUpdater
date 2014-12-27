@@ -38,6 +38,8 @@ class Loader(object):
         attr_str_format = "    {} = '{}'\n"
         attr_format = "    {} = {}\n"
         with open(filename, u'w') as f:
+            # Temp hack for pyinstaller not finding pkg_resources
+            f.write('import pkg_resources\n\n')
             f.write('class ClientConfig(object):\n')
             if hasattr(obj, 'APP_NAME') and obj.APP_NAME is not None:
                 f.write(attr_str_format.format('APP_NAME', obj.APP_NAME))

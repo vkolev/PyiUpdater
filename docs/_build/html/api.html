@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.13-dev12141737 documentation</title>
+    <title>API &mdash; PyiUpdater 0.13-dev12271452 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.13-dev12141737',
+        VERSION:     '0.13-dev12271452',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.13-dev12141737 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.13-dev12271452 documentation" href="index.html" />
     <link rel="next" title="License" href="license.html" />
     <link rel="prev" title="Contributing" href="contributing.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12141737</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12271452</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -147,15 +147,20 @@
 <dd><p>Used on client side to update files</p>
 <p>Kwargs:</p>
 <blockquote>
-<div>obj (instance): config object</div></blockquote>
+<div><p>obj (instance): config object</p>
+<p>refresh (bool):</p>
+<blockquote>
+<div><p>True: Refresh update manifest on object initialization</p>
+<p>False: Don&#8217;t refresh update manifest on object initialization</p>
+</div></blockquote>
+</div></blockquote>
 <dl class="method">
 <dt id="pyi_updater.client.Client.init_app">
-<tt class="descname">init_app</tt><big>(</big><em>obj</em>, <em>refresh=False</em>, <em>test=False</em><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.init_app" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">init_app</tt><big>(</big><em>obj</em>, <em>refresh=True</em>, <em>test=False</em><big>)</big><a class="headerlink" href="#pyi_updater.client.Client.init_app" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets up client with config values from obj</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>obj (instance): config object</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div>obj (instance): config object</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -171,20 +176,19 @@
 <dd><p>Will try to patch binary if all check pass.  IE hash verified
 signature verified.  If any check doesn&#8217;t pass then falls back to
 full update</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><p class="first">name (str): Name of file to update</p>
-<p class="last">version (str): Current version number of file to update</p>
-</dd>
-<dt>Returns:</dt>
-<dd><p class="first">(bool) Meanings:</p>
-<div class="last highlight-python"><div class="highlight"><pre>True - Update Successful
-
-False - Update Failed
-</pre></div>
-</div>
-</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div><p>name (str): Name of file to update</p>
+<p>version (str): Current version number of file to update</p>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><p>(bool) Meanings:</p>
+<blockquote>
+<div><p>True - Update Successful</p>
+<p>False - Update Failed</p>
+</div></blockquote>
+</div></blockquote>
 </dd></dl>
 
 </dd></dl>
@@ -619,7 +623,7 @@ info you need.</p>
     </p>
     <p>
         &copy; Copyright 2014, JohnyMoSwag.<br/>
-      Last updated on Dec 14, 2014.<br/>
+      Last updated on Dec 27, 2014.<br/>
     </p>
   </div>
 </footer>

@@ -29,6 +29,12 @@ class Client(object):
     Kwargs:
 
         obj (instance): config object
+
+        refresh (bool):
+
+            True: Refresh update manifest on object initialization
+
+            False: Don't refresh update manifest on object initialization
     """
 
     def __init__(self, obj=None, refresh=False, test=False):
@@ -43,10 +49,11 @@ class Client(object):
         if obj and test is False:
             self.init_app(obj, refresh, test)
 
-    def init_app(self, obj, refresh=False, test=False):
+    def init_app(self, obj, refresh=True, test=False):
         """Sets up client with config values from obj
 
         Args:
+
             obj (instance): config object
 
         """
@@ -88,7 +95,7 @@ class Client(object):
         Proxy method from :meth:`_get_update_manifest`.
         """
         try:
-            return self._get_update_manifest()
+            self._get_update_manifest()
         except Exception as err:
             log.debug(str(err), exc_info=True)
 
@@ -122,12 +129,14 @@ class Client(object):
         full update
 
         Args:
+
             name (str): Name of file to update
 
             version (str): Current version number of file to update
 
         Returns:
-            (bool) Meanings::
+
+            (bool) Meanings:
 
                 True - Update Successful
 
@@ -185,23 +194,30 @@ class Client(object):
     def _get_manifest_filesystem(self):
         with ChDir(self.data_dir):
             if not os.path.exists(self.version_file):
+                log.debug('No version file on file system')
                 return None
             else:
+                log.debug('Found version file on file system')
                 try:
                     with open(self.version_file, u'r') as f:
                         data = f.read()
+                    log.debug('Loaded version file from file system')
                 except Exception as err:
+                    log.debug('Failed to load version file from file system')
                     log.debug(str(err))
                     data = None
 
                 return data
 
     def _get_manifest_online(self):
+        log.debug('Downloading online version file')
         try:
             fd = FileDownloader(self.version_file, self.update_urls)
             data = fd.download_verify_return()
+            log.debug('Version file download successful')
             return data
         except Exception as err:
+            log.debug('Version file failed to download')
             log.debug(str(err))
             return None
 

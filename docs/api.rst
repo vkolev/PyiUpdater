@@ -18,9 +18,6 @@ If you want to dive into their documentation, scroll down:
 .. automodule:: pyi_updater.exceptions
     :members:
 
-.. automodule:: pyi_updater.filecrypt
-    :members:
-
 .. automodule:: pyi_updater.key_handler
     :members:
 

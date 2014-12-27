@@ -23,11 +23,11 @@ log = logging.getLogger(__name__)
 
 
 class LibUpdate(object):
-    """Used on client side to update files
+    """Used to update library files used by an application
 
-    Kwargs:
+    Args:
 
-        obj (instance): config object
+        data (dict): Info dict
     """
 
     def __init__(self, data):
@@ -62,7 +62,8 @@ class LibUpdate(object):
         Proxy method for :meth:`_patch_update` & :meth:`_full_update`.
 
         Returns:
-            (bool) Meanings::
+
+            (bool) Meanings:
 
                 True - Download successful
 
@@ -96,7 +97,8 @@ class LibUpdate(object):
             Proxy method for :meth:`_extract_update`.
 
             Returns:
-                (bool) Meanings::
+
+                (bool) Meanings:
 
                     True - Install successful
 
@@ -113,6 +115,9 @@ class LibUpdate(object):
         return True
 
     def install(self):
+        # ToDo: Remove in v1.0
+        """DEPRECATED! Proxy method for :meth:`extract`.
+        """
         warnings.warn('Will be removed in v1.0, use the extract method',
                       DeprecationWarning)
         self.extract()
@@ -192,11 +197,14 @@ class LibUpdate(object):
 
         log.debug(u'Starting patch update')
         filename = get_filename(name, version, self.platform, self.easy_data)
+        log.debug('Archive filename: {}'.format(filename))
+        if filename is None:
+            log.debug(u'Make sure version numbers are correct. TRAP')
+            return False
         latest = get_highest_version(name, self.platform,
                                      self.easy_data)
         # Just checking to see if the zip for the current version is
         # available to patch If not we'll just do a full binary download
-
         if not os.path.exists(os.path.join(self.update_folder, filename)):
             log.debug(u'{} got deleted. No base binary to start patching '
                       'form'.format(filename))
@@ -285,18 +293,18 @@ class LibUpdate(object):
 
 
 class AppUpdate(LibUpdate):
-    """Used on client side to update files
+    """Used to update library files used by an application
 
-    Kwargs:
+    Args:
 
-        obj (instance): config object
+        data (dict): Info dict
     """
 
     def __init__(self, data):
         super(AppUpdate, self).__init__(data)
 
     def extract_restart(self):
-        """ Will extract (unzip) the update, overwrite the current app,
+        """Will extract the update, overwrite the current app,
         then restart the app using the updated binary.
 
         On windows Proxy method for :meth:`_extract_update` &
@@ -317,13 +325,16 @@ class AppUpdate(LibUpdate):
             log.error(str(err), exc_info=True)
 
     def install_restart(self):
+        # ToDo: Remove in v1.0
+        """DEPRECATED!  Proxy method for :meth:`extract_restart`.
+        """
         warnings.warn('Will be removed in v1.0, use extract_restart',
                       DeprecationWarning)
         self.extract_restart()
 
     def restart(self):
         """Will overwrite old binary with updated binary and
-        restart using the updated binary.
+        restart using the updated binary. Not supported on windows.
 
         Proxy method for :meth:`_overwrite_app` & :meth:`_restart`.
         """

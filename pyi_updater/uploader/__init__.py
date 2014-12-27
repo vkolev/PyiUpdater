@@ -50,8 +50,8 @@ class Uploader(object):
         self.test = False
 
         # Extension Manager
-        self.mgr = stevedore.extension.ExtensionManager(namespace=u'pyiupdat'
-                                                        'er.uploaders',)
+        self.mgr = stevedore.extension.ExtensionManager(namespace=u'pyiupdate'
+                                                        'r.plugins.uploaders',)
 
     def upload(self):
         """Proxy function that calls the upload method on the received uploader

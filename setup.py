@@ -50,8 +50,8 @@ setup(
         'https://github.com/pyinstaller/pyinstaller/tarball/'
         'develop#egg=pyinstaller-2.1.1dev'],
     extras_require = {
-        's3': 'PyiUpdater-s3-Plugin>=0.11',
-        'scp': 'PyiUpdater-scp-Plugin>=0.9',
+        's3': 'PyiUpdater-s3-Plugin>=1.0.1',
+        'scp': 'PyiUpdater-scp-Plugin>=1.0',
         },
     tests_require = ['pytest', ],
     cmdclass = {'test': PyTest,
