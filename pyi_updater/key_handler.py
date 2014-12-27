@@ -19,6 +19,7 @@ class KeyHandler(object):
     """KeyHanlder object is used to manage keys used for signing updates
 
     Kwargs:
+
         app (obj): Config object to get config values from
     """
 
@@ -36,6 +37,7 @@ class KeyHandler(object):
         """Sets up client with config values from obj
 
         Args:
+
             obj (instance): config object
         """
         # Copies and sets all needed config attributes
@@ -66,6 +68,7 @@ class KeyHandler(object):
         """Makes public and private keys for signing and verification
 
         Kwargs:
+
             overwrite (bool): Determines if existing keys are overwritten
         """
         # Makes a set of private and public keys

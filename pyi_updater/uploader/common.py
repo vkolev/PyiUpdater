@@ -7,19 +7,6 @@ log = logging.getLogger(__name__)
 class BaseUploader(object):
     """Base Uploader.  All uploaders should subclass
     this base class
-
-    Kwargs:
-        file_list (list): List of files to upload
-
-        host (str): Either ip or domain name of remote servers
-
-        bucket_name/remote_dir (str): Remote location for update
-
-        remote_dir (str): The directory on remote server to upload files to.
-
-        username/aws_access_id (str): login for service
-
-        password/ssh_key_file/aws_secret_key (str): login for service
     """
     def __init__(self):
         self.failed_uploads = []
@@ -30,6 +17,20 @@ class BaseUploader(object):
         password, file list, remote_dir/bucket & host.
         self._connect should be called after you grab all the
         info you need.
+
+        Kwargs:
+
+            file_list (list): List of files to upload
+
+            host (str): Either ip or domain name of remote servers
+
+            bucket_name/remote_dir (str): Remote location for update
+
+            remote_dir (str): The directory on remote server to upload files to
+
+            username/aws_access_id (str): login for service
+
+            password/ssh_key_file/aws_secret_key (str): login for service
         """
         raise NotImplementedError(u'Must be implemented in subclass.')
 
@@ -63,7 +64,7 @@ class BaseUploader(object):
             return False
 
     def _retry_upload(self):
-        """Takes list of failed downloads and try's to reupload them"""
+        # Takes list of failed downloads and tries to re upload them
         retry = self.failed_uploads[:]
         self.failed_uploads = []
         failed_count = len(retry)
@@ -90,22 +91,22 @@ class BaseUploader(object):
             return True
 
     def _connect(self):
-        """Connects client attribute to service"""
+        # Connects client attribute to service
         raise NotImplementedError(u'Must be implemented in subclass.')
 
     def _upload_file(self, filename):
-        """Uploads file to remote repository
+        # """Uploads file to remote repository
 
-        Args:
-            filename (str): file to upload
+        # Args:
+        #     filename (str): file to upload
 
-        Returns:
-            (bool) Meaning::
+        # Returns:
+        #     (bool) Meaning::
 
-                True - Upload Successful
+        #         True - Upload Successful
 
-                False - Upload Failed
-        """
+        #         False - Upload Failed
+        # """
         raise NotImplementedError('Must be implemented in subclass.')
 
     def _get_filelist_count(self):

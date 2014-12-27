@@ -18,6 +18,7 @@ class Uploader(object):
     Sets up client with config values from obj
 
         Args:
+
             obj (instance): config object
     """
     def __init__(self, app=None):
@@ -30,6 +31,7 @@ class Uploader(object):
         """Sets up client with config values from obj
 
         Args:
+
             obj (instance): config object
         """
         self.data_dir = obj.get(u'DEV_DATA_DIR')
@@ -68,9 +70,11 @@ class Uploader(object):
         SFTP uploaders not supported at this time.
 
         Args:
+
             requested_uploader (string): Either s3 or scp
 
         Returns:
+
             object (instance): Uploader object
         """
         if isinstance(requested_uploader, str) is False:

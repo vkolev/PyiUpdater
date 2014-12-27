@@ -16,6 +16,12 @@ from pyi_updater.uploader import Uploader
 
 
 class PyiUpdater(object):
+    """Processes, signs & uploads updates
+
+        Kwargs:
+
+            config (obj): config object
+    """
 
     def __init__(self, config=None):
         self.config = PyiUpdaterConfig()
@@ -26,6 +32,12 @@ class PyiUpdater(object):
             self.update_config(config)
 
     def update_config(self, config):
+        """Updates internal config
+
+        Args:
+
+            config (obj): config object
+        """
         self.config.update_config(config)
         self._update(self.config)
 
@@ -35,28 +47,43 @@ class PyiUpdater(object):
         self.up = Uploader(config)
 
     def setup(self):
+        """Sets up root dir with required PyiUpdater folders
+        """
         self.ph.setup()
 
     def process_packages(self):
+        """Creates hash for updates & adds information about update to
+        version file
+        """
         self.ph.process_packages()
 
     def set_uploader(self, requested_uploader):
+        """Sets upload destination
+
+        Args:
+
+            requested_uploader (str): upload service. i.e. s3, scp
+        """
         self.up.set_uploader(requested_uploader)
 
     def upload(self):
+        """Uploads files in deploy folder
+        """
         self.up.upload()
 
     def make_keys(self):
+        """Creates signing keys
+        """
         self.kh.make_keys()
 
     def sign_update(self):
+        "Signs version file with signing key"
         self.kh.sign_update()
 
     def get_public_key(self):
+        "Returns public key"
         return self.kh.get_public_key()
 
-    def copy_decrypted_private_key(self):
-        self.kh.copy_decrypted_private_key()
-
     def print_public_key(self):
+        "Prints public key to console"
         self.kh.print_public_key()

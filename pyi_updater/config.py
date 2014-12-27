@@ -7,6 +7,8 @@ log = logging.getLogger(__name__)
 
 
 class Loader(object):
+    """Loads &  saves config file
+    """
 
     def __init__(self):
         self.cwd = os.getcwd()
@@ -15,6 +17,7 @@ class Loader(object):
         self.password = os.environ.get('PYIUPDATER_PASS')
 
     def load_config(self):
+        "Load config file from file system"
         log.debug(u'Loading config')
         try:
             with open(self.config_file, u'r') as f:
@@ -24,7 +27,13 @@ class Loader(object):
             config_data = SetupConfig()
         return config_data
 
-    def save_config(self, obj, password=None):
+    def save_config(self, obj):
+        """Saves config file to file system
+
+        Args:
+
+            obj (obj): config object
+        """
         log.debug('Saving Config')
         if not os.path.exists(self.config_dir):
             os.mkdir(self.config_dir)
@@ -34,6 +43,12 @@ class Loader(object):
         self.write_config_py(obj)
 
     def write_config_py(self, obj):
+        """Writes client config to client_config.py
+
+        Args:
+
+            obj (obj): config object
+        """
         filename = os.path.join(self.cwd, u'client_config.py')
         attr_str_format = "    {} = '{}'\n"
         attr_format = "    {} = {}\n"
@@ -77,6 +92,7 @@ class PyiUpdaterConfig(dict):
         u"""Updates the values from the given object
 
         Args:
+
             obj (instance): Object with config attributes
 
         Objects are classes.
@@ -92,9 +108,10 @@ class PyiUpdaterConfig(dict):
                 self[key] = getattr(obj, key)
 
     def update_config(self, obj):
-        u"""Proxy method to update internal config dict
+        u"""Proxy method to update self
 
         Args:
+
             obj (instance): config object
         """
         self.from_object(obj)
@@ -115,6 +132,8 @@ class PyiUpdaterConfig(dict):
 
 # This is the default config used
 class SetupConfig(object):
+    """Default config object
+    """
     # If left None "Not_So_TUF" will be used
     APP_NAME = None
 

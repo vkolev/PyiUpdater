@@ -27,7 +27,8 @@ class PackageHandler(object):
     """Handles finding, sorting, getting meta-data, moving packages.
 
     Kwargs:
-        app (instance): Config object to get config values from
+
+        app (instance): Config object
     """
 
     data_dir = None
@@ -43,6 +44,7 @@ class PackageHandler(object):
         """Sets up client with config values from obj
 
         Args:
+
             obj (instance): config object
 
         """
@@ -71,7 +73,7 @@ class PackageHandler(object):
         self.setup()
 
     def setup(self):
-        """Creates all needed working directories & loads json files.
+        """Creates working directories & loads json files.
 
         Proxy method for :meth:`_setup_work_dirs` & :meth:`_load_version_file`
         """

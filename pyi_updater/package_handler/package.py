@@ -12,6 +12,12 @@ log = logging.getLogger(__name__)
 
 
 class Patch(object):
+    """Holds information for patch file.
+
+    Args:
+
+        patch_info (dict): patch information
+    """
 
     def __init__(self, patch_info):
         self.dst_path = patch_info.get(u'dst')
@@ -33,11 +39,17 @@ class Patch(object):
 
 
 class Package(object):
+    """Holds information of update file.
 
-    def __init__(self, file_):
+    Args:
+
+        filename (str): name of update file
+    """
+
+    def __init__(self, filename):
         self.name = None
         self.version = None
-        self.filename = file_
+        self.filename = filename
         self.version_path = None
         self.file_hash = None
         self.platform = None
@@ -47,12 +59,13 @@ class Package(object):
         # Tests on homepage: https://github.com/JohnyMoSwag/PyiUpdater
         # Zip doesn't keep +x permissions. Only using gz for now.
         self.supported_extensions = [u'.zip', u'.gz']
-        self.extract_info(file_)
+        self.extract_info(filename)
 
     def extract_info(self, package):
         """Gets version number, platform & hash for package.
 
         Args:
+
             package (str): filename
         """
         if os.path.splitext(package)[1].lower() not in \

@@ -24,9 +24,17 @@ class FileDownloader(object):
 
         filename (str): The name of file to download
 
-        url (str): The url to retrieve the file
+        urls (list): List of urls to use for file download
 
-        hexdigest str(str): The hash checksum of the file to download
+    Kwargs:
+
+        hexdigest (str): The hash of the file to download
+
+        verify (bool) Meaning:
+
+            True: Verify https connection
+
+            False: Don't verify https connection
     """
     def __init__(self, filename, urls, hexdigest=None, verify=True):
         self.filename = filename
@@ -51,7 +59,8 @@ class FileDownloader(object):
         If hash verfies then writes data to disk
 
         Returns:
-            (bool) Meanings::
+
+            (bool) Meanings:
 
                 True - Hash verified
 
@@ -77,7 +86,8 @@ class FileDownloader(object):
         If matched returns binary data
 
         Returns:
-            (data) Meanings::
+
+            (data) Meanings:
 
                 Data - If everything verified
 

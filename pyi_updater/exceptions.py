@@ -35,7 +35,7 @@ class STDError(Exception):
 
 
 class ArchiverError(STDError):
-    """Raised for Client exceptions"""
+    """Raised for Archiver exceptions"""
     def __init__(self, *args, **kwargs):
         super(ArchiverError, self).__init__(*args, **kwargs)
 
@@ -53,25 +53,25 @@ class ConfigError(STDError):
 
 
 class FileDownloaderError(STDError):
-    """Raised for File Downloader exceptions"""
+    """Raised for FileDownloader exceptions"""
     def __init__(self, *args, **kwargs):
         super(FileDownloaderError, self).__init__(*args, **kwargs)
 
 
 class KeyHandlerError(STDError):
-    """Raised for Key Handler exceptions"""
+    """Raised for KeyHandler exceptions"""
     def __init__(self, *args, **kwargs):
         super(KeyHandlerError, self).__init__(*args, **kwargs)
 
 
 class PackageError(STDError):
-    """Raised for Package Handler exceptions"""
+    """Raised for Package exceptions"""
     def __init__(self, *args, **kwargs):
         super(PackageError, self).__init__(*args, **kwargs)
 
 
 class PackageHandlerError(STDError):
-    """Raised for Package Handler exceptions"""
+    """Raised for PackageHandler exceptions"""
     def __init__(self, *args, **kwargs):
         super(PackageHandlerError, self).__init__(*args, **kwargs)
 
@@ -101,6 +101,6 @@ class UploaderError(STDError):
 
 
 class UtilsError(STDError):
-    """Raised for Uploader exceptions"""
+    """Raised for Utils exceptions"""
     def __init__(self, *args, **kwargs):
         super(UtilsError, self).__init__(*args, **kwargs)

@@ -15,6 +15,10 @@ Demos have been update with the changes. Also its very important to make a decry
     - pyiupdater -h
     - pyiupdater command -h
 
+  - Client
+
+    - Fixed error when version numbers are correct in version file
+
   - KeyHandler
 
     - Moved key storage to .pyiupdater folder

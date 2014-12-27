@@ -31,7 +31,8 @@ progress_signal = signal(u'progress_info')
 class Patcher(object):
     """Downloads, verifies, and patches binaries
 
-    Args:
+    Kwargs:
+
         name (str): Name of binary to patch
 
         json_data (dict): Info dict with all package meta data
@@ -41,6 +42,14 @@ class Patcher(object):
         highest_version (str): Newest version available
 
         update_folder (str): Path to update folder to place updated binary in
+
+        update_urls (list): List of urls to use for file download
+
+        verify (bool) Meaning:
+
+            True: Verify https connection
+
+            False: Don't verify https connection
     """
 
     def __init__(self, **kwargs):
