@@ -5,7 +5,7 @@ v0.13.0 - develop
 Backwards incompatible release
 ------------------------------
 Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.
-===================================================
+----------------------------------------------------------------------------------------------------------------------------------
 
 * Updated
 

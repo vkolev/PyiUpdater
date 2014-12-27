@@ -30,7 +30,7 @@ class Client(object):
 
         obj (instance): config object
 
-        refresh (bool):
+        refresh (bool) Meaning:
 
             True: Refresh update manifest on object initialization
 

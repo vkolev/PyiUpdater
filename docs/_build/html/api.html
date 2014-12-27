@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.13-dev12271452 documentation</title>
+    <title>API &mdash; PyiUpdater 0.13-dev12271541 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.13-dev12271452',
+        VERSION:     '0.13-dev12271541',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.13-dev12271452 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.13-dev12271541 documentation" href="index.html" />
     <link rel="next" title="License" href="license.html" />
     <link rel="prev" title="Contributing" href="contributing.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12271452</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12271541</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -76,7 +76,6 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release_history.html">Release History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_history.html#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating">Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.</a></li>
 </ul>
 </ul>
 </li>
@@ -141,14 +140,84 @@
   <div class="section" id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
 <p>If you want to dive into their documentation, scroll down:</p>
-<span class="target" id="module-pyi_updater"></span><span class="target" id="module-pyi_updater.client"></span><dl class="class">
+<span class="target" id="module-pyi_updater"></span><dl class="class">
+<dt id="pyi_updater.PyiUpdater">
+<em class="property">class </em><tt class="descclassname">pyi_updater.</tt><tt class="descname">PyiUpdater</tt><big>(</big><em>config=None</em><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes, signs &amp; uploads updates</p>
+<p>Kwargs:</p>
+<blockquote>
+<div>config (obj): config object</div></blockquote>
+<dl class="method">
+<dt id="pyi_updater.PyiUpdater.update_config">
+<tt class="descname">update_config</tt><big>(</big><em>config</em><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater.update_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates internal config</p>
+<p>Args:</p>
+<blockquote>
+<div>config (obj): config object</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.PyiUpdater.setup">
+<tt class="descname">setup</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up root dir with required PyiUpdater folders</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.PyiUpdater.process_packages">
+<tt class="descname">process_packages</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater.process_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates hash for updates &amp; adds information about update to
+version file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.PyiUpdater.set_uploader">
+<tt class="descname">set_uploader</tt><big>(</big><em>requested_uploader</em><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater.set_uploader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets upload destination</p>
+<p>Args:</p>
+<blockquote>
+<div>requested_uploader (str): upload service. i.e. s3, scp</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.PyiUpdater.upload">
+<tt class="descname">upload</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater.upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uploads files in deploy folder</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.PyiUpdater.make_keys">
+<tt class="descname">make_keys</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater.make_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates signing keys</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.PyiUpdater.sign_update">
+<tt class="descname">sign_update</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater.sign_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signs version file with signing key</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.PyiUpdater.get_public_key">
+<tt class="descname">get_public_key</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater.get_public_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns public key</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.PyiUpdater.print_public_key">
+<tt class="descname">print_public_key</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.PyiUpdater.print_public_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints public key to console</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pyi_updater.client"></span><dl class="class">
 <dt id="pyi_updater.client.Client">
 <em class="property">class </em><tt class="descclassname">pyi_updater.client.</tt><tt class="descname">Client</tt><big>(</big><em>obj=None</em>, <em>refresh=False</em>, <em>test=False</em><big>)</big><a class="headerlink" href="#pyi_updater.client.Client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used on client side to update files</p>
 <p>Kwargs:</p>
 <blockquote>
 <div><p>obj (instance): config object</p>
-<p>refresh (bool):</p>
+<p>refresh (bool) Meaning:</p>
 <blockquote>
 <div><p>True: Refresh update manifest on object initialization</p>
 <p>False: Don&#8217;t refresh update manifest on object initialization</p>
@@ -194,6 +263,36 @@ full update</p>
 </dd></dl>
 
 <span class="target" id="module-pyi_updater.config"></span><dl class="class">
+<dt id="pyi_updater.config.Loader">
+<em class="property">class </em><tt class="descclassname">pyi_updater.config.</tt><tt class="descname">Loader</tt><a class="headerlink" href="#pyi_updater.config.Loader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads &amp;  saves config file</p>
+<dl class="method">
+<dt id="pyi_updater.config.Loader.load_config">
+<tt class="descname">load_config</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.config.Loader.load_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load config file from file system</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.config.Loader.save_config">
+<tt class="descname">save_config</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.config.Loader.save_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves config file to file system</p>
+<p>Args:</p>
+<blockquote>
+<div>obj (obj): config object</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.config.Loader.write_config_py">
+<tt class="descname">write_config_py</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.config.Loader.write_config_py" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes client config to client_config.py</p>
+<p>Args:</p>
+<blockquote>
+<div>obj (obj): config object</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pyi_updater.config.PyiUpdaterConfig">
 <em class="property">class </em><tt class="descclassname">pyi_updater.config.</tt><tt class="descname">PyiUpdaterConfig</tt><big>(</big><em>obj=None</em><big>)</big><a class="headerlink" href="#pyi_updater.config.PyiUpdaterConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Works exactly like a dict but provides ways to fill it from files
@@ -211,10 +310,9 @@ keys in the same file that implements the application.</p>
 <dt id="pyi_updater.config.PyiUpdaterConfig.from_object">
 <tt class="descname">from_object</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.config.PyiUpdaterConfig.from_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the values from the given object</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>obj (instance): Object with config attributes</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div>obj (instance): Object with config attributes</div></blockquote>
 <p>Objects are classes.</p>
 <p>Just the uppercase variables in that object are stored in the config.
 Example usage:</p>
@@ -227,13 +325,18 @@ Example usage:</p>
 <dl class="method">
 <dt id="pyi_updater.config.PyiUpdaterConfig.update_config">
 <tt class="descname">update_config</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.config.PyiUpdaterConfig.update_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Proxy method to update internal config dict</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>obj (instance): config object</dd>
-</dl>
+<dd><p>Proxy method to update self</p>
+<p>Args:</p>
+<blockquote>
+<div>obj (instance): config object</div></blockquote>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="pyi_updater.config.SetupConfig">
+<em class="property">class </em><tt class="descclassname">pyi_updater.config.</tt><tt class="descname">SetupConfig</tt><a class="headerlink" href="#pyi_updater.config.SetupConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default config object</p>
 </dd></dl>
 
 <span class="target" id="module-pyi_updater.downloader"></span><dl class="class">
@@ -245,24 +348,30 @@ written to disk to returned to calling object</p>
 <p>Args:</p>
 <blockquote>
 <div><p>filename (str): The name of file to download</p>
-<p>url (str): The url to retrieve the file</p>
-<p>hexdigest str(str): The hash checksum of the file to download</p>
+<p>urls (list): List of urls to use for file download</p>
+</div></blockquote>
+<p>Kwargs:</p>
+<blockquote>
+<div><p>hexdigest (str): The hash of the file to download</p>
+<p>verify (bool) Meaning:</p>
+<blockquote>
+<div><p>True: Verify https connection</p>
+<p>False: Don&#8217;t verify https connection</p>
+</div></blockquote>
 </div></blockquote>
 <dl class="method">
 <dt id="pyi_updater.downloader.FileDownloader.download_verify_write">
 <tt class="descname">download_verify_write</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.downloader.FileDownloader.download_verify_write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads file then verifies against provided hash
 If hash verfies then writes data to disk</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd><p class="first">(bool) Meanings:</p>
-<div class="last highlight-python"><div class="highlight"><pre>True - Hash verified
-
-False - Hash not verified
-</pre></div>
-</div>
-</dd>
-</dl>
+<p>Returns:</p>
+<blockquote>
+<div><p>(bool) Meanings:</p>
+<blockquote>
+<div><p>True - Hash verified</p>
+<p>False - Hash not verified</p>
+</div></blockquote>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -270,16 +379,14 @@ False - Hash not verified
 <tt class="descname">download_verify_return</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.downloader.FileDownloader.download_verify_return" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads file to memory, checks against provided hash
 If matched returns binary data</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd><p class="first">(data) Meanings:</p>
-<div class="last highlight-python"><div class="highlight"><pre>Data - If everything verified
-
-None - If any verification didn&#39;t pass
-</pre></div>
-</div>
-</dd>
-</dl>
+<p>Returns:</p>
+<blockquote>
+<div><p>(data) Meanings:</p>
+<blockquote>
+<div><p>Data - If everything verified</p>
+<p>None - If any verification didn&#8217;t pass</p>
+</div></blockquote>
+</div></blockquote>
 </dd></dl>
 
 </dd></dl>
@@ -305,7 +412,7 @@ None - If any verification didn&#39;t pass
 <dl class="exception">
 <dt id="pyi_updater.exceptions.ArchiverError">
 <em class="property">exception </em><tt class="descclassname">pyi_updater.exceptions.</tt><tt class="descname">ArchiverError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.exceptions.ArchiverError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised for Client exceptions</p>
+<dd><p>Raised for Archiver exceptions</p>
 </dd></dl>
 
 <dl class="exception">
@@ -323,25 +430,25 @@ None - If any verification didn&#39;t pass
 <dl class="exception">
 <dt id="pyi_updater.exceptions.FileDownloaderError">
 <em class="property">exception </em><tt class="descclassname">pyi_updater.exceptions.</tt><tt class="descname">FileDownloaderError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.exceptions.FileDownloaderError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised for File Downloader exceptions</p>
+<dd><p>Raised for FileDownloader exceptions</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="pyi_updater.exceptions.KeyHandlerError">
 <em class="property">exception </em><tt class="descclassname">pyi_updater.exceptions.</tt><tt class="descname">KeyHandlerError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.exceptions.KeyHandlerError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised for Key Handler exceptions</p>
+<dd><p>Raised for KeyHandler exceptions</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="pyi_updater.exceptions.PackageError">
 <em class="property">exception </em><tt class="descclassname">pyi_updater.exceptions.</tt><tt class="descname">PackageError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.exceptions.PackageError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised for Package Handler exceptions</p>
+<dd><p>Raised for Package exceptions</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="pyi_updater.exceptions.PackageHandlerError">
 <em class="property">exception </em><tt class="descclassname">pyi_updater.exceptions.</tt><tt class="descname">PackageHandlerError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.exceptions.PackageHandlerError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised for Package Handler exceptions</p>
+<dd><p>Raised for PackageHandler exceptions</p>
 </dd></dl>
 
 <dl class="exception">
@@ -371,35 +478,32 @@ None - If any verification didn&#39;t pass
 <dl class="exception">
 <dt id="pyi_updater.exceptions.UtilsError">
 <em class="property">exception </em><tt class="descclassname">pyi_updater.exceptions.</tt><tt class="descname">UtilsError</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.exceptions.UtilsError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised for Uploader exceptions</p>
+<dd><p>Raised for Utils exceptions</p>
 </dd></dl>
 
 <span class="target" id="module-pyi_updater.key_handler"></span><dl class="class">
 <dt id="pyi_updater.key_handler.KeyHandler">
 <em class="property">class </em><tt class="descclassname">pyi_updater.key_handler.</tt><tt class="descname">KeyHandler</tt><big>(</big><em>app=None</em><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>KeyHanlder object is used to manage keys used for signing updates</p>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd>app (obj): Config object to get config values from</dd>
-</dl>
+<p>Kwargs:</p>
+<blockquote>
+<div>app (obj): Config object to get config values from</div></blockquote>
 <dl class="method">
 <dt id="pyi_updater.key_handler.KeyHandler.init_app">
 <tt class="descname">init_app</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler.init_app" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets up client with config values from obj</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>obj (instance): config object</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div>obj (instance): config object</div></blockquote>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyi_updater.key_handler.KeyHandler.make_keys">
 <tt class="descname">make_keys</tt><big>(</big><em>overwrite=False</em><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.KeyHandler.make_keys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Makes public and private keys for signing and verification</p>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd>overwrite (bool): Determines if existing keys are overwritten</dd>
-</dl>
+<p>Kwargs:</p>
+<blockquote>
+<div>overwrite (bool): Determines if existing keys are overwritten</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -428,24 +532,22 @@ None - If any verification didn&#39;t pass
 <dt id="pyi_updater.package_handler.PackageHandler">
 <em class="property">class </em><tt class="descclassname">pyi_updater.package_handler.</tt><tt class="descname">PackageHandler</tt><big>(</big><em>app=None</em><big>)</big><a class="headerlink" href="#pyi_updater.package_handler.PackageHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles finding, sorting, getting meta-data, moving packages.</p>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd>app (instance): Config object to get config values from</dd>
-</dl>
+<p>Kwargs:</p>
+<blockquote>
+<div>app (instance): Config object</div></blockquote>
 <dl class="method">
 <dt id="pyi_updater.package_handler.PackageHandler.init_app">
 <tt class="descname">init_app</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.package_handler.PackageHandler.init_app" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets up client with config values from obj</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>obj (instance): config object</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div>obj (instance): config object</div></blockquote>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyi_updater.package_handler.PackageHandler.setup">
 <tt class="descname">setup</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.package_handler.PackageHandler.setup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates all needed working directories &amp; loads json files.</p>
+<dd><p>Creates working directories &amp; loads json files.</p>
 <p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_setup_work_dirs()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_load_version_file()</span></tt></p>
 </dd></dl>
 
@@ -464,19 +566,51 @@ version file back to disk.</p>
 
 </dd></dl>
 
-<span class="target" id="module-pyi_updater.package_handler.package"></span><span class="target" id="module-pyi_updater.patcher"></span><dl class="class">
+<span class="target" id="module-pyi_updater.package_handler.package"></span><dl class="class">
+<dt id="pyi_updater.package_handler.package.Patch">
+<em class="property">class </em><tt class="descclassname">pyi_updater.package_handler.package.</tt><tt class="descname">Patch</tt><big>(</big><em>patch_info</em><big>)</big><a class="headerlink" href="#pyi_updater.package_handler.package.Patch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds information for patch file.</p>
+<p>Args:</p>
+<blockquote>
+<div>patch_info (dict): patch information</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyi_updater.package_handler.package.Package">
+<em class="property">class </em><tt class="descclassname">pyi_updater.package_handler.package.</tt><tt class="descname">Package</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#pyi_updater.package_handler.package.Package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds information of update file.</p>
+<p>Args:</p>
+<blockquote>
+<div>filename (str): name of update file</div></blockquote>
+<dl class="method">
+<dt id="pyi_updater.package_handler.package.Package.extract_info">
+<tt class="descname">extract_info</tt><big>(</big><em>package</em><big>)</big><a class="headerlink" href="#pyi_updater.package_handler.package.Package.extract_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets version number, platform &amp; hash for package.</p>
+<p>Args:</p>
+<blockquote>
+<div>package (str): filename</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pyi_updater.patcher"></span><dl class="class">
 <dt id="pyi_updater.patcher.Patcher">
 <em class="property">class </em><tt class="descclassname">pyi_updater.patcher.</tt><tt class="descname">Patcher</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.patcher.Patcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Downloads, verifies, and patches binaries</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><p class="first">name (str): Name of binary to patch</p>
+<p>Kwargs:</p>
+<blockquote>
+<div><p>name (str): Name of binary to patch</p>
 <p>json_data (dict): Info dict with all package meta data</p>
 <p>current_version (str): Version number of currently installed binary</p>
 <p>highest_version (str): Newest version available</p>
-<p class="last">update_folder (str): Path to update folder to place updated binary in</p>
-</dd>
-</dl>
+<p>update_folder (str): Path to update folder to place updated binary in</p>
+<p>update_urls (list): List of urls to use for file download</p>
+<p>verify (bool) Meaning:</p>
+<blockquote>
+<div><p>True: Verify https connection</p>
+<p>False: Don&#8217;t verify https connection</p>
+</div></blockquote>
+</div></blockquote>
 <dl class="method">
 <dt id="pyi_updater.patcher.Patcher.start">
 <tt class="descname">start</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.patcher.Patcher.start" title="Permalink to this definition">¶</a></dt>
@@ -539,19 +673,17 @@ Will automatically pick the correct uploader depending on
 what is configured thorough the config object</p>
 <p>Sets up client with config values from obj</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>Args:</dt>
-<dd>obj (instance): config object</dd>
-</dl>
+<div><p>Args:</p>
+<blockquote>
+<div>obj (instance): config object</div></blockquote>
 </div></blockquote>
 <dl class="method">
 <dt id="pyi_updater.uploader.Uploader.init_app">
 <tt class="descname">init_app</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#pyi_updater.uploader.Uploader.init_app" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets up client with config values from obj</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>obj (instance): config object</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div>obj (instance): config object</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -566,12 +698,12 @@ Only calls the upload method if an uploader is set.</p>
 <tt class="descname">set_uploader</tt><big>(</big><em>requested_uploader</em><big>)</big><a class="headerlink" href="#pyi_updater.uploader.Uploader.set_uploader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an uploader object. 1 of S3, SCP, SFTP.
 SFTP uploaders not supported at this time.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>requested_uploader (string): Either s3 or scp</dd>
-<dt>Returns:</dt>
-<dd>object (instance): Uploader object</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div>requested_uploader (string): Either s3 or scp</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div>object (instance): Uploader object</div></blockquote>
 </dd></dl>
 
 </dd></dl>
@@ -581,16 +713,6 @@ SFTP uploaders not supported at this time.</p>
 <em class="property">class </em><tt class="descclassname">pyi_updater.uploader.common.</tt><tt class="descname">BaseUploader</tt><a class="headerlink" href="#pyi_updater.uploader.common.BaseUploader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base Uploader.  All uploaders should subclass
 this base class</p>
-<dl class="docutils">
-<dt>Kwargs:</dt>
-<dd><p class="first">file_list (list): List of files to upload</p>
-<p>host (str): Either ip or domain name of remote servers</p>
-<p>bucket_name/remote_dir (str): Remote location for update</p>
-<p>remote_dir (str): The directory on remote server to upload files to.</p>
-<p>username/aws_access_id (str): login for service</p>
-<p class="last">password/ssh_key_file/aws_secret_key (str): login for service</p>
-</dd>
-</dl>
 <dl class="method">
 <dt id="pyi_updater.uploader.common.BaseUploader.init">
 <tt class="descname">init</tt><big>(</big><em>**Kwargs</em><big>)</big><a class="headerlink" href="#pyi_updater.uploader.common.BaseUploader.init" title="Permalink to this definition">¶</a></dt>
@@ -598,6 +720,15 @@ this base class</p>
 password, file list, remote_dir/bucket &amp; host.
 self._connect should be called after you grab all the
 info you need.</p>
+<p>Kwargs:</p>
+<blockquote>
+<div><p>file_list (list): List of files to upload</p>
+<p>host (str): Either ip or domain name of remote servers</p>
+<p>bucket_name/remote_dir (str): Remote location for update</p>
+<p>remote_dir (str): The directory on remote server to upload files to</p>
+<p>username/aws_access_id (str): login for service</p>
+<p>password/ssh_key_file/aws_secret_key (str): login for service</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
