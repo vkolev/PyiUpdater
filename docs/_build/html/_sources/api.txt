@@ -9,6 +9,12 @@ If you want to dive into their documentation, scroll down:
 .. automodule:: pyi_updater.client
     :members:
 
+.. automodule:: pyi_updater.client.updates
+    :members:
+
+.. automodule:: pyi_updater.client.utils
+    :members:
+
 .. automodule:: pyi_updater.config
     :members:
 

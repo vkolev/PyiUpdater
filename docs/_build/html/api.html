@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.13-dev12271541 documentation</title>
+    <title>API &mdash; PyiUpdater 0.13-dev12271550 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.13-dev12271541',
+        VERSION:     '0.13-dev12271550',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.13-dev12271541 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.13-dev12271550 documentation" href="index.html" />
     <link rel="next" title="License" href="license.html" />
     <link rel="prev" title="Contributing" href="contributing.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12271541</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12271550</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -260,6 +260,130 @@ full update</p>
 </div></blockquote>
 </dd></dl>
 
+</dd></dl>
+
+<span class="target" id="module-pyi_updater.client.updates"></span><dl class="class">
+<dt id="pyi_updater.client.updates.LibUpdate">
+<em class="property">class </em><tt class="descclassname">pyi_updater.client.updates.</tt><tt class="descname">LibUpdate</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#pyi_updater.client.updates.LibUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to update library files used by an application</p>
+<p>Args:</p>
+<blockquote>
+<div>data (dict): Info dict</div></blockquote>
+<dl class="method">
+<dt id="pyi_updater.client.updates.LibUpdate.download">
+<tt class="descname">download</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.updates.LibUpdate.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will download the package update that was referenced
+with check update.</p>
+<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_patch_update()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_full_update()</span></tt>.</p>
+<p>Returns:</p>
+<blockquote>
+<div><p>(bool) Meanings:</p>
+<blockquote>
+<div><p>True - Download successful</p>
+<p>False - Download failed</p>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.client.updates.LibUpdate.extract">
+<tt class="descname">extract</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.updates.LibUpdate.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will extract archived update and leave in update folder.
+If updating a lib you can take over from there. If updating
+an app this call should be followed by <tt class="xref py py-meth docutils literal"><span class="pre">restart()</span></tt> to
+complete update.</p>
+<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_extract_update()</span></tt>.</p>
+<p>Returns:</p>
+<blockquote>
+<div><p>(bool) Meanings:</p>
+<blockquote>
+<div><p>True - Install successful</p>
+<p>False - Install failed</p>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.client.updates.LibUpdate.install">
+<tt class="descname">install</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.updates.LibUpdate.install" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED! Proxy method for <a class="reference internal" href="#pyi_updater.client.updates.LibUpdate.extract" title="pyi_updater.client.updates.LibUpdate.extract"><tt class="xref py py-meth docutils literal"><span class="pre">extract()</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pyi_updater.client.updates.AppUpdate">
+<em class="property">class </em><tt class="descclassname">pyi_updater.client.updates.</tt><tt class="descname">AppUpdate</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#pyi_updater.client.updates.AppUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to update library files used by an application</p>
+<p>Args:</p>
+<blockquote>
+<div>data (dict): Info dict</div></blockquote>
+<dl class="method">
+<dt id="pyi_updater.client.updates.AppUpdate.extract_restart">
+<tt class="descname">extract_restart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.updates.AppUpdate.extract_restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will extract the update, overwrite the current app,
+then restart the app using the updated binary.</p>
+<p>On windows Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_extract_update()</span></tt> &amp;
+<tt class="xref py py-meth docutils literal"><span class="pre">_win_overwrite_app_restart()</span></tt></p>
+<p>On unix Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_extract_update()</span></tt>,
+<tt class="xref py py-meth docutils literal"><span class="pre">_overwrite_app()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_restart()</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.client.updates.AppUpdate.install_restart">
+<tt class="descname">install_restart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.updates.AppUpdate.install_restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED!  Proxy method for <a class="reference internal" href="#pyi_updater.client.updates.AppUpdate.extract_restart" title="pyi_updater.client.updates.AppUpdate.extract_restart"><tt class="xref py py-meth docutils literal"><span class="pre">extract_restart()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.client.updates.AppUpdate.restart">
+<tt class="descname">restart</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.client.updates.AppUpdate.restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will overwrite old binary with updated binary and
+restart using the updated binary. Not supported on windows.</p>
+<p>Proxy method for <tt class="xref py py-meth docutils literal"><span class="pre">_overwrite_app()</span></tt> &amp; <tt class="xref py py-meth docutils literal"><span class="pre">_restart()</span></tt>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pyi_updater.client.utils"></span><dl class="function">
+<dt id="pyi_updater.client.utils.get_mac_dot_app_dir">
+<tt class="descclassname">pyi_updater.client.utils.</tt><tt class="descname">get_mac_dot_app_dir</tt><big>(</big><em>dir_</em><big>)</big><a class="headerlink" href="#pyi_updater.client.utils.get_mac_dot_app_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns parent directory of mac .app</p>
+<p>Args:</p>
+<blockquote>
+<div><a href="#id1"><span class="problematic" id="id2">dir_</span></a> (str): Current directory</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div>(str): Parent directory of mac .app</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyi_updater.client.utils.get_highest_version">
+<tt class="descclassname">pyi_updater.client.utils.</tt><tt class="descname">get_highest_version</tt><big>(</big><em>name</em>, <em>plat</em>, <em>easy_data</em><big>)</big><a class="headerlink" href="#pyi_updater.client.utils.get_highest_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses version file and returns the highest version number.</p>
+<p>Args:</p>
+<blockquote>
+<div><p>name (str): name of file to search for updates</p>
+<p>easy_data (dict): data file to search</p>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div>(str) Highest version number</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyi_updater.client.utils.get_filename">
+<tt class="descclassname">pyi_updater.client.utils.</tt><tt class="descname">get_filename</tt><big>(</big><em>name</em>, <em>version</em>, <em>platform</em>, <em>easy_data</em><big>)</big><a class="headerlink" href="#pyi_updater.client.utils.get_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets full filename for given name &amp; version combo</p>
+<p>Args:</p>
+<blockquote>
+<div><p>name (str): name of file to get full filename for</p>
+<p>version (str): version of file to get full filename for</p>
+<p>easy_data (dict): data file to search</p>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div>(str) Filename with extension</div></blockquote>
 </dd></dl>
 
 <span class="target" id="module-pyi_updater.config"></span><dl class="class">

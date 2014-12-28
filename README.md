@@ -24,7 +24,7 @@
     $ pip install PyiUpdater --pre --process-dependency-links
 
 #### Extras:
-######S3 & SCP uploaders are available with
+######S3 & SCP upload plugins are available with
 
     $ pip install PyiUpdater[s3] --process-dependency-links
 
@@ -45,6 +45,10 @@ or
     $ pyiupdater pkg --process
 
     $ pyiupdater pkg --sign
+
+#### Upload your updates to Amazon S3
+
+    $ pyiupdater up --service s3
 
 
 ###### Using programmatically
