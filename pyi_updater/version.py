@@ -28,8 +28,8 @@ def get_build():
     total += str(a.tm_min)
     return total
 
-VERSION = (0, 13, 0, u'dev', get_build())
-# VERSION = (0, 13, 0)
+# VERSION = (0, 13, 1, u'dev', get_build())
+VERSION = (0, 13, 0)
 
 
 def _get_version(v):

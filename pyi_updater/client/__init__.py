@@ -253,9 +253,6 @@ class Client(object):
         else:
             self._write_manifest_2_filesystem(data)
 
-        if data is None:
-            return False
-
         try:
             log.debug('Data type: {}'.format(type(data)))
             self.json_data = json.loads(data)
@@ -305,7 +302,6 @@ class Client(object):
         else:
             j_data = self.json_data.copy()
         self.easy_data = EasyAccessDict(j_data)
-        return True
 
     def _setup(self):
         # Sets up required directories on end-users computer

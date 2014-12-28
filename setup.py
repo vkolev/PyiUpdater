@@ -61,7 +61,8 @@ setup(
         'blinker',
         'bsdiff4',
         'certifi',
-        'click',
+        # Will try to implement later
+        # 'click',
         'ed25519',
         'jms-utils >= 0.4.6',
         'pyinstaller >= 2.1.1dev',
