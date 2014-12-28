@@ -1,7 +1,8 @@
-Folder Structure
-================
+File & Folder Structure
+=======================
 
 Program Src Directory
+~~~~~~~~~~~~~~~~~~~~~
 
   \- pyi-data
 
@@ -11,29 +12,33 @@ Program Src Directory
 
     \- files
 
-      \- update name
+      \- most recent updates
 
-        \- version number
+    \- version.json
 
 
   \- .pyiupdater
 
     \- config.data
 
+    \- data.json
+
     \- keys
 
 
-Folder Explanations
--------------------
+File & Folder Explanations
+--------------------------
 
 New: Where you place newly compiled programs ready for signing
 
 Deploy: After updates have been signed, they'll be moved here with an updated version file
 
+Files: Holds most recent update for each file
+
+version.json: Version info for updates
+
+config.data: Config information for app
+
+data.json: PyiUpdater config information
+
 Keys: Your public and private keys
-
-Files: Every update file will be placed inside here
-
-Update Name: Where all the updates with the same name will be placed.
-
-Version Number: Updates with same name & version number but will differ in platform

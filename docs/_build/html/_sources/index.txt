@@ -17,7 +17,7 @@ Core
     Consists of the Archiver, Downloader, FileCrypt, KeyHandler, PackageHandler & Utils.
 
 CLI
-    A terminal app that provides menu driven access to meta-data grabbing, update diff's, signing & uploading of application updates. The CLI uses the core to provide this functionality.
+    Command line program to help automate the update creation process
 
 Status
 ~~~~~~

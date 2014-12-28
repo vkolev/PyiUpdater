@@ -27,6 +27,4 @@ Configuration
 ``HOST``                          (str) Remote host to connect to for server
                                   uploads
 ``USERNAME``                      (str) Username/API Key for uploading updates
-``PASSWORD``                      (str) Password/API Secret/Path to ssh private
-                                  key or uploading updates
 ================================= =========================================

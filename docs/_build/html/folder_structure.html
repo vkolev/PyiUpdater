@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Folder Structure &mdash; PyiUpdater 0.13-dev12271550 documentation</title>
+    <title>File &amp; Folder Structure &mdash; PyiUpdater 0.13-dev12271622 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.13-dev12271550',
+        VERSION:     '0.13-dev12271622',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.13-dev12271550 documentation" href="index.html" />
+    <link rel="top" title="PyiUpdater 0.13-dev12271622 documentation" href="index.html" />
     <link rel="next" title="Contributing" href="contributing.html" />
     <link rel="prev" title="Architecture" href="architecture.html" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12271550</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.13-dev12271622</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -71,7 +71,7 @@
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Folder Structure</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">File &amp; Folder Structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -89,8 +89,11 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Folder Structure</a><ul>
-<li><a class="reference internal" href="#folder-explanations">Folder Explanations</a></li>
+<li><a class="reference internal" href="#">File &amp; Folder Structure</a><ul>
+<li><a class="reference internal" href="#program-src-directory">Program Src Directory</a><ul>
+<li><a class="reference internal" href="#file-folder-explanations">File &amp; Folder Explanations</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -140,9 +143,10 @@
   <div class="row">
     <div class="col-md-12">
       
-  <div class="section" id="folder-structure">
-<h1>Folder Structure<a class="headerlink" href="#folder-structure" title="Permalink to this headline">¶</a></h1>
-<p>Program Src Directory</p>
+  <div class="section" id="file-folder-structure">
+<h1>File &amp; Folder Structure<a class="headerlink" href="#file-folder-structure" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="program-src-directory">
+<h2>Program Src Directory<a class="headerlink" href="#program-src-directory" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><p>- pyi-data</p>
 <blockquote>
@@ -150,25 +154,26 @@
 <p>- deploy</p>
 <p>- files</p>
 <blockquote>
-<div><p>- update name</p>
-<blockquote>
-<div>- version number</div></blockquote>
-</div></blockquote>
+<div>- most recent updates</div></blockquote>
+<p>- version.json</p>
 </div></blockquote>
 <p>- .pyiupdater</p>
 <blockquote>
 <div><p>- config.data</p>
+<p>- data.json</p>
 <p>- keys</p>
 </div></blockquote>
 </div></blockquote>
-<div class="section" id="folder-explanations">
-<h2>Folder Explanations<a class="headerlink" href="#folder-explanations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="file-folder-explanations">
+<h3>File &amp; Folder Explanations<a class="headerlink" href="#file-folder-explanations" title="Permalink to this headline">¶</a></h3>
 <p>New: Where you place newly compiled programs ready for signing</p>
 <p>Deploy: After updates have been signed, they&#8217;ll be moved here with an updated version file</p>
+<p>Files: Holds most recent update for each file</p>
+<p>version.json: Version info for updates</p>
+<p>config.data: Config information for app</p>
+<p>data.json: PyiUpdater config information</p>
 <p>Keys: Your public and private keys</p>
-<p>Files: Every update file will be placed inside here</p>
-<p>Update Name: Where all the updates with the same name will be placed.</p>
-<p>Version Number: Updates with same name &amp; version number but will differ in platform</p>
+</div>
 </div>
 </div>
 

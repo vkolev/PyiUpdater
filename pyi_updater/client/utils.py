@@ -21,18 +21,18 @@ import os
 log = logging.getLogger(__name__)
 
 
-def get_mac_dot_app_dir(dir_):
+def get_mac_dot_app_dir(directory):
     """Returns parent directory of mac .app
 
     Args:
 
-       dir_ (str): Current directory
+       directory (str): Current directory
 
     Returns:
 
        (str): Parent directory of mac .app
     """
-    return os.path.dirname(os.path.dirname(os.path.dirname(dir_)))
+    return os.path.dirname(os.path.dirname(os.path.dirname(directory)))
 
 
 def get_highest_version(name, plat, easy_data):
