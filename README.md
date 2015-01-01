@@ -1,13 +1,13 @@
-[![PyPI version](https://badge.fury.io/py/PyiUpdater.svg)](http://badge.fury.io/py/PyiUpdater) [![Build Status](https://travis-ci.org/JohnyMoSwag/PyiUpdater.svg?branch=master)](https://travis-ci.org/JohnyMoSwag/PyiUpdater) [![Coverage Status](https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.png?branch=master)](https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master)
+[![PyPI version](https://badge.fury.io/py/PyiUpdater.svg)](http://badge.fury.io/py/PyiUpdater) [![Build Status](https://circleci.com/gh/DigitalSapphire/PyiUpdater.svg?style=shield&circle-token=:circle-token)](https://travis-ci.org/JohnyMoSwag/PyiUpdater) [![Coverage Status](https://coveralls.io/repos/DigitalSapphire/PyiUpdater/badge.png?branch=master)](https://coveralls.io/r/DigitalSapphire/PyiUpdater?branch=master)
 
 # PyiUpdater
 ##### An update framework for managing, signing & uploading your app updates
-[Documentation](http://pyiupdater.jmsapps.net)
+[Documentation](http://pyiupdater.digitalsapphire.io)
 
-[Dev Documentation](http://pyiupdater-dev.jmsapps.net)
+[Dev Documentation](http://pyiupdater-dev.digitalsapphire.io)
 
 
-[Full changelog](https://github.com/JohnyMoSwag/PyiUpdater/blob/master/changelog.txt)
+[Full changelog](https://github.com/DigitalSapphire/PyiUpdater/blob/master/changelog.txt)
 
 #### Supported Freezers
 * [Pyinstaller](http://www.pyinstaller.org) >= 2.1.1
@@ -52,16 +52,16 @@ or
 
 
 ###### Using programmatically
-######[Click Here To See Example Work Flow](https://github.com/JohnyMoSwag/PyiUpdater/tree/master/demos "Example Usage")
+######[Click Here To See Example Work Flow](https://github.com/DigitalSapphire/PyiUpdater/tree/master/demos "Example Usage")
 
 
 ## Write your own upload plugin
 ###### Use pyiu.uploaders for your plugin namespace
-[Plugin wiki](https://github.com/JohnyMoSwag/PyiUpdater/wiki/Make-an-upload-plugin "Plugin wiki")
+[Plugin wiki](https://github.com/DigitalSapphire/PyiUpdater/wiki/Make-an-upload-plugin "Plugin wiki")
 
 #### Examples available
-###### [S3 Plugin](https://github.com/JohnyMoSwag/pyiupdater-s3-plugin "S3 Plugin")
-###### [SCP Plugin](https://github.com/JohnyMoSwag/pyiupdater-scp-plugin "SCP Plugin")
+###### [S3 Plugin](https://github.com/DigitalSapphire/pyiupdater-s3-plugin "S3 Plugin")
+###### [SCP Plugin](https://github.com/DigitalSapphire/pyiupdater-scp-plugin "SCP Plugin")
 
 ## Support Archive Formats
 ###### Zip for Windows and GZip for Mac & Linux.  Constraints being on patch size.
