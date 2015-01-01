@@ -18,6 +18,7 @@
 import logging
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -52,94 +53,7 @@ CWD = os.getcwd()
 loader = Loader()
 
 
-def check_repo():
-    if not os.path.exists(u'.pyiupdater'):
-        sys.exit('Not a PyiUpdater repo: Must init first.')
-
-
-def main(args=None):
-    if args is None:
-        args = sys.argv[1:]
-    args, pyi_args = parser.parse_known_args(args)
-    cmd = args.command
-    if cmd == u'build':
-        builder(args, pyi_args)
-    elif cmd == u'init':
-        setup()
-    elif cmd == u'pkg':
-        process(args)
-    elif cmd == u'up':
-        upload(args)
-    elif cmd == u'version':
-        print(u'PyiUpdater {}'.format(get_version()))
-    else:
-        sys.exit(u'Not Implemented')
-
-
-def process(args):
-    check_repo()
-    pyiu = PyiUpdater(loader.load_config())
-    if args.process is False and args.sign is False:
-        sys.exit(u'You must specify a command')
-
-    if args.process is True:
-        print(u'Processing packages...\n')
-        pyiu.process_packages()
-        print(u'Processing packages complete\n')
-    if args.sign is True:
-        print(u'Signing packages...\n')
-        pyiu.sign_update()
-        print(u'Signing packages complete\n')
-
-
-def setup():
-    if not os.path.exists(os.path.join(u'.pyiupdater', u'config.data')):
-        config = initial_setup(SetupConfig())
-        print(u'\nCreating pyi-data dir...\n')
-        pyiu = PyiUpdater(config)
-        pyiu.setup()
-        print(u'\nMaking signing keys...')
-        pyiu.make_keys()
-        config.PUBLIC_KEY = pyiu.get_public_key()
-        loader.save_config(config)
-        print(u'\nSetup complete')
-    else:
-        sys.exit(u'Not an empty PyiUpdater repository')
-
-
-def upload(args):
-    check_repo()
-    upload_service = args.service
-    if upload_service is None:
-        sys.exit('Must provide service name')
-    password = os.environ.get('PYIUPDATER_PASS')
-    if password is None:
-        sys.exit('You need to set PYIUPDATER_PASS env var')
-    pyiu = PyiUpdater(loader.load_config())
-
-    class Pass(object):
-        PASSWORD = password
-
-    pyiu.update_config(Pass())
-
-    try:
-        pyiu.set_uploader(upload_service)
-    except UploaderError:
-        mgr = stevedore.ExtensionManager(u'pyiupdater.plugins.uploaders')
-        plugin_names = mgr.names()
-        log.debug(u'Plugin names: {}'.format(plugin_names))
-        sys.exit(u'Invalid Uploader\n\nAvailable options:\n'
-                 u'{}'.format(plugin_names))
-    try:
-        pyiu.upload()
-    except Exception as e:
-        msg = (u'Looks like you forgot to add USERNAME '
-               'and/or REMOTE_DIR')
-        log.debug(str(e), exc_info=True)
-        sys.exit(msg)
-
-
-def builder(args, pyi_args):
+def build(args, pyi_args):
     check_repo()
     pyi_dir = os.path.join(os.getcwd(), u'pyi-data')
     new_dir = os.path.join(pyi_dir, u'new')
@@ -237,6 +151,81 @@ def builder(args, pyi_args):
     print(u'Build finished in {:.2f} seconds.'.format(finished))
 
 
+def clean():
+    if os.path.exists(u'.pyiupdater'):
+        shutil.rmtree(u'.pyi_updater', ignore_errors=True)
+    if os.path.exists(u'pyi-data'):
+        shutil.rmtree(u'pyi-data', ignore_errors=True)
+
+
+def init():
+    if not os.path.exists(os.path.join(u'.pyiupdater', u'config.data')):
+        config = initial_setup(SetupConfig())
+        print(u'\nCreating pyi-data dir...\n')
+        pyiu = PyiUpdater(config)
+        pyiu.setup()
+        print(u'\nMaking signing keys...')
+        pyiu.make_keys()
+        config.PUBLIC_KEY = pyiu.get_public_key()
+        loader.save_config(config)
+        print(u'\nSetup complete')
+    else:
+        sys.exit(u'Not an empty PyiUpdater repository')
+
+
+def pkg(args):
+    check_repo()
+    pyiu = PyiUpdater(loader.load_config())
+    if args.process is False and args.sign is False:
+        sys.exit(u'You must specify a command')
+
+    if args.process is True:
+        print(u'Processing packages...\n')
+        pyiu.process_packages()
+        print(u'Processing packages complete\n')
+    if args.sign is True:
+        print(u'Signing packages...\n')
+        pyiu.sign_update()
+        print(u'Signing packages complete\n')
+
+
+def upload(args):
+    check_repo()
+    upload_service = args.service
+    if upload_service is None:
+        sys.exit('Must provide service name')
+    password = os.environ.get('PYIUPDATER_PASS')
+    if password is None:
+        sys.exit('You need to set PYIUPDATER_PASS env var')
+    pyiu = PyiUpdater(loader.load_config())
+
+    class Pass(object):
+        PASSWORD = password
+
+    pyiu.update_config(Pass())
+
+    try:
+        pyiu.set_uploader(upload_service)
+    except UploaderError:
+        mgr = stevedore.ExtensionManager(u'pyiupdater.plugins.uploaders')
+        plugin_names = mgr.names()
+        log.debug(u'Plugin names: {}'.format(plugin_names))
+        sys.exit(u'Invalid Uploader\n\nAvailable options:\n'
+                 u'{}'.format(plugin_names))
+    try:
+        pyiu.upload()
+    except Exception as e:
+        msg = (u'Looks like you forgot to add USERNAME '
+               'and/or REMOTE_DIR')
+        log.debug(str(e), exc_info=True)
+        sys.exit(msg)
+
+
+def check_repo():
+    if not os.path.exists(u'.pyiupdater'):
+        sys.exit('Not a PyiUpdater repo: Must init first.')
+
+
 def check_version(version):
     match = re.match(u'(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)',
                      version)
@@ -244,6 +233,27 @@ def check_version(version):
         return False
     else:
         return True
+
+
+def main(args=None):
+    if args is None:
+        args = sys.argv[1:]
+    args, pyi_args = parser.parse_known_args(args)
+    cmd = args.command
+    if cmd == u'build':
+        build(args, pyi_args)
+    elif cmd == u'clean':
+        clean()
+    elif cmd == u'init':
+        init()
+    elif cmd == u'pkg':
+        pkg(args)
+    elif cmd == u'up':
+        upload(args)
+    elif cmd == u'version':
+        print(u'PyiUpdater {}'.format(get_version()))
+    else:
+        sys.exit(u'Not Implemented')
 
 
 if __name__ == u'__main__':

@@ -82,6 +82,9 @@ build_parser.add_argument(u'-k', u'--keep', dest=u'keep', action=u'store_true',
                           help='Won\'t delete update after archiving')
 
 
+clean_parser = subparsers.add_parser(u'clean', help=u'* WARNING * removes all '
+                                     u'traces of pyiupdater')
+
 init_parser = subparsers.add_parser(u'init', help=u'initializes a '
                                     u'src directory')
 
