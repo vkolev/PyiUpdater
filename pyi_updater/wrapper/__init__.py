@@ -15,7 +15,6 @@
 #--------------------------------------------------------------------------
 
 
-import argparse
 import logging
 import os
 import re
@@ -40,6 +39,7 @@ from pyi_updater.config import Loader, SetupConfig
 from pyi_updater.exceptions import UploaderError
 from pyi_updater.utils import initial_setup, make_archive
 from pyi_updater.version import get_version
+from pyi_updater.wrapper.options import parser
 
 if os.path.exists(os.path.join(app_cwd, u'pyi.log')):
     ch = logging.FileHandler(os.path.join(app_cwd, u'pyi.log'))
@@ -51,100 +51,15 @@ start = time.time()
 CWD = os.getcwd()
 loader = Loader()
 
-parser = argparse.ArgumentParser(usage=u'%(prog)s')
-subparsers = parser.add_subparsers(help=u'commands', dest=u'command')
-
-build_parser = subparsers.add_parser(u'build', help=u'compiles script',
-                                     usage=u'%(prog)s <script> [opts]')
-# Start of args override
-# This will be set to the pyi-data/new directory.
-# When we make the final compressed archive we will look
-# for an exe in that dir.
-build_parser.add_argument(u'-o', help=argparse.SUPPRESS)
-build_parser.add_argument(u'--distpath', help=argparse.SUPPRESS)
-
-# Will be set to .pyiupdater/spec/
-# Trying to keep root dir clean
-build_parser.add_argument(u'--specpath', help=argparse.SUPPRESS)
-
-# Will be set to .pyiupdater/build
-# Trying to keep root dir clean
-build_parser.add_argument(u'--workpath', help=argparse.SUPPRESS)
-
-# Will be set to platform name i.e. mac, win, nix, nix64, arm\
-# When archiving we will change the name to the value passed to
-# --app-name
-build_parser.add_argument(u'-n', help=argparse.SUPPRESS)
-build_parser.add_argument(u'--name', help=argparse.SUPPRESS)
-
-# Just capturing these argument.
-# PyiUpdater only supports onefile mode at the moment
-build_parser.add_argument(u'-D', action=u"store_true",
-                          help=argparse.SUPPRESS)
-build_parser.add_argument(u'--onedir', action=u"store_true",
-                          help=argparse.SUPPRESS)
-
-# Just capturing these argument.
-# Will be added later to pyinstaller build command
-build_parser.add_argument(u'-F', action=u"store_true",
-                          help=argparse.SUPPRESS)
-build_parser.add_argument(u'--onefile', action=u"store_true",
-                          help=argparse.SUPPRESS)
-
-# Just capturing these arguments
-# ToDo: Take a closer look at this switch
-build_parser.add_argument(u'-c', action=u"store_true",
-                          help=argparse.SUPPRESS)
-build_parser.add_argument(u'--console', action=u"store_true",
-                          help=argparse.SUPPRESS)
-build_parser.add_argument(u'--nowindowed', action=u"store_true",
-                          help=argparse.SUPPRESS)
-
-# Potentially harmful for cygwin on windows
-# ToDo: Maybe do a check for cygwin and disable if cygwin is true
-build_parser.add_argument(u'-s', action=u"store_true",
-                          help=argparse.SUPPRESS)
-build_parser.add_argument(u'--strip', action=u"store_true",
-                          help=argparse.SUPPRESS)
-# End of args override
-
-# Used by PyiWrapper
-build_parser.add_argument(u'--app-name', dest=u"app_name", required=True)
-build_parser.add_argument(u'--app-version', dest=u"app_version", required=True)
-build_parser.add_argument(u'-k', u'--keep', dest=u'keep', action=u'store_true',
-                          help='Won\'t delete update after archiving')
-
-
-init_parser = subparsers.add_parser(u'init', help=u'initializes a '
-                                    u'src directory')
-
-keys_parser = subparsers.add_parser(u'keys', help=u'Manage signing keys: '
-                                    u'Not Implemented')
-
-
-package_parser = subparsers.add_parser(u'pkg', help=u'Manages creation of '
-                                       u'file metadata & signing')
-package_parser.add_argument(u'-p', u'--process',
-                            help=u'Adds update metadata to version file',
-                            action=u'store_true', dest=u'process')
-
-package_parser.add_argument(u'-s', u'--sign', help=u'Sign version file',
-                            action=u'store_true', dest=u'sign')
-
-upload_parser = subparsers.add_parser(u'up', help=u'Uploads files')
-upload_parser.add_argument(u'-s', u'--service', help=u'Where '
-                           u'updates are stored', dest=u'service')
-
-version_parser = subparsers.add_parser(u'version', help=u'Programs version')
-
 
 def check_repo():
     if not os.path.exists(u'.pyiupdater'):
         sys.exit('Not a PyiUpdater repo: Must init first.')
 
 
-def main():
-    args = sys.argv[1:]
+def main(args=None):
+    if args is None:
+        args = sys.argv[1:]
     args, pyi_args = parser.parse_known_args(args)
     cmd = args.command
     if cmd == u'build':

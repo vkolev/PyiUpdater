@@ -74,7 +74,7 @@ setup(
     packages=find_packages(),
     entry_points="""
     [console_scripts]
-    pyiupdater=pyi_updater.pyiwrapper:main
+    pyiupdater=pyi_updater.wrapper:main
     """,
     classifiers=[
         'Development Status :: 4 - Beta',
