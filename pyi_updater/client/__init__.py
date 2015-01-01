@@ -24,6 +24,7 @@ from appdirs import user_cache_dir
 import certifi
 import ed25519
 from jms_utils import FROZEN
+from jms_utils.logger import log_format_string
 from jms_utils.paths import app_cwd, ChDir
 from jms_utils.system import get_system
 import six
@@ -38,6 +39,12 @@ from pyi_updater.utils import (EasyAccessDict,
                                vstr_2_vtuple)
 
 log = logging.getLogger(__name__)
+
+if os.path.exists(os.path.join(app_cwd, u'pyiu.log')):
+    ch = logging.FileHandler(os.path.join(app_cwd, u'pyiu.log'))
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(log_format_string())
+    log.addHandler(ch)
 
 
 class Client(object):

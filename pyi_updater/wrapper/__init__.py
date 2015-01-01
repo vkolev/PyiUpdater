@@ -24,7 +24,7 @@ import sys
 import time
 
 from jms_utils.logger import log_format_string
-from jms_utils.paths import app_cwd, ChDir
+from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 import stevedore
 
@@ -42,8 +42,8 @@ from pyi_updater.utils import initial_setup, make_archive
 from pyi_updater.version import get_version
 from pyi_updater.wrapper.options import parser
 
-if os.path.exists(os.path.join(app_cwd, u'pyi.log')):
-    ch = logging.FileHandler(os.path.join(app_cwd, u'pyi.log'))
+if os.path.exists(os.path.join(os.getcwd(), u'pyiu.log')):
+    ch = logging.FileHandler(os.path.join(os.getcwd(), u'pyiu.log'))
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(log_format_string())
     log.addHandler(ch)
@@ -62,6 +62,7 @@ def build(args, pyi_args):
     work_dir = os.path.join(build_dir, u'work')
     for d in [build_dir, spec_dir, work_dir, pyi_dir, new_dir]:
         if not os.path.exists(d):
+            log.debug(u'Creating directory: {}'.format(d))
             os.mkdir(d)
 
     if check_version(args.app_version) is False:
@@ -75,22 +76,27 @@ def build(args, pyi_args):
     app_type = None
     for p in pyi_args:
         if p.endswith(u'.py'):
+            log.debug(u'Building from python source file')
             app_type = u'script'
             break
         elif p.endswith(u'.spec'):
+            log.debug(u'Building from spec file: {}'.format(p))
             spec_file = p
             app_type = u'spec'
             break
     else:
+        log.debug(u'No accepted files passed to builder')
         sys.exit(u'Must pass a python script or spec file')
 
     temp_name = get_system()
     if app_type == u'spec':
         if temp_name == u'win':
+            log.debug(u'On windows: Adding .exe extension')
             temp_name += u'.exe'
         fix = u"\t\t\t\t\tname='{}',\n".format(temp_name)
 
         # Sanitizing spec file
+        log.debug(u'Opening spec file')
         with open(spec_file, u'r') as f:
             spec_data = f.readlines()
 
@@ -102,16 +108,20 @@ def build(args, pyi_args):
                 regex = re.compile('name=(?P<id>(\'|").*(\'|")),')
                 match = regex.search(s)
                 name = match.groupdict()['id']
+                log.debug(u'App name in spec file: {}'.format(name))
                 new_spec.append(fix)
             elif u'coll' in s or u'COLLECT' in s:
+                log.debug(u'One dir mode not supported')
                 sys.exit(u'Onedir mode is not supported')
             else:
                 new_spec.append(s)
+        log.debug(u'Writing spec file to disk')
         with open(spec_file, u'w') as f:
             for n in new_spec:
                 f.write(n)
         # End spec file sanitation
     else:
+        log.debug(u'Adding params to command')
         pyi_args.append(u'-F')
         pyi_args.append(u'--name={}'.format(temp_name))
         pyi_args.append(u'--specpath={}'.format(spec_dir))
@@ -121,9 +131,11 @@ def build(args, pyi_args):
     pyi_args.append(u'-y')
 
     cmds = [u'pyinstaller'] + pyi_args
+    log.debug(u'Command: {}'.format(cmds))
     exit_code = subprocess.call(cmds)
 
     if exit_code != 0:
+        log.debug(u'Build failed with status: {}'.format(exit_code))
         sys.exit(u'Build Failed')
 
     # Now archive the file
@@ -137,12 +149,12 @@ def build(args, pyi_args):
         else:
             app_name = temp_name
             name = args.app_name
-
+        log.debug(u'Appname: {}'.format(app_name))
         version = args.app_version
 
         # Time for some archive creation!
         file_name = make_archive(name, version, app_name)
-
+        log.debug(u'Archive name: {}'.format(file_name))
         if args.keep is False:
             if os.path.exists(temp_name):
                 os.remove(temp_name)
