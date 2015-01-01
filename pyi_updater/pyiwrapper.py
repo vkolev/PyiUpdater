@@ -52,28 +52,10 @@ CWD = os.getcwd()
 loader = Loader()
 
 parser = argparse.ArgumentParser(usage=u'%(prog)s')
-
 subparsers = parser.add_subparsers(help=u'commands', dest=u'command')
 
 build_parser = subparsers.add_parser(u'build', help=u'compiles script',
                                      usage=u'%(prog)s <script> [opts]')
-
-init_parser = subparsers.add_parser(u'init', help=u'initializes a '
-                                    u'src directory')
-
-keys_parser = subparsers.add_parser(u'keys', help=u'Manage signing keys: '
-                                    u'Not Implemented')
-
-
-package_parser = subparsers.add_parser(u'pkg', help=u'Manages creation of '
-                                       u'file metadata & signing')
-
-upload_parser = subparsers.add_parser(u'up', help=u'Uploads files')
-
-
-version_parser = subparsers.add_parser(u'version', help=u'Programs version')
-
-
 # Start of args override
 # This will be set to the pyi-data/new directory.
 # When we make the final compressed archive we will look
@@ -129,8 +111,19 @@ build_parser.add_argument(u'--strip', action=u"store_true",
 # Used by PyiWrapper
 build_parser.add_argument(u'--app-name', dest=u"app_name", required=True)
 build_parser.add_argument(u'--app-version', dest=u"app_version", required=True)
+build_parser.add_argument(u'-k', u'--keep', dest=u'keep', action=u'store_true',
+                          help='Won\'t delete update after archiving')
 
 
+init_parser = subparsers.add_parser(u'init', help=u'initializes a '
+                                    u'src directory')
+
+keys_parser = subparsers.add_parser(u'keys', help=u'Manage signing keys: '
+                                    u'Not Implemented')
+
+
+package_parser = subparsers.add_parser(u'pkg', help=u'Manages creation of '
+                                       u'file metadata & signing')
 package_parser.add_argument(u'-p', u'--process',
                             help=u'Adds update metadata to version file',
                             action=u'store_true', dest=u'process')
@@ -138,8 +131,11 @@ package_parser.add_argument(u'-p', u'--process',
 package_parser.add_argument(u'-s', u'--sign', help=u'Sign version file',
                             action=u'store_true', dest=u'sign')
 
+upload_parser = subparsers.add_parser(u'up', help=u'Uploads files')
 upload_parser.add_argument(u'-s', u'--service', help=u'Where '
                            u'updates are stored', dest=u'service')
+
+version_parser = subparsers.add_parser(u'version', help=u'Programs version')
 
 
 def check_repo():
@@ -155,10 +151,10 @@ def main():
         builder(args, pyi_args)
     elif cmd == u'init':
         setup()
-    elif cmd == u'up':
-        upload(args)
     elif cmd == u'pkg':
         process(args)
+    elif cmd == u'up':
+        upload(args)
     elif cmd == u'version':
         print(u'PyiUpdater {}'.format(get_version()))
     else:
@@ -235,14 +231,9 @@ def builder(args, pyi_args):
     build_dir = os.path.join(os.getcwd(), u'.pyiupdater')
     spec_dir = os.path.join(build_dir, u'spec')
     work_dir = os.path.join(build_dir, u'work')
-    for d in [build_dir, spec_dir, work_dir]:
+    for d in [build_dir, spec_dir, work_dir, pyi_dir, new_dir]:
         if not os.path.exists(d):
             os.mkdir(d)
-
-    if not os.path.exists(pyi_dir):
-        sys.exit(u'pyi-data folder not found')
-    if not os.path.exists(new_dir):
-        sys.exit(u'pyi-data/new folder not found')
 
     if check_version(args.app_version) is False:
         sys.exit(u"""Error: version # needs to be in the form of "0.10.0"
@@ -264,8 +255,11 @@ def builder(args, pyi_args):
     else:
         sys.exit(u'Must pass a python script or spec file')
 
+    temp_name = get_system()
     if app_type == u'spec':
-        fix = u"\t\t\t\t\tname='{}',".format(get_system())
+        if temp_name == u'win':
+            temp_name += u'.exe'
+        fix = u"\t\t\t\t\tname='{}',\n".format(temp_name)
 
         # Sanitizing spec file
         with open(spec_file, u'r') as f:
@@ -276,6 +270,9 @@ def builder(args, pyi_args):
             # Will replace name with system arch
             # Used for later archiving
             if u'name=' in s:
+                regex = re.compile('name=(?P<id>(\'|").*(\'|")),')
+                match = regex.search(s)
+                name = match.groupdict()['id']
                 new_spec.append(fix)
             elif u'coll' in s or u'COLLECT' in s:
                 sys.exit(u'Onedir mode is not supported')
@@ -287,7 +284,7 @@ def builder(args, pyi_args):
         # End spec file sanitation
     else:
         pyi_args.append(u'-F')
-        pyi_args.append(u'--name={}'.format(get_system()))
+        pyi_args.append(u'--name={}'.format(temp_name))
         pyi_args.append(u'--specpath={}'.format(spec_dir))
 
     pyi_args.append(u'--distpath={}'.format(new_dir))
@@ -302,17 +299,24 @@ def builder(args, pyi_args):
 
     # Now archive the file
     with ChDir(new_dir):
-        sys_name = get_system()
-        if os.path.exists(sys_name + u'.exe'):
-            sys_name += u'.exe'
-        elif os.path.exists(sys_name + u'.app'):
-            os.remove(sys_name)
-            sys_name += u'.app'
-        name = args.app_name
+        if os.path.exists(temp_name + u'.app'):
+            app_name = temp_name + u'.app'
+            name = args.app_name
+        elif os.path.exists(temp_name + u'.exe'):
+            app_name = temp_name + u'.exe'
+            name = args.app_name
+        else:
+            app_name = temp_name
+            name = args.app_name
+
         version = args.app_version
 
         # Time for some archive creation!
-        file_name = make_archive(name, version, sys_name)
+        file_name = make_archive(name, version, app_name)
+
+        if args.keep is False:
+            if os.path.exists(temp_name):
+                os.remove(temp_name)
     print(u'\n{} has been placed in your new folder\n'.format(file_name))
     finished = time.time() - start
     print(u'Build finished in {:.2f} seconds.'.format(finished))

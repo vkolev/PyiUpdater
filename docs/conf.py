@@ -38,6 +38,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
+    'rst2pdf.pdfbuilder',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -54,7 +55,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'PyiUpdater'
-copyright = u'2014, JohnyMoSwag'
+copyright = u'2014, Digital Sapphire'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -199,9 +200,12 @@ html_show_sphinx = False
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'PyiUpdaterdoc'
 
+# -- Output for PDF ------------------------------------------------------
+pdf_doucments = [
+    ('index', u'PyiUpdater', u'PyiUpdater Documentation', u'Digital Sapphire'),
+    ]
 
 # -- Options for LaTeX output ---------------------------------------------
-
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
 #'papersize': 'letterpaper',
@@ -217,8 +221,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'PyiUpdater.tex', u'PyiUpdater Documentation',
-   u'JohnyMoSwag', 'manual'),
+  (u'index', u'PyiUpdater.tex', u'PyiUpdater Documentation',
+   u'Digital Sapphire', u'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -248,7 +252,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'pyi_updater', u'PyiUpdater Documentation',
-     [u'JohnyMoSwag'], 1)
+     [u'Digital Sapphire'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -262,7 +266,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'PyiUpdater', u'PyiUpdater Documentation',
-   u'JohnyMoSwag', 'PyiUpdater', 'Python app update framework.',
+   u'Digital Sapphire', 'PyiUpdater', 'Python app update framework.',
    'Miscellaneous'),
 ]
 
@@ -283,9 +287,9 @@ texinfo_documents = [
 
 # Bibliographic Dublin Core info.
 epub_title = u'PyiUpdater'
-epub_author = u'JohnyMoSwag'
-epub_publisher = u'JohnyMoSwag'
-epub_copyright = u'2014, JohnyMoSwag'
+epub_author = u'Digital Sapphire'
+epub_publisher = u'Digital Sapphire'
+epub_copyright = u'2014, Digital Sapphire'
 
 # The basename for the epub file. It defaults to the project name.
 #epub_basename = u'Not So TUF'
