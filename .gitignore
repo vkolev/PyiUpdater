@@ -40,9 +40,13 @@ src/PyiUpdater.egg-info/top_level.txt
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 .coverage*
 
 pyi_updater/uploader/.DS_Store
+=======
+.coverage.Swag-Pro.*
+>>>>>>> parent of fa0d4f2... updated tests for circleci
 =======
 .coverage.Swag-Pro.*
 >>>>>>> parent of fa0d4f2... updated tests for circleci
