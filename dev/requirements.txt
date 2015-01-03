@@ -7,7 +7,6 @@ psutil
 pytest
 pytest-cov
 pytest-xdist
-python-coveralls
 rst2pdf
 sphinx
 sphinx-better-theme

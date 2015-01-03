@@ -1,13 +1,10 @@
 import json
 import os
 import shutil
-import sys
 
 import ed25519
 from jms_utils.paths import ChDir
 from nose.tools import with_setup
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from pyi_updater import PyiUpdaterConfig
 from pyi_updater.key_handler import KeyHandler

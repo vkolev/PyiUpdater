@@ -1,10 +1,7 @@
-import os
-import sys
-
 from nose.tools import with_setup
-from jms_utils.paths import ChDir
+import os
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+from jms_utils.paths import ChDir
 
 from pyi_updater.downloader import FileDownloader
 

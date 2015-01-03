@@ -6,11 +6,11 @@ machine:
 dependencies:
     pre:
         - make deps-dev-upgrade
-        - pip install python-coveralls pytest-cov pytest-xdist
+        - pip install coveralls pytest-cov pytest-xdist
 
 # command to run tests
 test:
     override:
-        - py.test -v --cov pyi_updater --cov-report term-missing
+        - coverage run setup.py ctest
     post:
         - coveralls
