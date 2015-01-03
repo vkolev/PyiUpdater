@@ -1,6 +1,6 @@
 asciinema
 coverage
-line_profiler==1.0b3
+line_profiler==1.0
 memory_profiler
 nose
 psutil
