@@ -2,7 +2,6 @@
              ***  ToDo's ***
 =========================================
 # PyiUpdater
-  - Move config data to .pyiupdater folder
   - Clean up version to tuple and vice versa
 
 # KeyHandler
