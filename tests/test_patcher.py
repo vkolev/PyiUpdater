@@ -1,9 +1,12 @@
 import json
 import os
 import shutil
+import sys
 import urllib2
 
 import pytest
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from pyi_updater.patcher import Patcher
 

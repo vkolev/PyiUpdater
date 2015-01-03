@@ -1,9 +1,12 @@
-from nose import with_setup
-from nose.tools import raises
 import os
 import shutil
+import sys
 
 from jms_utils.paths import ChDir
+from nose import with_setup
+from nose.tools import raises
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from pyi_updater import PyiUpdaterConfig
 from pyi_updater.exceptions import PackageHandlerError

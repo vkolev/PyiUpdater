@@ -39,3 +39,5 @@ src/PyiUpdater.egg-info/requires.txt
 src/PyiUpdater.egg-info/top_level.txt
 
 .coverage.Swag-Pro.*
+
+pyi_updater/uploader/.DS_Store

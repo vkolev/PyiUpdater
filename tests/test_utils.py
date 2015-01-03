@@ -1,8 +1,11 @@
 import os
+import sys
 
 from jms_utils import FROZEN
 from jms_utils.system import get_system
 from nose import with_setup
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from pyi_updater.utils import (ask_yes_no,
                                get_hash,
