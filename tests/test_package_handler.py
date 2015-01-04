@@ -8,7 +8,6 @@ from jms_utils.paths import ChDir
 from pyi_updater import PyiUpdaterConfig
 from pyi_updater.exceptions import PackageHandlerError
 from pyi_updater.package_handler import PackageHandler
-from pyi_updater.utils import count_contents
 
 from tconfig import TConfig
 
@@ -58,8 +57,3 @@ def setup_dir():
 def teardown_dir():
     if os.path.exists('count-test'):
         shutil.rmtree('count-test', ignore_errors=True)
-
-
-@with_setup(setup_dir, teardown_dir)
-def test_count_contents():
-    assert count_contents('count-test') == 4

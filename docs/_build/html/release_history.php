@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release History &mdash; PyiUpdater 0.14-dev141210 documentation</title>
+    <title>Release History &mdash; PyiUpdater 0.14-dev141453 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14-dev141210',
+        VERSION:     '0.14-dev141453',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.14-dev141210 documentation" href="index.php" />
+    <link rel="top" title="PyiUpdater 0.14-dev141453 documentation" href="index.php" />
     <link rel="prev" title="License" href="license.php" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="index.php">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.14-dev141210</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.14-dev141453</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -192,14 +192,11 @@
 </li>
 <li><p class="first">clean command: can remove PyiUpdater data &amp; support file from root dir</p>
 </li>
-<li><p class="first">Downloading gzip version manifest</p>
-</li>
 </ul>
 </li>
 <li><p class="first">PackageHandlder</p>
 <ul class="simple">
 <li>Added migration command to new key system</li>
-<li>Creating gzip version manifest</li>
 </ul>
 </li>
 </ul>

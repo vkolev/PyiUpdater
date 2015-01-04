@@ -29,6 +29,7 @@ except ImportError:
 
 from pyi_updater.exceptions import PackageHandlerError
 from pyi_updater.package_handler.package import Package, Patch
+from pyi_updater import settings
 from pyi_updater.utils import (EasyAccessDict,
                                get_package_hashes as gph,
                                lazy_import,
@@ -74,13 +75,17 @@ class PackageHandler(object):
             self.patch_support = False
         self.data_dir = obj.get(u'DEV_DATA_DIR')
         if self.data_dir is not None:
-            self.data_dir = os.path.join(self.data_dir, u'pyi-data')
+            self.data_dir = os.path.join(self.data_dir,
+                                         settings.USER_DATA_FOLDER)
             self.files_dir = os.path.join(self.data_dir, u'files')
             self.deploy_dir = os.path.join(self.data_dir, u'deploy')
             self.new_dir = os.path.join(self.data_dir, u'new')
             self.config_dir = os.path.join(os.path.dirname(self.data_dir),
-                                           u'.pyiupdater')
-            self.config_file = os.path.join(self.config_dir, 'data.json')
+                                           settings.CONFIG_DATA_FOLDER)
+            self.config_file = os.path.join(self.config_dir,
+                                            settings.CONFIG_FILE)
+            self.version_data = os.path.join(self.config_dir,
+                                             settings.VERSION_FILE_DB)
             self.config = None
         else:
             log.debug('DEV_DATA_DIR is None. Setup Failed')
@@ -150,9 +155,8 @@ class PackageHandler(object):
         # If no version file is found then one is created.
         json_data = None
         log.debug(u'Looking for version file...')
-        version_file = os.path.join(self.data_dir, u'version.json')
-        if os.path.exists(version_file):
-            with open(version_file) as f:
+        if os.path.exists(self.version_data):
+            with open(self.version_data, u'r') as f:
                 log.debug(u'Loading version file...')
                 try:
                     json_data = json.loads(f.read())
@@ -161,11 +165,11 @@ class PackageHandler(object):
                     log.error(str(err))
 
             if json_data is not None:
-                updates = json_data.get(u'updates')
+                updates = json_data.get(settings.UPDATES_KEY)
                 log.debug(u'Checking for valid data in version file...')
                 if updates is None:
                     log.debug(u'Invalid data in version file...')
-                    json_data[u'updates'] = {}
+                    json_data[settings.UPDATES_KEY] = {}
                     log.debug(u'Updated version file format')
 
         if json_data is None:
@@ -330,7 +334,8 @@ class PackageHandler(object):
                 info[u'patch_name'] = patch_name
                 info[u'patch_hash'] = patch_hash
 
-            version_key = '{}*{}*{}'.format(u'updates', p.name, p.version)
+            version_key = '{}*{}*{}'.format(settings.UPDATES_KEY,
+                                            p.name, p.version)
             version = easy_dict.get(version_key)
             log.debug(u'Package info {}'.format(version))
 
@@ -338,19 +343,20 @@ class PackageHandler(object):
                 log.debug(u'Adding new version to file')
 
                 # First version this package name
-                json_data[u'updates'][p.name][p.version] = {}
-                platform_key = '{}*{}*{}*{}'.format(u'updates', p.name,
-                                                    p.version, u'platform')
+                json_data[settings.UPDATES_KEY][p.name][p.version] = {}
+                platform_key = '{}*{}*{}*{}'.format(settings.UPDATES_KEY,
+                                                    p.name, p.version,
+                                                    u'platform')
 
                 platform = easy_dict.get(platform_key)
                 if platform is None:
-                    name_ = json_data[u'updates'][p.name]
+                    name_ = json_data[settings.UPDATES_KEY][p.name]
                     name_[p.version][p.platform] = info
 
             else:
                 # package already present, adding another version to it
                 log.debug(u'Appending info data to version file')
-                json_data[u'updates'][p.name][p.version][p.platform] = info
+                json_data[settings.UPDATES_KEY][p.name][p.version][p.platform] = info
 
             # Will add each individual platform version update
             # to latest.  Now can update platforms independently
@@ -360,8 +366,8 @@ class PackageHandler(object):
     def _write_json_to_file(self, json_data):
         # Writes json data to disk
         log.debug(u'Writing version data to file')
-        with open(os.path.join(self.data_dir, u'version.json'), u'w') as f:
-            f.write(json.dumps(json_data, sort_keys=True, indent=4))
+        with open(self.version_data, u'w') as f:
+            f.write(json.dumps(json_data, sort_keys=True, indent=2))
 
     def _write_config_to_file(self, json_data):
         log.debug(u'Writing config data to file')
@@ -392,14 +398,14 @@ class PackageHandler(object):
                           self.files_dir))
 
     def _update_file_list(self, json_data, package_info):
-        files = json_data[u'updates']
+        files = json_data[settings.UPDATES_KEY]
         latest = json_data.get(u'latest')
         if latest is None:
             json_data[u'latest'] = {}
         file_name = files.get(package_info.name)
         if file_name is None:
             log.debug(u'Adding {} to file list'.format(package_info.name))
-            json_data[u'updates'][package_info.name] = {}
+            json_data[settings.UPDATES_KEY][package_info.name] = {}
 
         latest_package = json_data[u'latest'].get(package_info.name)
         if latest_package is None:
@@ -428,8 +434,8 @@ class PackageHandler(object):
             except KeyError:
                 return None
             try:
-                l_plat = json_data[u'updates'][name][latest][platform]
-                filename = l_plat[u'filename']
+                l_plat = json_data[settings.UPDATES_KEY][name][latest]
+                filename = l_plat[platform][u'filename']
             except:
                 return None
             src_file_path = os.path.join(self.files_dir, filename)

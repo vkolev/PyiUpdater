@@ -25,7 +25,7 @@ class PyTest(Command):
         pass
 
     def run(self):
-        errno = subprocess.call([sys.executable, u'runtests.py', u'-v'])
+        errno = subprocess.call([sys.executable, u'runtests.py', u'-v', u'-x'])
         raise SystemExit(errno)
 
 
@@ -73,7 +73,7 @@ setup(
         # Will try to implement later
         # 'click',
         'ed25519',
-        'jms-utils >= 0.5.2',
+        'jms-utils >= 0.5.3',
         'pyinstaller >= 2.1.1dev',
         'simple-pbkdf2',
         'six',

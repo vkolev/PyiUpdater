@@ -38,12 +38,13 @@ log.addHandler(nh)
 from pyi_updater import PyiUpdater
 from pyi_updater.config import Loader, SetupConfig
 from pyi_updater.exceptions import UploaderError
+from pyi_updater import settings
 from pyi_updater.utils import initial_setup, make_archive
 from pyi_updater.version import get_version
 from pyi_updater.wrapper.options import parser
 
-if os.path.exists(os.path.join(os.getcwd(), u'pyiu.log')):
-    ch = logging.FileHandler(os.path.join(os.getcwd(), u'pyiu.log'))
+if os.path.exists(os.path.join(os.getcwd(), settings.LOG_FILENAME)):
+    ch = logging.FileHandler(os.path.join(os.getcwd(), settings.LOG_FILENAME))
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(log_format_string())
     log.addHandler(ch)
@@ -55,9 +56,9 @@ loader = Loader()
 
 def build(args, pyi_args):
     check_repo()
-    pyi_dir = os.path.join(os.getcwd(), u'pyi-data')
+    pyi_dir = os.path.join(os.getcwd(), settings.USER_DATA_FOLDER)
     new_dir = os.path.join(pyi_dir, u'new')
-    build_dir = os.path.join(os.getcwd(), u'.pyiupdater')
+    build_dir = os.path.join(os.getcwd(), settings.CONFIG_DATA_FOLDER)
     spec_dir = os.path.join(build_dir, u'spec')
     work_dir = os.path.join(build_dir, u'work')
     for d in [build_dir, spec_dir, work_dir, pyi_dir, new_dir]:
@@ -165,12 +166,12 @@ def build(args, pyi_args):
 
 def clean(args):
     if args.yes is True:
-        if os.path.exists(u'.pyiupdater'):
-            shutil.rmtree(u'.pyiupdater', ignore_errors=True)
-            print(u'Removed .pyiupdater folder')
-        if os.path.exists(u'pyi-data'):
-            shutil.rmtree(u'pyi-data', ignore_errors=True)
-            print(u'Removed pyi-data folder')
+        if os.path.exists(settings.CONFIG_DATA_FOLDER):
+            shutil.rmtree(settings.CONFIG_DATA_FOLDER, ignore_errors=True)
+            print(u'Removed {} folder'.format(settings.CONFIG_DATA_FOLDER))
+        if os.path.exists(settings.USER_DATA_FOLDER):
+            shutil.rmtree(settings.USER_DATA_FOLDER, ignore_errors=True)
+            print(u'Removed {} folder'.format(settings.USER_DATA_FOLDER))
         print(u'Clean complete...')
     else:
         print(u'Must pass -y to confirm')
@@ -180,7 +181,8 @@ def init(args):
     count = args.count
     if count > 10:
         sys.exit(u'Cannot be more then 10')
-    if not os.path.exists(os.path.join(u'.pyiupdater', u'config.data')):
+    if not os.path.exists(os.path.join(settings.CONFIG_DATA_FOLDER,
+                          settings.CONFIG_FILE_USER)):
         config = initial_setup(SetupConfig())
         print(u'\nCreating pyi-data dir...\n')
         pyiu = PyiUpdater(config)
@@ -265,7 +267,7 @@ def upload(args):
 
 
 def check_repo():
-    if not os.path.exists(u'.pyiupdater'):
+    if not os.path.exists(settings.CONFIG_DATA_FOLDER):
         sys.exit('Not a PyiUpdater repo: Must init first.')
 
 

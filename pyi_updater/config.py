@@ -19,6 +19,7 @@ import logging
 import os
 import pickle
 
+from pyi_updater import settings
 
 log = logging.getLogger(__name__)
 
@@ -29,9 +30,10 @@ class Loader(object):
 
     def __init__(self):
         self.cwd = os.getcwd()
-        self.config_dir = os.path.join(self.cwd, u'.pyiupdater')
-        self.config_file = os.path.join(self.config_dir, u'config.data')
-        self.password = os.environ.get('PYIUPDATER_PASS')
+        self.config_dir = os.path.join(self.cwd, settings.CONFIG_DATA_FOLDER)
+        self.config_file = os.path.join(self.config_dir,
+                                        settings.CONFIG_FILE_USER)
+        self.password = os.environ.get(settings.USER_PASS_ENV)
 
     def load_config(self):
         "Load config file from file system"
@@ -66,7 +68,7 @@ class Loader(object):
 
             obj (obj): config object
         """
-        filename = os.path.join(self.cwd, u'client_config.py')
+        filename = os.path.join(self.cwd, settings.USER_CLIENT_CONFIG_FILENAME)
         attr_str_format = "    {} = '{}'\n"
         attr_format = "    {} = {}\n"
         with open(filename, u'w') as f:
@@ -136,9 +138,9 @@ class PyiUpdaterConfig(dict):
         """
         self.from_object(obj)
         if self.get(u'APP_NAME') is None:
-            self[u'APP_NAME'] = u'PyiUpdater App'
+            self[u'APP_NAME'] = settings.GENERIC_APP_NAME
         if self.get(u'COMPANY_NAME') is None:
-            self[u'COMPANY_NAME'] = u'Digital Sapphire'
+            self[u'COMPANY_NAME'] = settings.GENERIC_COMPANY_NAME
 
     def __str__(self):
         return dict.__repr__(self)

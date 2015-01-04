@@ -33,6 +33,7 @@ from pyi_updater.client.utils import (get_filename, get_highest_version,
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.patcher import Patcher
+from pyi_updater import settings
 from pyi_updater.utils import (get_hash, get_version_number,
                                vstr_2_vtuple)
 
@@ -48,7 +49,7 @@ class LibUpdate(object):
     """
 
     def __init__(self, data):
-        self.updates_key = u'updates'
+        self.updates_key = settings.UPDATES_KEY
         self.update_urls = data.get(u'update_urls')
         self.name = data.get(u'name')
         self.version = data.get(u'version')
@@ -58,7 +59,8 @@ class LibUpdate(object):
         self.data_dir = data.get(u'data_dir')
         self.platform = data.get(u'platform')
         self.app_name = data.get(u'app_name')
-        self.update_folder = os.path.join(self.data_dir, u'update')
+        self.update_folder = os.path.join(self.data_dir,
+                                          settings.UPDATE_FOLDER)
         self.verify = data.get(u'verify')
         self.current_app_dir = os.path.dirname(sys.argv[0])
         if self.verify is True:

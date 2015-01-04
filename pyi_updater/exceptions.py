@@ -30,16 +30,18 @@ class STDError(Exception):
 
         tb (obj): is the original traceback so that it can be printed.
 
-        expected (bool): Meaning:
+        expected (bool):
 
-                            True - Report issue msg not shown
+            Meaning:
 
-                            False - Report issue msg shown
+                True - Report issue msg not shown
+
+                False - Report issue msg shown
     """
     def __init__(self, msg, tb=None, expected=False):
         if not expected:
             msg = msg + (u'; please report this issue on https://github.com'
-                         '/JohnyMoSwag/PyiUpdater/issues')
+                         '/DigitalSapphire/PyiUpdater/issues')
         super(Exception, self).__init__(msg)
 
         self.traceback = tb

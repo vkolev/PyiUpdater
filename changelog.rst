@@ -16,13 +16,9 @@ If you update to this release, do not revoke any keys until you are sure all cli
 
     - clean command: can remove PyiUpdater data & support file from root dir
 
-    - Downloading gzip version manifest
-
   - PackageHandlder
 
     - Added migration command to new key system
-
-    - Creating gzip version manifest
 
 * Updated
 

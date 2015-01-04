@@ -1,3 +1,20 @@
+#--------------------------------------------------------------------------
+# Copyright 2014 Digital Sapphire Development Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#--------------------------------------------------------------------------
+
+
 import json
 import logging
 import os
@@ -8,6 +25,20 @@ log = logging.getLogger(__name__)
 
 
 class KeyDB(object):
+    u"""Handles finding, sorting, getting meta-data, moving packages.
+
+    Kwargs:
+
+        data_dir (str): Path to directory containing key.db
+
+        load (bool):
+
+            Meaning:
+
+                True: Load db on initialization
+
+                False: Do not load db on initialization
+    """
 
     def __init__(self, data_dir, load=False):
         self.data_dir = data_dir
@@ -17,6 +48,16 @@ class KeyDB(object):
             self.load()
 
     def add_key(self, public, private, key_type='ed25519'):
+        u"""Adds key pair to database
+
+        Args:
+
+            public (str): Public key
+
+            private (str): Private key
+
+            key_type (str): The type of key pair. Default ed25519
+        """
         _time = time.time()
         num = len(self.data) + 1
         data = {
@@ -31,19 +72,30 @@ class KeyDB(object):
         self.save()
 
     def get_public_keys(self):
+        u"Returns a list of all valid public keys"
         return self._get_keys(u'public')
 
     def get_private_keys(self):
+        u"Returns a list of all valid private keys"
         return self._get_keys(u'private')
 
     def _get_keys(self, key):
+        order = []
         keys = []
         for k, v in self.data.items():
             if v[u'revoked'] is False:
-                keys.append(v[key])
+                order.append(int(k))
+        order = sorted(order)
+        for o in order:
+            try:
+                k = self.data[str(o)][key]
+                keys.append(k)
+            except KeyError:
+                continue
         return keys
 
     def get_revoked_key(self):
+        u"Returns most recent revoked key pair"
         keys = []
         for k, v in self.data.items():
             if v[u'revoked'] is True:
@@ -56,6 +108,12 @@ class KeyDB(object):
         return info
 
     def revoke_key(self, count=1):
+        u"""Revokes key pair
+
+        Args:
+
+            count (int): The number of keys to revoke. Oldest first
+        """
         keys = map(str, self.data.keys())
         keys = sorted(keys)
         c = 0
@@ -68,6 +126,7 @@ class KeyDB(object):
         self.save()
 
     def load(self):
+        u"Loads data from key.db"
         log.debug(u'Loading key.db')
         self.data = dict()
         if os.path.exists(self.key_file):
@@ -83,6 +142,7 @@ class KeyDB(object):
             log.debug('Key.db file not found creating new')
 
     def save(self):
+        u"Saves data to key.db"
         with open(self.key_file, u'w') as f:
             f.write(json.dumps(self.data, indent=True, sort_keys=True))
         log.debug(u'Wrote key.db to disk')

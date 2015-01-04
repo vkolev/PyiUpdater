@@ -14,7 +14,6 @@
 # limitations under the License.
 #--------------------------------------------------------------------------
 
-
 import json
 import logging
 import os
@@ -36,6 +35,7 @@ from pyi_updater.client.utils import (convert_to_list,
                                       get_highest_version)
 from pyi_updater.config import PyiUpdaterConfig
 from pyi_updater.downloader import FileDownloader
+from pyi_updater import settings
 from pyi_updater.utils import (EasyAccessDict,
                                make_archive,
                                vstr_2_vtuple)
@@ -101,7 +101,8 @@ class Client(object):
         else:
             self.data_dir = user_cache_dir(self.app_name, self.company_name)
             self.platform = get_system()
-        self.update_folder = os.path.join(self.data_dir, u'update')
+        self.update_folder = os.path.join(self.data_dir,
+                                          settings.UPDATE_FOLDER)
         self.public_keys = convert_to_list(config.get(u'PUBLIC_KEYS'),
                                            default=list())
         if len(self.public_keys) == 0:
@@ -122,7 +123,7 @@ class Client(object):
                                                  ca_certs=certifi.where())
         else:
             self.http_pool = urllib3.PoolManager()
-        self.version_file = u'version.json'
+        self.version_file = settings.VERSION_FILE
 
         self._setup()
         if refresh is True:
@@ -133,6 +134,7 @@ class Client(object):
 
         Proxy method from :meth:`_get_update_manifest`.
         """
+        self._setup()
         try:
             self._get_update_manifest()
         except Exception as err:
@@ -248,13 +250,14 @@ class Client(object):
 
                 return data
 
-    def _get_manifest_online(self):
+    def _download_manifest(self):
         log.debug('Downloading online version file')
         try:
             fd = FileDownloader(self.version_file, self.update_urls)
             data = fd.download_verify_return()
-            log.debug('Version file download successful')
             return data
+            self._write_manifest_2_filesystem(data)
+            log.debug('Version file download successful')
         except Exception as err:
             log.debug('Version file failed to download')
             log.debug(str(err))
@@ -269,11 +272,9 @@ class Client(object):
         #  Downloads & Verifies version file signature.
         log.debug(u'Loading version file...')
 
-        data = self._get_manifest_online()
+        data = self._download_manifest()
         if data is None:
             data = self._get_manifest_filesystem()
-        else:
-            self._write_manifest_2_filesystem(data)
 
         try:
             log.debug('Data type: {}'.format(type(data)))
@@ -299,7 +300,7 @@ class Client(object):
         if u'sigs' in data.keys():
             signatures = data[u'sigs']
             log.debug(u'Deleting sig from update data')
-            # ToDo: Remove in v1.0: Fix for migragtion
+            # ToDo: Remove in v1.0: Fix for migragtion & tests
             if u'sig' in data.keys():
                 del data[u'sig']
             del data[u'sigs']

@@ -30,6 +30,7 @@ from jms_utils.system import get_system
 
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import PatcherError
+from pyi_updater import settings
 from pyi_updater.utils import (get_package_hashes,
                                EasyAccessDict,
                                vstr_2_vtuple,
@@ -161,7 +162,7 @@ class Patcher(object):
         for p in required_patches:
             info = {}
             v_num = vtuple_2_vstr(p)
-            plat_key = '{}*{}*{}*{}'.format(u'updates', name,
+            plat_key = '{}*{}*{}*{}'.format(settings.UPDATES_KEY, name,
                                             v_num, self.plat)
             plat_info = self.star_access_update_data.get(plat_key)
 
@@ -180,7 +181,7 @@ class Patcher(object):
         versions = []
         try:
             u_versions = map(vstr_2_vtuple,
-                             self.json_data[u'updates'][name].keys())
+                             self.json_data[settings.UPDATES_KEY][name].keys())
             versions.extend(u_versions)
         except KeyError:
             log.debug(u'No updates found in updates dict')
@@ -245,7 +246,7 @@ class Patcher(object):
         # Writes updated binary to disk
         log.debug('Writing update to disk')
 
-        filename_key = '{}*{}*{}*{}*{}'.format(u'updates', self.name,
+        filename_key = '{}*{}*{}*{}*{}'.format(settings.UPDATES_KEY, self.name,
                                                self.highest_version,
                                                self.plat,
                                                u'filename')
@@ -279,7 +280,7 @@ class Patcher(object):
     def _current_file_info(self, name, version):
         # Returns filename and hash for given name and version
         info = {}
-        plat_key = '{}*{}*{}*{}'.format(u'updates', name,
+        plat_key = '{}*{}*{}*{}'.format(settings.UPDATES_KEY, name,
                                         version, self.plat)
         plat_info = self.star_access_update_data.get(plat_key)
 

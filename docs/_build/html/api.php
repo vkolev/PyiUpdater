@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.14-dev141210 documentation</title>
+    <title>API &mdash; PyiUpdater 0.14-dev141453 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14-dev141210',
+        VERSION:     '0.14-dev141453',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.14-dev141210 documentation" href="index.php" />
+    <link rel="top" title="PyiUpdater 0.14-dev141453 documentation" href="index.php" />
     <link rel="next" title="License" href="license.php" />
     <link rel="prev" title="Contributing" href="contributing.php" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.php">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.14-dev141210</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.14-dev141453</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -527,10 +527,13 @@ If matched returns binary data</p>
 <p>Kwargs:</p>
 <blockquote>
 <div><p>tb (obj): is the original traceback so that it can be printed.</p>
-<p>expected (bool): Meaning:</p>
+<p>expected (bool):</p>
+<blockquote>
+<div><p>Meaning:</p>
 <blockquote>
 <div><p>True - Report issue msg not shown</p>
 <p>False - Report issue msg shown</p>
+</div></blockquote>
 </div></blockquote>
 </div></blockquote>
 </dd></dl>
@@ -665,6 +668,24 @@ If matched returns binary data</p>
 
 </dd></dl>
 
+<span class="target" id="module-pyi_updater.key_handler.keydb"></span><dl class="class">
+<dt id="pyi_updater.key_handler.keydb.KeyDB">
+<em class="property">class </em><tt class="descclassname">pyi_updater.key_handler.keydb.</tt><tt class="descname">KeyDB</tt><big>(</big><em>data_dir</em>, <em>load=False</em><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.keydb.KeyDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles finding, sorting, getting meta-data, moving packages.</p>
+<p>Kwargs:</p>
+<blockquote>
+<div><p>data_dir (str): Path to directory containing key.db</p>
+<p>load (bool):</p>
+<blockquote>
+<div><p>Meaning:</p>
+<blockquote>
+<div><p>True: Load db on initialization</p>
+<p>False: Do not load db on initialization</p>
+</div></blockquote>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
 <span class="target" id="module-pyi_updater.package_handler"></span><dl class="class">
 <dt id="pyi_updater.package_handler.PackageHandler">
 <em class="property">class </em><tt class="descclassname">pyi_updater.package_handler.</tt><tt class="descname">PackageHandler</tt><big>(</big><em>app=None</em><big>)</big><a class="headerlink" href="#pyi_updater.package_handler.PackageHandler" title="Permalink to this definition">¶</a></dt>
@@ -786,20 +807,20 @@ on all other platforms</p>
 <tt class="descclassname">pyi_updater.utils.</tt><tt class="descname">ask_yes_no</tt><big>(</big><em>question</em>, <em>default='no'</em>, <em>answer=None</em><big>)</big><a class="headerlink" href="#pyi_updater.utils.ask_yes_no" title="Permalink to this definition">¶</a></dt>
 <dd><p>Will ask a question and keeps prompting until
 answered.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>question (str): Question to ask end user</dd>
-<dt>Kwargs:</dt>
-<dd>default (str): Default answer if user just press enter at prompt</dd>
-<dt>Returns:</dt>
-<dd><p class="first">bool. Meaning:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="bp">True</span> <span class="o">-</span> <span class="n">Answer</span> <span class="ow">is</span>  <span class="n">yes</span>
-
-<span class="bp">False</span> <span class="o">-</span> <span class="n">Answer</span> <span class="ow">is</span> <span class="n">no</span>
-</pre></div>
-</div>
-</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div>question (str): Question to ask end user</div></blockquote>
+<p>Kwargs:</p>
+<blockquote>
+<div>default (str): Default answer if user just press enter at prompt</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><p>(bool) Meaning:</p>
+<blockquote>
+<div><p>True - Answer is  yes</p>
+<p>False - Answer is no</p>
+</div></blockquote>
+</div></blockquote>
 </dd></dl>
 
 <span class="target" id="module-pyi_updater.uploader"></span><dl class="class">

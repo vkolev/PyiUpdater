@@ -23,6 +23,7 @@ import shutil
 
 from pyi_updater.exceptions import KeyHandlerError
 from pyi_updater.key_handler.keydb import KeyDB
+from pyi_updater import settings
 from pyi_updater.utils import lazy_import
 
 
@@ -70,9 +71,15 @@ class KeyHandler(object):
             self.keysdb = KeyDB(self.config_dir)
             # ToDo: Remove in v1.0 No longer using keys dir
             self.keys_dir = os.path.join(self.config_dir, u'keys')
-            self.data_dir = os.path.join(data_dir, u'pyi-data')
+            self.data_dir = os.path.join(data_dir, settings.USER_DATA_FOLDER)
             self.deploy_dir = os.path.join(self.data_dir, u'deploy')
-            self.version_file = os.path.join(self.data_dir, u'version.json')
+            self.version_data = os.path.join(self.config_dir,
+                                             settings.VERSION_FILE_DB)
+
+            self.old_version_file = os.path.join(self.deploy_dir,
+                                                 settings.VERSION_FILE_OLD)
+            self.version_file = os.path.join(self.deploy_dir,
+                                             settings.VERSION_FILE)
             self._migrate()
         else:
             log.error(u'Dev_DATA_DIR is None. Setup Failed')
@@ -184,7 +191,12 @@ class KeyHandler(object):
         update_data_str = json.dumps(update_data, sort_keys=True)
 
         signatures = list()
+        signature = None
         log.debug('Adding new signatures')
+
+        # ToDo: Remove in v1.0: Used for migration to v0.14 & above
+        old = False
+        # ToDo: End
         for p in private_keys:
             if six.PY2 is True and isinstance(p, unicode) is True:
                 log.debug('Got type: {}'.format(type(p)))
@@ -193,29 +205,43 @@ class KeyHandler(object):
             privkey = ed25519.SigningKey(p, encoding=self.key_encoding)
             sig = privkey.sign(six.b(update_data_str),
                                encoding=self.key_encoding)
+            # ToDo: Remove in v1.0: Used for migration to v0.14 & above
+            if old is False:
+                signature = sig
+                old = True
+            # ToDo: End
             signatures.append(sig)
 
-        update_data = json.loads(update_data_str)
+        og_data = json.loads(update_data_str)
+        update_data = og_data.copy()
         update_data[u'sigs'] = signatures
+        # ToDo: Remove in v1.0: Used for migration to v0.14 & above
+        old_update_data = og_data.copy()
+        old_update_data[u'sig'] = signature
+        # ToDo: End
         log.debug(u'Adding sig to update data')
-        self._write_update_data(update_data)
+        self._write_update_data(og_data, update_data, old_update_data)
 
-    def _write_update_data(self, data):
-        # Write version file "with new sig" to disk
+    def _write_update_data(self, data, version, old_version):
+        # Write version file to disk
+        with open(self.version_data, u'w') as f:
+            f.write(json.dumps(data, indent=2, sort_keys=True))
+        log.debug(u'Wrote version data to file system')
+
         with open(self.version_file, u'w') as f:
-            f.write(json.dumps(data, indent=2,
-                    sort_keys=True))
-        log.debug(u'Wrote version data to file')
-        with jms_utils.paths.ChDir(self.data_dir):
-            shutil.copy(u'version.json', self.deploy_dir)
-        log.debug(u'Copied version file to deploy dir')
+            f.write(json.dumps(version, indent=2, sort_keys=True))
+        log.debug(u'Created update manifest in deploy dir')
+
+        with open(self.old_version_file, u'w') as f:
+            f.write(json.dumps(old_version, indent=2, sort_keys=True))
+        log.debug(u'Created old style update manifest in deploy dir')
 
     def _load_update_data(self):
         # Loads version file into memory
         log.debug(u"Loading version file")
         try:
-            log.debug(u'Version file path: {}'.format(self.version_file))
-            with open(self.version_file, 'r') as f:
+            log.debug(u'Version data file path: {}'.format(self.version_data))
+            with open(self.version_data, 'r') as f:
                 update_data = json.loads(f.read())
             log.debug(u'Version file loaded')
             return update_data

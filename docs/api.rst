@@ -27,6 +27,9 @@ If you want to dive into their documentation, scroll down:
 .. automodule:: pyi_updater.key_handler
     :members:
 
+.. automodule:: pyi_updater.key_handler.keydb
+    :members:
+
 .. automodule:: pyi_updater.package_handler
     :members:
 

@@ -19,12 +19,14 @@ import logging
 import os
 
 from pyi_updater.exceptions import UploaderError
+from pyi_updater import settings
 from pyi_updater.utils import (lazy_import,
                                remove_dot_files)
 
 log = logging.getLogger(__name__)
 
 stevedore = None
+ns = settings.UPLOAD_PLUGIN_NAMESPACE
 
 
 class Uploader(object):
@@ -53,7 +55,8 @@ class Uploader(object):
         """
         self.data_dir = obj.get(u'DEV_DATA_DIR')
         if self.data_dir is not None:
-            self.data_dir = os.path.join(self.data_dir, u'pyi-data')
+            self.data_dir = os.path.join(self.data_dir,
+                                         settings.USER_DATA_FOLDER)
             self.deploy_dir = os.path.join(self.data_dir, u'deploy')
         else:
             log.debug(u'DEV_DATA_DIR is None. Setup failed.')
@@ -69,8 +72,7 @@ class Uploader(object):
         self.test = False
 
         # Extension Manager
-        self.mgr = stevedore.extension.ExtensionManager(namespace=u'pyiupdate'
-                                                        'r.plugins.uploaders',)
+        self.mgr = stevedore.extension.ExtensionManager(namespace=ns)
 
     def upload(self):
         """Proxy function that calls the upload method on the received uploader
