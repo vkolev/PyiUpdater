@@ -27,11 +27,11 @@ import sys
 import tarfile
 import zipfile
 
-from jms_utils.terminal import ask_yes_no, get_correct_answer
-
 from pyi_updater.exceptions import UtilsError
 
 log = logging.getLogger(__name__)
+
+jms_utils = None
 
 
 class EasyAccessDict(object):
@@ -263,49 +263,63 @@ def make_archive(name, version, target):
 
 
 def initial_setup(config):
-    config.APP_NAME = get_correct_answer(u'Please enter app name',
-                                         required=True)
+    global jms_utils
+    if jms_utils is None:
+        jms_utils = lazy_import('jms_utils.terminal')
+    config.APP_NAME = jms_utils.terminal.get_correct_answer(u'Please enter '
+                                                            u'app name',
+                                                            required=True)
 
-    config.COMPANY_NAME = get_correct_answer(u'Please enter your '
-                                             u'company or name', required=True)
+    config.COMPANY_NAME = jms_utils.terminal.get_correct_answer(u'Please ente'
+                                                                u'r your comp'
+                                                                u'any or name',
+                                                                required=True)
 
     config.DEV_DATA_DIR = os.getcwd()
 
-    url = get_correct_answer(u'Enter a url to ping for updates.',
-                             required=True)
+    url = jms_utils.terminal.get_correct_answer(u'Enter a url to ping for '
+                                                u'updates.', required=True)
     config.UPDATE_URLS = [url]
     while 1:
-        answer = ask_yes_no(u'Would you like to add another '
-                            u'url for backup?', default='no')
+        answer = jms_utils.terminal.ask_yes_no(u'Would you like to add '
+                                               u'another url for backup?',
+                                               default='no')
         if answer is True:
-            url = get_correct_answer(u'Enter another url.',
-                                     required=True)
+            url = jms_utils.terminal.get_correct_answer(u'Enter another url.',
+                                                        required=True)
             config.UPDATE_URLS.append(url)
         else:
             break
 
-    config.UPDATE_PATCHES = ask_yes_no(u'Would you like to enable patch '
-                                       u'updates?', default=u'yes')
+    config.UPDATE_PATCHES = jms_utils.terminal.ask_yes_no(u'Would you like to '
+                                                          u'enable patch upda'
+                                                          u'tes?',
+                                                          default=u'yes')
 
-    answer1 = ask_yes_no(u'Would you like to add scp settings?',
-                         default='no')
+    answer1 = jms_utils.terminal.ask_yes_no(u'Would you like to add scp '
+                                            u'settings?', default='no')
 
-    answer2 = ask_yes_no(u'Would you like to add S3 settings?',
-                         default='no')
+    answer2 = jms_utils.terminal.ask_yes_no(u'Would you like to add S3 '
+                                            'settings?', default='no')
 
     if answer1:
-        config.REMOTE_DIR = get_correct_answer(u'Enter remote dir',
-                                               required=True)
-        config.HOST = get_correct_answer(u'Enter host', required=True)
+        _temp = jms_utils.terminal.get_correct_answer(u'Enter remote dir',
+                                                      required=True)
+        config.REMOTE_DIR = _temp
+        config.HOST = jms_utils.terminal.get_correct_answer(u'Enter host',
+                                                            required=True)
 
-        config.USERNAME = get_correct_answer(u'Enter usernmae',
-                                             required=True)
+        config.USERNAME = jms_utils.terminal.get_correct_answer(u'Enter '
+                                                                u'usernmae',
+                                                                required=True)
 
     if answer2:
-        config.USERNAME = get_correct_answer(u'Enter access key ID',
-                                             required=True)
-        config.REMOTE_DIR = get_correct_answer(u'Enter bucket name',
-                                               required=True)
+        _temp = jms_utils.terminal.get_correct_answer(u'Enter access key ID',
+                                                      required=True)
+        config.USERNAME = _temp
+        _temp = jms_utils.terminal.get_correct_answer(u'Enter bucket name',
+                                                      required=True)
+        config.REMOTE_DIR = _temp
     return config
 
 

@@ -73,20 +73,25 @@ class Loader(object):
         attr_format = "    {} = {}\n"
         with open(filename, u'w') as f:
             # Temp hack for pyinstaller not finding pkg_resources
-            f.write('import pkg_resources\n\n')
-            f.write('class ClientConfig(object):\n')
-            if hasattr(obj, 'APP_NAME') and obj.APP_NAME is not None:
-                f.write(attr_str_format.format('APP_NAME', obj.APP_NAME))
-            if hasattr(obj, 'COMPANY_NAME') and obj.COMPANY_NAME is not None:
-                f.write(attr_str_format.format('COMPANY_NAME',
+            f.write(u'import pkg_resources\n\n\n')
+            f.write(u'class ClientConfig(object):\n')
+            if hasattr(obj, u'APP_NAME') and obj.APP_NAME is not None:
+                f.write(attr_str_format.format(u'APP_NAME', obj.APP_NAME))
+                log.debug(u'Wrote APP_NAME to client config')
+            if hasattr(obj, u'COMPANY_NAME') and obj.COMPANY_NAME is not None:
+                f.write(attr_str_format.format(u'COMPANY_NAME',
                         obj.COMPANY_NAME))
-            if hasattr(obj, 'UPDATE_URLS') and obj.UPDATE_URLS is not None:
-                f.write(attr_format.format('UPDATE_URLS', obj.UPDATE_URLS))
+                log.debug(u'Wrote COMPANY_NAME to client config')
+            if hasattr(obj, u'UPDATE_URLS') and obj.UPDATE_URLS is not None:
+                f.write(attr_format.format(u'UPDATE_URLS', obj.UPDATE_URLS))
+                log.debug(u'Wrote UPDATE_URLS to client config')
             # ToDo: Remove in v1.0
-            if hasattr(obj, 'PUBLIC_KEY') and obj.PUBLIC_KEY is not None:
-                f.write(attr_str_format.format('PUBLIC_KEY', obj.PUBLIC_KEY))
-            if hasattr(obj, 'PUBLIC_KEYS') and obj.PUBLIC_KEY is not None:
-                f.write(attr_format.format('PUBLIC_KEYS', obj.PUBLIC_KEYS))
+            if hasattr(obj, u'PUBLIC_KEY') and obj.PUBLIC_KEY is not None:
+                f.write(attr_str_format.format(u'PUBLIC_KEY', obj.PUBLIC_KEY))
+                log.debug(u'Wrote PUBLIC_KEY to client config')
+            if hasattr(obj, u'PUBLIC_KEYS') and obj.PUBLIC_KEYS is not None:
+                f.write(attr_format.format(u'PUBLIC_KEYS', obj.PUBLIC_KEYS))
+                log.debug(u'Wrote PUBLIC_KEYS to client config')
 
 
 class PyiUpdaterConfig(dict):
