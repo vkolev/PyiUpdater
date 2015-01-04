@@ -1,9 +1,54 @@
+v0.14.0 - Develop
+~~~~~~~~~~~~~~~~~
+.. note:: This version is not yet released and is under active development.
+Backwards incompatible release * Migration Available *
+------------------------------------------------------
+If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.
+================================================================================================================================================================================================
+
+* New
+
+  - CLI
+
+    - Can now revoke signing keys. The number of keys to revoke from oldest.
+      ::
+        $ pyiupdater keys --revoke 1
+
+    - clean command: can remove PyiUpdater data & support file from root dir
+
+    - Downloading gzip version manifest
+
+  - PackageHandlder
+
+    - Added migration command to new key system
+
+    - Creating gzip version manifest
+
+* Updated
+
+  - CLI
+
+    - build command: Fixed naming of exe on windows
+
+    - init command: can pass --count with the number of keys to create.
+
+    - refactored cli code
+
+  - Client
+
+    - Support for multiple public keys verifying
+
+  - License
+
+    - Digital Sapphire Development Team
+
+
 v0.13.0 - 2014/12/27
 ~~~~~~~~~~~~~~~~~~~~
 Backwards incompatible release
 ------------------------------
 Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.
-----------------------------------------------------------------------------------------------------------------------------------
+==================================================================================================================================
 
 * Updated
 

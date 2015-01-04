@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release History &mdash; PyiUpdater 0.13.1-dev111516 documentation</title>
+    <title>Release History &mdash; PyiUpdater 0.14-dev141210 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,9 +15,9 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.13.1-dev111516',
+        VERSION:     '0.14-dev141210',
         COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
+        FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
       };
     </script>
@@ -28,8 +28,8 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.13.1-dev111516 documentation" href="index.html" />
-    <link rel="prev" title="License" href="license.html" />
+    <link rel="top" title="PyiUpdater 0.14-dev141210 documentation" href="index.php" />
+    <link rel="prev" title="License" href="license.php" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -47,9 +47,9 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" href="index.php">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.13.1-dev111516</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.14-dev141210</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -61,20 +61,22 @@
      id="dLabelGlobalToc"
      data-toggle="dropdown"
      data-target="#"
-     href="index.html">Site <b class="caret"></b></a>
+     href="index.php">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="downloads.html">Downloads</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
-<li class="toctree-l1"><a class="reference internal" href="folder_structure.html">File &amp; Folder Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="downloads.php">Downloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.php">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.php">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.php">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.php">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="folder_structure.php">File &amp; Folder Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.php">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.php">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.php">License</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Release History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#if-you-update-to-this-release-do-not-revoke-any-keys-until-you-are-sure-all-clients-are-updated-to-this-version-of-the-framework-if-you-revoke-a-key-it-will-break-the-built-in-migration">If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating">Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.</a></li>
 </ul>
 </ul>
 </li>
@@ -89,11 +91,20 @@
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">Release History</a><ul>
-<li><a class="reference internal" href="#v0-13-0-2014-12-27">v0.13.0 - 2014/12/27</a><ul>
-<li><a class="reference internal" href="#backwards-incompatible-release">Backwards incompatible release</a></li>
-<li><a class="reference internal" href="#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating">Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.</a></li>
+<li><a class="reference internal" href="#v0-14-0-develop">v0.14.0 - Develop</a><ul>
+<li><a class="reference internal" href="#backwards-incompatible-release-migration-available">Backwards incompatible release * Migration Available *</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a class="reference internal" href="#if-you-update-to-this-release-do-not-revoke-any-keys-until-you-are-sure-all-clients-are-updated-to-this-version-of-the-framework-if-you-revoke-a-key-it-will-break-the-built-in-migration">If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.</a><ul>
+<li><a class="reference internal" href="#v0-13-0-2014-12-27">v0.13.0 - 2014/12/27</a><ul>
+<li><a class="reference internal" href="#backwards-incompatible-release">Backwards incompatible release</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating">Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.</a><ul>
 <li><a class="reference internal" href="#v0-12-3-2014-12-7">v0.12.3 - 2014/12/7</a></li>
 <li><a class="reference internal" href="#v0-12-2-2014-12-7">v0.12.2 - 2014/12/7</a></li>
 <li><a class="reference internal" href="#v0-12-1-2014-12-4">v0.12.1 - 2014/12/4</a></li>
@@ -120,7 +131,7 @@
               
                 
   <li>
-    <a href="license.html" title="Previous Chapter: License"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; License</span>
+    <a href="license.php" title="Previous Chapter: License"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; License</span>
     </a>
   </li>
               
@@ -138,7 +149,7 @@
 
           
             
-<form class="navbar-form navbar-right" action="search.html" method="get">
+<form class="navbar-form navbar-right" action="search.php" method="get">
  <div class="form-group">
   <input type="text" name="q" class="form-control" placeholder="Search" />
  </div>
@@ -156,13 +167,71 @@
       
   <div class="section" id="release-history">
 <h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="v0-14-0-develop">
+<h2>v0.14.0 - Develop<a class="headerlink" href="#v0-14-0-develop" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This version is not yet released and is under active development.</p>
+</div>
+<div class="section" id="backwards-incompatible-release-migration-available">
+<h3>Backwards incompatible release * Migration Available *<a class="headerlink" href="#backwards-incompatible-release-migration-available" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="section" id="if-you-update-to-this-release-do-not-revoke-any-keys-until-you-are-sure-all-clients-are-updated-to-this-version-of-the-framework-if-you-revoke-a-key-it-will-break-the-built-in-migration">
+<h1>If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.<a class="headerlink" href="#if-you-update-to-this-release-do-not-revoke-any-keys-until-you-are-sure-all-clients-are-updated-to-this-version-of-the-framework-if-you-revoke-a-key-it-will-break-the-built-in-migration" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first">New</p>
+<ul>
+<li><p class="first">CLI</p>
+<ul>
+<li><p class="first">Can now revoke signing keys. The number of keys to revoke from oldest.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pyiupdater keys --revoke 1
+</pre></div>
+</div>
+</li>
+<li><p class="first">clean command: can remove PyiUpdater data &amp; support file from root dir</p>
+</li>
+<li><p class="first">Downloading gzip version manifest</p>
+</li>
+</ul>
+</li>
+<li><p class="first">PackageHandlder</p>
+<ul class="simple">
+<li>Added migration command to new key system</li>
+<li>Creating gzip version manifest</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">Updated</p>
+<ul class="simple">
+<li>CLI<ul>
+<li>build command: Fixed naming of exe on windows</li>
+<li>init command: can pass &#8211;count with the number of keys to create.</li>
+<li>refactored cli code</li>
+</ul>
+</li>
+<li>Client<ul>
+<li>Support for multiple public keys verifying</li>
+</ul>
+</li>
+<li>License<ul>
+<li>Digital Sapphire Development Team</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <div class="section" id="v0-13-0-2014-12-27">
 <h2>v0.13.0 - 2014/12/27<a class="headerlink" href="#v0-13-0-2014-12-27" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="backwards-incompatible-release">
 <h3>Backwards incompatible release<a class="headerlink" href="#backwards-incompatible-release" title="Permalink to this headline">¶</a></h3>
 </div>
+</div>
+</div>
 <div class="section" id="demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating">
-<h3>Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.<a class="headerlink" href="#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating" title="Permalink to this headline">¶</a></h3>
+<h1>Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.<a class="headerlink" href="#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li>Updated<ul>
 <li>CLI<ul>
@@ -212,8 +281,6 @@
 </ul>
 </li>
 </ul>
-</div>
-</div>
 <div class="section" id="v0-12-3-2014-12-7">
 <h2>v0.12.3 - 2014/12/7<a class="headerlink" href="#v0-12-3-2014-12-7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -636,7 +703,7 @@ to correct class attributes</li>
     </p>
     <p>
         &copy; Copyright 2014, Digital Sapphire.<br/>
-      Last updated on Jan 01, 2015.<br/>
+      Last updated on Jan 04, 2015.<br/>
     </p>
   </div>
 </footer>

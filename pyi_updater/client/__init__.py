@@ -114,6 +114,8 @@ class Client(object):
                 log.warning(u'May have pass an incorrect data type '
                             u'to PUBLIC_KEY')
             self.public_keys += pub_key
+        # Sometimes a little bit goes a long way
+        self.public_keys = list(set(self.public_keys))
         self.verify = config.get(u'VERIFY_SERVER_CERT', True)
         if self.verify is True:
             self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
@@ -294,17 +296,22 @@ class Client(object):
 
     def _verify_sig(self, data):
         # Checking to see if there is a sig in the version file.
-        if u'sig' in data.keys():
-            signatures = data[u'sig']
+        if u'sigs' in data.keys():
+            signatures = data[u'sigs']
             log.debug(u'Deleting sig from update data')
-            del data[u'sig']
+            # ToDo: Remove in v1.0: Fix for migragtion
+            if u'sig' in data.keys():
+                del data[u'sig']
+            del data[u'sigs']
 
             # After removing the sig we turn the json data back
             # into a string to use as data to verify the sig.
             update_data = json.dumps(data, sort_keys=True)
 
             for pk in self.public_keys:
+                log.debug(u'Public Key: {}'.format(pk))
                 for s in signatures:
+                    log.debug(u'Signature: {}'.format(s))
                     # I added this try/except block because sometimes a
                     # None value in json_data would find its way down here.
                     # Hopefully i fixed it by return right under the Exception

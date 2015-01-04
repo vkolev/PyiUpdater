@@ -1,5 +1,6 @@
 asciinema
 coverage
+cython
 line_profiler==1.0
 memory_profiler
 nose

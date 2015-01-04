@@ -84,6 +84,9 @@ build_parser.add_argument(u'-k', u'--keep', dest=u'keep', action=u'store_true',
 
 clean_parser = subparsers.add_parser(u'clean', help=u'* WARNING * removes all '
                                      u'traces of pyiupdater')
+clean_parser.add_argument(u'-y', '--yes', help=u'Confirms removal of '
+                          u'pyi-data & .pyiupdater folder',
+                          action='store_true')
 
 init_parser = subparsers.add_parser(u'init', help=u'initializes a '
                                     u'src directory')

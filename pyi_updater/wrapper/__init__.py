@@ -163,15 +163,23 @@ def build(args, pyi_args):
     print(u'Build finished in {:.2f} seconds.'.format(finished))
 
 
-def clean():
-    if os.path.exists(u'.pyiupdater'):
-        shutil.rmtree(u'.pyi_updater', ignore_errors=True)
-    if os.path.exists(u'pyi-data'):
-        shutil.rmtree(u'pyi-data', ignore_errors=True)
+def clean(args):
+    if args.yes is True:
+        if os.path.exists(u'.pyiupdater'):
+            shutil.rmtree(u'.pyiupdater', ignore_errors=True)
+            print(u'Removed .pyiupdater folder')
+        if os.path.exists(u'pyi-data'):
+            shutil.rmtree(u'pyi-data', ignore_errors=True)
+            print(u'Removed pyi-data folder')
+        print(u'Clean complete...')
+    else:
+        print(u'Must pass -y to confirm')
 
 
-def init():
+def init(args):
     count = args.count
+    if count > 10:
+        sys.exit(u'Cannot be more then 10')
     if not os.path.exists(os.path.join(u'.pyiupdater', u'config.data')):
         config = initial_setup(SetupConfig())
         print(u'\nCreating pyi-data dir...\n')
@@ -282,9 +290,9 @@ def main(args=None):
     if cmd == u'build':
         build(args, pyi_args)
     elif cmd == u'clean':
-        clean()
+        clean(args)
     elif cmd == u'init':
-        init()
+        init(args)
     elif cmd == u'keys':
         keys(args)
     elif cmd == u'pkg':

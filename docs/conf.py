@@ -195,7 +195,7 @@ html_show_sphinx = False
 #html_use_opensearch = ''
 
 # This is the file name suffix for HTML files (e.g. ".xhtml").
-#html_file_suffix = None
+html_file_suffix = u'.php'
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'PyiUpdaterdoc'

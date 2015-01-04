@@ -30,7 +30,7 @@ def main():
             if f.startswith(u'.'):
                 continue
             elif f in [u'objects.inv', u'composer.json',
-                       u'index.php', u'Procfile']:
+                       u'Procfile', u'CHECKS']:
                 continue
             elif os.path.isfile(f):
                 os.remove(f)
@@ -42,9 +42,6 @@ def main():
         for f in files:
             if f.startswith(u'.'):
                 continue
-            if f == u'index.html':
-                os.rename(u'index.html', u'home.html')
-                shutil.copy(u'home.html', path)
             if os.path.isfile(f):
                 shutil.copy(f, os.path.join(path, f))
             elif os.path.isdir(f):

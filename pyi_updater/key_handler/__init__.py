@@ -124,8 +124,7 @@ class KeyHandler(object):
     def sign_update(self):
         """Signs version file with private key
 
-        Proxy method for :meth:`_load_private_key`, :meth:`_add_sig` &
-        :meth:`_write_update_data`
+        Proxy method for :meth:`_add_sig`
         """
         # Loads private key
         # Loads version file to memory
@@ -179,9 +178,9 @@ class KeyHandler(object):
         log.debug(u'Adding signatures to version file...')
 
         update_data = self._load_update_data()
-        if u'sig' in update_data:
+        if u'sigs' in update_data:
             log.debug(u'Removing signatures from version file')
-            del update_data[u'sig']
+            del update_data[u'sigs']
         update_data_str = json.dumps(update_data, sort_keys=True)
 
         signatures = list()
@@ -197,7 +196,7 @@ class KeyHandler(object):
             signatures.append(sig)
 
         update_data = json.loads(update_data_str)
-        update_data[u'sig'] = signatures
+        update_data[u'sigs'] = signatures
         log.debug(u'Adding sig to update data')
         self._write_update_data(update_data)
 

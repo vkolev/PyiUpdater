@@ -25,19 +25,14 @@ class TConfig(object):
     # current directory
     DEV_DATA_DIR = test_dir
 
-    # Length of keys to sign and verify files with
-    # If left None 2048 key size will be used
-    KEY_LENGTH = 1024
-
     # Public Key used by your app to verify update data
     # REQUIRED
-    PUBLIC_KEY = 'lnhgrbYJKubaLzjiKusMa1UU6i4aUe9gofzEkRm9F68'
     PUBLIC_KEYS = ['lnhgrbYJKubaLzjiKusMa1UU6i4aUe9gofzEkRm9F68']
 
     # Online repository where you host your packages
     # and version file
     # REQUIRED
-    UPDATE_URL = u'https://s3-us-west-1.amazonaws.com/pyi-test/'
+    UPDATE_URLS = [u'https://s3-us-west-1.amazonaws.com/pyi-test/']
     UPDATE_PATCHES = True
 
     # Upload Setup

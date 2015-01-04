@@ -163,7 +163,10 @@ class SetupConfig(object):
     # If set more debug info will be printed to console
     DEBUG = False
 
-    # Public Key used by your app to verify update data
+    # ToDo: Remove in v1.0
+    # Deprecated use a list for PUBLIC_KEYS instead
+    PUBLIC_KEY = None
+    # Public Keys used by your app to verify update data
     # REQUIRED
     PUBLIC_KEYS = None
 
