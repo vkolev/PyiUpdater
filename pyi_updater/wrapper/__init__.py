@@ -171,18 +171,41 @@ def clean():
 
 
 def init():
+    count = args.count
     if not os.path.exists(os.path.join(u'.pyiupdater', u'config.data')):
         config = initial_setup(SetupConfig())
         print(u'\nCreating pyi-data dir...\n')
         pyiu = PyiUpdater(config)
         pyiu.setup()
         print(u'\nMaking signing keys...')
-        pyiu.make_keys()
-        config.PUBLIC_KEY = pyiu.get_public_key()
+        pyiu.make_keys(count)
+        config.PUBLIC_KEYS = pyiu.get_public_keys()
         loader.save_config(config)
         print(u'\nSetup complete')
     else:
         sys.exit(u'Not an empty PyiUpdater repository')
+
+
+def keys(args):
+    check_repo()
+    config = loader.load_config()
+    pyiu = PyiUpdater(config)
+    if args.revoke is not None:
+        count = args.revoke
+        pyiu.revoke_key(count)
+        config.PUBLIC_KEYS = pyiu.get_public_keys()
+        key = pyiu.get_recent_revoked_key()
+        if key is not None:
+            print('* Most Recent Revoked Key *\n')
+            print('Created: {}'.format(pretty_time(key[u'date'])))
+            print('Type: {}'.format(key[u'key_type']))
+            print('Public Key: {}'.format(key[u'public']))
+            if args.private is True:
+                print('Private Key: {}'.format(key[u'private']))
+            else:
+                print(u'Private Key: * Next time to show private key '
+                      u'use --show-private *')
+    loader.save_config(config)
 
 
 def pkg(args):
@@ -247,6 +270,10 @@ def check_version(version):
         return True
 
 
+def pretty_time(sec):
+    return time.strftime("%Y/%m/%d, %H:%M:%S", time.localtime(sec))
+
+
 def main(args=None):
     if args is None:
         args = sys.argv[1:]
@@ -258,6 +285,8 @@ def main(args=None):
         clean()
     elif cmd == u'init':
         init()
+    elif cmd == u'keys':
+        keys(args)
     elif cmd == u'pkg':
         pkg(args)
     elif cmd == u'up':

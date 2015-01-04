@@ -4,8 +4,15 @@ from setuptools import Command, find_packages, setup
 import subprocess
 import sys
 
+import versioneer
 
 from pyi_updater.version import get_version
+
+versioneer.VCS = 'git'
+versioneer.versionfile_source = 'pyi_updater/_version.py'
+versioneer.versionfile_build = 'pyi_updater/_version.py'
+versioneer.tag_prefix = ''  # tags are like 1.2.0
+versioneer.parentdir_prefix = 'PyiUpdater-'  # dirname like 'myproject-1.2.0'
 
 
 class PyTest(Command):
@@ -55,7 +62,9 @@ setup(
         },
     tests_require = ['pytest', ],
     cmdclass = {'test': PyTest,
-                'ctest': PyTestCover},
+                'ctest': PyTestCover,
+                'versioneer': versioneer.get_cmdclass()
+                },
     install_requires=[
         'appdirs',
         'blinker',
@@ -64,7 +73,7 @@ setup(
         # Will try to implement later
         # 'click',
         'ed25519',
-        'jms-utils >= 0.4.6',
+        'jms-utils >= 0.5.2',
         'pyinstaller >= 2.1.1dev',
         'simple-pbkdf2',
         'six',

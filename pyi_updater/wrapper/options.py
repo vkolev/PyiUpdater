@@ -87,9 +87,21 @@ clean_parser = subparsers.add_parser(u'clean', help=u'* WARNING * removes all '
 
 init_parser = subparsers.add_parser(u'init', help=u'initializes a '
                                     u'src directory')
+init_parser.add_argument(u'-c', u'--count', help=u'How many key pairs to '
+                         u'create. The more keys the better your chances '
+                         u'are of not having an app lose its ability to '
+                         u'self update. Default 3',
+                         type=int, default=3)
 
-keys_parser = subparsers.add_parser(u'keys', help=u'Manage signing keys: '
-                                    u'Not Implemented')
+keys_parser = subparsers.add_parser(u'keys', help=u'Manage signing keys')
+keys_parser.add_argument(u'--revoke', help=u'Revokes oldest signing key & '
+                         u'adds the same amount of new good key pairs to '
+                         u'keys db. Verson file will no longer be signed '
+                         u'by revoked keys. Default 1',
+                         type=int)
+keys_parser.add_argument(u'--show-private', help=u'Prints private key to '
+                         u'screen upon revocation', dest=u'private',
+                         action='store_true')
 
 
 package_parser = subparsers.add_parser(u'pkg', help=u'Manages creation of '

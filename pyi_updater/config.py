@@ -80,8 +80,11 @@ class Loader(object):
                         obj.COMPANY_NAME))
             if hasattr(obj, 'UPDATE_URLS') and obj.UPDATE_URLS is not None:
                 f.write(attr_format.format('UPDATE_URLS', obj.UPDATE_URLS))
+            # ToDo: Remove in v1.0
             if hasattr(obj, 'PUBLIC_KEY') and obj.PUBLIC_KEY is not None:
                 f.write(attr_str_format.format('PUBLIC_KEY', obj.PUBLIC_KEY))
+            if hasattr(obj, 'PUBLIC_KEYS') and obj.PUBLIC_KEY is not None:
+                f.write(attr_format.format('PUBLIC_KEYS', obj.PUBLIC_KEYS))
 
 
 class PyiUpdaterConfig(dict):
@@ -162,7 +165,7 @@ class SetupConfig(object):
 
     # Public Key used by your app to verify update data
     # REQUIRED
-    PUBLIC_KEY = None
+    PUBLIC_KEYS = None
 
     # Url to ping for updates
     UPDATE_URL = None

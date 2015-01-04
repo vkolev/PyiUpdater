@@ -15,7 +15,7 @@ from tconfig import TConfig
 test_dir = u'tests'
 data_dir = u'pyi-data'
 test_data_dir = os.path.join(test_dir, data_dir)
-keys_dir = os.path.join(test_dir, u'.pyiupdater', u'keys')
+keys_db = os.path.join(test_dir, u'.pyiupdater', u'key.db')
 new_folder = os.path.join(test_data_dir, u'new')
 version_file = os.path.join(test_data_dir, u'version.json')
 pub_key = None
@@ -71,45 +71,18 @@ def test_setup():
     updater = PyiUpdaterConfig(config)
     ph = PackageHandler(updater)
     key_dir = os.path.join(os.path.dirname(ph.data_dir),
-                           u'.pyiupdater', u'keys')
+                           u'.pyiupdater', u'key.db')
 
     kh = KeyHandler(updater)
     kh.test = True
+    kh.make_keys()
     assert os.path.exists(os.path.abspath(key_dir))
-    assert kh.private_key_name == u'jms.pem'
-    assert kh.public_key_name == u'jms.pub'
-
-
-@with_setup(setup_func2, teardown_func)
-def test_key_verify():
-    global pub_key
-    global version_file
-
-    with open(version_file) as vf:
-        version_data = json.loads(vf.read())
-    sig = version_data[u'sig']
-    del version_data[u'sig']
-    version_data = json.dumps(version_data, sort_keys=True)
-    verify_key = ed25519.VerifyingKey(pub_key, encoding="base64")
-    verify_key.verify(sig, version_data, encoding='base64')
 
 
 @with_setup(setup_func, teardown_func)
-def test_keydir_creation():
-    global keys_dir
-    assert os.path.exists(keys_dir) is True
-
-
-@with_setup(setup_func, teardown_func)
-def test_key_creation():
-    global keys_dir
-    files = os.listdir(keys_dir)
-    # Names are generated from tconfig
-    # extensions .pub and .pem are added
-    # to appname if public and private key
-    # key names are not provided in tconfig
-    assert u'jms.pub' in files
-    assert u'jms.pem' in files
+def test_keydb_creation():
+    global keys_db
+    assert os.path.exists(keys_db) is True
 
 
 @with_setup(None, teardown_func)

@@ -36,7 +36,7 @@ def test_no_cert():
 
 def test_bad_pub_key():
     config = TConfig()
-    config.PUBLIC_KEY = 'bad key'
+    config.PUBLIC_KEYS = 'bad key'
     client = Client(config, refresh=True, test=True)
     assert client.update_check(u'jms', '0.0.0') is None
 

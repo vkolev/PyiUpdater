@@ -88,18 +88,24 @@ class PyiUpdater(object):
         """
         self.up.upload()
 
-    def make_keys(self):
+    def make_keys(self, count):
         """Creates signing keys
         """
-        self.kh.make_keys()
+        self.kh.make_keys(count)
+
+    def revoke_key(self, count):
+        self.kh.revoke_key(count)
+
+    def get_recent_revoked_key(self):
+        return self.kh.get_recent_revoked_key()
 
     def sign_update(self):
         "Signs version file with signing key"
         self.kh.sign_update()
 
-    def get_public_key(self):
+    def get_public_keys(self):
         "Returns public key"
-        return self.kh.get_public_key()
+        return self.kh.get_public_keys()
 
     def print_public_key(self):
         "Prints public key to console"

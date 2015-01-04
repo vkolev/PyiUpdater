@@ -18,6 +18,10 @@
 import logging
 import os
 
+from pyi_updater.utils import lazy_import
+
+six = None
+
 log = logging.getLogger(__name__)
 
 
@@ -82,3 +86,18 @@ def get_filename(name, version, platform, easy_data):
 
         log.debug(u"Filename for {}-{}: {}".format(name, version, filename))
         return filename
+
+
+def convert_to_list(data, default=None):
+    global six
+    if six is None:
+        six = lazy_import(u'six')
+    if isinstance(data, list):
+        return data
+    if isinstance(data, tuple):
+        return list(data)
+    if isinstance(data, six.string_types):
+        return [data]
+    else:
+        log.debug('Not of string of tuple')
+        return default

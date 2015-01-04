@@ -31,7 +31,9 @@ import six
 import urllib3
 
 from pyi_updater.client.updates import AppUpdate, LibUpdate
-from pyi_updater.client.utils import (get_filename, get_highest_version)
+from pyi_updater.client.utils import (convert_to_list,
+                                      get_filename,
+                                      get_highest_version)
 from pyi_updater.config import PyiUpdaterConfig
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.utils import (EasyAccessDict,
@@ -100,7 +102,18 @@ class Client(object):
             self.data_dir = user_cache_dir(self.app_name, self.company_name)
             self.platform = get_system()
         self.update_folder = os.path.join(self.data_dir, u'update')
-        self.public_key = config.get(u'PUBLIC_KEY')
+        self.public_keys = convert_to_list(config.get(u'PUBLIC_KEYS'),
+                                           default=list())
+        if len(self.public_keys) == 0:
+            log.warning(u'May have pass an incorrect data type to PUBLIC_KEYS')
+        # ToDo: Remove in v1.0
+        if config.get(u'PUBLIC_KEY') is not None:
+            pub_key = convert_to_list(config.get(u'PUBLIC_KEY'),
+                                      default=list())
+            if len(pub_key) == 0:
+                log.warning(u'May have pass an incorrect data type '
+                            u'to PUBLIC_KEY')
+            self.public_keys += pub_key
         self.verify = config.get(u'VERIFY_SERVER_CERT', True)
         if self.verify is True:
             self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
@@ -180,7 +193,7 @@ class Client(object):
         # Checking if version file is verified before
         # processing data contained in the version file.
         # This was done by self._get_update_manifest()
-        if not self.verified:
+        if self.verified is False:
             log.debug('Failed version file verification')
             return None
         log.debug(u'Checking for {} updates...'.format(name))
@@ -275,40 +288,49 @@ class Client(object):
         if self.json_data is None:
             self.json_data = {}
 
+        self.json_data = self._verify_sig(self.json_data)
+
+        self.easy_data = EasyAccessDict(self.json_data)
+
+    def _verify_sig(self, data):
         # Checking to see if there is a sig in the version file.
-        if u'sig' in self.json_data.keys():
-            self.sig = self.json_data[u'sig']
+        if u'sig' in data.keys():
+            signatures = data[u'sig']
             log.debug(u'Deleting sig from update data')
-            del self.json_data[u'sig']
+            del data[u'sig']
 
             # After removing the sig we turn the json data back
             # into a string to use as data to verify the sig.
-            update_data = json.dumps(self.json_data, sort_keys=True)
+            update_data = json.dumps(data, sort_keys=True)
 
-            # I added this try/except block because sometimes a
-            # None value in json_data would find its way down here.
-            # Hopefully i fixed it by return right under the Exception
-            # block above.  But just in case will leave anyway.
-            try:
-                pub_key = ed25519.VerifyingKey(self.public_key,
-                                               encoding='base64')
-                pub_key.verify(self.sig, update_data, encoding='base64')
-            except Exception as e:
-                log.error(str(e))
-                self.json_data = None
-                log.debug(u'Version file not verified')
+            for pk in self.public_keys:
+                for s in signatures:
+                    # I added this try/except block because sometimes a
+                    # None value in json_data would find its way down here.
+                    # Hopefully i fixed it by return right under the Exception
+                    # block above.  But just in case will leave anyway.
+                    try:
+                        pub_key = ed25519.VerifyingKey(pk, encoding='base64')
+                        pub_key.verify(s, update_data, encoding='base64')
+                    except Exception as e:
+                        log.error(str(e))
+                        data = None
+                    else:
+                        log.debug(u'Version file verified')
+                        self.verified = True
+                        break
+                if self.verified is True:
+                    # No longer need to iterate through public keys
+                    break
             else:
-                log.debug(u'Version file verified')
-                self.verified = True
+                log.debug(u'Version file not verified')
 
         else:
-            log.error(u'No sig in version file')
+            log.error(u'Version file not verified, no signature found')
 
-        if self.json_data is None:
-            j_data = {}
-        else:
-            j_data = self.json_data.copy()
-        self.easy_data = EasyAccessDict(j_data)
+        if data is None:
+            data = {}
+        return data
 
     def _setup(self):
         # Sets up required directories on end-users computer

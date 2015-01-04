@@ -13,4 +13,5 @@ sphinx-better-theme
 sphinx-bootstrap-theme
 stevedore
 twine
+versioneer
 wheel
