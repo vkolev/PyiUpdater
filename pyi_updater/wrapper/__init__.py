@@ -35,12 +35,11 @@ nh = logging.NullHandler()
 nh.setLevel(logging.DEBUG)
 log.addHandler(nh)
 
-from pyi_updater import PyiUpdater
+from pyi_updater import PyiUpdater, __version__
 from pyi_updater.config import Loader, SetupConfig
 from pyi_updater.exceptions import UploaderError
 from pyi_updater import settings
 from pyi_updater.utils import initial_setup, make_archive
-from pyi_updater.version import get_version
 from pyi_updater.wrapper.options import parser
 
 if os.path.exists(os.path.join(os.getcwd(), settings.LOG_FILENAME)):
@@ -308,7 +307,7 @@ def main(args=None):
     elif cmd == u'up':
         upload(args)
     elif cmd == u'version':
-        print(u'PyiUpdater {}'.format(get_version()))
+        print(u'PyiUpdater {}'.format(__version__))
     else:
         sys.exit(u'Not Implemented')
 

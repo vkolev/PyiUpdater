@@ -110,3 +110,7 @@ class PyiUpdater(object):
     def print_public_key(self):
         "Prints public key to console"
         self.kh.print_public_key()
+
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions

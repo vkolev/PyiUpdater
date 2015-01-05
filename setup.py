@@ -6,8 +6,6 @@ import sys
 
 import versioneer
 
-from pyi_updater.version import get_version
-
 versioneer.VCS = 'git'
 versioneer.versionfile_source = 'pyi_updater/_version.py'
 versioneer.versionfile_build = 'pyi_updater/_version.py'
@@ -43,9 +41,13 @@ class PyTestCover(Command):
                                 u'--cov', u'pyi_updater', u'-n', u'1'])
         raise SystemExit(errno)
 
+cmd_class = versioneer.get_cmdclass()
+cmd_class.update({'test': PyTest,
+                 'ctest': PyTestCover})
+
 setup(
     name='PyiUpdater',
-    version=get_version(),
+    version=versioneer.get_version(),
     description='Simple App update framwork',
     author='Johny Mo Swag',
     author_email='johnymoswag@gmail.com',
@@ -61,10 +63,7 @@ setup(
         'scp': 'PyiUpdater-scp-Plugin>=1.0',
         },
     tests_require = ['pytest', ],
-    cmdclass = {'test': PyTest,
-                'ctest': PyTestCover,
-                'versioneer': versioneer.get_cmdclass()
-                },
+    cmdclass = cmd_class,
     install_requires=[
         'appdirs',
         'blinker',
