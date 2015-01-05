@@ -16,6 +16,7 @@ If you update to this release, do not revoke any keys until you are sure all cli
 
     - clean command: can remove PyiUpdater data & support file from root dir
 
+
   - PackageHandlder
 
     - Added migration command to new key system
@@ -33,6 +34,12 @@ If you update to this release, do not revoke any keys until you are sure all cli
   - Client
 
     - Support for multiple public keys verifying
+
+    - Downloads & decompresses zipped meta data
+
+  - KeyHandler
+
+    - Creates gzipped meta data
 
   - License
 

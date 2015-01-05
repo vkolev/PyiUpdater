@@ -16,6 +16,7 @@
 
 
 from __future__ import print_function
+import gzip
 import json
 import logging
 import os
@@ -228,12 +229,13 @@ class KeyHandler(object):
             f.write(json.dumps(data, indent=2, sort_keys=True))
         log.debug(u'Wrote version data to file system')
 
-        with open(self.version_file, u'w') as f:
+        with gzip.open(self.version_file, u'wb') as f:
             f.write(json.dumps(version, indent=2, sort_keys=True))
         log.debug(u'Created update manifest in deploy dir')
-
+        # ToDo: Remove in v1.0
         with open(self.old_version_file, u'w') as f:
             f.write(json.dumps(old_version, indent=2, sort_keys=True))
+        # ToDo: End
         log.debug(u'Created old style update manifest in deploy dir')
 
     def _load_update_data(self):
@@ -241,11 +243,14 @@ class KeyHandler(object):
         log.debug(u"Loading version file")
         try:
             log.debug(u'Version data file path: {}'.format(self.version_data))
-            with open(self.version_data, 'r') as f:
+            with open(self.version_data, u'r') as f:
                 update_data = json.loads(f.read())
             log.debug(u'Version file loaded')
             return update_data
         except Exception as e:
+            log.error(u'Version data file not found')
             log.error(e)
-            raise KeyHandlerError(u'Version file not found',
-                                  expected=True)
+            log.debug(u'Creating new version file')
+            with open(self.version_data, u'w') as f:
+                f.write(u'{}')
+            return dict()

@@ -15,8 +15,10 @@
 #--------------------------------------------------------------------------
 
 
+import gzip
 import logging
 import os
+import StringIO
 
 from pyi_updater.utils import lazy_import
 
@@ -101,3 +103,20 @@ def convert_to_list(data, default=None):
     else:
         log.debug('Not of string of tuple')
         return default
+
+
+def gzip_decompress(data):
+    compressed_file = StringIO.StringIO()
+    compressed_file.write(data)
+    #
+    # Set the file's current position to the beginning
+    # of the file so that gzip.GzipFile can read
+    # its contents from the top.
+    #
+    compressed_file.seek(0)
+
+    decompressed_file = gzip.GzipFile(fileobj=compressed_file, mode='rb')
+    data = decompressed_file.read()
+    compressed_file.close()
+    decompressed_file.close()
+    return data

@@ -50,7 +50,7 @@ UPDATES_KEY = u'updates'
 UPDATE_FOLDER = u'update'
 
 # Name of version file place in online repo
-VERSION_FILE = u'versions.db'
+VERSION_FILE = u'versions.gz'
 VERSION_FILE_OLD = u'version.json'
 
 # Name of version file for internal user

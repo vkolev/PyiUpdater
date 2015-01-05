@@ -21,8 +21,7 @@ from jms_utils import FROZEN
 from jms_utils.system import get_system
 from nose import with_setup
 
-from pyi_updater.utils import (ask_yes_no,
-                               get_hash,
+from pyi_updater.utils import (get_hash,
                                get_package_hashes,
                                make_archive,
                                vstr_2_vtuple,
@@ -63,16 +62,6 @@ def test_make_archive():
 
 def test_frozen():
     assert FROZEN is False
-
-
-def test_ask_yes_no_true():
-    yes = ask_yes_no('Test True', answer='yes')
-    assert yes is True
-
-
-def test_ask_yes_no_false():
-    no = ask_yes_no('Test False', answer='no')
-    assert no is False
 
 
 def setup_hash():

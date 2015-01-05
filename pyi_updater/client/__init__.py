@@ -14,6 +14,8 @@
 # limitations under the License.
 #--------------------------------------------------------------------------
 
+
+import gzip
 import json
 import logging
 import os
@@ -32,7 +34,8 @@ import urllib3
 from pyi_updater.client.updates import AppUpdate, LibUpdate
 from pyi_updater.client.utils import (convert_to_list,
                                       get_filename,
-                                      get_highest_version)
+                                      get_highest_version,
+                                      gzip_decompress)
 from pyi_updater.config import PyiUpdaterConfig
 from pyi_updater.downloader import FileDownloader
 from pyi_updater import settings
@@ -240,7 +243,7 @@ class Client(object):
             else:
                 log.debug('Found version file on file system')
                 try:
-                    with open(self.version_file, u'r') as f:
+                    with open(self.version_file, u'rb') as f:
                         data = f.read()
                     log.debug('Loaded version file from file system')
                 except Exception as err:
@@ -248,14 +251,14 @@ class Client(object):
                     log.debug(str(err))
                     data = None
 
-                return data
+                return gzip_decompress(data)
 
     def _download_manifest(self):
         log.debug('Downloading online version file')
         try:
             fd = FileDownloader(self.version_file, self.update_urls)
             data = fd.download_verify_return()
-            return data
+            return gzip_decompress(data)
             self._write_manifest_2_filesystem(data)
             log.debug('Version file download successful')
         except Exception as err:
@@ -265,7 +268,7 @@ class Client(object):
 
     def _write_manifest_2_filesystem(self, data):
         with ChDir(self.data_dir):
-            with open(self.version_file, u'w') as f:
+            with gzip.open(self.version_file, u'wb') as f:
                 f.write(data)
 
     def _get_update_manifest(self):

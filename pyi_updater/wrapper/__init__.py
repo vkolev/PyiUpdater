@@ -166,13 +166,19 @@ def build(args, pyi_args):
 
 def clean(args):
     if args.yes is True:
+        cleaned = False
         if os.path.exists(settings.CONFIG_DATA_FOLDER):
+            cleaned = True
             shutil.rmtree(settings.CONFIG_DATA_FOLDER, ignore_errors=True)
             print(u'Removed {} folder'.format(settings.CONFIG_DATA_FOLDER))
         if os.path.exists(settings.USER_DATA_FOLDER):
+            cleaned = True
             shutil.rmtree(settings.USER_DATA_FOLDER, ignore_errors=True)
             print(u'Removed {} folder'.format(settings.USER_DATA_FOLDER))
-        print(u'Clean complete...')
+        if cleaned is True:
+            print(u'Clean complete...')
+        else:
+            print(u'Nothing to clean...')
     else:
         print(u'Must pass -y to confirm')
 
