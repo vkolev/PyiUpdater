@@ -1,8 +1,10 @@
-v0.14.0 - Develop
+v0.15.0 - Develop
 ~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
+
 Backwards incompatible release * Migration Available *
 ------------------------------------------------------
+
 If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.
 ================================================================================================================================================================================================
 
@@ -12,7 +14,8 @@ If you update to this release, do not revoke any keys until you are sure all cli
 
     - Can now revoke signing keys. The number of keys to revoke from oldest.
       ::
-        $ pyiupdater keys --revoke 1
+
+      $ pyiupdater keys --revoke 1
 
     - clean command: can remove PyiUpdater data & support file from root dir
 

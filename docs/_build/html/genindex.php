@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Index &mdash; PyiUpdater 0.14-dev141453 documentation</title>
+    <title>Index &mdash; PyiUpdater 0.15.0-beta-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14-dev141453',
+        VERSION:     '0.15.0-beta-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.14-dev141453 documentation" href="index.php" />
+    <link rel="top" title="PyiUpdater 0.15.0-beta-dirty documentation" href="index.php" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="index.php">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.14-dev141453</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.15.0-beta-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -149,17 +149,17 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="api.php#pyi_updater.client.updates.AppUpdate">AppUpdate (class in pyi_updater.client.updates)</a>
+  <dt><a href="api.php#pyi_updater.key_handler.keydb.KeyDB.add_key">add_key() (pyi_updater.key_handler.keydb.KeyDB method)</a>
   </dt>
 
       
-  <dt><a href="api.php#pyi_updater.exceptions.ArchiverError">ArchiverError</a>
+  <dt><a href="api.php#pyi_updater.client.updates.AppUpdate">AppUpdate (class in pyi_updater.client.updates)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="api.php#pyi_updater.utils.ask_yes_no">ask_yes_no() (in module pyi_updater.utils)</a>
+  <dt><a href="api.php#pyi_updater.exceptions.ArchiverError">ArchiverError</a>
   </dt>
 
   </dl></td>
@@ -276,6 +276,10 @@
   <dt><a href="api.php#pyi_updater.client.utils.get_mac_dot_app_dir">get_mac_dot_app_dir() (in module pyi_updater.client.utils)</a>
   </dt>
 
+      
+  <dt><a href="api.php#pyi_updater.key_handler.keydb.KeyDB.get_private_keys">get_private_keys() (pyi_updater.key_handler.keydb.KeyDB method)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
@@ -283,7 +287,7 @@
   </dt>
 
       
-  <dt><a href="api.php#pyi_updater.key_handler.KeyHandler.get_public_keys">get_public_keys() (pyi_updater.key_handler.KeyHandler method)</a>
+  <dt><a href="api.php#pyi_updater.key_handler.keydb.KeyDB.get_public_keys">get_public_keys() (pyi_updater.key_handler.keydb.KeyDB method)</a>
   </dt>
 
       <dd><dl>
@@ -291,7 +295,15 @@
   <dt><a href="api.php#pyi_updater.PyiUpdater.get_public_keys">(pyi_updater.PyiUpdater method)</a>
   </dt>
 
+        
+  <dt><a href="api.php#pyi_updater.key_handler.KeyHandler.get_public_keys">(pyi_updater.key_handler.KeyHandler method)</a>
+  </dt>
+
       </dl></dd>
+      
+  <dt><a href="api.php#pyi_updater.key_handler.keydb.KeyDB.get_revoked_key">get_revoked_key() (pyi_updater.key_handler.keydb.KeyDB method)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -361,11 +373,15 @@
   </dt>
 
       
-  <dt><a href="api.php#pyi_updater.config.Loader.load_config">load_config() (pyi_updater.config.Loader method)</a>
+  <dt><a href="api.php#pyi_updater.key_handler.keydb.KeyDB.load">load() (pyi_updater.key_handler.keydb.KeyDB method)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api.php#pyi_updater.config.Loader.load_config">load_config() (pyi_updater.config.Loader method)</a>
+  </dt>
+
       
   <dt><a href="api.php#pyi_updater.config.Loader">Loader (class in pyi_updater.config)</a>
   </dt>
@@ -534,10 +550,14 @@
   <dt><a href="api.php#pyi_updater.client.Client.refresh">refresh() (pyi_updater.client.Client method)</a>
   </dt>
 
+      
+  <dt><a href="api.php#pyi_updater.client.updates.AppUpdate.restart">restart() (pyi_updater.client.updates.AppUpdate method)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="api.php#pyi_updater.client.updates.AppUpdate.restart">restart() (pyi_updater.client.updates.AppUpdate method)</a>
+  <dt><a href="api.php#pyi_updater.key_handler.keydb.KeyDB.revoke_key">revoke_key() (pyi_updater.key_handler.keydb.KeyDB method)</a>
   </dt>
 
   </dl></td>
@@ -546,6 +566,10 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api.php#pyi_updater.key_handler.keydb.KeyDB.save">save() (pyi_updater.key_handler.keydb.KeyDB method)</a>
+  </dt>
+
       
   <dt><a href="api.php#pyi_updater.config.Loader.save_config">save_config() (pyi_updater.config.Loader method)</a>
   </dt>
@@ -570,12 +594,12 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api.php#pyi_updater.config.SetupConfig">SetupConfig (class in pyi_updater.config)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="api.php#pyi_updater.key_handler.KeyHandler.sign_update">sign_update() (pyi_updater.key_handler.KeyHandler method)</a>
   </dt>

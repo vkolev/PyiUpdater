@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release History &mdash; PyiUpdater 0.14-dev141453 documentation</title>
+    <title>Release History &mdash; PyiUpdater 0.15.0-beta-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14-dev141453',
+        VERSION:     '0.15.0-beta-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.14-dev141453 documentation" href="index.php" />
+    <link rel="top" title="PyiUpdater 0.15.0-beta-dirty documentation" href="index.php" />
     <link rel="prev" title="License" href="license.php" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="index.php">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.14-dev141453</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.15.0-beta-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -91,7 +91,7 @@
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">Release History</a><ul>
-<li><a class="reference internal" href="#v0-14-0-develop">v0.14.0 - Develop</a><ul>
+<li><a class="reference internal" href="#v0-15-0-develop">v0.15.0 - Develop</a><ul>
 <li><a class="reference internal" href="#backwards-incompatible-release-migration-available">Backwards incompatible release * Migration Available *</a></li>
 </ul>
 </li>
@@ -167,8 +167,8 @@
       
   <div class="section" id="release-history">
 <h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="v0-14-0-develop">
-<h2>v0.14.0 - Develop<a class="headerlink" href="#v0-14-0-develop" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="v0-15-0-develop">
+<h2>v0.15.0 - Develop<a class="headerlink" href="#v0-15-0-develop" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This version is not yet released and is under active development.</p>
@@ -211,6 +211,11 @@
 </li>
 <li>Client<ul>
 <li>Support for multiple public keys verifying</li>
+<li>Downloads &amp; decompresses zipped meta data</li>
+</ul>
+</li>
+<li>KeyHandler<ul>
+<li>Creates gzipped meta data</li>
 </ul>
 </li>
 <li>License<ul>

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to PyiUpdater &mdash; PyiUpdater 0.14-dev141453 documentation</title>
+    <title>Welcome to PyiUpdater &mdash; PyiUpdater 0.15.0-beta-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14-dev141453',
+        VERSION:     '0.15.0-beta-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.14-dev141453 documentation" href="#" />
+    <link rel="top" title="PyiUpdater 0.15.0-beta-dirty documentation" href="#" />
     <link rel="next" title="Downloads" href="downloads.php" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="#">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.14-dev141453</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.15.0-beta-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -167,7 +167,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.php">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.php">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.php">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.php#demos">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.php#all-commands-must-be-ran-from-root-or-repository">All commands must be ran from root or repository.</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.php">Architecture</a></li>
@@ -182,7 +182,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api.php">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.php">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release_history.php">Release History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="release_history.php#v0-14-0-develop">v0.14.0 - Develop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_history.php#v0-15-0-develop">v0.15.0 - Develop</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="release_history.php#if-you-update-to-this-release-do-not-revoke-any-keys-until-you-are-sure-all-clients-are-updated-to-this-version-of-the-framework-if-you-revoke-a-key-it-will-break-the-built-in-migration">If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.</a><ul>

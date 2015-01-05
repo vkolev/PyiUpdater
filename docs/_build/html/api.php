@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API &mdash; PyiUpdater 0.14-dev141453 documentation</title>
+    <title>API &mdash; PyiUpdater 0.15.0-beta-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14-dev141453',
+        VERSION:     '0.15.0-beta-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.14-dev141453 documentation" href="index.php" />
+    <link rel="top" title="PyiUpdater 0.15.0-beta-dirty documentation" href="index.php" />
     <link rel="next" title="License" href="license.php" />
     <link rel="prev" title="Contributing" href="contributing.php" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.php">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.14-dev141453</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.15.0-beta-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -684,6 +684,57 @@ If matched returns binary data</p>
 </div></blockquote>
 </div></blockquote>
 </div></blockquote>
+<dl class="method">
+<dt id="pyi_updater.key_handler.keydb.KeyDB.add_key">
+<tt class="descname">add_key</tt><big>(</big><em>public</em>, <em>private</em>, <em>key_type='ed25519'</em><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.keydb.KeyDB.add_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds key pair to database</p>
+<p>Args:</p>
+<blockquote>
+<div><p>public (str): Public key</p>
+<p>private (str): Private key</p>
+<p>key_type (str): The type of key pair. Default ed25519</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.key_handler.keydb.KeyDB.get_public_keys">
+<tt class="descname">get_public_keys</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.keydb.KeyDB.get_public_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all valid public keys</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.key_handler.keydb.KeyDB.get_private_keys">
+<tt class="descname">get_private_keys</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.keydb.KeyDB.get_private_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all valid private keys</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.key_handler.keydb.KeyDB.get_revoked_key">
+<tt class="descname">get_revoked_key</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.keydb.KeyDB.get_revoked_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns most recent revoked key pair</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.key_handler.keydb.KeyDB.revoke_key">
+<tt class="descname">revoke_key</tt><big>(</big><em>count=1</em><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.keydb.KeyDB.revoke_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Revokes key pair</p>
+<p>Args:</p>
+<blockquote>
+<div>count (int): The number of keys to revoke. Oldest first</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.key_handler.keydb.KeyDB.load">
+<tt class="descname">load</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.keydb.KeyDB.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads data from key.db</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyi_updater.key_handler.keydb.KeyDB.save">
+<tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#pyi_updater.key_handler.keydb.KeyDB.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves data to key.db</p>
+</dd></dl>
+
 </dd></dl>
 
 <span class="target" id="module-pyi_updater.package_handler"></span><dl class="class">
@@ -800,27 +851,6 @@ on all other platforms</p>
 <dt>Returns:</dt>
 <dd>(str) - name of archive</dd>
 </dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyi_updater.utils.ask_yes_no">
-<tt class="descclassname">pyi_updater.utils.</tt><tt class="descname">ask_yes_no</tt><big>(</big><em>question</em>, <em>default='no'</em>, <em>answer=None</em><big>)</big><a class="headerlink" href="#pyi_updater.utils.ask_yes_no" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will ask a question and keeps prompting until
-answered.</p>
-<p>Args:</p>
-<blockquote>
-<div>question (str): Question to ask end user</div></blockquote>
-<p>Kwargs:</p>
-<blockquote>
-<div>default (str): Default answer if user just press enter at prompt</div></blockquote>
-<p>Returns:</p>
-<blockquote>
-<div><p>(bool) Meaning:</p>
-<blockquote>
-<div><p>True - Answer is  yes</p>
-<p>False - Answer is no</p>
-</div></blockquote>
-</div></blockquote>
 </dd></dl>
 
 <span class="target" id="module-pyi_updater.uploader"></span><dl class="class">

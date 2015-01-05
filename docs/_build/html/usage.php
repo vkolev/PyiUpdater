@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Usage &mdash; PyiUpdater 0.14-dev141453 documentation</title>
+    <title>Usage &mdash; PyiUpdater 0.15.0-beta-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.14-dev141453',
+        VERSION:     '0.15.0-beta-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.14-dev141453 documentation" href="index.php" />
+    <link rel="top" title="PyiUpdater 0.15.0-beta-dirty documentation" href="index.php" />
     <link rel="next" title="Architecture" href="architecture.php" />
     <link rel="prev" title="Configuration" href="configuration.php" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.php">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.14-dev141453</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.15.0-beta-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -92,7 +92,10 @@
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">Usage</a><ul>
+<li><a class="reference internal" href="#all-commands-must-be-ran-from-root-or-repository">All commands must be ran from root or repository.</a><ul>
 <li><a class="reference internal" href="#demos">Demos</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -149,12 +152,34 @@
 <p>Version numbers are in the form of: x.x.x</p>
 <p>Check <a class="reference external" href="http://semver.org/">Semantic Versioning</a> for more info</p>
 <p>The easiest way to get started quickly is to use to command line tool. After setup is complete you&#8217;ll be ready to start creating updates.</p>
-<p>From a terminal:</p>
+<div class="section" id="all-commands-must-be-ran-from-root-or-repository">
+<h2>All commands must be ran from root or repository.<a class="headerlink" href="#all-commands-must-be-ran-from-root-or-repository" title="Permalink to this headline">¶</a></h2>
+<p>Initialize a new repository.</p>
 <div class="highlight-python"><div class="highlight"><pre>$ pyiupdater init
 </pre></div>
 </div>
+<p>To create your first update.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pyiupdater --app-name&quot;Your app name&quot; --app-version1.0.0 app.py
+</pre></div>
+</div>
+<p>Get update meta data and save to file.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pyiupdater pkg -p
+</pre></div>
+</div>
+<p>Sign update file with signing keys &amp; gzip compress.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pyiupdater pkg -s
+</pre></div>
+</div>
+<p>Upload to remote location.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pyiupdater up -s s3
+</pre></div>
+</div>
+<p>Here using Amazon S3. Must have PYIUPDATER_PASS env set. Install with pyiupdater[s3].</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pip install pyiupdater[s3]
+</pre></div>
+</div>
 <div class="section" id="demos">
-<h2>Demos<a class="headerlink" href="#demos" title="Permalink to this headline">¶</a></h2>
+<h3>Demos<a class="headerlink" href="#demos" title="Permalink to this headline">¶</a></h3>
 <p>So if you opt not to use the cli interface &amp; instead want to integrate PyiUpdater into your build, look below.</p>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -351,6 +376,7 @@
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </td></tr></table></div>
+</div>
 </div>
 </div>
 
