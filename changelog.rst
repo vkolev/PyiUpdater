@@ -1,6 +1,5 @@
-v0.15.0 - Develop
-~~~~~~~~~~~~~~~~~
-.. note:: This version is not yet released and is under active development.
+v0.15.0 - 2015/4/1
+~~~~~~~~~~~~~~~~~~
 
 Backwards incompatible release * Migration Available *
 ------------------------------------------------------

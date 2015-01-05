@@ -6,7 +6,7 @@ machine:
 dependencies:
     pre:
         - make deps-dev-upgrade
-        - pip install coveralls pytest-cov pytest-xdist
+        - pip install python-coveralls pytest-cov pytest-xdist
 
 # command to run tests
 test:
