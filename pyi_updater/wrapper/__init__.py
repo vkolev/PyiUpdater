@@ -90,10 +90,11 @@ def build(args, pyi_args):
 
     temp_name = get_system()
     if app_type == u'spec':
+        log.debug(u'Spec file')
         if temp_name == u'win':
             log.debug(u'On windows: Adding .exe extension')
             temp_name += u'.exe'
-        fix = u"\t\t\t\t\tname='{}',\n".format(temp_name)
+        fix = u"\t\t\t\t\tname='{}',\n"
 
         # Sanitizing spec file
         log.debug(u'Opening spec file')
@@ -101,15 +102,21 @@ def build(args, pyi_args):
             spec_data = f.readlines()
 
         new_spec = []
+        found = False
         for s in spec_data:
             # Will replace name with system arch
             # Used for later archiving
+            if u'BUNDLE' in s:
+                found = True
             if u'name=' in s:
-                regex = re.compile('name=(?P<id>(\'|").*(\'|")),')
-                match = regex.search(s)
-                name = match.groupdict()['id']
-                log.debug(u'App name in spec file: {}'.format(name))
-                new_spec.append(fix)
+                if found is True:
+                    pass
+                else:
+                    regex = re.compile('name=(?P<id>(\'|").*(\'|")),')
+                    match = regex.search(s)
+                    name = match.groupdict()['id']
+                    log.debug(u'App name in spec file: {}'.format(name))
+                    new_spec.append(fix.format(temp_name))
             elif u'coll' in s or u'COLLECT' in s:
                 log.debug(u'One dir mode not supported')
                 sys.exit(u'Onedir mode is not supported')
@@ -121,6 +128,7 @@ def build(args, pyi_args):
                 f.write(n)
         # End spec file sanitation
     else:
+        log.debug('Source file')
         log.debug(u'Adding params to command')
         pyi_args.append(u'-F')
         pyi_args.append(u'--name={}'.format(temp_name))
@@ -131,8 +139,7 @@ def build(args, pyi_args):
     pyi_args.append(u'-y')
 
     cmds = [u'pyinstaller'] + pyi_args
-    log.debug(u'Command: {}'.format(cmds))
-    exit_code = subprocess.call(cmds)
+    exit_code = run(cmds)
 
     if exit_code != 0:
         log.debug(u'Build failed with status: {}'.format(exit_code))
@@ -141,6 +148,7 @@ def build(args, pyi_args):
     # Now archive the file
     with ChDir(new_dir):
         if os.path.exists(temp_name + u'.app'):
+            print(u'Got mac .app')
             app_name = temp_name + u'.app'
             name = args.app_name
         elif os.path.exists(temp_name + u'.exe'):
@@ -149,15 +157,27 @@ def build(args, pyi_args):
         else:
             app_name = temp_name
             name = args.app_name
-        log.debug(u'Appname: {}'.format(app_name))
         version = args.app_version
+        log.debug('Temp Name: {}'.format(temp_name))
+        log.debug(u'Appname: {}'.format(app_name))
+        log.debug('Version: {}'.format(version))
 
         # Time for some archive creation!
         file_name = make_archive(name, version, app_name)
         log.debug(u'Archive name: {}'.format(file_name))
         if args.keep is False:
             if os.path.exists(temp_name):
-                os.remove(temp_name)
+                log.debug('Removing: {}'.format(temp_name))
+                if os.path.isfile(temp_name):
+                    os.remove(temp_name)
+                else:
+                    shutil.rmtree(temp_name, ignore_errors=True)
+            if os.path.exists(app_name):
+                log.debug('Removing: {}'.format(temp_name))
+                if os.path.isfile(app_name):
+                    os.remove(app_name)
+                else:
+                    shutil.rmtree(app_name, ignore_errors=True)
     print(u'\n{} has been placed in your new folder\n'.format(file_name))
     finished = time.time() - start
     print(u'Build finished in {:.2f} seconds.'.format(finished))
@@ -289,7 +309,13 @@ def pretty_time(sec):
     return time.strftime("%Y/%m/%d, %H:%M:%S", time.localtime(sec))
 
 
-def main(args=None):
+def run(cmd):
+    log.debug(u'Command: {}'.format(cmd))
+    exit_code = subprocess.call(cmd)
+    return exit_code
+
+
+def _real_main(args):
     if args is None:
         args = sys.argv[1:]
     args, pyi_args = parser.parse_known_args(args)
@@ -311,6 +337,17 @@ def main(args=None):
     else:
         sys.exit(u'Not Implemented')
 
+
+def main(args=None):
+    try:
+        _real_main(args)
+    except KeyboardInterrupt:
+        msg = u'Exited by user'
+        log.debug(msg)
+        sys.exit(msg)
+    except Exception as err:
+        log.debug(str(err), exc_info=True)
+        sys.exit(str(err))
 
 if __name__ == u'__main__':
     args = sys.argv[1:]
