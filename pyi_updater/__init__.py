@@ -16,8 +16,13 @@
 
 
 import logging
+from logging.handlers import RotatingFileHandler
+import os
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger()
+
+from appdirs import user_log_dir
+from jms_utils.logger import log_format_string
 
 try:
     from PyInstaller import VERSION as temp_version
@@ -29,7 +34,25 @@ from pyi_updater.config import PyiUpdaterConfig
 from pyi_updater.exceptions import PyiUpdaterError
 from pyi_updater.key_handler import KeyHandler
 from pyi_updater.package_handler import PackageHandler
+from pyi_updater import settings
 from pyi_updater.uploader import Uploader
+
+log.setLevel(logging.DEBUG)
+fmt_str = log_format_string()
+nh = logging.NullHandler()
+nh.setLevel(logging.DEBUG)
+log.addHandler(nh)
+
+LOG_DIR = user_log_dir(settings.APP_NAME, settings.APP_AUTHOR)
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
+LOG_FILENAME_DEBUG = os.path.join(LOG_DIR, settings.LOG_FILENAME_DEBUG)
+
+rh = RotatingFileHandler(LOG_FILENAME_DEBUG, backupCount=5,
+                         maxBytes=500000)
+rh.setLevel(logging.DEBUG)
+rh.setFormatter(log_format_string())
+log.addHandler(rh)
 
 
 class PyiUpdater(object):

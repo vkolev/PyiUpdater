@@ -22,18 +22,12 @@ import shutil
 import subprocess
 import sys
 import time
+from zipfile import ZipFile
 
-from jms_utils.logger import log_format_string
+from appdirs import user_log_dir
 from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 import stevedore
-
-log = logging.getLogger()
-log.setLevel(logging.DEBUG)
-fmt_str = log_format_string()
-nh = logging.NullHandler()
-nh.setLevel(logging.DEBUG)
-log.addHandler(nh)
 
 from pyi_updater import PyiUpdater, __version__
 from pyi_updater.config import Loader, SetupConfig
@@ -42,15 +36,13 @@ from pyi_updater import settings
 from pyi_updater.utils import initial_setup, make_archive
 from pyi_updater.wrapper.options import parser
 
-if os.path.exists(os.path.join(os.getcwd(), settings.LOG_FILENAME)):
-    ch = logging.FileHandler(os.path.join(os.getcwd(), settings.LOG_FILENAME))
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(log_format_string())
-    log.addHandler(ch)
+log = logging.getLogger(__name__)
+
 
 start = time.time()
 CWD = os.getcwd()
 loader = Loader()
+LOG_DIR = user_log_dir(settings.APP_NAME, settings.APP_AUTHOR)
 
 
 def build(args, pyi_args):
@@ -245,6 +237,23 @@ def keys(args):
     loader.save_config(config)
 
 
+def _log(args):
+    og_dir = os.getcwd()
+    with ChDir(LOG_DIR):
+        files = []
+        temp_files = os.listdir(os.getcwd())
+        for t in temp_files:
+            if t.startswith(settings.LOG_FILENAME_DEBUG):
+                log.debug('Adding {} to log'.format(t))
+                files.append(t)
+        with ZipFile(settings.DEBUG_ARCHIVE, u'w') as zf:
+            for f in files:
+                log.debug(u'Archiving {}'.format(f))
+                zf.write(f)
+        shutil.move(settings.DEBUG_ARCHIVE, og_dir)
+    print(u'Log export complete')
+
+
 def pkg(args):
     check_repo()
     pyiu = PyiUpdater(loader.load_config())
@@ -330,6 +339,8 @@ def _real_main(args):
         init(args)
     elif cmd == u'keys':
         keys(args)
+    elif cmd == u'log':
+        _log(args)
     elif cmd == u'pkg':
         pkg(args)
     elif cmd == u'up':
@@ -344,7 +355,7 @@ def main(args=None):
     try:
         _real_main(args)
     except KeyboardInterrupt:
-        msg = u'Exited by user'
+        msg = u'\nExited by user'
         log.debug(msg)
         sys.exit(msg)
     except Exception as err:
