@@ -90,6 +90,8 @@ def build(args, pyi_args):
 
     temp_name = get_system()
     if app_type == u'spec':
+        sys.exit(u'\nSpec file support is disabled.'
+                 u'\n\n\tComing back soon...\n\n')
         log.debug(u'Spec file')
         if temp_name == u'win':
             log.debug(u'On windows: Adding .exe extension')
