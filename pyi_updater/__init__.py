@@ -44,9 +44,9 @@ nh.setLevel(logging.DEBUG)
 log.addHandler(nh)
 
 LOG_DIR = user_log_dir(settings.APP_NAME, settings.APP_AUTHOR)
+LOG_FILENAME_DEBUG = os.path.join(LOG_DIR, settings.LOG_FILENAME_DEBUG)
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
-LOG_FILENAME_DEBUG = os.path.join(LOG_DIR, settings.LOG_FILENAME_DEBUG)
 
 rh = RotatingFileHandler(LOG_FILENAME_DEBUG, backupCount=5,
                          maxBytes=500000)

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to PyiUpdater &mdash; PyiUpdater 0.15.1-beta1-dirty documentation</title>
+    <title>Welcome to PyiUpdater &mdash; PyiUpdater 0.15.1-beta2-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.15.1-beta1-dirty',
+        VERSION:     '0.15.1-beta2-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.15.1-beta1-dirty documentation" href="#" />
+    <link rel="top" title="PyiUpdater 0.15.1-beta2-dirty documentation" href="#" />
     <link rel="next" title="Downloads" href="downloads.php" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="#">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta1-dirty</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta2-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -182,6 +182,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api.php">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.php">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release_history.php">Release History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="release_history.php#v0-15-1-beta">v0.15.1 - beta</a></li>
 <li class="toctree-l2"><a class="reference internal" href="release_history.php#v0-15-0-2015-4-1">v0.15.0 - 2015/4/1</a></li>
 </ul>
 </li>
@@ -233,7 +234,7 @@
     </p>
     <p>
         &copy; Copyright 2014, Digital Sapphire.<br/>
-      Last updated on Jan 07, 2015.<br/>
+      Last updated on Jan 08, 2015.<br/>
     </p>
   </div>
 </footer>

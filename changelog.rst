@@ -1,3 +1,23 @@
+v0.15.1 - beta
+~~~~~~~~~~~~~~~~~~
+* Updated
+
+  - CLI
+
+    - Handles exceptions better
+
+* Fixed
+
+  - CLI
+
+    - Build: Packaging mac .app
+
+* Removed
+
+  - CLI
+
+    - Build: Spec file support - will be coming back bigger & better.
+
 v0.15.0 - 2015/4/1
 ~~~~~~~~~~~~~~~~~~
 

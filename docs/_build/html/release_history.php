@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release History &mdash; PyiUpdater 0.15.1-beta1-dirty documentation</title>
+    <title>Release History &mdash; PyiUpdater 0.15.1-beta2-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.15.1-beta1-dirty',
+        VERSION:     '0.15.1-beta2-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.15.1-beta1-dirty documentation" href="index.php" />
+    <link rel="top" title="PyiUpdater 0.15.1-beta2-dirty documentation" href="index.php" />
     <link rel="prev" title="License" href="license.php" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="index.php">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta1-dirty</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta2-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -91,6 +91,7 @@
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">Release History</a><ul>
+<li><a class="reference internal" href="#v0-15-1-beta">v0.15.1 - beta</a></li>
 <li><a class="reference internal" href="#v0-15-0-2015-4-1">v0.15.0 - 2015/4/1</a><ul>
 <li><a class="reference internal" href="#backwards-incompatible-release-migration-available">Backwards incompatible release * Migration Available *</a></li>
 </ul>
@@ -167,6 +168,32 @@
       
   <div class="section" id="release-history">
 <h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="v0-15-1-beta">
+<h2>v0.15.1 - beta<a class="headerlink" href="#v0-15-1-beta" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Updated<ul>
+<li>CLI<ul>
+<li>Handles exceptions better</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Fixed<ul>
+<li>CLI<ul>
+<li>Build: Packaging mac .app</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Removed<ul>
+<li>CLI<ul>
+<li>Build: Spec file support - will be coming back bigger &amp; better.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="v0-15-0-2015-4-1">
 <h2>v0.15.0 - 2015/4/1<a class="headerlink" href="#v0-15-0-2015-4-1" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="backwards-incompatible-release-migration-available">
@@ -701,7 +728,7 @@ to correct class attributes</li>
     </p>
     <p>
         &copy; Copyright 2014, Digital Sapphire.<br/>
-      Last updated on Jan 07, 2015.<br/>
+      Last updated on Jan 08, 2015.<br/>
     </p>
   </div>
 </footer>
