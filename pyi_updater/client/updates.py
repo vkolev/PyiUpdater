@@ -423,7 +423,9 @@ class AppUpdate(LibUpdate):
         # all platforms.  But sheeeeesh!
         exe_name = self.name + u'.exe'
         current_app = os.path.join(self.current_app_dir, exe_name)
+        log.debug('Current app location: {}'.format(current_app))
         updated_app = os.path.join(self.update_folder, exe_name)
+        log.debug('Update location: {}'.format(updated_app))
 
         bat = os.path.join(self.current_app_dir, u'update.bat')
         with open(bat, u'w') as batfile:

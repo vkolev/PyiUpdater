@@ -5,6 +5,13 @@ v0.15.1 - beta
   - CLI
 
     - Handles exceptions better
+    - More descriptive error messages
+    - Updated command args
+
+  - PyiUpdater
+
+    - Lowered pyinstaller requirement to 2.1
+    - Added hooks included in newer versions of pyinstaller
 
 * Fixed
 
@@ -17,6 +24,7 @@ v0.15.1 - beta
   - CLI
 
     - Build: Spec file support - will be coming back bigger & better.
+
 
 v0.15.0 - 2015/4/1
 ~~~~~~~~~~~~~~~~~~

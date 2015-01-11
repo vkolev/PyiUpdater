@@ -120,8 +120,8 @@ package_parser.add_argument(u'-P', u'--process',
 package_parser.add_argument(u'-S', u'--sign', help=u'Sign version file',
                             action=u'store_true', dest=u'sign')
 
-upload_parser = subparsers.add_parser(u'up', help=u'Uploads files')
-upload_parser.add_argument(u'--service', help=u'Where '
+upload_parser = subparsers.add_parser(u'upload', help=u'Uploads files')
+upload_parser.add_argument(u'-s', u'--service', help=u'Where '
                            u'updates are stored', dest=u'service')
 
 version_parser = subparsers.add_parser(u'version', help=u'Programs version')

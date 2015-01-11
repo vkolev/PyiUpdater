@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Downloads &mdash; PyiUpdater 0.15.1-beta2-dirty documentation</title>
+    <title>Downloads &mdash; PyiUpdater 0.15.1-beta2-1-g7289340-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.15.1-beta2-dirty',
+        VERSION:     '0.15.1-beta2-1-g7289340-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.15.1-beta2-dirty documentation" href="index.php" />
+    <link rel="top" title="PyiUpdater 0.15.1-beta2-1-g7289340-dirty documentation" href="index.php" />
     <link rel="next" title="Installation" href="installation.php" />
     <link rel="prev" title="Welcome to PyiUpdater" href="index.php" />
 <meta charset='utf-8'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.php">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta2-dirty</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta2-1-g7289340-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -164,7 +164,7 @@
     </p>
     <p>
         &copy; Copyright 2014, Digital Sapphire.<br/>
-      Last updated on Jan 07, 2015.<br/>
+      Last updated on Jan 10, 2015.<br/>
     </p>
   </div>
 </footer>

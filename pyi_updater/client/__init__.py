@@ -356,7 +356,11 @@ class Client(object):
 
     def _archive_installed_binary(self):
         # Archives current app and places in cache for future patch updates
-
+        # May be able to support windows. Open issue on github
+        # https://github.com/pyinstaller/pyinstaller/issues/1145
+        if get_system() == u'win':
+            log.debug('Archiving not supported on windows...')
+            return
         current_archive_filename = get_filename(self.name, self.version,
                                                 self.platform, self.easy_data)
 
@@ -374,13 +378,10 @@ class Client(object):
 
             with ChDir(p_dir):
                 name = self.name
-                if get_system() == u'win':
-                    name += u'.exe'
                 if get_system() == u'mac':
                     # If not found must be a mac gui app
                     if not os.path.exists(name):
                         name += u'.app'
-
                 try:
                     filename = make_archive(self.name, self.version,
                                             name)

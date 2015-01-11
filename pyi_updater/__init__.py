@@ -65,8 +65,8 @@ class PyiUpdater(object):
 
     def __init__(self, config=None):
         self.config = PyiUpdaterConfig()
-        if pyi_version < (2, 1, 1):
-                raise PyiUpdaterError('Must have at least PyInstaller v2.1.1',
+        if pyi_version < (2, 1):
+                raise PyiUpdaterError('Must have at least PyInstaller v2.1',
                                       expected=True)
         if config is not None:
             self.update_config(config)

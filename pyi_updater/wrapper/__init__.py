@@ -30,9 +30,10 @@ from jms_utils.system import get_system
 import stevedore
 
 from pyi_updater import PyiUpdater, __version__
+from pyi_updater import settings
 from pyi_updater.config import Loader, SetupConfig
 from pyi_updater.exceptions import UploaderError
-from pyi_updater import settings
+from pyi_updater.hooks import get_hook_dir
 from pyi_updater.utils import initial_setup, make_archive
 from pyi_updater.wrapper.options import parser
 
@@ -130,6 +131,7 @@ def build(args, pyi_args):
 
     pyi_args.append(u'--distpath={}'.format(new_dir))
     pyi_args.append(u'--workpath={}'.format(work_dir))
+    pyi_args.append(u'--additional-hooks-dir={}'.format(get_hook_dir()))
     pyi_args.append(u'-y')
 
     cmds = [u'pyinstaller'] + pyi_args
@@ -291,8 +293,14 @@ def upload(args):
         mgr = stevedore.ExtensionManager(u'pyiupdater.plugins.uploaders')
         plugin_names = mgr.names()
         log.debug(u'Plugin names: {}'.format(plugin_names))
-        sys.exit(u'Invalid Uploader\n\nAvailable options:\n'
-                 u'{}'.format(plugin_names))
+        if len(plugin_names) == 0:
+            msg = (u'*** No upload plugins instaled! ***\nYou can install the '
+                   u'aws s3 plugin with\n$ pip install pyiupdater[s3]\n\nOr '
+                   u'the scp plugin with\n$ pip install pyiupdater[scp]')
+        else:
+            msg = (u'Invalid Uploader\n\nAvailable options:\n'
+                   u'{}'.format(plugin_names))
+        sys.exit(msg)
     try:
         pyiu.upload()
     except Exception as e:
@@ -343,7 +351,7 @@ def _real_main(args):
         _log(args)
     elif cmd == u'pkg':
         pkg(args)
-    elif cmd == u'up':
+    elif cmd == u'upload':
         upload(args)
     elif cmd == u'version':
         print(u'PyiUpdater {}'.format(__version__))
