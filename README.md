@@ -2,9 +2,9 @@
 
 # PyiUpdater
 ##### An update framework for managing, signing & uploading your app updates
-[Documentation](http://pyiupdater.digitalsapphire.io)
+[Documentation](http://pyiupdater.jmswag.com)
 
-[Dev Documentation](http://pyiupdater-dev.digitalsapphire.io)
+[Dev Documentation](http://pyiupdater-dev.jmswag.com)
 
 
 [Full changelog](https://github.com/JohnyMoSwag/PyiUpdater/blob/master/changelog.txt)

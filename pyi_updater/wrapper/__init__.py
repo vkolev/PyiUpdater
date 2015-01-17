@@ -17,166 +17,35 @@
 
 import logging
 import os
-import re
 import shutil
-import subprocess
 import sys
-import time
 from zipfile import ZipFile
 
 from appdirs import user_log_dir
+from jms_utils.logger import log_format_string
 from jms_utils.paths import ChDir
-from jms_utils.system import get_system
 import stevedore
 
 from pyi_updater import PyiUpdater, __version__
 from pyi_updater import settings
 from pyi_updater.config import Loader, SetupConfig
 from pyi_updater.exceptions import UploaderError
-from pyi_updater.hooks import get_hook_dir
-from pyi_updater.utils import initial_setup, make_archive
+from pyi_updater.utils import initial_setup
+from pyi_updater.wrapper.builder import Builder
 from pyi_updater.wrapper.options import parser
+from pyi_updater.wrapper.utils import check_repo, pretty_time
 
 log = logging.getLogger(__name__)
+if os.path.exists(os.path.join(os.getcwd(), u'pyiu.log')):
+    ch = logging.FileHandler(os.path.join(os.getcwd(), u'pyiu.log'))
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(log_format_string())
+    log.addHandler(ch)
 
 
-start = time.time()
 CWD = os.getcwd()
 loader = Loader()
 LOG_DIR = user_log_dir(settings.APP_NAME, settings.APP_AUTHOR)
-
-
-def build(args, pyi_args):
-    check_repo()
-    pyi_dir = os.path.join(os.getcwd(), settings.USER_DATA_FOLDER)
-    new_dir = os.path.join(pyi_dir, u'new')
-    build_dir = os.path.join(os.getcwd(), settings.CONFIG_DATA_FOLDER)
-    spec_dir = os.path.join(build_dir, u'spec')
-    work_dir = os.path.join(build_dir, u'work')
-    for d in [build_dir, spec_dir, work_dir, pyi_dir, new_dir]:
-        if not os.path.exists(d):
-            log.debug(u'Creating directory: {}'.format(d))
-            os.mkdir(d)
-
-    if check_version(args.app_version) is False:
-        sys.exit(u"""Error: version # needs to be in the form of "0.10.0"
-
-    Visit url for more info:
-
-        http://semver.org/
-                  """)
-
-    app_type = None
-    for p in pyi_args:
-        if p.endswith(u'.py'):
-            log.debug(u'Building from python source file')
-            app_type = u'script'
-            break
-        elif p.endswith(u'.spec'):
-            log.debug(u'Building from spec file: {}'.format(p))
-            spec_file = p
-            app_type = u'spec'
-            break
-    else:
-        log.debug(u'No accepted files passed to builder')
-        sys.exit(u'Must pass a python script or spec file')
-
-    temp_name = get_system()
-    if app_type == u'spec':
-        sys.exit(u'\nSpec file support is disabled.'
-                 u'\n\n\tComing back soon...\n\n')
-        log.debug(u'Spec file')
-        if temp_name == u'win':
-            log.debug(u'On windows: Adding .exe extension')
-            temp_name += u'.exe'
-        fix = u"\t\t\t\t\tname='{}',\n"
-
-        # Sanitizing spec file
-        log.debug(u'Opening spec file')
-        with open(spec_file, u'r') as f:
-            spec_data = f.readlines()
-
-        new_spec = []
-        found = False
-        for s in spec_data:
-            # Will replace name with system arch
-            # Used for later archiving
-            if u'BUNDLE' in s:
-                found = True
-            if u'name=' in s:
-                if found is True:
-                    pass
-                else:
-                    regex = re.compile('name=(?P<id>(\'|").*(\'|")),')
-                    match = regex.search(s)
-                    name = match.groupdict()['id']
-                    log.debug(u'App name in spec file: {}'.format(name))
-                    new_spec.append(fix.format(temp_name))
-            elif u'coll' in s or u'COLLECT' in s:
-                log.debug(u'One dir mode not supported')
-                sys.exit(u'Onedir mode is not supported')
-            else:
-                new_spec.append(s)
-        log.debug(u'Writing spec file to disk')
-        with open(spec_file, u'w') as f:
-            for n in new_spec:
-                f.write(n)
-        # End spec file sanitation
-    else:
-        log.debug('Source file')
-        log.debug(u'Adding params to command')
-        pyi_args.append(u'-F')
-        pyi_args.append(u'--name={}'.format(temp_name))
-        pyi_args.append(u'--specpath={}'.format(spec_dir))
-
-    pyi_args.append(u'--distpath={}'.format(new_dir))
-    pyi_args.append(u'--workpath={}'.format(work_dir))
-    pyi_args.append(u'--additional-hooks-dir={}'.format(get_hook_dir()))
-    pyi_args.append(u'-y')
-
-    cmds = [u'pyinstaller'] + pyi_args
-    exit_code = run(cmds)
-
-    if exit_code != 0:
-        log.debug(u'Build failed with status: {}'.format(exit_code))
-        sys.exit(u'Build Failed')
-
-    # Now archive the file
-    with ChDir(new_dir):
-        if os.path.exists(temp_name + u'.app'):
-            print(u'Got mac .app')
-            app_name = temp_name + u'.app'
-            name = args.app_name
-        elif os.path.exists(temp_name + u'.exe'):
-            app_name = temp_name + u'.exe'
-            name = args.app_name
-        else:
-            app_name = temp_name
-            name = args.app_name
-        version = args.app_version
-        log.debug('Temp Name: {}'.format(temp_name))
-        log.debug(u'Appname: {}'.format(app_name))
-        log.debug('Version: {}'.format(version))
-
-        # Time for some archive creation!
-        file_name = make_archive(name, version, app_name)
-        log.debug(u'Archive name: {}'.format(file_name))
-        if args.keep is False:
-            if os.path.exists(temp_name):
-                log.debug('Removing: {}'.format(temp_name))
-                if os.path.isfile(temp_name):
-                    os.remove(temp_name)
-                else:
-                    shutil.rmtree(temp_name, ignore_errors=True)
-            if os.path.exists(app_name):
-                log.debug('Removing: {}'.format(temp_name))
-                if os.path.isfile(app_name):
-                    os.remove(app_name)
-                else:
-                    shutil.rmtree(app_name, ignore_errors=True)
-    print(u'\n{} has been placed in your new folder\n'.format(file_name))
-    finished = time.time() - start
-    print(u'Build finished in {:.2f} seconds.'.format(finished))
 
 
 def clean(args):
@@ -310,37 +179,14 @@ def upload(args):
         sys.exit(msg)
 
 
-def check_repo():
-    if not os.path.exists(settings.CONFIG_DATA_FOLDER):
-        sys.exit('Not a PyiUpdater repo: Must init first.')
-
-
-def check_version(version):
-    match = re.match(u'(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)',
-                     version)
-    if match is None:
-        return False
-    else:
-        return True
-
-
-def pretty_time(sec):
-    return time.strftime("%Y/%m/%d, %H:%M:%S", time.localtime(sec))
-
-
-def run(cmd):
-    log.debug(u'Command: {}'.format(cmd))
-    exit_code = subprocess.call(cmd)
-    return exit_code
-
-
 def _real_main(args):
     if args is None:
         args = sys.argv[1:]
     args, pyi_args = parser.parse_known_args(args)
     cmd = args.command
     if cmd == u'build':
-        build(args, pyi_args)
+        builder = Builder(args, pyi_args)
+        builder.start()
     elif cmd == u'clean':
         clean(args)
     elif cmd == u'init':

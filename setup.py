@@ -55,9 +55,9 @@ setup(
     download_url=('https://github.com/JohnyMoSwag/Pyi'
                   'Updater/archive/master.zip'),
     license='Apache License 2.0',
-    # dependency_links = [
-        # 'https://github.com/pyinstaller/pyinstaller/tarball/'
-        # 'develop#egg=pyinstaller-2.1.1dev'],
+    dependency_links = [
+        'https://github.com/pyinstaller/pyinstaller/tarball/'
+        'develop#egg=pyinstaller-2.1.1dev'],
     extras_require = {
         's3': 'PyiUpdater-s3-Plugin>=1.0.1',
         'scp': 'PyiUpdater-scp-Plugin>=1.0',
