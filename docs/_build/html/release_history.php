@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release History &mdash; PyiUpdater 0.15.1-beta2-1-g7289340-dirty documentation</title>
+    <title>Release History &mdash; PyiUpdater 0.15.1-beta6-4-g9c2a6d7-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.15.1-beta2-1-g7289340-dirty',
+        VERSION:     '0.15.1-beta6-4-g9c2a6d7-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.15.1-beta2-1-g7289340-dirty documentation" href="index.php" />
+    <link rel="top" title="PyiUpdater 0.15.1-beta6-4-g9c2a6d7-dirty documentation" href="index.php" />
     <link rel="prev" title="License" href="license.php" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="index.php">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta2-1-g7289340-dirty</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta6-4-g9c2a6d7-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -170,14 +170,33 @@
 <h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="v0-15-1-beta">
 <h2>v0.15.1 - beta<a class="headerlink" href="#v0-15-1-beta" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This version is not yet released and is under active development.</p>
+</div>
 <ul class="simple">
+<li>Added<ul>
+<li>PyiUpdater<ul>
+<li>Hooks for certifi</li>
+<li>Settings module to make updating easier.</li>
+</ul>
+</li>
+</ul>
+</li>
 <li>Updated<ul>
 <li>CLI<ul>
 <li>Handles exceptions better</li>
+<li>More descriptive error messages</li>
+<li>Updated command args</li>
+<li>Log export for debugging</li>
+<li>Builder is now a class</li>
+<li>Utils class</li>
 </ul>
 </li>
 <li>PyiUpdater<ul>
 <li>Lowered pyinstaller requirement to 2.1</li>
+<li>Added hooks included in newer versions of pyinstaller</li>
+<li>Added rotating logs</li>
 </ul>
 </li>
 </ul>
@@ -185,6 +204,10 @@
 <li>Fixed<ul>
 <li>CLI<ul>
 <li>Build: Packaging mac .app</li>
+</ul>
+</li>
+<li>Client<ul>
+<li>Restarting app after auto-update</li>
 </ul>
 </li>
 </ul>
@@ -732,7 +755,7 @@ to correct class attributes</li>
     </p>
     <p>
         &copy; Copyright 2014, Digital Sapphire.<br/>
-      Last updated on Jan 10, 2015.<br/>
+      Last updated on Jan 17, 2015.<br/>
     </p>
   </div>
 </footer>

@@ -10,7 +10,7 @@
 [Full changelog](https://github.com/JohnyMoSwag/PyiUpdater/blob/master/changelog.txt)
 
 #### Supported Freezers
-* [Pyinstaller](http://www.pyinstaller.org) >= 2.1.1
+* [Pyinstaller](http://www.pyinstaller.org) >= 2.1
 
 
 ## To Install

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to PyiUpdater &mdash; PyiUpdater 0.15.1-beta2-1-g7289340-dirty documentation</title>
+    <title>Welcome to PyiUpdater &mdash; PyiUpdater 0.15.1-beta6-4-g9c2a6d7-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.15.1-beta2-1-g7289340-dirty',
+        VERSION:     '0.15.1-beta6-4-g9c2a6d7-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.15.1-beta2-1-g7289340-dirty documentation" href="#" />
+    <link rel="top" title="PyiUpdater 0.15.1-beta6-4-g9c2a6d7-dirty documentation" href="#" />
     <link rel="next" title="Downloads" href="downloads.php" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="#">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta2-1-g7289340-dirty</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta6-4-g9c2a6d7-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -156,7 +156,9 @@
 </div>
 <div class="section" id="status">
 <h2>Status<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
-<p>Starting with v0.9.2 PyiUpdater supports updating GUI &amp; cli apps on Mac, Windows &amp; Linux. The api is pretty stable but maintaining backwards compatibility is on a best effort basis until v1.0. Backwards incompatible changes will be noted in the changelog.</p>
+<a class="reference external image-reference" href="https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master"><img alt="https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.svg?branch=master" src="https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://circleci.com/gh/JohnyMoSwag/PyiUpdater"><img src="https://circleci.com/gh/JohnyMoSwag/PyiUpdater.svg?style=svg" /></a>
+<p>Starting with v0.15.1 PyiUpdater supports updating GUI &amp; cli apps on Mac, Windows &amp; Linux. The api is pretty stable but maintaining backwards compatibility is on a best effort basis until v1.0. Backwards incompatible changes will be noted in the changelog.</p>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -234,7 +236,7 @@
     </p>
     <p>
         &copy; Copyright 2014, Digital Sapphire.<br/>
-      Last updated on Jan 10, 2015.<br/>
+      Last updated on Jan 17, 2015.<br/>
     </p>
   </div>
 </footer>
