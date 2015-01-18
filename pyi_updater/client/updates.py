@@ -442,9 +442,9 @@ echo Updating to latest version...
 ping 127.0.0.1 -n 5 -w 1000 > NUL
 move /Y "{}" "{}" > NUL
 echo restarting...
-start {} "{}"
+{} "{}"
+DEL "%~f0"
 """.format(updated_app, current_app, fix, current_app))
-        # DEL "%~f0"
         log.debug(u'Starting bat file')
         os.startfile(bat)
         sys.exit(0)
