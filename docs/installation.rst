@@ -9,14 +9,14 @@ So how do you get all that on your computer quickly?
 
 Install from pip::
 
-    $ pip install PyiUpdater --process-dependency-links
+    $ pip install PyiUpdater
 
 S3 & SCP upload plugins are available with::
 
-    $ pip install PyiUpdater[s3] --process-dependency-links
+    $ pip install PyiUpdater[s3]
 
-    $ pip install PyiUpdater[scp] --process-dependency-links
+    $ pip install PyiUpdater[scp]
 
 If you want the bleeding edge download a pre-release version. WARNING! -> pre released version may not work as expected::
 
-    $ pip install PyiUpdater --pre --process-dependency-links
+    $ pip install PyiUpdater --pre

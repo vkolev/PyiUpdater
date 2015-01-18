@@ -17,6 +17,7 @@
 
 import logging
 import os
+import sys
 
 from pyi_updater.exceptions import UploaderError
 from pyi_updater import settings
@@ -80,7 +81,11 @@ class Uploader(object):
         """
         if self.uploader is not None:  # pragma: no cover
             self.uploader.deploy_dir = self.deploy_dir
-            self.uploader.upload()
+            try:
+                self.uploader.upload()
+            except Exception as err:
+                log.debug(str(err), exc_info=True)
+                sys.exit(str(err))
         else:
             raise UploaderError(u'Must call set_uploader first', expected=True)
 

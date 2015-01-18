@@ -32,19 +32,19 @@ To create your first update.
 Get update meta data and save to file.
 ::
 
-    $ pyiupdater pkg -p
+    $ pyiupdater pkg -P
 
 
 Sign update file with signing keys & gzip compress.
 ::
 
-    $ pyiupdater pkg -s
+    $ pyiupdater pkg -S
 
 
 Upload to remote location.
 ::
 
-    $ pyiupdater up -s s3
+    $ pyiupdater up --service s3
 
 Here using Amazon S3. Must have PYIUPDATER_PASS env set. Install with pyiupdater[s3].
 ::

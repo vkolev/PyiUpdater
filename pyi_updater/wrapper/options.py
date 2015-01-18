@@ -106,17 +106,21 @@ keys_parser.add_argument(u'--show-private', help=u'Prints private key to '
                          u'screen upon revocation', dest=u'private',
                          action='store_true')
 
+log_parser = subparsers.add_parser(u'log', help=u'Generate log archive to '
+                                   u'help debugging. Archive will be place in '
+                                   u'current working directory')
+
 
 package_parser = subparsers.add_parser(u'pkg', help=u'Manages creation of '
                                        u'file metadata & signing')
-package_parser.add_argument(u'-p', u'--process',
+package_parser.add_argument(u'-P', u'--process',
                             help=u'Adds update metadata to version file',
                             action=u'store_true', dest=u'process')
 
-package_parser.add_argument(u'-s', u'--sign', help=u'Sign version file',
+package_parser.add_argument(u'-S', u'--sign', help=u'Sign version file',
                             action=u'store_true', dest=u'sign')
 
-upload_parser = subparsers.add_parser(u'up', help=u'Uploads files')
+upload_parser = subparsers.add_parser(u'upload', help=u'Uploads files')
 upload_parser.add_argument(u'-s', u'--service', help=u'Where '
                            u'updates are stored', dest=u'service')
 

@@ -1,10 +1,10 @@
-[![PyPI version](https://badge.fury.io/py/PyiUpdater.svg)](http://badge.fury.io/py/PyiUpdater) [![Build Status](https://circleci.com/gh/JohnyMoSwag/PyiUpdater.svg?style=shield&circle-token=:circle-token)](https://travis-ci.org/JohnyMoSwag/PyiUpdater) [![Coverage Status](https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.png?branch=master)](https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master)
+[![PyPI version](https://badge.fury.io/py/PyiUpdater.svg)](http://badge.fury.io/py/PyiUpdater) [![Build Status](https://circleci.com/gh/JohnyMoSwag/PyiUpdater.svg?style=shield&circle-token=:circle-token)](https://travis-ci.org/JohnyMoSwag/PyiUpdater) [![Coverage Status](https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.svg?branch=master)](https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master)
 
 # PyiUpdater
 ##### An update framework for managing, signing & uploading your app updates
-[Documentation](http://pyiupdater.digitalsapphire.io)
+[Documentation](http://pyiupdater.jmswag.com)
 
-[Dev Documentation](http://pyiupdater-dev.digitalsapphire.io)
+[Dev Documentation](http://pyiupdater-dev.jmswag.com)
 
 
 [Full changelog](https://github.com/JohnyMoSwag/PyiUpdater/blob/master/changelog.txt)
@@ -17,20 +17,20 @@
 
 #### Stable:
 
-    $ pip install PyiUpdater --process-dependency-links
+    $ pip install PyiUpdater
 
 #### Dev:
 
-    $ pip install PyiUpdater --pre --process-dependency-links
+    $ pip install PyiUpdater --pre
 
 #### Extras:
 ######S3 & SCP upload plugins are available with
 
-    $ pip install PyiUpdater[s3] --process-dependency-links
+    $ pip install PyiUpdater[s3]
 
 or
 
-    $ pip install PyiUpdater[scp] --process-dependency-links
+    $ pip install PyiUpdater[scp]
 
 
 ## Usage:

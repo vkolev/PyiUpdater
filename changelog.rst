@@ -1,6 +1,50 @@
-v0.15.0 - Develop
-~~~~~~~~~~~~~~~~~
+v0.15.1 - beta
+~~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
+* Added
+
+  - PyiUpdater
+
+    - Hooks for certifi
+    - Settings module to make updating easier.
+
+
+* Updated
+
+  - CLI
+
+    - Handles exceptions better
+    - More descriptive error messages
+    - Updated command args
+    - Log export for debugging
+    - Builder is now a class
+    - Utils class
+
+  - PyiUpdater
+
+    - Lowered pyinstaller requirement to 2.1
+    - Added hooks included in newer versions of pyinstaller
+    - Added rotating logs
+
+* Fixed
+
+  - CLI
+
+    - Build: Packaging mac .app
+
+  - Client
+
+    - Restarting app after auto-update
+
+* Removed
+
+  - CLI
+
+    - Build: Spec file support - will be coming back bigger & better.
+
+
+v0.15.0 - 2015/4/1
+~~~~~~~~~~~~~~~~~~
 
 Backwards incompatible release * Migration Available *
 ------------------------------------------------------

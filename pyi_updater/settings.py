@@ -15,11 +15,16 @@
 #--------------------------------------------------------------------------
 
 
+APP_NAME = u'PyiUpdater'
+APP_AUTHOR = u'Digital Sapphire'
+
 # Used to hold PyiUpdater config info for repo
 CONFIG_DATA_FOLDER = u'.pyiupdater'
 
 # PyiUpdater config file
 CONFIG_FILE = u'data.json'
+
+DEBUG_ARCHIVE = u'pyiupdater-debug.zip'
 
 # User config file
 CONFIG_FILE_USER = U'config.data'
@@ -30,6 +35,7 @@ GENERIC_COMPANY_NAME = u'PyiUpdater'
 
 # Log filename
 LOG_FILENAME = u'pyiu.log'
+LOG_FILENAME_DEBUG = u'pyiu-debug.log'
 
 # Used for plugins
 UPLOAD_PLUGIN_NAMESPACE = 'pyiupdater.plugins.uploaders'
