@@ -9,8 +9,6 @@ dependencies:
         - pip install python-coveralls pytest-cov pytest-xdist
 
 # command to run tests
-test:
-    override:
-        - coverage run setup.py ctest
-    post:
-        - coveralls
+# test:
+    # override:
+        # - coverage run setup.py ctest
