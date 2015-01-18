@@ -22,7 +22,12 @@ CLI
 Status
 ~~~~~~
 
-Starting with v0.9.2 PyiUpdater supports updating GUI & cli apps on Mac, Windows & Linux. The api is pretty stable but maintaining backwards compatibility is on a best effort basis until v1.0. Backwards incompatible changes will be noted in the changelog.
+.. image:: https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.svg?branch=master :target: https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master
+
+.. image:: https://circleci.com/gh/JohnyMoSwag/PyiUpdater/tree/master.svg?style=svg
+    :target: https://circleci.com/gh/JohnyMoSwag/PyiUpdater/tree/master
+
+Starting with v0.15.1 PyiUpdater supports updating GUI & cli apps on Mac, Windows & Linux. The api is pretty stable but maintaining backwards compatibility is on a best effort basis until v1.0. Backwards incompatible changes will be noted in the changelog.
 
 Contents:
 
