@@ -16,7 +16,7 @@ debug.txt
 
 dist
 
-docs/_build/
+docs/_build/*
 
 MANIFEST
 

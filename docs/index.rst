@@ -22,15 +22,24 @@ CLI
 Status
 ~~~~~~
 
+.. image:: https://pypip.in/download/PyiUpdater/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi//PyiUpdater/
+    :alt: Downloads
+
+.. image:: https://pypip.in/status/PyiUpdater/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi/PyiUpdater/
+    :alt: Development Status
+
 .. image:: https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.svg?branch=master
     :target: https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master
 
 .. image:: https://circleci.com/gh/JohnyMoSwag/PyiUpdater.svg?style=svg
     :target: https://circleci.com/gh/JohnyMoSwag/PyiUpdater
 
+
 Starting with v0.15.1 PyiUpdater supports updating GUI & cli apps on Mac, Windows & Linux. The api is pretty stable but maintaining backwards compatibility is on a best effort basis until v1.0. Backwards incompatible changes will be noted in the changelog.
 
-:download:`Download PDF <_build/latex/PyiUpdater.pdf>`.
+:download:`Download PDF <_build/latex/PyiUpdater.pdf>`
 
 Contents:
 

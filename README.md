@@ -1,4 +1,7 @@
-[![PyPI version](https://badge.fury.io/py/PyiUpdater.svg)](http://badge.fury.io/py/PyiUpdater) [![Circle CI](https://circleci.com/gh/JohnyMoSwag/PyiUpdater.svg?style=svg)](https://circleci.com/gh/JohnyMoSwag/PyiUpdater) [![Coverage Status](https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.svg?branch=master)](https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master)
+[![Downloads](https://pypip.in/download/PyiUpdater/badge.svg)](https://pypi.python.org/pypi/PyiUpdater/)
+[![Development Status](https://pypip.in/status/PyiUpdater/badge.svg)](https://pypi.python.org/pypi/PyiUpdater/)
+[![Coverage Status](https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.svg?branch=master)](https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master)
+[![Circle CI](https://circleci.com/gh/JohnyMoSwag/PyiUpdater.svg?style=svg)](https://circleci.com/gh/JohnyMoSwag/PyiUpdater)
 
 # PyiUpdater
 ##### An update framework for managing, signing & uploading your app updates
