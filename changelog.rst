@@ -1,5 +1,14 @@
 v0.15.1 - beta
 ~~~~~~~~~~~~~~~~~~
+.. note:: This version is not yet released and is under active development.
+* Added
+
+  - PyiUpdater
+
+    - Hooks for certifi
+    - Settings module to make updating easier.
+
+
 * Updated
 
   - CLI
@@ -7,17 +16,25 @@ v0.15.1 - beta
     - Handles exceptions better
     - More descriptive error messages
     - Updated command args
+    - Log export for debugging
+    - Builder is now a class
+    - Utils class
 
   - PyiUpdater
 
     - Lowered pyinstaller requirement to 2.1
     - Added hooks included in newer versions of pyinstaller
+    - Added rotating logs
 
 * Fixed
 
   - CLI
 
     - Build: Packaging mac .app
+
+  - Client
+
+    - Restarting app after auto-update
 
 * Removed
 
