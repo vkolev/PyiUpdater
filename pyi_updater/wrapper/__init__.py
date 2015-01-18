@@ -32,7 +32,7 @@ from pyi_updater.config import Loader, SetupConfig
 from pyi_updater.exceptions import UploaderError
 from pyi_updater.utils import initial_setup
 from pyi_updater.wrapper.builder import Builder
-from pyi_updater.wrapper.options import parser
+from pyi_updater.wrapper.options import get_parser
 from pyi_updater.wrapper.utils import check_repo, pretty_time
 
 log = logging.getLogger(__name__)
@@ -182,6 +182,7 @@ def upload(args):
 def _real_main(args):
     if args is None:
         args = sys.argv[1:]
+    parser = get_parser()
     args, pyi_args = parser.parse_known_args(args)
     cmd = args.command
     if cmd == u'build':

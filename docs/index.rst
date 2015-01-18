@@ -30,6 +30,8 @@ Status
 
 Starting with v0.15.1 PyiUpdater supports updating GUI & cli apps on Mac, Windows & Linux. The api is pretty stable but maintaining backwards compatibility is on a best effort basis until v1.0. Backwards incompatible changes will be noted in the changelog.
 
+:download:`Download PDF <_build/latex/PyiUpdater.pdf>`.
+
 Contents:
 
 .. toctree::

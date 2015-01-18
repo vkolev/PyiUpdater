@@ -1,3 +1,6 @@
+Changelog
+=========
+
 v0.16 - beta
 ~~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
@@ -47,10 +50,9 @@ v0.15.0 - 2015/4/1
 ~~~~~~~~~~~~~~~~~~
 
 Backwards incompatible release * Migration Available *
-------------------------------------------------------
+
 
 If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.
-================================================================================================================================================================================================
 
 * New
 
@@ -95,10 +97,10 @@ If you update to this release, do not revoke any keys until you are sure all cli
 
 v0.13.0 - 2014/12/27
 ~~~~~~~~~~~~~~~~~~~~
+
 Backwards incompatible release
-------------------------------
+
 Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.
-==================================================================================================================================
 
 * Updated
 
@@ -147,6 +149,7 @@ Demos have been update with the changes. Also its very important to make a decry
 
 v0.12.3 - 2014/12/7
 ~~~~~~~~~~~~~~~~~~~
+
 * Updated
 
   - Client
@@ -168,6 +171,7 @@ v0.12.3 - 2014/12/7
 
 v0.12.2 - 2014/12/7
 ~~~~~~~~~~~~~~~~~~~
+
 * Updated
 
   - PackageHandler
@@ -184,6 +188,7 @@ v0.12.2 - 2014/12/7
 
 v0.12.1 - 2014/12/4
 ~~~~~~~~~~~~~~~~~~~
+
 * Fixed
 
   - Migrating to new patch numbering system
@@ -212,6 +217,7 @@ v0.12.0 - 2014/11/29
 
 v0.11.0 - 2014/11/22
 ~~~~~~~~~~~~~~~~~~~~
+
 * Added
 
   - PyiWrapper
@@ -241,6 +247,7 @@ v0.11.0 - 2014/11/22
 
 v0.10.0 - 2014/11/16
 ~~~~~~~~~~~~~~~~~~~~
+
 * Added
 
   - Secure downloading of manifest
@@ -282,6 +289,7 @@ v0.10.0 - 2014/11/16
 
 v0.9.2 - 2014/10/19
 ~~~~~~~~~~~~~~~~~~~
+
 * Fixed
 
   - Require PyInstaller 2.1.1 for PyiUpdater usage
@@ -289,6 +297,7 @@ v0.9.2 - 2014/10/19
 
 v0.9.1 - 2014/10/19
 ~~~~~~~~~~~~~~~~~~~
+
 * Added
 
   - Require PyInstaller 2.1.1 for PyiUpdater usage
@@ -357,6 +366,7 @@ v0.8.1 - 2014/9/3
 
   - Unused tests
 
+
 v0.8.0 - 2014/8/31
 ~~~~~~~~~~~~~~~~~~
 
@@ -423,6 +433,7 @@ v0.8.0 - 2014/8/31
   - License text from individual files
   - Unused imports
 
+
 v0.7.2 - 2014/8/10
 ~~~~~~~~~~~~~~~~~~
 
@@ -465,6 +476,7 @@ v0.7.1 - 2014/8/10
 
     - Some old transition code
 
+
 v0.7 - 2014/8/3
 ~~~~~~~~~~~~~~~
 
@@ -483,6 +495,7 @@ v0.7 - 2014/8/3
   - Upload code for s3 and scp
   - Unused config options
   - Redundant upload checks
+
 
 v0.6.0 - 2014/7/27
 ~~~~~~~~~~~~~~~~~~

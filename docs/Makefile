@@ -181,8 +181,8 @@ pseudoxml:
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
 
-move-dev: html
+move-dev: latexpdf html
 	python move.py dev
 
-move-rel: html
+move-rel: latexpdf html
 	python move.py rel

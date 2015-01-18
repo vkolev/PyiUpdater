@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Release History &mdash; PyiUpdater 0.15.1-beta6-4-g9c2a6d7-dirty documentation</title>
+    <title>Release History &mdash; PyiUpdater 0.16-b1-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.15.1-beta6-4-g9c2a6d7-dirty',
+        VERSION:     '0.16-b1-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.15.1-beta6-4-g9c2a6d7-dirty documentation" href="index.php" />
+    <link rel="top" title="PyiUpdater 0.16-b1-dirty documentation" href="index.php" />
     <link rel="prev" title="License" href="license.php" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="index.php">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta6-4-g9c2a6d7-dirty</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.16-b1-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -75,8 +75,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api.php">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.php">License</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Release History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#if-you-update-to-this-release-do-not-revoke-any-keys-until-you-are-sure-all-clients-are-updated-to-this-version-of-the-framework-if-you-revoke-a-key-it-will-break-the-built-in-migration">If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating">Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#changelog">Changelog</a></li>
 </ul>
 </ul>
 </li>
@@ -90,22 +89,11 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Release History</a><ul>
-<li><a class="reference internal" href="#v0-15-1-beta">v0.15.1 - beta</a></li>
-<li><a class="reference internal" href="#v0-15-0-2015-4-1">v0.15.0 - 2015/4/1</a><ul>
-<li><a class="reference internal" href="#backwards-incompatible-release-migration-available">Backwards incompatible release * Migration Available *</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#if-you-update-to-this-release-do-not-revoke-any-keys-until-you-are-sure-all-clients-are-updated-to-this-version-of-the-framework-if-you-revoke-a-key-it-will-break-the-built-in-migration">If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.</a><ul>
-<li><a class="reference internal" href="#v0-13-0-2014-12-27">v0.13.0 - 2014/12/27</a><ul>
-<li><a class="reference internal" href="#backwards-incompatible-release">Backwards incompatible release</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating">Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.</a><ul>
+<li><a class="reference internal" href="#">Release History</a></li>
+<li><a class="reference internal" href="#changelog">Changelog</a><ul>
+<li><a class="reference internal" href="#v0-16-beta">v0.16 - beta</a></li>
+<li><a class="reference internal" href="#v0-15-0-2015-4-1">v0.15.0 - 2015/4/1</a></li>
+<li><a class="reference internal" href="#v0-13-0-2014-12-27">v0.13.0 - 2014/12/27</a></li>
 <li><a class="reference internal" href="#v0-12-3-2014-12-7">v0.12.3 - 2014/12/7</a></li>
 <li><a class="reference internal" href="#v0-12-2-2014-12-7">v0.12.2 - 2014/12/7</a></li>
 <li><a class="reference internal" href="#v0-12-1-2014-12-4">v0.12.1 - 2014/12/4</a></li>
@@ -168,8 +156,11 @@
       
   <div class="section" id="release-history">
 <h1>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="v0-15-1-beta">
-<h2>v0.15.1 - beta<a class="headerlink" href="#v0-15-1-beta" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="v0-16-beta">
+<h2>v0.16 - beta<a class="headerlink" href="#v0-16-beta" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This version is not yet released and is under active development.</p>
@@ -223,13 +214,8 @@
 </div>
 <div class="section" id="v0-15-0-2015-4-1">
 <h2>v0.15.0 - 2015/4/1<a class="headerlink" href="#v0-15-0-2015-4-1" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="backwards-incompatible-release-migration-available">
-<h3>Backwards incompatible release * Migration Available *<a class="headerlink" href="#backwards-incompatible-release-migration-available" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
-</div>
-<div class="section" id="if-you-update-to-this-release-do-not-revoke-any-keys-until-you-are-sure-all-clients-are-updated-to-this-version-of-the-framework-if-you-revoke-a-key-it-will-break-the-built-in-migration">
-<h1>If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.<a class="headerlink" href="#if-you-update-to-this-release-do-not-revoke-any-keys-until-you-are-sure-all-clients-are-updated-to-this-version-of-the-framework-if-you-revoke-a-key-it-will-break-the-built-in-migration" title="Permalink to this headline">¶</a></h1>
+<p>Backwards incompatible release * Migration Available *</p>
+<p>If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.</p>
 <ul>
 <li><p class="first">New</p>
 <ul>
@@ -275,15 +261,11 @@
 </ul>
 </li>
 </ul>
+</div>
 <div class="section" id="v0-13-0-2014-12-27">
 <h2>v0.13.0 - 2014/12/27<a class="headerlink" href="#v0-13-0-2014-12-27" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="backwards-incompatible-release">
-<h3>Backwards incompatible release<a class="headerlink" href="#backwards-incompatible-release" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
-</div>
-<div class="section" id="demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating">
-<h1>Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.<a class="headerlink" href="#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating" title="Permalink to this headline">¶</a></h1>
+<p>Backwards incompatible release</p>
+<p>Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.</p>
 <ul class="simple">
 <li>Updated<ul>
 <li>CLI<ul>
@@ -333,6 +315,7 @@
 </ul>
 </li>
 </ul>
+</div>
 <div class="section" id="v0-12-3-2014-12-7">
 <h2>v0.12.3 - 2014/12/7<a class="headerlink" href="#v0-12-3-2014-12-7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">

@@ -16,6 +16,8 @@ debug.txt
 
 dist
 
+docs/_build/
+
 MANIFEST
 
 .coverage*

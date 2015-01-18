@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to PyiUpdater &mdash; PyiUpdater 0.15.1-beta6-4-g9c2a6d7-dirty documentation</title>
+    <title>Welcome to PyiUpdater &mdash; PyiUpdater 0.16-b1-dirty documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.15.1-beta6-4-g9c2a6d7-dirty',
+        VERSION:     '0.16-b1-dirty',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.php',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyiUpdater 0.15.1-beta6-4-g9c2a6d7-dirty documentation" href="#" />
+    <link rel="top" title="PyiUpdater 0.16-b1-dirty documentation" href="#" />
     <link rel="next" title="Downloads" href="downloads.php" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -49,7 +49,7 @@
         </button>
         <a class="navbar-brand" href="#">
           PyiUpdater</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.15.1-beta6-4-g9c2a6d7-dirty</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.16-b1-dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -75,8 +75,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api.php">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.php">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release_history.php">Release History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_history.php#if-you-update-to-this-release-do-not-revoke-any-keys-until-you-are-sure-all-clients-are-updated-to-this-version-of-the-framework-if-you-revoke-a-key-it-will-break-the-built-in-migration">If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_history.php#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating">Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_history.php#changelog">Changelog</a></li>
 </ul>
 </ul>
 </li>
@@ -159,6 +158,7 @@
 <a class="reference external image-reference" href="https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master"><img alt="https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.svg?branch=master" src="https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.svg?branch=master" /></a>
 <a class="reference external image-reference" href="https://circleci.com/gh/JohnyMoSwag/PyiUpdater"><img src="https://circleci.com/gh/JohnyMoSwag/PyiUpdater.svg?style=svg" /></a>
 <p>Starting with v0.15.1 PyiUpdater supports updating GUI &amp; cli apps on Mac, Windows &amp; Linux. The api is pretty stable but maintaining backwards compatibility is on a best effort basis until v1.0. Backwards incompatible changes will be noted in the changelog.</p>
+<p><a class="reference download internal" href="_downloads/PyiUpdater.pdf"><tt class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">PDF</span></tt></a>.</p>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -183,16 +183,11 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.php">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.php">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_history.php">Release History</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="release_history.php#v0-15-1-beta">v0.15.1 - beta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_history.php">Release History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_history.php#changelog">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="release_history.php#v0-16-beta">v0.16 - beta</a></li>
 <li class="toctree-l2"><a class="reference internal" href="release_history.php#v0-15-0-2015-4-1">v0.15.0 - 2015/4/1</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="release_history.php#if-you-update-to-this-release-do-not-revoke-any-keys-until-you-are-sure-all-clients-are-updated-to-this-version-of-the-framework-if-you-revoke-a-key-it-will-break-the-built-in-migration">If you update to this release, do not revoke any keys until you are sure all clients are updated to this version of the framework. If you revoke a key it will break the built in migration.</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="release_history.php#v0-13-0-2014-12-27">v0.13.0 - 2014/12/27</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="release_history.php#demos-have-been-update-with-the-changes-also-its-very-important-to-make-a-decrypted-copy-of-your-config-file-before-updating">Demos have been update with the changes. Also its very important to make a decrypted copy of your config file before updating.</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="release_history.php#v0-12-3-2014-12-7">v0.12.3 - 2014/12/7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="release_history.php#v0-12-2-2014-12-7">v0.12.2 - 2014/12/7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="release_history.php#v0-12-1-2014-12-4">v0.12.1 - 2014/12/4</a></li>
