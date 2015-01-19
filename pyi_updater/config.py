@@ -35,7 +35,7 @@ class Loader(object):
         self.db = Storage(self.config_dir)
         # ToDo: Remove v1.0
         self.old_config_file = os.path.join(self.config_dir,
-                                            settings.CONFIG_FILE_USER)
+                                            settings.OLD_CONFIG_FILE_USER)
         # End ToDo:
         self.password = os.environ.get(settings.USER_PASS_ENV)
         self.config_key = u'app_config'

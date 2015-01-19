@@ -14,10 +14,16 @@ Client
     Is the module you import into your app that provides the update functionality. It also uses the Patcher module internally.
 
 Core
-    Consists of the Archiver, Downloader, FileCrypt, KeyHandler, PackageHandler & Utils.
+    Consists of the KeyHandler, PackageHandler, Uploader & Wrapper.
 
 CLI
     Command line program to help automate the update creation process
+
+When it all comes together you get this
+
+.. raw:: html
+
+    <script type="text/javascript" src="https://asciinema.org/a/15546.js" id="asciicast-15546" async data-theme="solarized-dark"></script>
 
 Status
 ~~~~~~

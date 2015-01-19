@@ -62,22 +62,6 @@ def test_exe1():
     assert os.path.exists(ph.deploy_dir) is True
 
 
-# @with_setup(None, teardown_func)
-# def test_patch_creation():
-#     test_data_dir = os.path.abspath(os.path.join(u'tests', u'test data',
-#                                     u'5.3'))
-#     with ChDir(test_data_dir):
-#         files = remove_dot_files(os.listdir(os.getcwd()))
-#         for f in files:
-#             shutil.copy(f, ph.new_dir)
-#     ph.process_packages()
-#     kh.sign_update()
-#     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
-#                           u'Not So TUF-arm-101')) is True
-#     assert os.path.exists(os.path.join(PYI_DATA, u'deploy',
-#                           u'Not So TUF-mac-101')) is True
-
-
 def test_move_to_deploy():
     deploy_dir = os.path.join(PYI_DATA, u'deploy')
     with ChDir(deploy_dir):
@@ -85,5 +69,3 @@ def test_move_to_deploy():
         assert u'version.json' in files
         assert u'Not So TUF-arm-0.5.0.zip' in files
         assert u'Not So TUF-mac-0.5.0.zip' in files
-        # assert u'Not So TUF-arm-0.5.3.zip' in files
-        # assert u'Not So TUF-mac-0.5.3.zip' in files

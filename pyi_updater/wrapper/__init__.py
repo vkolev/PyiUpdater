@@ -121,6 +121,9 @@ def _log(args):
             for f in files:
                 log.debug(u'Archiving {}'.format(f))
                 zf.write(f)
+        old_log_zip = os.path.join(og_dir, settings.DEBUG_ARCHIVE)
+        if os.path.exists(old_log_zip):
+            os.remove(old_log_zip)
         shutil.move(settings.DEBUG_ARCHIVE, og_dir)
     print(u'Log export complete')
 

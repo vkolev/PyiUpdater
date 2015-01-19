@@ -10,6 +10,7 @@ v0.16 - beta
 
     - Hooks for certifi
     - Settings module to make updating easier.
+    - PyiUpdater settings db
 
 
 * Updated
@@ -22,6 +23,8 @@ v0.16 - beta
     - Log export for debugging
     - Builder is now a class
     - Utils class
+    - Added --clean to compile a fresh build
+    - Handling of args for pyiupdater
 
   - PyiUpdater
 
@@ -44,6 +47,11 @@ v0.16 - beta
   - CLI
 
     - Build: Spec file support - will be coming back bigger & better.
+
+  - PyiUpdater
+
+    - Storing pickled config in plain file
+    - Unused requirements
 
 
 v0.15.0 - 2015/4/1

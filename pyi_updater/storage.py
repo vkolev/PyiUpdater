@@ -18,6 +18,7 @@ class Storage(object):
                 config_dir (str): Path to directory where config will be stored
         """
         if not os.path.exists(config_dir):
+            log.debug('Creating config dir')
             os.makedirs(config_dir)
         self.filename = os.path.join(config_dir, settings.CONFIG_FILE_USER)
         log.debug('Config db path: {}'.format(self.filename))
@@ -32,6 +33,10 @@ class Storage(object):
             value (obj): python object to store in database
 
         """
+        if isinstance(key, unicode) is True:
+            log.debug('Key Name: {}'.format(key))
+            log.debug('Key type: {}'.format(type(key)))
+            key = str(key)
         db = shelve.open(self.filename)
         db[key] = value
         db.close()
@@ -48,6 +53,10 @@ class Storage(object):
 
                 Object if exists or else None
         """
+        if isinstance(key, unicode) is True:
+            log.debug('Key Name: {}'.format(key))
+            log.debug('Key type: {}'.format(type(key)))
+            key = str(key)
         db = shelve.open(self.filename)
         value = db.get(key)
         db.close()

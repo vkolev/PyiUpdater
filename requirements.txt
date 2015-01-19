@@ -6,7 +6,6 @@ click
 ed25519
 jms-utils >= 0.5.3
 Pyinstaller >= 2.1
-simple-pbkdf2
 six
 stevedore
 urllib3

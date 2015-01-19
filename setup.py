@@ -55,15 +55,15 @@ setup(
     download_url=('https://github.com/JohnyMoSwag/Pyi'
                   'Updater/archive/master.zip'),
     license='Apache License 2.0',
-    dependency_links = [
+    dependency_links=[
         'https://github.com/pyinstaller/pyinstaller/tarball/'
         'develop#egg=pyinstaller-2.1.1dev'],
-    extras_require = {
+    extras_require={
         's3': 'PyiUpdater-s3-Plugin>=1.0.1',
         'scp': 'PyiUpdater-scp-Plugin>=1.0',
         },
-    tests_require = ['pytest', ],
-    cmdclass = cmd_class,
+    tests_require=['pytest', ],
+    cmdclass=cmd_class,
     install_requires=[
         'appdirs',
         'blinker',
@@ -75,7 +75,6 @@ setup(
         'jms-utils >= 0.5.3',
         # 'pyinstaller >= 2.1.1dev',
         'pyinstaller >= 2.1',
-        'simple-pbkdf2',
         'six',
         'stevedore',
         'urllib3',

@@ -13,7 +13,6 @@ from pyi_updater.hooks import get_hook_dir
 from pyi_updater.utils import make_archive
 from pyi_updater.wrapper.utils import (check_repo,
                                        check_version,
-                                       fix,
                                        run)
 
 log = logging.getLogger(__name__)
@@ -79,6 +78,16 @@ class Builder(object):
         log.debug('App Info: {}'.format(app_info))
 
         log.debug(u'Adding params to command')
+        if args.console is True or args.nowindowed is True \
+                or args._console is True:
+            if u'-c' not in pyi_args:
+                log.debug('Adding -c to pyi args')
+                pyi_args.append(u'-c')
+        if args.windowed is True or args.noconsole is True \
+                or args._windowed is True:
+            if u'-w' not in pyi_args:
+                log.debug('Adding -w to pyi args')
+                pyi_args.append(u'-w')
         pyi_args.append(u'-F')
         pyi_args.append(u'--name={}'.format(temp_name))
         pyi_args.append(u'--specpath={}'.format(self.spec_dir))
@@ -86,50 +95,28 @@ class Builder(object):
         pyi_args.append(app_info[u'name'])
 
         cmd = ['pyi-makespec'] + pyi_args
+        log.debug('Make spec cmd: {}'.format(' '.join([c for c in cmd])))
         exit_code = run(cmd)
         if exit_code != 0:
             sys.exit(u'\nSpec file creation failed with '
                      u'code: {}'.format(exit_code))
         else:
             log.debug(u'\nSpec file created.')
-        self.sanatize_spec()
 
         build_args = [u'pyinstaller']
-        build_args.append(u'--clean')
+        if args.clean is True:
+            build_args.append(u'--clean')
         build_args.append(u'--distpath={}'.format(self.new_dir))
         build_args.append(u'--workpath={}'.format(self.work_dir))
         build_args.append(u'-y')
         build_args.append(self.spec_file_path)
 
-        log.debug('Cmd: {}'.format(build_args))
+        log.debug('Build cmd: {}'.format(''.join([b for b in build_args])))
         exit_code = run(build_args)
         if exit_code != 0:
             sys.exit('Build failed with code: {}'.format(exit_code))
         else:
             log.debug('Build successful')
-
-    def sanatize_spec(self):
-        log.debug('Starting spec sanitation.')
-
-        with open(self.spec_file_path, u'r') as f:
-            data = f.readlines()
-        found = False
-        new_data = []
-        for d in data:
-            log.debug('Spec file line: {}'.format(d))
-            if u')' in d:
-                new_data.append(d)
-                if found is False:
-                    log.debug('Found token')
-                    found = True
-                    # new_data.append(fix)
-            else:
-                if found is False:
-                    log.debug('No token found yet')
-                new_data.append(d)
-        with open(self.spec_file_path, u'w') as f:
-            for n in new_data:
-                f.write(n)
 
     def _archive(self, args, temp_name):
         # Now archive the file

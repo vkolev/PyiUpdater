@@ -58,3 +58,9 @@ So if you opt not to use the cli interface & instead want to integrate PyiUpdate
 
 .. literalinclude:: ../demos/dev_machine.py
     :linenos:
+
+
+Limitations
+===========
+
+* Doesn't support onedir mode

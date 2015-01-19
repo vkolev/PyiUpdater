@@ -29,3 +29,23 @@ MANIFEST
 *.doctree
 
 docs/_build/doctrees/folder_structure.doctree
+
+*.doctree
+
+docs/_build/doctrees/api.doctree
+
+docs/_build/doctrees/architecture.doctree
+
+docs/_build/doctrees/downloads.doctree
+
+docs/_build/doctrees/installation.doctree
+
+docs/_build/doctrees/release_history.doctree
+
+docs/_build/html/_sources/api.txt
+
+docs/_build/html/_sources/architecture.txt
+
+docs/_build/html/_sources/folder_structure.txt
+
+docs/_build/html/_sources/installation.txt

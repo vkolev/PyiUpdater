@@ -20,6 +20,7 @@ import argparse
 
 def make_parser():
     parser = argparse.ArgumentParser(usage=u'%(prog)s')
+    parser.add_argument('--version', action='version', version='%(prog)s 1.0')
     return parser
 
 
@@ -31,7 +32,11 @@ def make_subparser(parser):
 def add_build_parser(subparsers):
     build_parser = subparsers.add_parser(u'build', help=u'compiles script',
                                          usage=u'%(prog)s <script> [opts]')
+
     # Start of args override
+    # start a clean build
+    build_parser.add_argument(u'--clean', help=u'Clean build. '
+                              u'Bypass the cache', action="store_true")
     # This will be set to the pyi-data/new directory.
     # When we make the final compressed archive we will look
     # for an exe in that dir.
@@ -67,12 +72,19 @@ def add_build_parser(subparsers):
                               help=argparse.SUPPRESS)
 
     # Just capturing these arguments
-    # ToDo: Take a closer look at this switch
     build_parser.add_argument(u'-c', action=u"store_true",
-                              help=argparse.SUPPRESS)
+                              help=argparse.SUPPRESS, dest=u'_console',
+                              action=u'store_true')
     build_parser.add_argument(u'--console', action=u"store_true",
                               help=argparse.SUPPRESS)
     build_parser.add_argument(u'--nowindowed', action=u"store_true",
+                              help=argparse.SUPPRESS, action=u'store_true')
+
+    build_parser.add_argument(u'-w', action=u"store_true", dest=u'_windowed',
+                              help=argparse.SUPPRESS)
+    build_parser.add_argument(u'--windowed', action=u"store_true",
+                              help=argparse.SUPPRESS)
+    build_parser.add_argument(u'--noconsole', action=u"store_true",
                               help=argparse.SUPPRESS)
 
     # Potentially harmful for cygwin on windows
