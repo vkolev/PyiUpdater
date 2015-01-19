@@ -16,7 +16,7 @@ debug.txt
 
 dist
 
-docs/_build/*
+docs/_build/
 
 MANIFEST
 
@@ -25,3 +25,7 @@ MANIFEST
 .DS_Store
 
 .coverage*
+
+*.doctree
+
+docs/_build/doctrees/folder_structure.doctree

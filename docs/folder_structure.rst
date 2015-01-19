@@ -14,8 +14,6 @@ Program Src Directory
 
       \- most recent updates
 
-    \- version.json
-
 
   \- .pyiupdater
 

@@ -1,8 +1,6 @@
 API
 ===
 
-If you want to dive into their documentation, scroll down:
-
 .. automodule:: pyi_updater
     :members:
 

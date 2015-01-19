@@ -20,6 +20,7 @@ import os
 import pickle
 
 from pyi_updater import settings
+from pyi_updater.storage import Storage
 
 log = logging.getLogger(__name__)
 
@@ -31,35 +32,56 @@ class Loader(object):
     def __init__(self):
         self.cwd = os.getcwd()
         self.config_dir = os.path.join(self.cwd, settings.CONFIG_DATA_FOLDER)
-        self.config_file = os.path.join(self.config_dir,
-                                        settings.CONFIG_FILE_USER)
+        self.db = Storage(self.config_dir)
+        # ToDo: Remove v1.0
+        self.old_config_file = os.path.join(self.config_dir,
+                                            settings.CONFIG_FILE_USER)
+        # End ToDo:
         self.password = os.environ.get(settings.USER_PASS_ENV)
+        self.config_key = u'app_config'
 
     def load_config(self):
-        "Load config file from file system"
-        log.debug(u'Loading config')
-        try:
-            with open(self.config_file, u'r') as f:
-                config_data = pickle.loads(f.read())
-        except Exception as e:
-            log.error(e, exc_info=True)
-            config_data = SetupConfig()
+        """Loads config from database
+
+            Returns (obj): Config object
+        """
+        # ToDo: Remove v1.0
+        if os.path.exists(self.old_config_file):
+            config_data = self._load_config()
+            self.save_config(config_data)
+            os.remove(self.old_config_file)
+        else:
+        # End ToDo:
+            config_data = self.db.load(self.config_key)
         return config_data
 
     def save_config(self, obj):
-        """Saves config file to file system
+        """Saves config file to pyiupdater database
 
         Args:
 
             obj (obj): config object
         """
         log.debug('Saving Config')
-        if not os.path.exists(self.config_dir):
-            os.mkdir(self.config_dir)
-        with open(self.config_file, u'w') as f:
-            f.write(str(pickle.dumps(obj)))
-
+        self.db.save(self.config_key, obj)
         self.write_config_py(obj)
+
+
+    # ToDo: Remove v1.0
+    def _load_config(self):
+        """Load config file from file system
+
+        .. deprecated:: 0.16
+        Use :func:`load_config` instead.
+        """
+        log.debug(u'Loading config')
+        try:
+            with open(self.old_config_file, u'r') as f:
+                config_data = pickle.loads(f.read())
+        except Exception as e:
+            log.error(e, exc_info=True)
+            config_data = SetupConfig()
+        return config_data
 
     def write_config_py(self, obj):
         """Writes client config to client_config.py

@@ -1,5 +1,5 @@
-[![Downloads](https://pypip.in/download/PyiUpdater/badge.svg)](https://pypi.python.org/pypi/PyiUpdater/)
-[![Development Status](https://pypip.in/status/PyiUpdater/badge.svg)](https://pypi.python.org/pypi/PyiUpdater/)
+[![Downloads](https://pypip.in/download/PyiUpdater/badge.svg?style=flat)](https://pypi.python.org/pypi/PyiUpdater/)
+[![Development Status](https://pypip.in/status/PyiUpdater/badge.svg?style=flat)](https://pypi.python.org/pypi/PyiUpdater/)
 [![Coverage Status](https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.svg?branch=master)](https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master)
 [![Circle CI](https://circleci.com/gh/JohnyMoSwag/PyiUpdater.svg?style=svg)](https://circleci.com/gh/JohnyMoSwag/PyiUpdater)
 

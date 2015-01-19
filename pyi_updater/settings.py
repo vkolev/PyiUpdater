@@ -27,7 +27,8 @@ CONFIG_FILE = u'data.json'
 DEBUG_ARCHIVE = u'pyiupdater-debug.zip'
 
 # User config file
-CONFIG_FILE_USER = U'config.data'
+CONFIG_FILE_USER = u'pyiuconfig.db'
+OLD_CONFIG_FILE_USER = U'config.data'
 
 GENERIC_APP_NAME = u'PyiUpdater App'
 
