@@ -73,12 +73,10 @@ def add_build_parser(subparsers):
 
     # Just capturing these arguments
     build_parser.add_argument(u'-c', action=u"store_true",
-                              help=argparse.SUPPRESS, dest=u'_console',
-                              action=u'store_true')
+                              help=argparse.SUPPRESS, dest=u'_console')
     build_parser.add_argument(u'--console', action=u"store_true",
                               help=argparse.SUPPRESS)
-    build_parser.add_argument(u'--nowindowed', action=u"store_true",
-                              help=argparse.SUPPRESS, action=u'store_true')
+    build_parser.add_argument(u'--nowindowed', action=u"store_true",)
 
     build_parser.add_argument(u'-w', action=u"store_true", dest=u'_windowed',
                               help=argparse.SUPPRESS)
