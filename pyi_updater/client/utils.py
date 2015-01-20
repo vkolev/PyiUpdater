@@ -56,13 +56,12 @@ def get_highest_version(name, plat, easy_data):
     """
     log.debug('Data:\n{}'.format(easy_data))
     version_key = u'{}*{}*{}'.format(u'latest', name, plat)
-
     version = easy_data.get(version_key)
 
     if version is not None:
         log.debug(u'Highest version: {}'.format(version))
     else:
-        log.error(u'No updates named "{}" exists'.format(name))
+        log.error(u'No updates for "{}" on {} exists'.format(name, plat))
     return version
 
 

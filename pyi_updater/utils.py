@@ -39,10 +39,6 @@ class EasyAccessDict(object):
     def __init__(self, dict_=None, sep=u'*'):
         self.load(dict_, sep)
 
-    # Because I always for get call the get method
-    def __call__(self, key):
-        return self.get(key)
-
     def load(self, dict_, sep=u'*'):
         self.sep = sep
         if not isinstance(dict_, dict):
@@ -64,6 +60,13 @@ class EasyAccessDict(object):
         except Exception as err:
             log.error(str(err), exc_info=True)
             return None
+
+    # Because I always for get call the get method
+    def __call__(self, key):
+        return self.get(key)
+
+    def __str__(self):
+        return str(self.dict)
 
 
 def verify_password(message):

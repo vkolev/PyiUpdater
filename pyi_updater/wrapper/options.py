@@ -20,7 +20,6 @@ import argparse
 
 def make_parser():
     parser = argparse.ArgumentParser(usage=u'%(prog)s')
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0')
     return parser
 
 
@@ -158,8 +157,7 @@ def add_upload_parser(subparsers):
 
 
 def add_version_parser(subparsers):
-    version_parser = subparsers.add_parser(u'version',
-                                           help=u'Programs version')
+    version_parser = subparsers.add_parser(u'version', help=u'Show version')
     version_parser.add_argument(u'--dummy', help=argparse.SUPPRESS)
 
 

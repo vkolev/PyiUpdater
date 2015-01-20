@@ -64,3 +64,4 @@ Limitations
 ===========
 
 * Doesn't support onedir mode
+* Cannot have spaces in app name -> working on a fix for this

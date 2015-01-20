@@ -204,7 +204,7 @@ def _real_main(args):
     elif cmd == u'upload':
         upload(args)
     elif cmd == u'version':
-        print(u'PyiUpdater {}'.format(__version__))
+        print('PyiUpdater {}'.format(__version__))
     else:
         sys.exit(u'Not Implemented')
 

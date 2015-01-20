@@ -325,7 +325,6 @@ class Client(object):
                         pub_key.verify(s, update_data, encoding='base64')
                     except Exception as e:
                         log.error(str(e))
-                        data = None
                     else:
                         log.debug(u'Version file verified')
                         self.verified = True
