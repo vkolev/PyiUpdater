@@ -41,6 +41,7 @@ v0.16 - beta
   - Client
 
     - Restarting app after auto-update
+    - Deleting version data on bad sig check
 
 * Removed
 
