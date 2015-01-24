@@ -20,16 +20,12 @@ import logging
 import time
 import sys
 
-from blinker import signal
 import certifi
 import urllib3
 
 from pyi_updater.utils import get_hash
 
 log = logging.getLogger(__name__)
-
-
-progress_signal = signal(u'progress_info')
 
 
 class FileDownloader(object):

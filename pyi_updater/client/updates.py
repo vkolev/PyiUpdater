@@ -28,13 +28,15 @@ from jms_utils.paths import ChDir
 from jms_utils.system import get_system
 import urllib3
 
-from pyi_updater.client.utils import (get_filename, get_highest_version,
-                                      get_mac_dot_app_dir)
 from pyi_updater.downloader import FileDownloader
 from pyi_updater.exceptions import ClientError, UtilsError
 from pyi_updater.patcher import Patcher
 from pyi_updater import settings
-from pyi_updater.utils import (get_hash, get_version_number,
+from pyi_updater.utils import (get_filename,
+                               get_hash,
+                               get_highest_version,
+                               get_mac_dot_app_dir,
+                               get_version_number,
                                vstr_2_vtuple)
 
 log = logging.getLogger(__name__)

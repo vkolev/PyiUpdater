@@ -32,14 +32,14 @@ import six
 import urllib3
 
 from pyi_updater.client.updates import AppUpdate, LibUpdate
-from pyi_updater.client.utils import (convert_to_list,
-                                      get_filename,
-                                      get_highest_version,
-                                      gzip_decompress)
 from pyi_updater.config import PyiUpdaterConfig
 from pyi_updater.downloader import FileDownloader
 from pyi_updater import settings
-from pyi_updater.utils import (EasyAccessDict,
+from pyi_updater.utils import (convert_to_list,
+                               EasyAccessDict,
+                               get_filename,
+                               get_highest_version,
+                               gzip_decompress,
                                make_archive,
                                vstr_2_vtuple)
 

@@ -66,14 +66,10 @@ setup(
     cmdclass=cmd_class,
     install_requires=[
         'appdirs',
-        'blinker',
         'bsdiff4',
         'certifi',
-        # Will try to implement later
-        # 'click',
         'ed25519',
         'jms-utils >= 0.5.3',
-        # 'pyinstaller >= 2.1.1dev',
         'pyinstaller >= 2.1',
         'six',
         'stevedore',
