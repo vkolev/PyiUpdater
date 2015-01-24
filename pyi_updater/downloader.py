@@ -84,13 +84,11 @@ class FileDownloader(object):
         if check:
             log.debug(u'File hash verified')
             self._write_to_file()
-            progress_signal.send(info=u'Download Successful')
             return True
         else:
             log.debug(u'Cannot verify file hash')
             del self.file_binary_data
             del self.my_file
-            progress_signal.send(info=u'Download Failed')
             return False
 
     def download_verify_return(self):
@@ -150,7 +148,6 @@ class FileDownloader(object):
             recieved_data += len(block)
             percent = self._calc_progress_percent(recieved_data,
                                                   self.content_length)
-            progress_signal.send(info=u'Downloading', percent=percent)
             sys.stdout.write(u'\r{} Percent Complete'.format(percent))
             sys.stdout.flush()
 
@@ -159,7 +156,6 @@ class FileDownloader(object):
         self.my_file.flush()
         self.my_file.seek(0)
         self.file_binary_data = self.my_file.read()
-        progress_signal.send(info=u'Download Complete', percent=u'100')
         log.debug(u'Download Complete')
 
     def _make_response(self):

@@ -17,8 +17,6 @@
 
 import os
 
-test_dir = os.path.join(os.path.abspath(os.getcwd()), u'tests')
-
 
 class TConfig(object):
     bad_attr = u'bad attr'
@@ -29,18 +27,12 @@ class TConfig(object):
     # If left blank will be place in the users home
     # directory Unix ".Not_So_TUF"
     # windows "Not_So_Tuf"
-    APP_DATA_DIR = os.path.join(test_dir, u'app_data')
+    APP_DATA_DIR = os.path.join(u'app_data')
 
     COMPANY_NAME = u'JMS LLC'
 
     # If True more debug info will be printed to console
     DEBUG = False
-
-    # Work directory on dev machine for framework to
-    # do its business. sign updates, get hashes etc...
-    # If None a data folder will be created in the
-    # current directory
-    DEV_DATA_DIR = test_dir
 
     # Public Key used by your app to verify update data
     # REQUIRED
