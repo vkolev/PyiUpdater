@@ -293,7 +293,8 @@ class LibUpdate(object):
             filename = u'0.0.0'
 
         try:
-            current_version = Version(get_version_number(filename))
+            current_version = get_version_number(filename)
+            current_version = Version(current_version)
             current_version_str = str(current_version)
         except UtilsError:
             log.debug(u'Cannot parse version info')

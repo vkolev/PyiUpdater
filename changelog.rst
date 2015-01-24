@@ -60,6 +60,7 @@ v0.16 - beta
     - Restarting app after auto-update
     - Deleting version data on bad sig check
     - Windows restart batch file not closing
+    - Removal of old update archives
 
 * Removed
 

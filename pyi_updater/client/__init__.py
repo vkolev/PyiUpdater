@@ -360,15 +360,18 @@ class Client(object):
                     # If not found must be a mac gui app
                     if not os.path.exists(name):
                         name += u'.app'
-                try:
-                    filename = make_archive(self.name, self.version,
-                                            name)
-                except Exception as err:
-                    filename = None
-                    log.error(str(err), exc_info=True)
+                if os.path.exists(name):
+                    try:
+                        filename = make_archive(self.name, self.version,
+                                                name)
+                    except Exception as err:
+                        filename = None
+                        log.error(str(err), exc_info=True)
 
-                if filename is not None:
-                    shutil.move(filename, self.update_folder)
+                    if filename is not None:
+                        shutil.move(filename, self.update_folder)
+                else:
+                    log.debug('{} must have got deleted'.format(name))
 
     def _sanatize_update_url(self, url, urls):
         _urls = []

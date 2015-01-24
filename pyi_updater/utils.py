@@ -151,9 +151,10 @@ def get_version_number(package_name):
         # Parse package name and return version number
         # Extracts and returns version number from
         # given string
+        re_str = u'(?P<version>[0-9]+\.[0-9]+\.[0-9]+)'
         try:
-            v_n = \
-                re.compile(u'[0-9]+\.[0-9]+\.[0-9]+').findall(package_name)[0]
+            v_n = re.compile(re_str).findall(package_name)[0]
+            log.debug('Found version: {}'.format(v_n))
             return v_n
         except Exception as e:
             log.debug(str(e))

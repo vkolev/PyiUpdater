@@ -6,7 +6,6 @@
 
   - PyiUpdater
 
-    - Added callback function, to client,  for download progress
     - More logging
 
   - Package Handler

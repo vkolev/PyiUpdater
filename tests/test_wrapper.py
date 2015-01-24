@@ -41,48 +41,41 @@ def test_build_no_appversion(parser):
 
 def test_clean(parser):
     subparser = make_subparser(parser)
-    add_build_parser(subparser)
-    with pytest.raises(SystemExit):
-        parser.parse_args([u'clean'])
+    add_clean_parser(subparser)
+    assert parser.parse_args([u'clean'])
 
 
 def test_init(parser):
     subparser = make_subparser(parser)
-    add_build_parser(subparser)
-    with pytest.raises(SystemExit):
-        parser.parse_args([u'init'])
+    add_init_parser(subparser)
+    assert parser.parse_args([u'init'])
 
 
 def test_keys(parser):
     subparser = make_subparser(parser)
-    add_build_parser(subparser)
-    with pytest.raises(SystemExit):
-        parser.parse_args([u'keys'])
+    add_keys_parser(subparser)
+    assert parser.parse_args([u'keys'])
 
 
 def test_log(parser):
     subparser = make_subparser(parser)
-    add_build_parser(subparser)
-    with pytest.raises(SystemExit):
-        parser.parse_args([u'log'])
+    add_log_parser(subparser)
+    assert parser.parse_args([u'log'])
 
 
 def test_package(parser):
     subparser = make_subparser(parser)
-    add_build_parser(subparser)
-    with pytest.raises(SystemExit):
-        parser.parse_args([u'pkg'])
+    add_package_parser(subparser)
+    assert parser.parse_args([u'pkg'])
 
 
 def test_upload(parser):
     subparser = make_subparser(parser)
-    add_build_parser(subparser)
-    with pytest.raises(SystemExit):
-        parser.parse_args([u'upload'])
+    add_upload_parser(subparser)
+    assert parser.parse_args([u'upload'])
 
 
 def test_version(parser):
     subparser = make_subparser(parser)
-    add_build_parser(subparser)
-    with pytest.raises(SystemExit):
-        parser.parse_args([u'version'])
+    add_version_parser(subparser)
+    assert parser.parse_args([u'version'])
