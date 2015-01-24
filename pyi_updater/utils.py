@@ -278,8 +278,6 @@ def initial_setup(config):
                                                                 u'any or name',
                                                                 required=True)
 
-    config.DEV_DATA_DIR = os.getcwd()
-
     url = jms_utils.terminal.get_correct_answer(u'Enter a url to ping for '
                                                 u'updates.', required=True)
     config.UPDATE_URLS = [url]

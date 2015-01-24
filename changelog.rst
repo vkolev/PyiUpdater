@@ -12,6 +12,10 @@ v0.16 - beta
     - Settings module to make updating easier.
     - PyiUpdater settings db
 
+  - Docs
+
+    - Todo list
+
 
 * Updated
 
@@ -26,11 +30,17 @@ v0.16 - beta
     - Added --clean to compile a fresh build
     - Handling of args for pyiupdater
 
+  - Client
+
+    - Only log version data file once
+    - logging difference between patch & full update
+
   - PyiUpdater
 
     - Lowered pyinstaller requirement to 2.1
     - Added hooks included in newer versions of pyinstaller
     - Added rotating logs
+    - Handling cases where root directory name is changed
 
 * Fixed
 
@@ -42,6 +52,7 @@ v0.16 - beta
 
     - Restarting app after auto-update
     - Deleting version data on bad sig check
+    - Windows restart batch file not closing
 
 * Removed
 

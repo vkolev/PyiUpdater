@@ -73,23 +73,17 @@ class PackageHandler(object):
         else:
             log.debug(u'Looks like its not patch time.')
             self.patch_support = False
-        self.data_dir = obj.get(u'DEV_DATA_DIR')
-        if self.data_dir is not None:
-            self.data_dir = os.path.join(self.data_dir,
-                                         settings.USER_DATA_FOLDER)
-            self.files_dir = os.path.join(self.data_dir, u'files')
-            self.deploy_dir = os.path.join(self.data_dir, u'deploy')
-            self.new_dir = os.path.join(self.data_dir, u'new')
-            self.config_dir = os.path.join(os.path.dirname(self.data_dir),
-                                           settings.CONFIG_DATA_FOLDER)
-            self.config_file = os.path.join(self.config_dir,
-                                            settings.CONFIG_FILE)
-            self.version_data = os.path.join(self.config_dir,
-                                             settings.VERSION_FILE_DB)
-            self.config = None
-        else:
-            log.debug('DEV_DATA_DIR is None. Setup Failed')
-
+        data_dir = os.path.abspath(os.getcwd())
+        self.data_dir = os.path.join(data_dir, settings.USER_DATA_FOLDER)
+        self.files_dir = os.path.join(self.data_dir, u'files')
+        self.deploy_dir = os.path.join(self.data_dir, u'deploy')
+        self.new_dir = os.path.join(self.data_dir, u'new')
+        self.config_dir = os.path.join(os.path.dirname(self.data_dir),
+                                       settings.CONFIG_DATA_FOLDER)
+        self.config_file = os.path.join(self.config_dir, settings.CONFIG_FILE)
+        self.version_data = os.path.join(self.config_dir,
+                                         settings.VERSION_FILE_DB)
+        self.config = None
         self.json_data = None
 
         self.setup()

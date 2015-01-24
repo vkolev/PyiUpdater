@@ -94,11 +94,12 @@ class LibUpdate(object):
 
         patch_success = self._patch_update(self.name, self.version)
         if patch_success:
-            log.debug(u'Download successful')
+            log.debug(u'Patch download successful')
         else:
+            log.debug(u'Patch update failed')
             update_success = self._full_update(self.name)
             if update_success:
-                log.debug(u'Download successful')
+                log.debug(u'Full download successful')
             else:
                 return False
         # Removes old versions, of update being checked, from
@@ -429,22 +430,15 @@ class AppUpdate(LibUpdate):
 
         bat = os.path.join(self.current_app_dir, u'update.bat')
         with open(bat, u'w') as batfile:
-            # Not sure whats going on here.  Next time will
-            # def link the article in these comments :)
-            if ' ' in current_app:
-                fix = '""'
-            else:
-                fix = ''
-            # Now i'm back to understanding
             batfile.write(u"""
 @echo off
 echo Updating to latest version...
 ping 127.0.0.1 -n 5 -w 1000 > NUL
 move /Y "{}" "{}" > NUL
 echo restarting...
-{} "{}"
+start "" "{}"
 DEL "%~f0"
-""".format(updated_app, current_app, fix, current_app))
+""".format(updated_app, current_app, current_app))
         log.debug(u'Starting bat file')
         os.startfile(bat)
         sys.exit(0)

@@ -297,6 +297,7 @@ class Client(object):
         self.json_data = self._verify_sig(self.json_data)
 
         self.easy_data = EasyAccessDict(self.json_data)
+        log.debug('Version Data:\n{}'.format(str(self.easy_data)))
 
     def _verify_sig(self, data):
         # Checking to see if there is a sig in the version file.

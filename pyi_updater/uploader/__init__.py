@@ -54,19 +54,12 @@ class Uploader(object):
 
             obj (instance): config object
         """
-        self.data_dir = obj.get(u'DEV_DATA_DIR')
-        if self.data_dir is not None:
-            self.data_dir = os.path.join(self.data_dir,
-                                         settings.USER_DATA_FOLDER)
-            self.deploy_dir = os.path.join(self.data_dir, u'deploy')
-        else:
-            log.debug(u'DEV_DATA_DIR is None. Setup failed.')
-
+        data_dir = os.path.abspath(os.getcwd())
+        self.data_dir = os.path.join(data_dir, settings.USER_DATA_FOLDER)
+        self.deploy_dir = os.path.join(self.data_dir, u'deploy')
         self.remote_dir = obj.get(u'REMOTE_DIR')
-        self.host = obj.get(u'HOST', None)
-
+        self.host = obj.get(u'HOST')
         self.username = obj.get(u'USERNAME')
-
         # If password is none get ssh key path
         self.password = obj.get(u'PASSWORD')
         self.uploader = None

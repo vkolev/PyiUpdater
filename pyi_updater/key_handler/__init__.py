@@ -22,7 +22,6 @@ import logging
 import os
 import shutil
 
-from pyi_updater.exceptions import KeyHandlerError
 from pyi_updater.key_handler.keydb import KeyDB
 from pyi_updater import settings
 from pyi_updater.utils import lazy_import
@@ -66,24 +65,22 @@ class KeyHandler(object):
         self.app_name = obj.get(u'APP_NAME')
         self.private_key_name = self.app_name + u'.pem'
         self.public_key_name = self.app_name + u'.pub'
-        data_dir = obj.get(u'DEV_DATA_DIR',)
-        if data_dir is not None:
-            self.config_dir = os.path.join(data_dir, u'.pyiupdater')
-            self.keysdb = KeyDB(self.config_dir)
-            # ToDo: Remove in v1.0 No longer using keys dir
-            self.keys_dir = os.path.join(self.config_dir, u'keys')
-            self.data_dir = os.path.join(data_dir, settings.USER_DATA_FOLDER)
-            self.deploy_dir = os.path.join(self.data_dir, u'deploy')
-            self.version_data = os.path.join(self.config_dir,
-                                             settings.VERSION_FILE_DB)
+        data_dir = os.path.abspath(os.getcwd())
+        self.config_dir = os.path.join(data_dir, u'.pyiupdater')
+        self.keysdb = KeyDB(self.config_dir)
+        # ToDo: Remove in v1.0 No longer using keys dir
+        self.keys_dir = os.path.join(self.config_dir, u'keys')
+        # End ToDo
+        self.data_dir = os.path.join(data_dir, settings.USER_DATA_FOLDER)
+        self.deploy_dir = os.path.join(self.data_dir, u'deploy')
+        self.version_data = os.path.join(self.config_dir,
+                                         settings.VERSION_FILE_DB)
 
-            self.old_version_file = os.path.join(self.deploy_dir,
-                                                 settings.VERSION_FILE_OLD)
-            self.version_file = os.path.join(self.deploy_dir,
-                                             settings.VERSION_FILE)
-            self._migrate()
-        else:
-            log.error(u'Dev_DATA_DIR is None. Setup Failed')
+        self.old_version_file = os.path.join(self.deploy_dir,
+                                             settings.VERSION_FILE_OLD)
+        self.version_file = os.path.join(self.deploy_dir,
+                                         settings.VERSION_FILE)
+        self._migrate()
 
     def _migrate(self):
         log.debug('Migration check...')

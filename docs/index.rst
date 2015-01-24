@@ -61,6 +61,7 @@ Contents:
     contributing
     api
     license
+    todo
     release_history
 
 

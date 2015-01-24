@@ -54,7 +54,6 @@ def get_highest_version(name, plat, easy_data):
 
        (str) Highest version number
     """
-    log.debug('Data:\n{}'.format(easy_data))
     version_key = u'{}*{}*{}'.format(u'latest', name, plat)
     version = easy_data.get(version_key)
 
@@ -80,7 +79,6 @@ def get_filename(name, version, platform, easy_data):
 
            (str) Filename with extension
         """
-        log.debug('Data:\n{}'.format(easy_data))
         filename_key = u'{}*{}*{}*{}*{}'.format(u'updates', name, version,
                                                 platform, u'filename')
         filename = easy_data.get(filename_key)
