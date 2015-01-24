@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #--------------------------------------------------------------------------
-
-
 import gzip
 import json
 import logging
@@ -41,7 +39,7 @@ from pyi_updater.utils import (convert_to_list,
                                get_highest_version,
                                gzip_decompress,
                                make_archive,
-                               vstr_2_vtuple)
+                               Version)
 
 log = logging.getLogger(__name__)
 
@@ -64,21 +62,22 @@ class Client(object):
             True: Refresh update manifest on object initialization
 
             False: Don't refresh update manifest on object initialization
+
+        call_back (func): Used for download progress
     """
 
-    def __init__(self, obj=None, refresh=False, test=False):
+    def __init__(self, obj=None, refresh=False, call_back=None, test=False):
         self.name = None
         self.version = None
         self.json_data = None
         self.verified = False
         self.ready = False
-        if obj and test is True:
-            self.init_app(obj, refresh, test)
+        self.progress_hooks = []
+        if call_back is not None:
+            self.progress_hooks.append(call_back)
+        self.init_app(obj, refresh, test)
 
-        if obj and test is False:
-            self.init_app(obj, refresh, test)
-
-    def init_app(self, obj, refresh=True, test=False):
+    def init_app(self, obj, refresh=False, test=False):
         """Sets up client with config values from obj
 
         Args:
@@ -143,29 +142,6 @@ class Client(object):
         except Exception as err:
             log.debug(str(err), exc_info=True)
 
-    def _sanatize_version_to_str(self, version):
-        def length_check(v):
-            if len(v) == 1:
-                v = (v[0], 0, 0)
-            elif len(v) == 2:
-                v = (v[0], v[1], 0)
-            # ToDo: Once we add support for pre release versions
-            #       We will have to update this. Can't fix now.
-            #       Have bigger fish to fry. 2014/12/7 6:51pm
-            elif len(v) > 3:
-                v = (v[0], v[1], v[2])
-            return v
-
-        if isinstance(version, tuple):
-            version = length_check(version)
-            version = '.'.join(map(str, version))
-        elif isinstance(version, list):
-            version = tuple(map(int, version.split('.')))
-            version = length_check(version)
-            version = '.'.join(version)
-
-        return version
-
     def update_check(self, name, version):
         """
         Will try to patch binary if all check pass.  IE hash verified
@@ -187,7 +163,8 @@ class Client(object):
                 False - Update Failed
         """
         self.name = name
-        self.version = self._sanatize_version_to_str(version)
+        version = Version(version)
+        self.version = str(version)
 
         app = False
         if self.ready is False:
@@ -211,8 +188,8 @@ class Client(object):
                                      self.easy_data)
         if latest is None:
             return None
-        if vstr_2_vtuple(latest) <= \
-                vstr_2_vtuple(version):
+        latest = Version(latest)
+        if latest <= version:
             log.debug(u'{} already updated to the latest version'.format(name))
             log.debug(u'Already up-to-date')
             return None
@@ -229,6 +206,7 @@ class Client(object):
             u'platform': self.platform,
             u'app_name': self.app_name,
             u'verify': self.verify,
+            u'progress_hooks': self.progress_hooks,
             }
         if app is True:
             return AppUpdate(data)

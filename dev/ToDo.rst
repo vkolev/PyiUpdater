@@ -6,8 +6,6 @@
 
   - PyiUpdater
 
-    - Clean up version to tuple and vice versa
-    - Remove blinker dependency
     - Added callback function, to client,  for download progress
     - More logging
 
@@ -23,7 +21,6 @@
 
   - Client
 
-    - Change refresh to false as default
     - Check manifest download for duplicate downloading
 
 

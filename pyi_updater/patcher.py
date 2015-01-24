@@ -13,12 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #--------------------------------------------------------------------------
-
-
 import logging
 import os
 
-from blinker import signal
 try:
     import bsdiff4
 except ImportError:
@@ -42,8 +39,6 @@ if bsdiff4 is None:
 log = logging.getLogger(__name__)
 
 platform_ = get_system()
-
-progress_signal = signal(u'progress_info')
 
 
 class Patcher(object):
@@ -79,6 +74,7 @@ class Patcher(object):
         self.update_folder = kwargs.get(u'update_folder')
         self.update_urls = kwargs.get(u'update_urls', [])
         self.verify = kwargs.get(u'verify', True)
+        self.progress_hooks = kwargs.get(u'progress_hooks', [])
         self.patch_data = []
         self.patch_binary_data = []
         self.og_binary = None
@@ -200,11 +196,8 @@ class Patcher(object):
     def _download_verify_patches(self):
         # Downloads & verifies all patches
         log.debug('Downloading patches')
-        total = 0
-        if len(self.patch_data) > 3:
-            percent_each = 100 / len(self.patch_data)
-        else:
-            percent_each = None
+        downloaded = 0
+        total = len(self.patch_data)
         for p in self.patch_data:
             fd = FileDownloader(p[u'patch_name'], p[u'patch_urls'],
                                 p[u'patch_hash'], self.verify)
@@ -212,32 +205,32 @@ class Patcher(object):
             data = fd.download_verify_return()
             if data is not None:
                 self.patch_binary_data.append(data)
-                # Gathering info to send in signal
-                if percent_each is not None:
-                    total += percent_each
-                    done = total
-                else:
-                    done = '...'
-                progress_signal.send(info=u'Downloading patches',
-                                     percent=str(done))
+                downloaded += 1
+                status = {u'total': total,
+                          u'downloaed': downloaded,
+                          u'status': u'downloading'}
+                self._call_progress_hooks(status)
             else:
-                progress_signal.send(info=u'Failed to download patches',
-                                     percent=u'...')
                 return False
-        progress_signal.send(info=u'Download Complete', percent=u'100')
+        status = {u'total': total,
+                  u'downloaed': downloaded,
+                  u'status': u'finished'}
+        self._call_progress_hooks(status)
         return True
+
+    def _call_progress_hooks(self, data):
+        for ph in self.progress_hooks:
+            ph(data)
 
     def _apply_patches_in_memory(self):
         # Applies a sequence of patches in memory
         log.debug(u'Applying patches')
         # Beginning the patch process
         self.new_binary = self.og_binary
-        progress_signal.send(info=u'Applying Patches')
         for i in self.patch_binary_data:
             try:
                 self.new_binary = bsdiff4.patch(self.new_binary, i)
             except Exception as err:
-                progress_signal.send(info=u'Failed to apply patches')
                 log.debug(err, exc_info=True)
                 log.error(err)
                 raise PatcherError(u'Patch failed to apply')

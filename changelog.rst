@@ -6,15 +6,21 @@ v0.16 - beta
 .. note:: This version is not yet released and is under active development.
 * Added
 
+  - Client
+
+    - Progress hooks - used for download progress
+
+  - Docs
+
+    - Todo list
+
   - PyiUpdater
 
     - Hooks for certifi
     - Settings module to make updating easier.
     - PyiUpdater settings db
-
-  - Docs
-
-    - Todo list
+    - Unified utils modules
+    - Added version object
 
 
 * Updated
@@ -34,6 +40,7 @@ v0.16 - beta
 
     - Only log version data file once
     - logging difference between patch & full update
+    - Version objects for better version comparison & conversion
 
   - PyiUpdater
 
@@ -64,6 +71,7 @@ v0.16 - beta
 
     - Storing pickled config in plain file
     - Unused requirements
+    - Blinker dependency
 
 
 v0.15.0 - 2015/4/1

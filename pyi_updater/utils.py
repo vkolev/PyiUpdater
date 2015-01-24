@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #--------------------------------------------------------------------------
-
-
 from __future__ import print_function
 import bz2
 from getpass import getpass
@@ -353,7 +351,6 @@ def vtuple_2_vstr(x):
     return '.'.join(map(str, x))
 
 
-
 class bsdiff4_py(object):
     u"""Pure-python version of bsdiff4 module that can only patch, not diff.
 
@@ -441,8 +438,7 @@ class EasyAccessDict(object):
 class Version(object):
 
     def __init__(self, version):
-        log.debug('Version type: {}'.format(type(version)))
-        self.version_str = self.convert_2_str(version)
+        self.version_str = version
         self.version_tuple = self.convert_2_tuple(self.version_str)
         self.major = self.version_tuple[0]
         try:
@@ -453,19 +449,6 @@ class Version(object):
             self.patch = self.version_tuple[2]
         except IndexError:
             self.patch = 0
-
-    def convert_2_str(self, version):
-        if isinstance(version, str):
-            log.debug('No conversion needed')
-            v = version
-        elif isinstance(version, list):
-            log.debug('Converted list to str')
-            v = '.'.join(map(version, str))
-        elif isinstance(version, tuple):
-            log.debug('Converted tuple to str')
-            v = '.'.join(map(version, str))
-        return v
-
 
     def convert_2_tuple(self, version):
         return tuple(map(int, version.split(u'.')))

@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #--------------------------------------------------------------------------
-
-
 from io import BytesIO
 import logging
 import time
@@ -49,7 +47,8 @@ class FileDownloader(object):
 
             False: Don't verify https connection
     """
-    def __init__(self, filename, urls, hexdigest=None, verify=True):
+    def __init__(self, filename, urls, hexdigest=None, verify=True,
+                 progress_hooks=[]):
         self.filename = filename
         if isinstance(urls, list) is False:
             self.urls = [urls]
@@ -61,6 +60,7 @@ class FileDownloader(object):
         self.file_binary_data = None
         self.my_file = BytesIO()
         self.content_length = None
+        self.progress_hooks = progress_hooks
         if self.verify is True:
             self.http_pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED',
                                                  ca_certs=certifi.where())
@@ -150,13 +150,25 @@ class FileDownloader(object):
                                                   self.content_length)
             sys.stdout.write(u'\r{} Percent Complete'.format(percent))
             sys.stdout.flush()
+            status = {u'total': self.content_length,
+                      u'downloaed': recieved_data,
+                      u'status': u'downloading'}
+            self._call_progress_hooks(status)
 
         sys.stdout.write('\n')
         sys.stdout.flush()
         self.my_file.flush()
         self.my_file.seek(0)
         self.file_binary_data = self.my_file.read()
+        status = {u'total': self.content_length,
+                  u'downloaed': recieved_data,
+                  u'status': u'finished'}
+        self._call_progress_hooks(status)
         log.debug(u'Download Complete')
+
+    def _call_progress_hooks(self, data):
+        for ph in self.progress_hooks:
+            ph(data)
 
     def _make_response(self):
         # Downloads file to memory.  Keeps internal reference

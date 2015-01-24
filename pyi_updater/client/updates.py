@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #--------------------------------------------------------------------------
-
-
 import logging
 import os
 import shutil
@@ -37,7 +35,7 @@ from pyi_updater.utils import (get_filename,
                                get_highest_version,
                                get_mac_dot_app_dir,
                                get_version_number,
-                               vstr_2_vtuple)
+                               Version)
 
 log = logging.getLogger(__name__)
 
@@ -61,6 +59,7 @@ class LibUpdate(object):
         self.data_dir = data.get(u'data_dir')
         self.platform = data.get(u'platform')
         self.app_name = data.get(u'app_name')
+        self.progress_hooks = data.get(u'progress_hooks')
         self.update_folder = os.path.join(self.data_dir,
                                           settings.UPDATE_FOLDER)
         self.verify = data.get(u'verify')
@@ -235,7 +234,8 @@ class LibUpdate(object):
         p = Patcher(name=name, json_data=self.json_data,
                     current_version=version, highest_version=latest,
                     update_folder=self.update_folder,
-                    update_urls=self.update_urls, verify=self.verify)
+                    update_urls=self.update_urls, verify=self.verify,
+                    progress_hooks=self.progress_hooks)
 
         # Returns True if everything went well
         # If False is returned then we will just do the full
@@ -269,7 +269,7 @@ class LibUpdate(object):
         with ChDir(self.update_folder):
             log.debug(u'Downloading update...')
             fd = FileDownloader(filename, self.update_urls,
-                                _hash, self.verify)
+                                _hash, self.verify, self.progress_hooks)
             result = fd.download_verify_write()
             if result:
                 log.debug(u'Update Complete')
@@ -293,12 +293,13 @@ class LibUpdate(object):
             filename = u'0.0.0'
 
         try:
-            current_version_str = get_version_number(filename)
+            current_version = Version(get_version_number(filename))
+            current_version_str = str(current_version)
         except UtilsError:
             log.debug(u'Cannot parse version info')
-            current_version_str = u'0.0.0'
+            current_version = Version('0.0.0')
+            current_version_str = str(current_version)
         log.debug('Current verion: {}'.format(current_version_str))
-        current_version = vstr_2_vtuple(current_version_str)
         with ChDir(self.update_folder):
             for t in temp:
                 try:
@@ -307,8 +308,7 @@ class LibUpdate(object):
                     log.debug(u'Cannot parse version info')
                     t_versoin_str = u'0.0.0'
                 log.debug('Other versoin: {}'.format(t_versoin_str))
-                t_version = vstr_2_vtuple(t_versoin_str)
-
+                t_version = Version(t_versoin_str)
                 if self.name in t and t_version < current_version:
                     log.debug(u'Removing old update: {}'.format(t))
                     os.remove(t)

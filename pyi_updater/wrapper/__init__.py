@@ -33,7 +33,7 @@ from pyi_updater.exceptions import UploaderError
 from pyi_updater.utils import initial_setup
 from pyi_updater.wrapper.builder import Builder
 from pyi_updater.wrapper.options import get_parser
-from pyi_updater.wrapper.utils import check_repo, pretty_time
+from pyi_updater.utils import check_repo, pretty_time
 
 log = logging.getLogger(__name__)
 if os.path.exists(os.path.join(os.getcwd(), u'pyiu.log')):

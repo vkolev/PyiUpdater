@@ -1,8 +1,6 @@
 appdirs
-blinker
 bsdiff4
 certifi
-click
 ed25519
 jms-utils >= 0.5.3
 Pyinstaller >= 2.1
