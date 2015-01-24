@@ -11,9 +11,9 @@ from jms_utils.system import get_system
 from pyi_updater import settings
 from pyi_updater.hooks import get_hook_dir
 from pyi_updater.utils import make_archive
-from pyi_updater.wrapper.utils import (check_repo,
-                                       check_version,
-                                       run)
+from pyi_updater.utils import (check_repo,
+                               check_version,
+                               run)
 
 log = logging.getLogger(__name__)
 

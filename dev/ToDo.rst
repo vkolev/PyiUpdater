@@ -1,37 +1,30 @@
-- Cli
+- Framework
 
-  - add ability to update settings
+  - Cli
 
-- PyiUpdater
+    - add ability to update settings
 
-  - Clean up version to tuple and vice versa
-  - Remove blinker dependency
-  - Added callback function, to client,  for download progress
-  - More logging
+  - PyiUpdater
 
-- KeyHandler
-  - support multiple keys
+    - Clean up version to tuple and vice versa
+    - Remove blinker dependency
+    - Added callback function, to client,  for download progress
+    - More logging
 
-- Package Handler
+  - Package Handler
 
-  - check make patch | better logging
+    - check make patch | better logging
 
-- Test Suite
+  - Test Suite
 
-  - Focus on client auto update tests
-  - Add more tests!
-
+    - Focus on client auto update tests
+    - Add more tests!
     - Coverage is lacking
 
-- Setup.py
+  - Client
 
-    - make bsdiff4 an optional install
-
-
-- Client
-
-  - Change refresh to false as default
-  - Check manifest download for duplicate downloading
+    - Change refresh to false as default
+    - Check manifest download for duplicate downloading
 
 
 - Docs
