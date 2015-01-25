@@ -1,13 +1,26 @@
 Changelog
 =========
-
-v0.16 - beta
-~~~~~~~~~~~~~~~~~~
+v0.16.1 - beta
+~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
+* Added
+
+
+* Updated
+
+
+* Fixed
+
+
+* Removed
+
+
+v0.16 - 2015/25/1
+~~~~~~~~~~~~~~~~~
 * Added
   - CLI
 
-    - Can now updated repo settings
+    - Can now update repo settings
 
   - Client
 
@@ -16,6 +29,7 @@ v0.16 - beta
   - Docs
 
     - Todo list
+    - Updated demos to match api & code comments more descriptive
 
   - PyiUpdater
 
