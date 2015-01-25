@@ -178,19 +178,39 @@ def gzip_decompress(data):
     return data
 
 
-def initial_setup(config):
+def setup_appname(config):
     global jms_utils
     if jms_utils is None:
         jms_utils = lazy_import('jms_utils.terminal')
+    if config.APP_NAME is not None:
+        default = config.APP_NAME
+    else:
+        default = None
     config.APP_NAME = jms_utils.terminal.get_correct_answer(u'Please enter '
                                                             u'app name',
-                                                            required=True)
+                                                            required=True,
+                                                            default=default)
 
-    config.COMPANY_NAME = jms_utils.terminal.get_correct_answer(u'Please ente'
-                                                                u'r your comp'
-                                                                u'any or name',
-                                                                required=True)
 
+def setup_company(config):
+    global jms_utils
+    if jms_utils is None:
+        jms_utils = lazy_import('jms_utils.terminal')
+    if config.COMPANY_NAME is not None:
+        default = config.COMPANY_NAME
+    else:
+        default = None
+    temp = jms_utils.terminal.get_correct_answer(u'Please enter your comp'
+                                                 u'any or name',
+                                                 required=True,
+                                                 default=default)
+    config.COMPANY_NAME = temp
+
+
+def setup_urls(config):
+    global jms_utils
+    if jms_utils is None:
+        jms_utils = lazy_import('jms_utils.terminal')
     url = jms_utils.terminal.get_correct_answer(u'Enter a url to ping for '
                                                 u'updates.', required=True)
     config.UPDATE_URLS = [url]
@@ -205,10 +225,52 @@ def initial_setup(config):
         else:
             break
 
+
+def setup_patches(config):
+    global jms_utils
+    if jms_utils is None:
+        jms_utils = lazy_import('jms_utils.terminal')
     config.UPDATE_PATCHES = jms_utils.terminal.ask_yes_no(u'Would you like to '
                                                           u'enable patch upda'
                                                           u'tes?',
                                                           default=u'yes')
+
+
+def setup_scp(config):
+    global jms_utils
+    if jms_utils is None:
+        jms_utils = lazy_import('jms_utils.terminal')
+    _temp = jms_utils.terminal.get_correct_answer(u'Enter remote dir',
+                                                  required=True)
+    config.REMOTE_DIR = _temp
+    config.HOST = jms_utils.terminal.get_correct_answer(u'Enter host',
+                                                        required=True)
+
+    config.USERNAME = jms_utils.terminal.get_correct_answer(u'Enter '
+                                                            u'usernmae',
+                                                            required=True)
+
+
+def setup_s3(config):
+    global jms_utils
+    if jms_utils is None:
+        jms_utils = lazy_import('jms_utils.terminal')
+    _temp = jms_utils.terminal.get_correct_answer(u'Enter access key ID',
+                                                  required=True)
+    config.USERNAME = _temp
+    _temp = jms_utils.terminal.get_correct_answer(u'Enter bucket name',
+                                                  required=True)
+    config.REMOTE_DIR = _temp
+
+
+def initial_setup(config):
+    global jms_utils
+    if jms_utils is None:
+        jms_utils = lazy_import('jms_utils.terminal')
+    setup_appname(config)
+    setup_company(config)
+    setup_urls(config)
+    setup_patches(config)
 
     answer1 = jms_utils.terminal.ask_yes_no(u'Would you like to add scp '
                                             u'settings?', default='no')
@@ -217,23 +279,10 @@ def initial_setup(config):
                                             'settings?', default='no')
 
     if answer1:
-        _temp = jms_utils.terminal.get_correct_answer(u'Enter remote dir',
-                                                      required=True)
-        config.REMOTE_DIR = _temp
-        config.HOST = jms_utils.terminal.get_correct_answer(u'Enter host',
-                                                            required=True)
-
-        config.USERNAME = jms_utils.terminal.get_correct_answer(u'Enter '
-                                                                u'usernmae',
-                                                                required=True)
+        setup_scp(config)
 
     if answer2:
-        _temp = jms_utils.terminal.get_correct_answer(u'Enter access key ID',
-                                                      required=True)
-        config.USERNAME = _temp
-        _temp = jms_utils.terminal.get_correct_answer(u'Enter bucket name',
-                                                      required=True)
-        config.REMOTE_DIR = _temp
+        setup_s3(config)
     return config
 
 
@@ -409,7 +458,9 @@ class EasyAccessDict(object):
     def load(self, dict_, sep=u'*'):
         self.sep = sep
         if not isinstance(dict_, dict):
+            log.debug(u'Did not pass dict')
             self.dict = dict()
+            log.debug(u'Loading empty dict')
         else:
             self.dict = dict_
 

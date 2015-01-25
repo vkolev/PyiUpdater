@@ -29,10 +29,17 @@ from pyi_updater import PyiUpdater, __version__
 from pyi_updater import settings
 from pyi_updater.config import Loader, SetupConfig
 from pyi_updater.exceptions import UploaderError
-from pyi_updater.utils import initial_setup
+from pyi_updater.utils import (check_repo,
+                               initial_setup,
+                               pretty_time,
+                               setup_appname,
+                               setup_company,
+                               setup_urls,
+                               setup_patches,
+                               setup_scp,
+                               setup_s3)
 from pyi_updater.wrapper.builder import Builder
 from pyi_updater.wrapper.options import get_parser
-from pyi_updater.utils import check_repo, pretty_time
 
 
 log = logging.getLogger()
@@ -149,6 +156,25 @@ def pkg(args):
         log.info(u'Signing packages complete')
 
 
+def setter(args):
+    check_repo()
+    config = loader.load_config()
+    if args.appname is True:
+        setup_appname(config)
+    if args.company is True:
+        setup_company(config)
+    if args.urls is True:
+        setup_urls(config)
+    if args.patches is True:
+        setup_patches(config)
+    if args.scp is True:
+        setup_scp(config)
+    if args.s3 is True:
+        setup_s3(config)
+    loader.save_config(config)
+    log.info(u'Settings update complete')
+
+
 def upload(args):
     check_repo()
     upload_service = args.service
@@ -210,6 +236,8 @@ def _real_main(args):
         _log(args)
     elif cmd == u'pkg':
         pkg(args)
+    elif cmd == u'settings':
+        setter(args)
     elif cmd == u'upload':
         upload(args)
     elif cmd == u'version':
@@ -223,6 +251,7 @@ def main(args=None):
     try:
         _real_main(args)
     except KeyboardInterrupt:
+        print(u'\n')
         msg = u'Exited by user'
         log.warning(msg)
         sys.exit(1)

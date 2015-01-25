@@ -44,7 +44,14 @@ Sign update file with signing keys & gzip compress.
 Upload to remote location.
 ::
 
-    $ pyiupdater up --service s3
+    $ pyiupdater upload --service s3
+
+
+To update repo settings pass each flag you'd like to update.
+::
+
+    $ pyiupdater settings --app-name --company
+
 
 Here using Amazon S3. Must have PYIUPDATER_PASS env set. Install with pyiupdater[s3].
 ::
@@ -63,5 +70,5 @@ So if you opt not to use the cli interface & instead want to integrate PyiUpdate
 Limitations
 ===========
 
-* Doesn't support onedir mode
-* Cannot have spaces in app name -> working on a fix for this
+* No onedir support
+* No python3 support

@@ -5,6 +5,9 @@ v0.16 - beta
 ~~~~~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
 * Added
+  - CLI
+
+    - Can now updated repo settings
 
   - Client
 

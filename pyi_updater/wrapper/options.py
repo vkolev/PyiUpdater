@@ -148,6 +148,25 @@ def add_package_parser(subparsers):
                                 action=u'store_true', dest=u'sign')
 
 
+def add_settings_parser(subparsers):
+    settings_parser = subparsers.add_parser(u'settings', help=u'Updated '
+                                            u'config settings')
+    settings_parser.add_argument(u'--app-name',
+                                 help=u'Change app name * Use with Caution *',
+                                 action=u'store_true', dest=u'appname')
+    settings_parser.add_argument(u'--company',
+                                 help=u'Change company name',
+                                 action=u'store_true')
+    settings_parser.add_argument(u'--urls', help=u'Change update urls',
+                                 action=u'store_true')
+    settings_parser.add_argument(u'--patches', help=u'Changed patch support',
+                                 action=u'store_true')
+    settings_parser.add_argument(u'--scp', help=u'Changed scp settings',
+                                 action=u'store_true')
+    settings_parser.add_argument(u'--s3', help=u'Changed s3 settings',
+                                 action=u'store_true')
+
+
 def add_upload_parser(subparsers):
     upload_parser = subparsers.add_parser(u'upload', help=u'Uploads files')
     upload_parser.add_argument(u'-s', u'--service', help=u'Where '
@@ -168,6 +187,7 @@ def get_parser():
     add_keys_parser(subparsers)
     add_log_parser(subparsers)
     add_package_parser(subparsers)
+    add_settings_parser(subparsers)
     add_upload_parser(subparsers)
     add_version_parser(subparsers)
     return parser

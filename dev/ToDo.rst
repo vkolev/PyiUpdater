@@ -1,9 +1,5 @@
 - Framework
 
-  - Cli
-
-    - add ability to update settings
-
   - PyiUpdater
 
     - More logging
