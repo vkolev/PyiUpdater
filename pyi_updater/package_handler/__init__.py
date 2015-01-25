@@ -69,7 +69,7 @@ class PackageHandler(object):
             log.info(u'Patch support enabled')
             self.patch_support = True
         else:
-            log.debug(u'Patch support disabled')
+            log.info(u'Patch support disabled')
             self.patch_support = False
         data_dir = os.path.abspath(os.getcwd())
         self.data_dir = os.path.join(data_dir, settings.USER_DATA_FOLDER)
@@ -140,7 +140,7 @@ class PackageHandler(object):
                 self.config_dir]
         for d in dirs:
             if not os.path.exists(d):
-                log.debug('Creating dir: {}'.format(d))
+                log.info('Creating dir: {}'.format(d))
                 os.mkdir(d)
 
     def _load_version_file(self):
@@ -153,7 +153,7 @@ class PackageHandler(object):
                 try:
                     log.info(u'Loading version file...')
                     json_data = json.loads(f.read())
-                    log.info(u'Version file loaded')
+                    log.info(u'Loaded version file')
                 except Exception as err:
                     log.debug(str(err), exc_info=True)
 
@@ -169,7 +169,6 @@ class PackageHandler(object):
             log.error(u'Version file not found')
             json_data = {'updates': {}}
             log.info(u'Created new version file')
-        log.info(u'Loaded version file')
         return json_data
 
     def _load_config(self):

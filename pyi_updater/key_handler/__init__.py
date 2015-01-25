@@ -167,7 +167,7 @@ class KeyHandler(object):
 
     def _load_private_keys(self):
         # Loads private key
-        log.info(u'Loading private key')
+        log.debug(u'Loading private key')
         return self.keysdb.get_private_keys()
 
     def _add_sig(self):
