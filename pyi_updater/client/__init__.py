@@ -213,6 +213,9 @@ class Client(object):
         else:
             return LibUpdate(data)
 
+    def add_call_back(self, cb):
+        self.progress_hooks.append(cb)
+
     def _get_manifest_filesystem(self):
         with ChDir(self.data_dir):
             if not os.path.exists(self.version_file):

@@ -61,9 +61,9 @@ Here using Amazon S3. Must have PYIUPDATER_PASS env set. Install with pyiupdater
 
 Demos
 =====
-So if you opt not to use the cli interface & instead want to integrate PyiUpdater into your build, look below.
+Example of using the client within your app
 
-.. literalinclude:: ../demos/dev_machine.py
+.. literalinclude:: ../demos/client.py
     :linenos:
 
 

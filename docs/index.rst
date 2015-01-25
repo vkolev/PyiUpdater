@@ -56,7 +56,6 @@ Contents:
     installation
     configuration
     usage
-    architecture
     folder_structure
     contributing
     api

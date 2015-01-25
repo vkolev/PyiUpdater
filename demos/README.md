@@ -1,6 +1,4 @@
 ## Demos
-So if you opt not to use the cli interface & instead want to integrate PyiUpdater into your build, check out the dev_machine.py demo.
-
 PyiUpdater make heavy use of the pyi-data folder.
 
 ####Steps
@@ -10,7 +8,6 @@ PyiUpdater make heavy use of the pyi-data folder.
 | --------------------- | ----------- |
 |APP_NAME         | (str) Name of your app. Used with COMPANY_NAME to create an update cache dir on end user system.|
 |COMPANY_NAME     | (str) Company or your name.  Used with APP_NAME to create an update cache dir on end user system.|
-|DEV_DATA_DIR     | (str) Full path to directory where pyiupdater will keep work files. i.e signing keys, src file for patch creation, etc.|
 |PUBLIC_KEY       | (tuple) Used on client side for authentication |
 |UPDATE_URL       | (str) Where clients search for updates - * Deprecated! You can put a single url in the list of UPDATE_URLS *|
 |UPDATE_URLS       | (list) A list of url(s) where a client will look for needed update objects. |
