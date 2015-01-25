@@ -49,7 +49,7 @@ class Loader(object):
             self.save_config(config_data)
             os.remove(self.old_config_file)
         else:
-        # End ToDo:
+            # End ToDo:
             config_data = self.db.load(self.config_key)
         return config_data
 
@@ -60,10 +60,11 @@ class Loader(object):
 
             obj (obj): config object
         """
-        log.debug('Saving Config')
+        log.info('Saving Config')
         self.db.save(self.config_key, obj)
+        log.info('Config saved')
         self.write_config_py(obj)
-
+        log.info('Wrote client config')
 
     # ToDo: Remove v1.0
     def _load_config(self):
@@ -72,12 +73,15 @@ class Loader(object):
         .. deprecated:: 0.16
         Use :func:`load_config` instead.
         """
-        log.debug(u'Loading config')
         try:
+            log.info(u'Loading old config')
             with open(self.old_config_file, u'r') as f:
                 config_data = pickle.loads(f.read())
-        except Exception as e:
-            log.error(e, exc_info=True)
+                log.info(u'Loaded old config')
+        except Exception as err:
+            log.error(u'Failed to load old config')
+            log.debug(str(err), exc_info=True)
+            log.info(u'Loading setup config')
             config_data = SetupConfig()
         return config_data
 

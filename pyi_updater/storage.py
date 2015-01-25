@@ -33,7 +33,7 @@ class Storage(object):
                 config_dir (str): Path to directory where config will be stored
         """
         if not os.path.exists(config_dir):
-            log.debug('Creating config dir')
+            log.info('Creating config dir')
             os.makedirs(config_dir)
         self.filename = os.path.join(config_dir, settings.CONFIG_FILE_USER)
         log.debug('Config db path: {}'.format(self.filename))

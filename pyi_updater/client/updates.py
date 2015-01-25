@@ -95,12 +95,12 @@ class LibUpdate(object):
 
         patch_success = self._patch_update(self.name, self.version)
         if patch_success:
-            log.debug(u'Patch download successful')
+            log.info(u'Patch download successful')
         else:
-            log.debug(u'Patch update failed')
+            log.error(u'Patch update failed')
             update_success = self._full_update(self.name)
             if update_success:
-                log.debug(u'Full download successful')
+                log.info(u'Full download successful')
             else:
                 return False
         # Removes old versions, of update being checked, from
@@ -126,12 +126,13 @@ class LibUpdate(object):
                     False - Install failed
         """
         if get_system() == u'win':
-            log.debug('Only supported on Unix like systems')
+            log.warning('Only supported on Unix like systems')
             return False
         try:
             self._extract_update()
         except ClientError as err:
-            log.error(str(err), exc_info=True)
+            log.error(str(err))
+            log.debug(str(err), exc_info=True)
             return False
         return True
 
@@ -157,9 +158,10 @@ class LibUpdate(object):
             filename = get_filename(self.name, latest, self.platform,
                                     self.easy_data)
             if not os.path.exists(filename):
+                log.error('File does not exists')
                 raise ClientError(u'File does not exists')
 
-            log.debug(u'Extracting Update')
+            log.info(u'Extracting Update')
             archive_ext = os.path.splitext(filename)[1].lower()
             if archive_ext == u'.gz':
                 try:
@@ -168,7 +170,8 @@ class LibUpdate(object):
                         # directory.
                         tfile.extractall()
                 except Exception as err:
-                    log.error(err, exc_info=True)
+                    log.error(err)
+                    log.debug(str(err), exc_info=True)
                     raise ClientError(u'Error reading gzip file')
             elif archive_ext == u'.zip':
                 try:
@@ -177,7 +180,8 @@ class LibUpdate(object):
                         # directory.
                         zfile.extractall()
                 except Exception as err:
-                    log.error(err, exc_info=True)
+                    log.error(str(err))
+                    log.debug(str(err), exc_info=True)
                     raise ClientError(u'Error reading zip file')
             else:
                 raise ClientError(u'Unknown filetype')
@@ -216,19 +220,20 @@ class LibUpdate(object):
         #
         #        False - Either failed to patch or no base binary to patch
 
-        log.debug(u'Starting patch update')
+        log.info(u'Starting patch update')
         filename = get_filename(name, version, self.platform, self.easy_data)
         log.debug('Archive filename: {}'.format(filename))
         if filename is None:
-            log.debug(u'Make sure version numbers are correct. TRAP')
+            log.warning(u'Make sure version numbers are correct. '
+                        u'Possible TRAP!')
             return False
         latest = get_highest_version(name, self.platform,
                                      self.easy_data)
         # Just checking to see if the zip for the current version is
         # available to patch If not we'll just do a full binary download
         if not os.path.exists(os.path.join(self.update_folder, filename)):
-            log.debug(u'{} got deleted. No base binary to start patching '
-                      'form'.format(filename))
+            log.warning(u'{} got deleted. No base binary to start patching '
+                        'form'.format(filename))
             return False
 
         p = Patcher(name=name, json_data=self.json_data,
@@ -256,7 +261,7 @@ class LibUpdate(object):
         #       True - Update Successful
         #
         #       False - Update Failed
-        log.debug(u'Starting full update')
+        log.info(u'Starting full update')
         latest = get_highest_version(name, self.platform, self.easy_data)
 
         filename = get_filename(name, latest, self.platform, self.easy_data)
@@ -267,15 +272,15 @@ class LibUpdate(object):
         _hash = self.easy_data.get(hash_key)
 
         with ChDir(self.update_folder):
-            log.debug(u'Downloading update...')
+            log.info(u'Downloading update...')
             fd = FileDownloader(filename, self.update_urls,
                                 _hash, self.verify, self.progress_hooks)
             result = fd.download_verify_write()
             if result:
-                log.debug(u'Update Complete')
+                log.info(u'Download Complete')
                 return True
             else:
-                log.error(u'Failed To Updated To Latest Version')
+                log.error(u'Failed To Download Latest Version')
                 return False
 
     def _remove_old_updates(self):
@@ -297,7 +302,7 @@ class LibUpdate(object):
             current_version = Version(current_version)
             current_version_str = str(current_version)
         except UtilsError:
-            log.debug(u'Cannot parse version info')
+            log.warning(u'Cannot parse version info')
             current_version = Version('0.0.0')
             current_version_str = str(current_version)
         log.debug('Current verion: {}'.format(current_version_str))
@@ -306,12 +311,12 @@ class LibUpdate(object):
                 try:
                     t_versoin_str = get_version_number(t)
                 except UtilsError:
-                    log.debug(u'Cannot parse version info')
+                    log.warning(u'Cannot parse version info')
                     t_versoin_str = u'0.0.0'
-                log.debug('Other versoin: {}'.format(t_versoin_str))
+                log.debug('Old version: {}'.format(t_versoin_str))
                 t_version = Version(t_versoin_str)
                 if self.name in t and t_version < current_version:
-                    log.debug(u'Removing old update: {}'.format(t))
+                    log.info(u'Removing old update: {}'.format(t))
                     os.remove(t)
 
 
@@ -345,7 +350,8 @@ class AppUpdate(LibUpdate):
                 self._overwrite_app()
                 self._restart()
         except ClientError as err:
-            log.error(str(err), exc_info=True)
+            log.error(str(err))
+            log.debug(str(err), exc_info=True)
 
     def install_restart(self):
         # ToDo: Remove in v1.0
@@ -362,13 +368,14 @@ class AppUpdate(LibUpdate):
         Proxy method for :meth:`_overwrite_app` & :meth:`_restart`.
         """
         if get_system() == u'win':
-            log.debug(u'Only supported on Unix like systems')
+            log.warning(u'Only supported on Unix like systems')
             return
         try:
             self._overwrite_app()
             self._restart()
         except ClientError as err:
-            log.error(str(err), exc_info=True)
+            log.error(str(err))
+            log.debug(str(err), exc_info=True)
 
     def _overwrite_app(self):
         # Unix: Overwrites the running applications binary,
@@ -404,7 +411,7 @@ class AppUpdate(LibUpdate):
         # Oh yes i did just pull that new binary into
         # the currently running process and kept it pushing
         # like nobody's business. Windows what???
-        log.debug(u'Restarting')
+        log.info(u'Restarting')
         current_app = os.path.join(self.current_app_dir, self.name)
         if get_system() == u'mac':
             if not os.path.exists(current_app):
@@ -442,6 +449,6 @@ echo restarting...
 start "" "{}"
 DEL "%~f0"
 """.format(updated_app, current_app, current_app))
-        log.debug(u'Starting bat file')
+        log.info(u'Starting update batch file')
         os.startfile(bat)
         sys.exit(0)

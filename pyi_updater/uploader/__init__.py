@@ -75,6 +75,7 @@ class Uploader(object):
             try:
                 self.uploader.upload()
             except Exception as err:
+                log.error('Failed to upload: {}'.format(str(err)))
                 log.debug(str(err), exc_info=True)
                 sys.exit(str(err))
         else:
@@ -101,6 +102,7 @@ class Uploader(object):
         except Exception as err:  # pragma: no cover
             log.debug(u'EP CACHE: {}'.format(self.mgr.ENTRY_POINT_CACHE))
             log.error(str(err))
+            log.debug(str(err), exc_info=True)
             raise UploaderError(u'Requested uploader is not installed',
                                 expected=True)
 

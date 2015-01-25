@@ -83,6 +83,7 @@ class Package(object):
 
             package (str): filename
         """
+        log.info(u'Extracting update archive info for: {}'.format(package))
         if os.path.splitext(package)[1].lower() not in \
                 self.supported_extensions:
             msg = u'Not a supported archive format: {}'.format(package)
@@ -110,6 +111,7 @@ class Package(object):
         self.name = self._get_package_name(package)
         self.file_hash = get_package_hashes(package)
         self.info[u'status'] = True
+        log.info('Info extraction complete')
 
     def _get_package_name(self, package):
         name = self._remove_version_number(package)

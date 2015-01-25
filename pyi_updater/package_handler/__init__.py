@@ -66,10 +66,10 @@ class PackageHandler(object):
         """
         self.patches = obj.get(u'UPDATE_PATCHES', True)
         if self.patches:
-            log.debug(u'Looks like were ready to make some patches')
+            log.info(u'Patch support enabled')
             self.patch_support = True
         else:
-            log.debug(u'Looks like its not patch time.')
+            log.debug(u'Patch support disabled')
             self.patch_support = False
         data_dir = os.path.abspath(os.getcwd())
         self.data_dir = os.path.join(data_dir, settings.USER_DATA_FOLDER)
@@ -134,54 +134,60 @@ class PackageHandler(object):
         #    - Files - All updates are placed here for future reference
         #
         # This is non destructive
-        log.debug(u'Setting up work dirs...')
+        log.info(u'Setting up work dirs...')
         dirs = [self.data_dir, self.new_dir,
                 self.deploy_dir, self.files_dir,
                 self.config_dir]
         for d in dirs:
             if not os.path.exists(d):
+                log.debug('Creating dir: {}'.format(d))
                 os.mkdir(d)
 
     def _load_version_file(self):
         # If version file is found its loaded to memory
         # If no version file is found then one is created.
         json_data = None
-        log.debug(u'Looking for version file...')
+        log.info(u'Looking for version file...')
         if os.path.exists(self.version_data):
             with open(self.version_data, u'r') as f:
-                log.debug(u'Loading version file...')
                 try:
+                    log.info(u'Loading version file...')
                     json_data = json.loads(f.read())
-                    log.debug(u'Found version file, now reading')
+                    log.info(u'Version file loaded')
                 except Exception as err:
-                    log.error(str(err))
+                    log.debug(str(err), exc_info=True)
 
             if json_data is not None:
+                log.info(u'Checking for valid data in version file...')
                 updates = json_data.get(settings.UPDATES_KEY)
-                log.debug(u'Checking for valid data in version file...')
                 if updates is None:
-                    log.debug(u'Invalid data in version file...')
+                    log.error(u'Invalid data in version file...')
                     json_data[settings.UPDATES_KEY] = {}
-                    log.debug(u'Updated version file format')
+                    log.info(u'Updated version file format')
 
         if json_data is None:
             log.error(u'Version file not found')
             json_data = {'updates': {}}
-            log.debug(u'Created new version file')
-        log.debug(u'Loaded version file')
+            log.info(u'Created new version file')
+        log.info(u'Loaded version file')
         return json_data
 
     def _load_config(self):
         config = None
-        log.debug(u'Looking for config file...')
+        log.info(u'Looking for config file...')
         if os.path.exists(self.config_file):
+            log.info(u'Found config file')
             try:
+                log.info(u'Loading config file')
                 with open(self.config_file, u'r') as f:
                     config = json.loads(f.read())
+                    log.info(u'Loaded config file')
             except Exception as err:
-                log.debug(str(err))
+                log.error(u'Failed to load config file')
+                log.debug(str(err), exc_info=True)
 
         if config is None:
+            log.info(u'Creating new config file')
             config = {
                 u'patches': {}
                 }
@@ -192,7 +198,7 @@ class PackageHandler(object):
         # for futher processing
         # Process all packages in new folder and gets
         # url, hash and some outer info.
-        log.debug(u'Getting package list')
+        log.info(u'Getting package list')
         # Clears manifest if sign updates runs more the once without
         # app being restarted
         package_manifest = list()
@@ -230,7 +236,7 @@ class PackageHandler(object):
                                                   package.platform,
                                                   )
                     if path is not None:
-                        log.debug(u'Found source file to create patch')
+                        log.info(u'Found source file to create patch')
                         patch_name = package.name + u'-' + package.platform
                         src_path = path[0]
                         patch_number = path[1]
@@ -243,46 +249,50 @@ class PackageHandler(object):
                         # ready for patching
                         patch_manifest.append(patch_info)
                     else:
-                        log.debug(u'No patch source file')
+                        log.warning(u'No source file to patch from')
 
         # ToDo: Expose this
         if ignore_errors is False:
-            print(u'Bad package & reason for being naughty:')
+            log.warning(u'Bad package & reason for being naughty:')
             for b in bad_packages:
-                print(b.name, b.info['reason'])
+                log.warning(b.name, b.info['reason'])
+        # End ToDo
 
         return package_manifest, patch_manifest
 
     def _add_package_to_config(self, p, data):
-        if 'package' not in data.keys():
-            data['package'] = {}
-            log.debug('Initilizing config for packages')
+        if u'package' not in data.keys():
+            data[u'package'] = {}
+            log.info(u'Initilizing config for packages')
         # First package with current name so add platform and version
-        if p.name not in data['package'].keys():
-            data['package'][p.name] = {p.platform: p.version}
-            log.debug('Adding new package to config')
+        if p.name not in data[u'package'].keys():
+            data[u'package'][p.name] = {p.platform: p.version}
+            log.info(u'Adding new package to config')
         else:
             # Adding platform and version
-            if p.platform not in data['package'][p.name].keys():
-                data['package'][p.name][p.platform] = p.version
-                log.debug('Adding new arch to package-config')
+            if p.platform not in data[u'package'][p.name].keys():
+                data[u'package'][p.name][p.platform] = p.version
+                log.info(u'Adding new arch to package-config: '
+                         u'{}'.format(p.platform))
             else:
                 # Getting current version for platform
-                value = data['package'][p.name][p.platform]
+                value = data[u'package'][p.name][p.platform]
                 # Updating version if applicable
                 if p.version > value:
-                    log.debug('Adding new version to package-config')
-                    data['package'][p.name][p.platform] = p.version
+                    log.info(u'Adding new version to package-config')
+                    data[u'package'][p.name][p.platform] = p.version
         return data
 
     def _cleanup(self, patch_manifest):
+        log.info(u'Staring cleanup')
         for p in patch_manifest:
             if os.path.exists(p[u'src']):
+                log.info(u'Removing {}'.format(p[u'src']))
                 os.remove(p[u'src'])
 
     def _make_patches(self, patch_manifest):
         pool_output = list()
-        log.debug(u'Staring patch creation')
+        log.info(u'Staring patch creation')
         cpu_count = multiprocessing.cpu_count() * 2
         pool = multiprocessing.Pool(processes=cpu_count)
         pool_output = pool.map(_make_patch, patch_manifest)
@@ -291,9 +301,8 @@ class PackageHandler(object):
     def _add_patches_to_packages(self, package_manifest, patches):
         # ToDo: Increase the efficiency of this double for
         #       loop. Not sure if it can be done though
-        log.debug(u'Adding patches to package list')
         if patches is not None:
-            log.debug('We got patches...')
+            log.info(u'Adding patches to package list')
             for p in patches:
                 if p.ready is False:
                     continue
@@ -309,11 +318,13 @@ class PackageHandler(object):
                         break
                     else:
                         log.debug('No patch match found')
+        else:
+            log.warning(u'No patches found')
         return package_manifest
 
     def _update_version_file(self, json_data, package_manifest):
         # Updates version file with package meta-data
-        log.debug(u'Starting version file update')
+        log.info(u'Adding package meta-data to version manifest')
         easy_dict = EasyAccessDict(json_data)
         for p in package_manifest:
             patch_name = p.patch_info.get(u'patch_name')
@@ -357,17 +368,17 @@ class PackageHandler(object):
 
     def _write_json_to_file(self, json_data):
         # Writes json data to disk
-        log.debug(u'Writing version data to file')
+        log.info(u'Saving version data to file')
         with open(self.version_data, u'w') as f:
             f.write(json.dumps(json_data, sort_keys=True, indent=2))
 
     def _write_config_to_file(self, json_data):
-        log.debug(u'Writing config data to file')
+        log.info(u'Saving config data to file')
         with open(self.config_file, u'w') as f:
             f.write(json.dumps(json_data, sort_keys=True, indent=2))
 
     def _move_packages(self, package_manifest):
-        log.debug(u'Moving packages to deploy folder')
+        log.info(u'Moving packages to deploy folder')
         for p in package_manifest:
             patch = p.patch_info.get(u'patch_name')
             with jms_utils.paths.ChDir(self.new_dir):
@@ -408,8 +419,9 @@ class PackageHandler(object):
         # Check to see if previous version is available to
         # make patch updates
         # Also calculates patch number
-        log.debug('Checking if patch creation is possible')
+        log.info('Checking if patch creation is possible')
         if bsdiff4 is None:
+            log.warning(u'Bsdiff is missing. Cannot create patches')
             return None
         src_file_path = None
         if os.path.exists(self.files_dir):
@@ -462,16 +474,16 @@ def _make_patch(patch_info):
     # Updating with full name - number included
     patch.patch_name = patch_name
     if not os.path.exists(src_path):
-        log.debug('Src file does not exist to create patch')
+        log.warning(u'Src file does not exist to create patch')
 
     else:
-        print(u"Making patch... {}".format(os.path.basename(patch_name)))
         log.debug(u'Patch source path:{}'.format(src_path))
         log.debug(u'Patch destination path: {}'.format(dst_path))
         if patch.ready is True:
-            log.debug(u'Creating patch')
+            log.info(u"Creating patch... "
+                     u"{}".format(os.path.basename(patch_name)))
             bsdiff4.file_diff(src_path, patch.dst_path, patch.patch_name)
-            log.debug(u'Done creating patch')
+            log.info(u'Done creating patch')
         else:
-            log.debug('Missing patch attr')
+            log.error(u'Missing patch attr')
     return patch

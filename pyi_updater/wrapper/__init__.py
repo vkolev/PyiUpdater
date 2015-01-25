@@ -24,6 +24,7 @@ from jms_utils.logger import log_format_string
 from jms_utils.paths import ChDir
 import stevedore
 
+
 from pyi_updater import PyiUpdater, __version__
 from pyi_updater import settings
 from pyi_updater.config import Loader, SetupConfig
@@ -33,13 +34,19 @@ from pyi_updater.wrapper.builder import Builder
 from pyi_updater.wrapper.options import get_parser
 from pyi_updater.utils import check_repo, pretty_time
 
-log = logging.getLogger(__name__)
-if os.path.exists(os.path.join(os.getcwd(), u'pyiu.log')):
-    ch = logging.FileHandler(os.path.join(os.getcwd(), u'pyiu.log'))
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(log_format_string())
-    log.addHandler(ch)
 
+log = logging.getLogger()
+if os.path.exists(os.path.join(os.getcwd(), u'pyiu.log')):
+    fh = logging.FileHandler(os.path.join(os.getcwd(), u'pyiu.log'))
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(log_format_string())
+    log.addHandler(fh)
+
+fmt = logging.Formatter('[%(levelname)s] %(message)s')
+sh = logging.StreamHandler()
+sh.setFormatter(fmt)
+sh.setLevel(logging.INFO)
+log.addHandler(sh)
 
 CWD = os.getcwd()
 loader = Loader()
@@ -52,17 +59,17 @@ def clean(args):
         if os.path.exists(settings.CONFIG_DATA_FOLDER):
             cleaned = True
             shutil.rmtree(settings.CONFIG_DATA_FOLDER, ignore_errors=True)
-            print(u'Removed {} folder'.format(settings.CONFIG_DATA_FOLDER))
+            log.info(u'Removed {} folder'.format(settings.CONFIG_DATA_FOLDER))
         if os.path.exists(settings.USER_DATA_FOLDER):
             cleaned = True
             shutil.rmtree(settings.USER_DATA_FOLDER, ignore_errors=True)
-            print(u'Removed {} folder'.format(settings.USER_DATA_FOLDER))
+            log.info(u'Removed {} folder'.format(settings.USER_DATA_FOLDER))
         if cleaned is True:
-            print(u'Clean complete...')
+            log.info(u'Clean complete...')
         else:
-            print(u'Nothing to clean...')
+            log.info(u'Nothing to clean...')
     else:
-        print(u'Must pass -y to confirm')
+        log.info(u'Must pass -y to confirm')
 
 
 def init(args):
@@ -72,14 +79,14 @@ def init(args):
     if not os.path.exists(os.path.join(settings.CONFIG_DATA_FOLDER,
                           settings.CONFIG_FILE_USER)):
         config = initial_setup(SetupConfig())
-        print(u'\nCreating pyi-data dir...\n')
+        log.info(u'Creating pyi-data dir...')
         pyiu = PyiUpdater(config)
         pyiu.setup()
-        print(u'\nMaking signing keys...')
+        log.info(u'Making signing keys...')
         pyiu.make_keys(count)
         config.PUBLIC_KEYS = pyiu.get_public_keys()
         loader.save_config(config)
-        print(u'\nSetup complete')
+        log.info(u'Setup complete')
     else:
         sys.exit(u'Not an empty PyiUpdater repository')
 
@@ -94,15 +101,15 @@ def keys(args):
         config.PUBLIC_KEYS = pyiu.get_public_keys()
         key = pyiu.get_recent_revoked_key()
         if key is not None:
-            print('* Most Recent Revoked Key *\n')
-            print('Created: {}'.format(pretty_time(key[u'date'])))
-            print('Type: {}'.format(key[u'key_type']))
-            print('Public Key: {}'.format(key[u'public']))
+            log.info('* Most Recent Revoked Key *')
+            log.info('Created: {}'.format(pretty_time(key[u'date'])))
+            log.info('Type: {}'.format(key[u'key_type']))
+            log.info('Public Key: {}'.format(key[u'public']))
             if args.private is True:
-                print('Private Key: {}'.format(key[u'private']))
+                log.info('Private Key: {}'.format(key[u'private']))
             else:
-                print(u'Private Key: * Next time to show private key '
-                      u'use --show-private *')
+                log.info(u'Private Key: * Next time to show private key '
+                         u'use --show-private *')
     loader.save_config(config)
 
 
@@ -123,7 +130,7 @@ def _log(args):
         if os.path.exists(old_log_zip):
             os.remove(old_log_zip)
         shutil.move(settings.DEBUG_ARCHIVE, og_dir)
-    print(u'Log export complete')
+    log.info(u'Log export complete')
 
 
 def pkg(args):
@@ -133,23 +140,25 @@ def pkg(args):
         sys.exit(u'You must specify a command')
 
     if args.process is True:
-        print(u'Processing packages...\n')
+        log.info(u'Processing packages...')
         pyiu.process_packages()
-        print(u'Processing packages complete\n')
+        log.info(u'Processing packages complete')
     if args.sign is True:
-        print(u'Signing packages...\n')
+        log.info(u'Signing packages...')
         pyiu.sign_update()
-        print(u'Signing packages complete\n')
+        log.info(u'Signing packages complete')
 
 
 def upload(args):
     check_repo()
     upload_service = args.service
     if upload_service is None:
-        sys.exit('Must provide service name')
+        log.error('Must provide service name')
+        sys.exit(1)
     password = os.environ.get('PYIUPDATER_PASS')
     if password is None:
-        sys.exit('You need to set PYIUPDATER_PASS env var')
+        log.error('You need to set PYIUPDATER_PASS env var')
+        sys.exit(1)
     pyiu = PyiUpdater(loader.load_config())
 
     class Pass(object):
@@ -170,14 +179,16 @@ def upload(args):
         else:
             msg = (u'Invalid Uploader\n\nAvailable options:\n'
                    u'{}'.format(plugin_names))
-        sys.exit(msg)
+        log.error(msg)
+        sys.exit(1)
     try:
         pyiu.upload()
     except Exception as e:
         msg = (u'Looks like you forgot to add USERNAME '
                'and/or REMOTE_DIR')
         log.debug(str(e), exc_info=True)
-        sys.exit(msg)
+        log.error(msg)
+        sys.exit(1)
 
 
 def _real_main(args):
@@ -204,19 +215,21 @@ def _real_main(args):
     elif cmd == u'version':
         print('PyiUpdater {}'.format(__version__))
     else:
-        sys.exit(u'Not Implemented')
+        log.error(u'Not Implemented')
+        sys.exit(1)
 
 
 def main(args=None):
     try:
         _real_main(args)
     except KeyboardInterrupt:
-        msg = u'\nExited by user'
-        log.debug(msg)
-        sys.exit(msg)
+        msg = u'Exited by user'
+        log.warning(msg)
+        sys.exit(1)
     except Exception as err:
         log.debug(str(err), exc_info=True)
-        sys.exit(str(err))
+        log.error(str(err))
+        sys.exit(1)
 
 if __name__ == u'__main__':
     args = sys.argv[1:]

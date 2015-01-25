@@ -65,7 +65,7 @@ class KeyDB(object):
             u'revoked': False,
             u'key_type': key_type,
         }
-        log.debug('Adding public key to db: {}'.format(public))
+        log.info('Adding public key to db: {}'.format(public))
         self.data[num] = data
         self.save()
 
@@ -125,22 +125,23 @@ class KeyDB(object):
 
     def load(self):
         u"Loads data from key.db"
-        log.debug(u'Loading key.db')
+        log.info(u'Loading key.db')
         self.data = dict()
         if os.path.exists(self.key_file):
             try:
                 with open(self.key_file, u'r') as f:
                     self.data = json.loads(f.read())
-                log.debug(u'Loaded key.db')
+                log.info(u'Loaded key.db')
             except Exception as err:
-                log.debug(u'Failed to load key.db')
-                log.debug(str(err))
-                log.debug('Created new key.db file')
+                log.error(u'Failed to load key.db')
+                log.debug(str(err), exc_info=True)
+                log.info('Created new key.db file')
         else:
-            log.debug('Key.db file not found creating new')
+            log.info('Key.db file not found creating new')
 
     def save(self):
         u"Saves data to key.db"
+        log.info(u'Saving key.db...')
         with open(self.key_file, u'w') as f:
             f.write(json.dumps(self.data, indent=True, sort_keys=True))
-        log.debug(u'Wrote key.db to disk')
+        log.info(u'Key.db saved to disk')

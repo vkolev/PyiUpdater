@@ -141,6 +141,7 @@ class Client(object):
             self._get_update_manifest()
         except Exception as err:
             log.debug(str(err), exc_info=True)
+            log.error(str(err))
 
     def update_check(self, name, version):
         """
@@ -168,7 +169,7 @@ class Client(object):
 
         app = False
         if self.ready is False:
-            log.debug('No update manifest found')
+            log.warning('No update manifest found')
             return None
         if FROZEN is True and self.name == self.app_name:
             app = True
@@ -178,9 +179,9 @@ class Client(object):
         # processing data contained in the version file.
         # This was done by self._get_update_manifest()
         if self.verified is False:
-            log.debug('Failed version file verification')
+            log.error('Failed version file verification')
             return None
-        log.debug(u'Checking for {} updates...'.format(name))
+        log.info(u'Checking for {} updates...'.format(name))
 
         # If None is returned self._get_highest_version could
         # not find the supplied name in the version file
@@ -190,12 +191,11 @@ class Client(object):
             return None
         latest = Version(latest)
         if latest <= version:
-            log.debug(u'{} already updated to the latest version'.format(name))
-            log.debug(u'Already up-to-date')
+            log.info(u'{} already updated to the latest version'.format(name))
             return None
         # Hey, finally made it to the bottom!
         # Looks like its time to do some updating
-        log.debug(u'Update available')
+        log.info(u'Update available')
         data = {
             u'update_urls': self.update_urls,
             u'name': self.name,
@@ -216,32 +216,33 @@ class Client(object):
     def _get_manifest_filesystem(self):
         with ChDir(self.data_dir):
             if not os.path.exists(self.version_file):
-                log.debug('No version file on file system')
+                log.warning('No version file on file system')
                 return None
             else:
-                log.debug('Found version file on file system')
+                log.info('Found version file on file system')
                 try:
                     with open(self.version_file, u'rb') as f:
                         data = f.read()
-                    log.debug('Loaded version file from file system')
+                    log.info('Loaded version file from file system')
                 except Exception as err:
-                    log.debug('Failed to load version file from file system')
-                    log.debug(str(err))
+                    log.error('Failed to load version file from file '
+                              u'system')
+                    log.debug(str(err), exc_info=True)
                     data = None
 
                 return gzip_decompress(data)
 
     def _download_manifest(self):
-        log.debug('Downloading online version file')
+        log.info('Downloading online version file')
         try:
             fd = FileDownloader(self.version_file, self.update_urls)
             data = fd.download_verify_return()
             return gzip_decompress(data)
             self._write_manifest_2_filesystem(data)
-            log.debug('Version file download successful')
+            log.info('Version file download successful')
         except Exception as err:
-            log.debug('Version file failed to download')
-            log.debug(str(err))
+            log.error('Version file failed to download')
+            log.debug(str(err), exc_info=True)
             return None
 
     def _write_manifest_2_filesystem(self, data):
@@ -251,7 +252,7 @@ class Client(object):
 
     def _get_update_manifest(self):
         #  Downloads & Verifies version file signature.
-        log.debug(u'Loading version file...')
+        log.info(u'Loading version file...')
 
         data = self._download_manifest()
         if data is None:
@@ -262,12 +263,12 @@ class Client(object):
             self.json_data = json.loads(data)
             self.ready = True
         except ValueError:
-            log.error(u'Json failed to load')
-        except Exception as e:
+            log.error(u'Json failed to load: ValueError')
+        except Exception as err:
             # Catch all for debugging purposes.
             # If seeing this line come up a lot in debug logs
             # please open an issue on github or submit a pull request
-            log.error(str(e))
+            log.error(str(err))
 
         if self.json_data is None:
             self.json_data = {}
@@ -281,10 +282,11 @@ class Client(object):
         # Checking to see if there is a sig in the version file.
         if u'sigs' in data.keys():
             signatures = data[u'sigs']
-            log.debug(u'Deleting sig from update data')
             # ToDo: Remove in v1.0: Fix for migragtion & tests
             if u'sig' in data.keys():
+                log.debug(u'Deleting sig from update data')
                 del data[u'sig']
+            log.debug(u'Deleting sigs from update data')
             del data[u'sigs']
 
             # After removing the sig we turn the json data back
@@ -302,20 +304,20 @@ class Client(object):
                     try:
                         pub_key = ed25519.VerifyingKey(pk, encoding='base64')
                         pub_key.verify(s, update_data, encoding='base64')
-                    except Exception as e:
-                        log.error(str(e))
+                    except Exception as err:
+                        log.error(str(err))
                     else:
-                        log.debug(u'Version file verified')
+                        log.info(u'Version file verified')
                         self.verified = True
                         break
                 if self.verified is True:
                     # No longer need to iterate through public keys
                     break
             else:
-                log.debug(u'Version file not verified')
+                log.warning(u'Version file not verified')
 
         else:
-            log.error(u'Version file not verified, no signature found')
+            log.warning(u'Version file not verified, no signature found')
 
         if data is None:
             data = {}
@@ -325,11 +327,11 @@ class Client(object):
         # Sets up required directories on end-users computer
         # to place verified update data
         # Very safe director maker :)
-        log.debug(u'Setting up directories...')
+        log.info(u'Setting up directories...')
         dirs = [self.data_dir, self.update_folder]
         for d in dirs:
             if not os.path.exists(d):
-                log.debug(u'Creating directory: {}'.format(d))
+                log.info(u'Creating directory: {}'.format(d))
                 os.makedirs(d)
 
     def _archive_installed_binary(self):
@@ -337,7 +339,7 @@ class Client(object):
         # May be able to support windows. Open issue on github
         # https://github.com/pyinstaller/pyinstaller/issues/1145
         if get_system() == u'win':
-            log.debug('Archiving not supported on windows...')
+            log.warning('Archiving not supported on windows...')
             return
         current_archive_filename = get_filename(self.name, self.version,
                                                 self.platform, self.easy_data)
@@ -349,7 +351,7 @@ class Client(object):
 
         if current_archive_filename != '' and \
                 not os.path.exists(current_archvie_path):
-            log.debug(u'Adding base binary v{} to updates '
+            log.debug(u'Adding base binary {} to updates '
                       u'folder'.format(self.version))
             # Changing in to directory of currently running exe
             p_dir = app_cwd
@@ -366,37 +368,38 @@ class Client(object):
                                                 name)
                     except Exception as err:
                         filename = None
-                        log.error(str(err), exc_info=True)
+                        log.error(str(err))
+                        log.debug(str(err), exc_info=True)
 
                     if filename is not None:
                         shutil.move(filename, self.update_folder)
                 else:
-                    log.debug('{} must have got deleted'.format(name))
+                    log.warning('{} must have got deleted'.format(name))
 
     def _sanatize_update_url(self, url, urls):
         _urls = []
         if isinstance(url, list):
-            log.debug(u'WARNING UPDATE_URL value should only be string.')
+            log.warning(u'UPDATE_URL value should only be string.')
             _urls += url
         elif isinstance(url, tuple):
-            log.debug(u'WARNING UPDATE_URL value should only be string.')
+            log.warning(u'UPDATE_URL value should only be string.')
             _urls += list(url)
         elif isinstance(url, six.string_types):
             _urls.append(url)
         else:
-            log.debug(u'UPDATE_URL should be type "{}" got '
-                      u'"{}"'.format(type(''), type(url)))
+            log.warning(u'UPDATE_URL should be type "{}" got '
+                        u'"{}"'.format(type(''), type(url)))
 
         if isinstance(urls, list):
             _urls += urls
         elif isinstance(url, tuple):
             _urls += list(url)
         elif isinstance(urls, six.string_types):
-            log.debug(u'WARNING UPDATE_URLS value should only be a list.')
+            log.warning(u'UPDATE_URLS value should only be a list.')
             _urls.append(urls)
         else:
-            log.debug(u'UPDATE_URLS should be type "{}" got '
-                      u'"{}"'.format(type([]), type('')))
+            log.warning(u'UPDATE_URLS should be type "{}" got '
+                        u'"{}"'.format(type([]), type('')))
 
         sanatized_urls = []
         # Adds trailing slash to end of url if not already provided.

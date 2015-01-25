@@ -81,12 +81,12 @@ class KeyHandler(object):
         self._migrate()
 
     def _migrate(self):
-        log.debug('Migration check...')
+        log.info('Migration check...')
         self.keysdb.load()
         pub = os.path.join(self.keys_dir, self.public_key_name)
         pri = os.path.join(self.keys_dir, self.private_key_name)
         if os.path.exists(pub) and os.path.exists(pri):
-            log.debug('Migrating keys...')
+            log.info('Migrating keys...')
             with open(pub, u'r') as f:
                 public = f.read()
             with open(pri, u'r') as f:
@@ -100,7 +100,7 @@ class KeyHandler(object):
                 shutil.rmtree(self.keys_dir, ignore_errors=True)
             self.make_keys()
         else:
-            log.debug('Public & Private key not found')
+            log.info('Public & Private key not found')
 
     def make_keys(self, count=3):
         """Makes public and private keys for signing and verification
@@ -109,7 +109,7 @@ class KeyHandler(object):
 
             count (bool): The number of keys to create.
         """
-        log.debug(u'Making keys')
+        log.info(u'Making keys')
         c = 0
         while c < count:
             self._make_keys()
@@ -167,7 +167,7 @@ class KeyHandler(object):
 
     def _load_private_keys(self):
         # Loads private key
-        log.debug(u'Loading private key')
+        log.info(u'Loading private key')
         return self.keysdb.get_private_keys()
 
     def _add_sig(self):
@@ -178,7 +178,6 @@ class KeyHandler(object):
         if len(private_keys) < 2:
             self.make_keys()
         private_keys = self._load_private_keys()
-        log.debug(u'Adding signatures to version file...')
 
         update_data = self._load_update_data()
         if u'sigs' in update_data:
@@ -188,7 +187,7 @@ class KeyHandler(object):
 
         signatures = list()
         signature = None
-        log.debug('Adding new signatures')
+        log.info('Creating new signatures to version file')
 
         # ToDo: Remove in v1.0: Used for migration to v0.14 & above
         old = False
@@ -206,6 +205,7 @@ class KeyHandler(object):
                 signature = sig
                 old = True
             # ToDo: End
+            log.debug('Sig: {}'.format(sig))
             signatures.append(sig)
 
         og_data = json.loads(update_data_str)
@@ -215,37 +215,38 @@ class KeyHandler(object):
         old_update_data = og_data.copy()
         old_update_data[u'sig'] = signature
         # ToDo: End
-        log.debug(u'Adding sig to update data')
+        log.info(u'Adding sig to update data')
         self._write_update_data(og_data, update_data, old_update_data)
 
     def _write_update_data(self, data, version, old_version):
         # Write version file to disk
         with open(self.version_data, u'w') as f:
             f.write(json.dumps(data, indent=2, sort_keys=True))
-        log.debug(u'Wrote version data to file system')
+        log.info(u'Wrote version data to file system')
 
         with gzip.open(self.version_file, u'wb') as f:
             f.write(json.dumps(version, indent=2, sort_keys=True))
-        log.debug(u'Created update manifest in deploy dir')
+        log.info(u'Created version manifest in deploy dir')
         # ToDo: Remove in v1.0
         with open(self.old_version_file, u'w') as f:
             f.write(json.dumps(old_version, indent=2, sort_keys=True))
+        log.info(u'Created old style version manifest in deploy dir')
         # ToDo: End
-        log.debug(u'Created old style update manifest in deploy dir')
 
     def _load_update_data(self):
         # Loads version file into memory
-        log.debug(u"Loading version file")
+        log.info(u"Loading version data")
         try:
             log.debug(u'Version data file path: {}'.format(self.version_data))
             with open(self.version_data, u'r') as f:
                 update_data = json.loads(f.read())
-            log.debug(u'Version file loaded')
+            log.info(u'Version file loaded')
             return update_data
-        except Exception as e:
+        except Exception as err:
             log.error(u'Version data file not found')
-            log.error(e)
-            log.debug(u'Creating new version file')
+            log.debug(str(err), exc_info=True)
+            log.info(u'Creating new version file')
             with open(self.version_data, u'w') as f:
                 f.write(u'{}')
+            log.info(u'Created new version file')
             return dict()

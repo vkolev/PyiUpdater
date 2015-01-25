@@ -40,8 +40,8 @@ six = None
 
 def check_repo():
     if not os.path.exists(settings.CONFIG_DATA_FOLDER):
-        log.debug('Not a PyiUpdater repo')
-        sys.exit('Not a PyiUpdater repo: Must init first.')
+        log.error('Not a PyiUpdater repo: must init first.')
+        sys.exit(1)
 
 
 def check_version(version):
