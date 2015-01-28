@@ -100,7 +100,7 @@ class KeyHandler(object):
                 shutil.rmtree(self.keys_dir, ignore_errors=True)
             self.make_keys()
         else:
-            log.info('Public & Private key not found')
+            log.info('Migration not needed')
 
     def make_keys(self, count=3):
         """Makes public and private keys for signing and verification

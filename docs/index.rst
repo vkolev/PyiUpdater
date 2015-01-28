@@ -6,7 +6,7 @@ Welcome to PyiUpdater
 What is PyiUpdater?
 ~~~~~~~~~~~~~~~~~~~
 
-In its simplest form PyiUpdater is a collection of modules, when used together, makes its super simple to add auto-update functionality to your app. Support for patch updates are included out of the box :)
+In its simplest form PyiUpdater is a collection of modules, when used together, makes its super simple to add auto-update functionality to your app. Support for patch updates are included out of the box :) Also uses gzip compression on update manifest.
 
 A high level break down of the framework consists of 3 parts.
 

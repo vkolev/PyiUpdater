@@ -99,6 +99,81 @@ def add_build_parser(subparsers):
                               help='Won\'t delete update after archiving')
 
 
+def add_build_spec_parser(subparsers):
+    build_spec_parser = subparsers.add_parser(u'make-spec', help=u'Creates '
+                                              u'spec file',
+                                              usage=u'%(prog)s <script> '
+                                              u'[opts]')
+
+    # Start of args override
+    # start a clean build
+    build_spec_parser.add_argument(u'--clean', help=u'Clean build. '
+                                   u'Bypass the cache', action="store_true")
+    # This will be set to the pyi-data/new directory.
+    # When we make the final compressed archive we will look
+    # for an exe in that dir.
+    build_spec_parser.add_argument(u'-o', help=argparse.SUPPRESS)
+    build_spec_parser.add_argument(u'--distpath', help=argparse.SUPPRESS)
+
+    # Will be set to .pyiupdater/spec/
+    # Trying to keep root dir clean
+    build_spec_parser.add_argument(u'--specpath', help=argparse.SUPPRESS)
+
+    # Will be set to .pyiupdater/build
+    # Trying to keep root dir clean
+    build_spec_parser.add_argument(u'--workpath', help=argparse.SUPPRESS)
+
+    # Will be set to platform name i.e. mac, win, nix, nix64, arm\
+    # When archiving we will change the name to the value passed to
+    # --app-name
+    build_spec_parser.add_argument(u'-n', help=argparse.SUPPRESS)
+    build_spec_parser.add_argument(u'--name', help=argparse.SUPPRESS)
+
+    # Just capturing these argument.
+    # PyiUpdater only supports onefile mode at the moment
+    build_spec_parser.add_argument(u'-D', action=u"store_true",
+                                   help=argparse.SUPPRESS)
+    build_spec_parser.add_argument(u'--onedir', action=u"store_true",
+                                   help=argparse.SUPPRESS)
+
+    # Just capturing these argument.
+    # Will be added later to pyinstaller build command
+    build_spec_parser.add_argument(u'-F', action=u"store_true",
+                                   help=argparse.SUPPRESS)
+    build_spec_parser.add_argument(u'--onefile', action=u"store_true",
+                                   help=argparse.SUPPRESS)
+
+    # Just capturing these arguments
+    build_spec_parser.add_argument(u'-c', action=u"store_true",
+                                   help=argparse.SUPPRESS, dest=u'_console')
+    build_spec_parser.add_argument(u'--console', action=u"store_true",
+                                   help=argparse.SUPPRESS)
+    build_spec_parser.add_argument(u'--nowindowed', action=u"store_true",)
+
+    build_spec_parser.add_argument(u'-w', action=u"store_true",
+                                   dest=u'_windowed',
+                                   help=argparse.SUPPRESS)
+    build_spec_parser.add_argument(u'--windowed', action=u"store_true",
+                                   help=argparse.SUPPRESS)
+    build_spec_parser.add_argument(u'--noconsole', action=u"store_true",
+                                   help=argparse.SUPPRESS)
+
+    # Potentially harmful for cygwin on windows
+    # ToDo: Maybe do a check for cygwin and disable if cygwin is true
+    build_spec_parser.add_argument(u'-s', action=u"store_true",
+                                   help=argparse.SUPPRESS)
+    build_spec_parser.add_argument(u'--strip', action=u"store_true",
+                                   help=argparse.SUPPRESS)
+    # End of args override
+
+    # Used by PyiWrapper
+    build_spec_parser.add_argument(u'--app-name', dest=u"app_name")
+    build_spec_parser.add_argument(u'--app-version', dest=u"app_version")
+    build_spec_parser.add_argument(u'-k', u'--keep', dest=u'keep',
+                                   action=u'store_true',
+                                   help='Won\'t delete update after archiving')
+
+
 def add_clean_parser(subparsers):
     clean_parser = subparsers.add_parser(u'clean',
                                          help=u'* WARNING * removes all '
@@ -182,6 +257,7 @@ def get_parser():
     parser = make_parser()
     subparsers = make_subparser(parser)
     add_build_parser(subparsers)
+    add_build_spec_parser(subparsers)
     add_clean_parser(subparsers)
     add_init_parser(subparsers)
     add_keys_parser(subparsers)

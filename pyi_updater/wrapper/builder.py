@@ -40,13 +40,25 @@ class Builder(object):
         self.args = args
         self.pyi_args = pyi_args
 
-    def start(self):
+    def build(self):
         self.start = time.time()
-        self._setup()
         temp_name = get_system()
-        self.spec_file_path = os.path.join(self.spec_dir, temp_name + u'.spec')
-        self._build(self.args, self.pyi_args, temp_name)
+        app_info = self._check_input_file(self.pyi_args)
+        self._setup()
+        if app_info[u'type'] == u'spec':
+            self._build(self.args, app_info[u'name'])
+        else:
+            self.spec_file_path = os.path.join(self.spec_dir,
+                                               temp_name + u'.spec')
+            self._make_spec(self.args, self.pyi_args, temp_name, app_info)
+            self._build(self.args)
         self._archive(self.args, temp_name)
+
+    def make_spec(self, spec_only=False):
+        temp_name = get_system()
+        app_info = self._check_input_file(self.pyi_args)
+        self._make_spec(self.args, self.pyi_args, temp_name, app_info,
+                        spec_only=True)
 
     def _setup(self):
         self.pyi_dir = os.path.join(os.getcwd(), settings.USER_DATA_FOLDER)
@@ -71,8 +83,7 @@ class Builder(object):
             elif p.endswith(u'.spec'):
                 log.debug(u'Building from spec file: {}'.format(p))
                 app_info = {u'type': u'spec', u'name': p}
-                # ToDo: Implement spec file support
-                # verified = True
+                verified = True
             else:
                 new_args.append(p)
         if verified is False:
@@ -80,16 +91,7 @@ class Builder(object):
             sys.exit(u'Must pass a python script or spec file')
         return app_info
 
-    def _build(self, args, pyi_args, temp_name):
-        if check_version(args.app_version) is False:
-            sys.exit(u"""Error: version # needs to be in the form of "0.10.0"
-
-        Visit url for more info:
-
-            http://semver.org/
-                      """)
-
-        app_info = self._check_input_file(pyi_args)
+    def _make_spec(self, args, pyi_args, temp_name, app_info, spec_only=False):
         log.debug('App Info: {}'.format(app_info))
 
         log.debug(u'Adding params to command')
@@ -105,7 +107,10 @@ class Builder(object):
                 pyi_args.append(u'-w')
         pyi_args.append(u'-F')
         pyi_args.append(u'--name={}'.format(temp_name))
-        pyi_args.append(u'--specpath={}'.format(self.spec_dir))
+        if spec_only is True:
+            pyi_args.append(u'--specpath={}'.format(os.getcwd()))
+        else:
+            pyi_args.append(u'--specpath={}'.format(self.spec_dir))
         pyi_args.append(u'--additional-hooks-dir={}'.format(get_hook_dir()))
         pyi_args.append(app_info[u'name'])
 
@@ -113,25 +118,38 @@ class Builder(object):
         log.debug('Make spec cmd: {}'.format(' '.join([c for c in cmd])))
         exit_code = run(cmd)
         if exit_code != 0:
-            sys.exit(u'\nSpec file creation failed with '
-                     u'code: {}'.format(exit_code))
+            log.error(u'Spec file creation failed with '
+                      u'code: {}'.format(exit_code))
+            sys.exit(1)
         else:
-            log.debug(u'\nSpec file created.')
+            log.info(u'\nSpec file created.')
 
+    def _build(self, args, spec_file_path=None):
+        if check_version(args.app_version) is False:
+            sys.exit(u"""Error: version # needs to be in the form of "0.10.0"
+
+        Visit url for more info:
+
+            http://semver.org/
+                      """)
         build_args = [u'pyinstaller']
         if args.clean is True:
             build_args.append(u'--clean')
         build_args.append(u'--distpath={}'.format(self.new_dir))
         build_args.append(u'--workpath={}'.format(self.work_dir))
         build_args.append(u'-y')
-        build_args.append(self.spec_file_path)
+        if spec_file_path is None:
+            build_args.append(self.spec_file_path)
+        else:
+            build_args.append(spec_file_path)
 
         log.debug('Build cmd: {}'.format(''.join([b for b in build_args])))
         exit_code = run(build_args)
         if exit_code != 0:
-            sys.exit('Build failed with code: {}'.format(exit_code))
+            log.error('Build failed with code: {}'.format(exit_code))
+            sys.exit(1)
         else:
-            log.debug('Build successful')
+            log.info('Build successful')
 
     def _archive(self, args, temp_name):
         # Now archive the file

@@ -39,7 +39,17 @@ six = None
 
 
 def check_repo():
+    repo = True
     if not os.path.exists(settings.CONFIG_DATA_FOLDER):
+        log.warning('PyuUpdater config data folder is missing')
+        repo = False
+    data_file = os.path.join(settings.CONFIG_DATA_FOLDER,
+                             settings.CONFIG_FILE_USER)
+    if not os.path.exists(data_file):
+        log.warning('App config database is missing')
+        repo = False
+
+    if repo is False:
         log.error('Not a PyiUpdater repo: must init first.')
         sys.exit(1)
 

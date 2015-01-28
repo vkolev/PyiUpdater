@@ -1,12 +1,27 @@
 Changelog
 =========
-v0.16.1 - beta
+v0.17.0 - beta
 ~~~~~~~~~~~~~~
 .. note:: This version is not yet released and is under active development.
 * Added
 
+  - PyiUpdater
 
+    - Spec file support. Examples below
+    ::
+
+      $ pyiupdater make-spec [opts] script.py
+
+      # Then build your app
+
+      $ pyiupdater script.spec --app-name=script --app-version=0.1.0
+
+    - Debugging will be turn on by default on dev builds
 * Updated
+
+  - PyiUpdater
+
+    - Added more checks to repo verification
 
 
 * Fixed

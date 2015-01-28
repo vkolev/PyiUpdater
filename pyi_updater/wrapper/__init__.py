@@ -52,7 +52,7 @@ if os.path.exists(os.path.join(os.getcwd(), u'pyiu.log')):
 fmt = logging.Formatter('[%(levelname)s] %(message)s')
 sh = logging.StreamHandler()
 sh.setFormatter(fmt)
-sh.setLevel(logging.INFO)
+sh.setLevel(logging.DEBUG)
 log.addHandler(sh)
 
 CWD = os.getcwd()
@@ -224,8 +224,9 @@ def _real_main(args):
     args, pyi_args = parser.parse_known_args(args)
     cmd = args.command
     if cmd == u'build':
+        check_repo()
         builder = Builder(args, pyi_args)
-        builder.start()
+        builder.build()
     elif cmd == u'clean':
         clean(args)
     elif cmd == u'init':
@@ -234,6 +235,10 @@ def _real_main(args):
         keys(args)
     elif cmd == u'log':
         _log(args)
+    elif cmd == u'make-spec':
+        check_repo()
+        builder = Builder(args, pyi_args)
+        builder.make_spec(spec_only=True)
     elif cmd == u'pkg':
         pkg(args)
     elif cmd == u'settings':
