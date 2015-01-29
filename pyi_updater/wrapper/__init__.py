@@ -52,7 +52,8 @@ if os.path.exists(os.path.join(os.getcwd(), u'pyiu.log')):
 fmt = logging.Formatter('[%(levelname)s] %(message)s')
 sh = logging.StreamHandler()
 sh.setFormatter(fmt)
-sh.setLevel(logging.DEBUG)
+# sh.setLevel(logging.DEBUG)
+sh.setLevel(logging.INFO)
 log.addHandler(sh)
 
 CWD = os.getcwd()
