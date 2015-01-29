@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # --------------------------------------------------------------------------
-from __future__ import print_function
 import bz2
 from getpass import getpass
 import gzip
@@ -319,13 +318,14 @@ def make_archive(name, version, target):
     filename = u'{}-{}-{}'.format(name, jms_utils.system.get_system(), version)
     filename_path = os.path.join(file_dir, filename)
 
-    print(u'starting archive')
+    log.debug(u'starting archive')
 
     ext = os.path.splitext(target)[1]
     temp_file = name + ext
 
     # Remove file if it exists. Found during testing...
     if os.path.exists(temp_file):
+        log.debug('Removing: {}'.format(temp_file))
         if os.path.isdir(temp_file):
             shutil.rmtree(temp_file, ignore_errors=True)
         else:
@@ -348,18 +348,15 @@ def make_archive(name, version, target):
         else:
             shutil.make_archive(filename, u'gztar', file_dir, temp_file)
 
-    if os.path.isfile(temp_file):
-        os.remove(temp_file)
-    else:
-        shutil.rmtree(temp_file, ignore_errors=True)
-
-    # if keep is False:
-        # if os.path.isfile(target):
-            # os.remove(target)
-        # else:
-            # shutil.rmtree(target, ignore_errors=True)
-
-    return filename + ext
+    if os.path.exists(temp_file):
+        log.debug('Removing: {}'.format(temp_file))
+        if os.path.isfile(temp_file):
+            os.remove(temp_file)
+        else:
+            shutil.rmtree(temp_file, ignore_errors=True)
+    output_filename = filename + ext
+    log.debug(u'Archive output filename: {}'.format(output_filename))
+    return output_filename
 
 
 def parse_platform(name):

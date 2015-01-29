@@ -238,7 +238,7 @@ def _real_main(args):
     elif cmd == u'make-spec':
         check_repo()
         builder = Builder(args, pyi_args)
-        builder.make_spec(spec_only=True)
+        builder.make_spec()
     elif cmd == u'pkg':
         pkg(args)
     elif cmd == u'settings':

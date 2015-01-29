@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # --------------------------------------------------------------------------
-from __future__ import print_function
 import logging
 import os
 import shutil
@@ -41,7 +40,7 @@ class Builder(object):
         self.pyi_args = pyi_args
 
     def build(self):
-        self.start = time.time()
+        start = time.time()
         temp_name = get_system()
         app_info = self._check_input_file(self.pyi_args)
         self._setup()
@@ -53,8 +52,10 @@ class Builder(object):
             self._make_spec(self.args, self.pyi_args, temp_name, app_info)
             self._build(self.args)
         self._archive(self.args, temp_name)
+        finished = time.time() - start
+        log.info(u'Build finished in {:.2f} seconds.'.format(finished))
 
-    def make_spec(self, spec_only=False):
+    def make_spec(self):
         temp_name = get_system()
         app_info = self._check_input_file(self.pyi_args)
         self._make_spec(self.args, self.pyi_args, temp_name, app_info,
@@ -73,19 +74,18 @@ class Builder(object):
                 os.mkdir(d)
 
     def _check_input_file(self, pyi_args):
-        new_args = []
         verified = False
         for p in pyi_args:
             if p.endswith(u'.py'):
                 log.debug(u'Building from python source file: {}'.format(p))
                 app_info = {u'type': u'script', u'name': p}
                 verified = True
+                break
             elif p.endswith(u'.spec'):
                 log.debug(u'Building from spec file: {}'.format(p))
                 app_info = {u'type': u'spec', u'name': p}
                 verified = True
-            else:
-                new_args.append(p)
+                break
         if verified is False:
             log.debug(u'No accepted files passed to builder')
             sys.exit(u'Must pass a python script or spec file')
@@ -94,7 +94,6 @@ class Builder(object):
     def _make_spec(self, args, pyi_args, temp_name, app_info, spec_only=False):
         log.debug('App Info: {}'.format(app_info))
 
-        log.debug(u'Adding params to command')
         if args.console is True or args.nowindowed is True \
                 or args._console is True:
             if u'-c' not in pyi_args:
@@ -108,6 +107,7 @@ class Builder(object):
         pyi_args.append(u'-F')
         pyi_args.append(u'--name={}'.format(temp_name))
         if spec_only is True:
+            log.debug('User generated spec file')
             pyi_args.append(u'--specpath={}'.format(os.getcwd()))
         else:
             pyi_args.append(u'--specpath={}'.format(self.spec_dir))
@@ -122,7 +122,7 @@ class Builder(object):
                       u'code: {}'.format(exit_code))
             sys.exit(1)
         else:
-            log.info(u'\nSpec file created.')
+            log.info(u'Spec file created.')
 
     def _build(self, args, spec_file_path=None):
         if check_version(args.app_version) is False:
@@ -155,10 +155,11 @@ class Builder(object):
         # Now archive the file
         with ChDir(self.new_dir):
             if os.path.exists(temp_name + u'.app'):
-                print(u'Got mac .app')
+                log.debug(u'Got mac .app')
                 app_name = temp_name + u'.app'
                 name = args.app_name
             elif os.path.exists(temp_name + u'.exe'):
+                log.debug(u'Got win .exe')
                 app_name = temp_name + u'.exe'
                 name = args.app_name
             else:
@@ -185,6 +186,4 @@ class Builder(object):
                         os.remove(app_name)
                     else:
                         shutil.rmtree(app_name, ignore_errors=True)
-        print(u'\n{} has been placed in your new folder\n'.format(file_name))
-        finished = time.time() - self.start
-        print(u'Build finished in {:.2f} seconds.'.format(finished))
+        log.info(u'{} has been placed in your new folder\n'.format(file_name))
