@@ -16,7 +16,8 @@ v0.17.0 - beta
 
       $ pyiupdater script.spec --app-name=script --app-version=0.1.0
 
-    - Debugging will be turn on by default on dev builds
+    - Debugging will be turned on by default on dev builds
+
 * Updated
 
   - PyiUpdater

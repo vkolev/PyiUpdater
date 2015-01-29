@@ -87,8 +87,8 @@ class Builder(object):
                 verified = True
                 break
         if verified is False:
-            log.debug(u'No accepted files passed to builder')
-            sys.exit(u'Must pass a python script or spec file')
+            log.error(u'Must pass a python script or spec file')
+            sys.exit(1)
         return app_info
 
     def _make_spec(self, args, pyi_args, temp_name, app_info, spec_only=False):
