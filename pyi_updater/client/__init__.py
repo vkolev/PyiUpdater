@@ -171,10 +171,6 @@ class Client(object):
         if self.ready is False:
             log.warning('No update manifest found')
             return None
-        if FROZEN is True and self.name == self.app_name:
-            app = True
-            self._archive_installed_binary()
-
         # Checking if version file is verified before
         # processing data contained in the version file.
         # This was done by self._get_update_manifest()
@@ -336,48 +332,6 @@ class Client(object):
             if not os.path.exists(d):
                 log.info(u'Creating directory: {}'.format(d))
                 os.makedirs(d)
-
-    def _archive_installed_binary(self):
-        # Archives current app and places in cache for future patch updates
-        # May be able to support windows. Open issue on github
-        # https://github.com/pyinstaller/pyinstaller/issues/1145
-        if get_system() == u'win':
-            log.warning('Archiving not supported on windows...')
-            return
-        current_archive_filename = get_filename(self.name, self.version,
-                                                self.platform, self.easy_data)
-
-        if current_archive_filename is None:
-            current_archive_filename = ''
-        current_archvie_path = os.path.join(self.update_folder,
-                                            current_archive_filename)
-
-        if current_archive_filename != '' and \
-                not os.path.exists(current_archvie_path):
-            log.debug(u'Adding base binary {} to updates '
-                      u'folder'.format(self.version))
-            # Changing in to directory of currently running exe
-            p_dir = app_cwd
-
-            with ChDir(p_dir):
-                name = self.name
-                if get_system() == u'mac':
-                    # If not found must be a mac gui app
-                    if not os.path.exists(name):
-                        name += u'.app'
-                if os.path.exists(name):
-                    try:
-                        filename = make_archive(self.name, self.version,
-                                                name)
-                    except Exception as err:
-                        filename = None
-                        log.error(str(err))
-                        log.debug(str(err), exc_info=True)
-
-                    if filename is not None:
-                        shutil.move(filename, self.update_folder)
-                else:
-                    log.warning('{} must have got deleted'.format(name))
 
     def _sanatize_update_url(self, url, urls):
         _urls = []

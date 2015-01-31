@@ -88,7 +88,7 @@ class Package(object):
                 self.supported_extensions:
             msg = u'Not a supported archive format: {}'.format(package)
             self.info['reason'] = msg
-            log.error(msg)
+            log.warning(msg)
             return
 
         try:
