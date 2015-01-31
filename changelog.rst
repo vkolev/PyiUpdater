@@ -27,6 +27,9 @@ v0.17.0 - beta
 
 * Fixed
 
+  - Client
+
+    - Deletion of app on initial update download
 
 * Removed
 
