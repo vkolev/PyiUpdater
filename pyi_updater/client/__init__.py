@@ -171,6 +171,8 @@ class Client(object):
         if self.ready is False:
             log.warning('No update manifest found')
             return None
+        if FROZEN is True and self.name == self.app_name:
+            app = True
         # Checking if version file is verified before
         # processing data contained in the version file.
         # This was done by self._get_update_manifest()
