@@ -1,8 +1,7 @@
 Changelog
 =========
-v0.17.0 - beta
-~~~~~~~~~~~~~~
-.. note:: This version is not yet released and is under active development.
+v0.17.1 - 2015/2/1
+~~~~~~~~~~~~~~~~~~
 * Added
 
   - PyiUpdater
@@ -30,8 +29,6 @@ v0.17.0 - beta
   - Client
 
     - Deletion of app on initial update download
-
-* Removed
 
 
 v0.16 - 2015/25/1
