@@ -179,7 +179,7 @@ def gzip_decompress(data):
     # its contents from the top.
     #
     compressed_file.seek(0)
-    decompressed_file = gzip.GzipFile(fileobj=compressed_file, mode='rb')
+    decompressed_file = gzip.GzipFile(fileobj=compressed_file, mode=u'rb')
     data = decompressed_file.read()
     compressed_file.close()
     decompressed_file.close()

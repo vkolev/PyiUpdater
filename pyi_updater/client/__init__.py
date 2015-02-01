@@ -17,8 +17,9 @@ import gzip
 import json
 import logging
 import os
+import shutil
 
-from appdirs import user_cache_dir
+from appdirs import user_data_dir, user_cache_dir
 import certifi
 import ed25519
 from jms_utils import FROZEN
@@ -98,7 +99,13 @@ class Client(object):
             self.data_dir = 'cache'
             self.platform = 'mac'
         else:
-            self.data_dir = user_cache_dir(self.app_name, self.company_name)
+            # ToDo: Remove v0.19
+            old_dir = user_cache_dir(self.app_name, self.company_name)
+            if os.path.exists(old_dir):
+                shutil.rmtree(old_dir, ignore_errors=True)
+            # End ToDo
+            self.data_dir = user_data_dir(self.app_name, self.company_name,
+                                          roaming=True)
             self.platform = get_system()
         self.update_folder = os.path.join(self.data_dir,
                                           settings.UPDATE_FOLDER)
@@ -133,7 +140,6 @@ class Client(object):
 
         Proxy method from :meth:`_get_update_manifest`.
         """
-        self._setup()
         try:
             self._get_update_manifest()
         except Exception as err:
@@ -235,9 +241,10 @@ class Client(object):
         try:
             fd = FileDownloader(self.version_file, self.update_urls)
             data = fd.download_verify_return()
-            return gzip_decompress(data)
-            self._write_manifest_2_filesystem(data)
             log.info('Version file download successful')
+            decompressed_data = gzip_decompress(data)
+            self._write_manifest_2_filesystem(decompressed_data)
+            return decompressed_data
         except Exception as err:
             log.error('Version file failed to download')
             log.debug(str(err), exc_info=True)
@@ -245,6 +252,7 @@ class Client(object):
 
     def _write_manifest_2_filesystem(self, data):
         with ChDir(self.data_dir):
+            log.debug('Writing version file to disk')
             with gzip.open(self.version_file, u'wb') as f:
                 f.write(data)
 
@@ -260,13 +268,15 @@ class Client(object):
             log.debug('Data type: {}'.format(type(data)))
             self.json_data = json.loads(data)
             self.ready = True
-        except ValueError:
+        except ValueError as err:
+            log.debug(str(err), exc_info=True)
             log.error(u'Json failed to load: ValueError')
         except Exception as err:
             # Catch all for debugging purposes.
             # If seeing this line come up a lot in debug logs
             # please open an issue on github or submit a pull request
             log.error(str(err))
+            log.debug(str(err), exc_info=True)
 
         if self.json_data is None:
             self.json_data = {}
