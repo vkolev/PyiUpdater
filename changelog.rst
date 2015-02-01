@@ -1,5 +1,16 @@
 Changelog
 =========
+v0.17.2 - beta
+~~~~~~~~~~~~~~
+.. note:: This version is not yet released and is under active development.
+* Added
+
+* Updated
+
+* Fixed
+
+* Removed
+
 v0.17.1 - 2015/2/1
 ~~~~~~~~~~~~~~~~~~
 * Added
