@@ -8,10 +8,6 @@
 
 build
 
-config.data
-
-config.data.enc
-
 debug.txt
 
 dist
@@ -20,40 +16,14 @@ docs/_build/
 
 MANIFEST
 
-.coverage*
-
 .DS_Store
 
-.coverage*
+.coverage
 
-*.doctree
+docs/_build
 
-docs/_build/doctrees/folder_structure.doctree
+htmlcov
 
-*.doctree
+htmlcov/index.html
 
-docs/_build/doctrees/api.doctree
-
-docs/_build/doctrees/architecture.doctree
-
-docs/_build/doctrees/downloads.doctree
-
-docs/_build/doctrees/installation.doctree
-
-docs/_build/doctrees/release_history.doctree
-
-docs/_build/html/_sources/api.txt
-
-docs/_build/html/_sources/architecture.txt
-
-docs/_build/html/_sources/folder_structure.txt
-
-docs/_build/html/_sources/installation.txt
-
-docs/_build/doctrees/license.doctree
-
-docs/_build/doctrees/usage.doctree
-
-docs/_build/html/_sources/usage.txt
-
-docs/_build/doctrees/contributing.doctree
+htmlcov/status.dat

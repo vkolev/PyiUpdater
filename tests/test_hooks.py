@@ -13,5 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # --------------------------------------------------------------------------
-hiddenimports = ['jms_utils.logger',
-                 'jms_utils.paths',]
+from pyi_updater.hooks.hook_certifi import datas
+from pyi_updater.hooks.hook_jms_utils import hiddenimports
+
+
+def test_certifi():
+    assert datas is not None
+
+
+def test_jms_utils():
+    assert hiddenimports is not None

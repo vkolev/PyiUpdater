@@ -41,9 +41,26 @@ class PyTestCover(Command):
                                 u'--cov', u'pyi_updater', u'-n', u'1'])
         raise SystemExit(errno)
 
+
+class PyTestMyCover(Command):
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        errno = subprocess.call([sys.executable, u'runtests.py', u'tests',
+                                 u'--cov-report', u'html', u'--cov',
+                                 u'pyi_updater', u'-n', u'1'])
+        raise SystemExit(errno)
+
 cmd_class = versioneer.get_cmdclass()
-cmd_class.update({'test': PyTest,
-                 'ctest': PyTestCover})
+cmd_class.update({u'test': PyTest,
+                  u'ctest': PyTestCover,
+                  u'mytest': PyTestMyCover})
 
 setup(
     name='PyiUpdater',

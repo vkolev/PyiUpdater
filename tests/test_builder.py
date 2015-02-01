@@ -13,23 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # --------------------------------------------------------------------------
-import json
-import os
+import pytest
 
-import ed25519
+from pyi_updater.wrapper.builder import Builder
 
 
-def test_signature():
-    pub_key_file = os.path.join(u'tests', u'test data', u'jms.pub')
-    version_file = os.path.join(u'tests', u'test data', u'version.json')
-    with open(version_file, u'r') as f:
-        version_data = json.loads(f.read())
+def test_no_repo():
+    with pytest.raises(SystemExit):
+        b = Builder(list(), dict())
 
-    sig = version_data[u'sig']
-    del version_data[u'sig']
-    version_data = json.dumps(version_data, sort_keys=True)
 
-    with open(pub_key_file, u'r') as pkf:
-        public_key = ed25519.VerifyingKey(pkf.read(), encoding='base64')
-
-    public_key.verify(sig, version_data, encoding='base64')
+def test_no_repo_build():
+    with pytest.raises(SystemExit):
+        b = Builder(list(), dict())
+        b.build()

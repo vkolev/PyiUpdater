@@ -89,25 +89,30 @@ class LibUpdate(object):
 
                 False - Download failed
         """
+        status = False
         if self.name is not None:
             if self._is_downloaded(self.name) is True:
-                return True
-
-        patch_success = self._patch_update(self.name, self.version)
-        if patch_success:
-            log.info(u'Patch download successful')
-        else:
-            log.error(u'Patch update failed')
-            update_success = self._full_update(self.name)
-            if update_success:
-                log.info(u'Full download successful')
+                status = True
             else:
-                return False
+                log.info(u'Starting patch download')
+                patch_success = self._patch_update(self.name, self.version)
+                if patch_success:
+                    status = True
+                    log.info(u'Patch download successful')
+                else:
+                    log.error(u'Patch update failed')
+                    log.info(u'Starting full download')
+                    update_success = self._full_update(self.name)
+                    if update_success:
+                        status = True
+                        log.info(u'Full download successful')
+                    else:
+                        log.error(u'Full download failed')
         # Removes old versions, of update being checked, from
         # updates folder.  Since we only start patching from
         # the current binary this shouldn't be a problem.
         self._remove_old_updates()
-        return True
+        return status
 
     def extract(self):
         """Will extract archived update and leave in update folder.

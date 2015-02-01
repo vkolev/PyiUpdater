@@ -1,6 +1,3 @@
-binary:
-	python dev/make_binary.py
-
 deps:
 	pip install -r requirements.txt
 
@@ -26,10 +23,10 @@ register-test:
 	python setup.py register -r pypitest
 
 test:
-	py.test -v -n 1 --durations=3 -x
+	python setup.py test
 
 test-cover:
-	py.test -v --cov src/pyi_updater --cov-report html -n 1
+	python setup.py mytest
 
 test-script:
 	py.test --genscript=runtests.py

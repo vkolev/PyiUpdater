@@ -17,7 +17,6 @@ import gzip
 import json
 import logging
 import os
-import shutil
 
 from appdirs import user_cache_dir
 import certifi
@@ -35,10 +34,8 @@ from pyi_updater.downloader import FileDownloader
 from pyi_updater import settings
 from pyi_updater.utils import (convert_to_list,
                                EasyAccessDict,
-                               get_filename,
                                get_highest_version,
                                gzip_decompress,
-                               make_archive,
                                Version)
 
 log = logging.getLogger(__name__)

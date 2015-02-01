@@ -13,23 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # --------------------------------------------------------------------------
-import json
-import os
+from pyi_updater.config import PyiUpdaterConfig
+from pyi_updater.package_handler import PackageHandler
 
-import ed25519
+from tconfig import TConfig
 
 
-def test_signature():
-    pub_key_file = os.path.join(u'tests', u'test data', u'jms.pub')
-    version_file = os.path.join(u'tests', u'test data', u'version.json')
-    with open(version_file, u'r') as f:
-        version_data = json.loads(f.read())
+def test_setup():
+    updater = PyiUpdaterConfig()
+    myconfig = TConfig()
+    updater.update_config(myconfig)
+    ph = PackageHandler(updater)
 
-    sig = version_data[u'sig']
-    del version_data[u'sig']
-    version_data = json.dumps(version_data, sort_keys=True)
 
-    with open(pub_key_file, u'r') as pkf:
-        public_key = ed25519.VerifyingKey(pkf.read(), encoding='base64')
-
-    public_key.verify(sig, version_data, encoding='base64')
+def test_setup_no_patches():
+    updater = PyiUpdaterConfig()
+    myconfig = TConfig()
+    myconfig.UPDATE_PATCHES = False
+    updater.update_config(myconfig)
+    ph = PackageHandler(updater)
