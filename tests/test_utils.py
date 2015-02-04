@@ -1,39 +1,65 @@
+# --------------------------------------------------------------------------
+# Copyright 2014 Digital Sapphire Development Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# --------------------------------------------------------------------------
 import os
-import sys
 
 from jms_utils import FROZEN
-from jms_utils.paths import cwd
+from jms_utils.system import get_system
 from nose import with_setup
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from cli.ui.menu_utils import ask_yes_no
 
 from pyi_updater.utils import (get_hash,
                                get_package_hashes,
-                               version_string_to_tuple,
-                               version_tuple_to_string
+                               make_archive,
+                               vstr_2_vtuple,
+                               vtuple_2_vstr
                                )
 
 home_dir = os.path.expanduser('~')
 
+FILENAME = U'{}-archive'.format(get_system())
+
+
+def setup_archive():
+    with open(FILENAME, u'w') as f:
+        msg = 'This is the life\n\n'
+        for i in range(50):
+            f.write(msg)
+
+
+def teardown_archive():
+    arch = get_system()
+    name = u'done-{}-0.1.1.tar.gz'.format(arch)
+    if os.path.exists(name):
+        os.remove(name)
+    if os.path.exists(FILENAME):
+        os.remove(FILENAME)
+
+
+@with_setup(setup_archive, teardown_archive)
+def test_make_archive():
+    arch = get_system()
+    good_name = u'done-{}-0.1.1.tar.gz'.format(arch)
+    print good_name
+    name = make_archive(u'done', u'0.1.1', FILENAME)
+    print name
+    assert name == good_name
+    assert os.path.exists(name)
+
 
 def test_frozen():
     assert FROZEN is False
-
-
-def test_cwd():
-    assert cwd == os.getcwd()
-
-
-def test_ask_yes_no_true():
-    yes = ask_yes_no('Test True', answer='yes')
-    assert yes is True
-
-
-def test_ask_yes_no_false():
-    no = ask_yes_no('Test False', answer='no')
-    assert no is False
 
 
 def setup_hash():
@@ -58,8 +84,8 @@ def test_get_hash():
 
 
 def test_string_to_tuple():
-    assert (1, 2, 3) == version_string_to_tuple('1.2.3')
+    assert (1, 2, 3) == vstr_2_vtuple('1.2.3')
 
 
 def test_tuple_to_stirng():
-    assert '1.2.3' == version_tuple_to_string((1, 2, 3))
+    assert '1.2.3' == vtuple_2_vstr((1, 2, 3))

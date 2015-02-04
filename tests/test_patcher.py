@@ -1,12 +1,24 @@
+# --------------------------------------------------------------------------
+# Copyright 2014 Digital Sapphire Development Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# --------------------------------------------------------------------------
 import json
 import os
 import shutil
-import sys
 import urllib2
 
-from nose.tools import with_setup
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import pytest
 
 from pyi_updater.patcher import Patcher
 
@@ -27,50 +39,54 @@ update_data = {
     }
 
 
-def setup():
+@pytest.fixture(scope='module')
+def setup(request):
+    def fin():
+        if os.path.exists(UPDATE_DIR):
+            shutil.rmtree(UPDATE_DIR, ignore_errors=True)
+
     if os.path.exists(UPDATE_DIR):
         shutil.rmtree(UPDATE_DIR)
     os.mkdir(UPDATE_DIR)
 
     base_binary = os.path.join(TEST_DATA_DIR, u'jms-mac-0.0.1.zip')
     shutil.copy(base_binary, UPDATE_DIR)
+    request.addfinalizer(fin)
 
 
-def teardown():
-    if os.path.exists(UPDATE_DIR):
-        shutil.rmtree(UPDATE_DIR)
+@pytest.fixture(scope='module')
+def teardown(request):
+    def fin():
+        if os.path.exists(UPDATE_DIR):
+            shutil.rmtree(UPDATE_DIR, ignore_errors=True)
+    if not os.path.exists(UPDATE_DIR):
+        os.mkdir(UPDATE_DIR)
+    request.addfinalizer(fin)
 
 
-@with_setup(setup, teardown)
-def test_execution():
+def test_execution(setup):
     p = Patcher(**update_data)
     assert p.start() is True
 
 
-@with_setup(setup, teardown)
-def test_bad_hash_current_version():
+def test_bad_hash_current_version(setup):
     bad_data = update_data.copy()
     bad_data['current_file_hash'] = u'Thisisabadhash'
     p = Patcher(**bad_data)
     assert p.start() is False
 
 
-@with_setup(None, teardown)
-def test_no_base_binary():
-    os.mkdir(UPDATE_DIR)
+def test_no_base_binary(teardown):
     p = Patcher(**update_data)
     assert p.start() is False
 
 
-@with_setup(None, teardown)
-def test_no_base_to_patch():
-    os.mkdir(UPDATE_DIR)
+def test_no_base_to_patch(teardown):
     p = Patcher(**update_data)
     assert p.start() is False
 
 
-@with_setup(setup, teardown)
-def test_missing_version():
+def test_missing_version(teardown):
     bad_data = update_data.copy()
     bad_data[u'highest_version'] = u'0.0.4'
     p = Patcher(**bad_data)

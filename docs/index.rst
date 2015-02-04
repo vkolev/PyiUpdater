@@ -3,13 +3,49 @@
 Welcome to PyiUpdater
 =====================
 
-PyiUpdater - Update Framework!
+What is PyiUpdater?
+~~~~~~~~~~~~~~~~~~~
 
-This framework does most of the heavy lifting regarding updating your app
-or library.  PyiUpdater will scan your update archive, grab meta-data from filename, get checksums, make patches, get patch checksums, update version file, sign version file with private key, backs up packages to files folder
-then moves all packages to deploy folder ready for upload.  All from the
-cli or programmatically.  PyiUpdater also handles the creation of your public
-and private keys.  Keys are used for update manifest verification. PyiUpdater also includes a client module you can import into your app to check for updates, download, install & restart your app. The client module also cleans up old updates on the end users computer.
+In its simplest form PyiUpdater is a collection of modules, when used together, makes its super simple to add auto-update functionality to your app. Support for patch updates are included out of the box :) Also uses gzip compression on update manifest.
+
+A high level break down of the framework consists of 3 parts.
+
+Client
+    Is the module you import into your app that provides the update functionality. It also uses the Patcher module internally.
+
+Core
+    Consists of the KeyHandler, PackageHandler, Uploader & Wrapper.
+
+CLI
+    Command line program to help automate the update creation process
+
+When it all comes together you get this
+
+.. raw:: html
+
+    <script type="text/javascript" src="https://asciinema.org/a/15546.js" id="asciicast-15546" async data-theme="solarized-dark"></script>
+
+Status
+~~~~~~
+
+.. image:: https://pypip.in/download/PyiUpdater/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi//PyiUpdater/
+    :alt: Downloads
+
+.. image:: https://pypip.in/status/PyiUpdater/badge.svg?style=flat
+    :target: https://pypi.python.org/pypi/PyiUpdater/
+    :alt: Development Status
+
+.. image:: https://coveralls.io/repos/JohnyMoSwag/PyiUpdater/badge.svg?branch=master
+    :target: https://coveralls.io/r/JohnyMoSwag/PyiUpdater?branch=master
+
+.. image:: https://circleci.com/gh/JohnyMoSwag/PyiUpdater.svg?style=svg
+    :target: https://circleci.com/gh/JohnyMoSwag/PyiUpdater
+
+
+Starting with v0.15.1 PyiUpdater supports updating GUI & cli apps on Mac, Windows & Linux. The api is pretty stable but maintaining backwards compatibility is on a best effort basis until v1.0. Backwards incompatible changes will be noted in the changelog.
+
+:download:`Download PDF <_build/latex/PyiUpdater.pdf>`
 
 Contents:
 
@@ -21,7 +57,10 @@ Contents:
     configuration
     usage
     folder_structure
+    contributing
     api
+    license
+    todo
     release_history
 
 

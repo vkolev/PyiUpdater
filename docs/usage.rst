@@ -1,7 +1,7 @@
 .. _usage:
 
 Usage
-=====
+~~~~~
 
 After compiling your program with pyinstaller or any freezer that compiles python into a single executable.
 
@@ -11,84 +11,64 @@ Version numbers are in the form of: x.x.x
 
 Check `Semantic Versioning <http://semver.org/>`_ for more info
 
-The easiest way to get started quickly is to use to command line tool.
+The easiest way to get started quickly is to use to command line tool. After setup is complete you'll be ready to start creating updates.
 
-From Pip::
+All commands must be ran from root or repository.
+-------------------------------------------------
 
-    $ pyi-cli
+Initialize a new repository.
 
-Initial Setup
--------------
-You'll first be greeted with a Setup Assistant.
+::
 
-What you should see::
-
-    *******************************************************
-                PyiUpdater v0.9 - Setup Assistant
-    *******************************************************
+    $ pyiupdater init
 
 
-                                Let's begin...
+To create your first update.
+::
 
-    Please enter app name - No Default Available
-    -->
-
-
-After you enter all required information you can password protect
-you config with a password. It's very import to remember this password.
-
-What you should see::
-
-    Enter password
-    -->
-
-    Enter passoword again
-    -->
-
-    Enter password
+    $ pyiupdater --app-name"Your app name" --app-version1.0.0 app.py
 
 
-After setup is complete you'll be greeted with the screen below::
+Get update meta data and save to file.
+::
 
-    *******************************************************
-                    PyiUpdater v0.9 - Main Menu
-    *******************************************************
-
-    1. Sign Updates
-    2. Upload
-    3. Keys
-    4. Settings
-    5. Quit
+    $ pyiupdater pkg -P
 
 
-Archive maker utility usage
----------------------------
-The filename for an update must include mac, win, arm, nix or nix64. For example, FILE1 could be myapp-mac & FILE2 mylib-nix. The archiver uses this for selecting the correct archive format and naming the final archive::
+Sign update file with signing keys & gzip compress.
+::
 
-    $ pyi-archiver -h
-    Usage: pyi-archive -n "My App" -v 1.0.1 FILE1 FILE2
-    Usage: pyi-archive -n "My App" -v 1.0.1 FILE1 FILE2
+    $ pyiupdater pkg -S
 
-    Options:
-      -h, --help            show this help message and exit
-      -n NAME, --name=NAME  Name of update
-      -v VERSION, --version=VERSION
-                            Version # of update. Must have Major.Minor.Patch even if it's 0 eg. 1.1.0
-      --keep                Do not delete source file
+
+Upload to remote location.
+::
+
+    $ pyiupdater upload --service s3
+
+
+To update repo settings pass each flag you'd like to update.
+::
+
+    $ pyiupdater settings --app-name --company
+
+
+Here using Amazon S3. Must have PYIUPDATER_PASS env set. Install with pyiupdater[s3].
+::
+
+    $ pip install pyiupdater[s3]
 
 
 Demos
------
-So if you opt not to use the cli interface & instead want to integrate PyiUpdater into your build, check out the progmatically.py demo.
+=====
+Example of using the client within your app
 
-PyiUpdater make heavy use of the pyi-data folder.
+.. literalinclude:: ../demos/client.py
+    :linenos:
 
-Steps
 
-1. Build your app and place in new folder
+Limitations
+===========
 
-2. Use pyi-archiver to archive you files
-
-3. Use PackageHandler process_packages method. Will move copy app updates to version folder in the files dir & also move udpate form new folder to deploy folder
-
-4. Now use KeyHanlder sign_update method to add a signature to the version file & copies it to the deploy dir.
+* No onedir support
+* No python3 support

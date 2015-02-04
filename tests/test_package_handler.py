@@ -1,37 +1,34 @@
-from nose import with_setup
-import os
-import shutil
-import sys
-
-from jms_utils.paths import ChDir
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from pyi_updater import PyiUpdater
+# --------------------------------------------------------------------------
+# Copyright 2014 Digital Sapphire Development Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# --------------------------------------------------------------------------
+from pyi_updater.config import PyiUpdaterConfig
 from pyi_updater.package_handler import PackageHandler
 
 from tconfig import TConfig
 
 
-def setup_func():
-    config = TConfig()
-    updater = PyiUpdater(config)
+def test_setup():
+    updater = PyiUpdaterConfig()
+    myconfig = TConfig()
+    updater.update_config(myconfig)
     ph = PackageHandler(updater)
-    ph.setup()
 
 
-def teardown_func():
-    with ChDir('tests'):
-        if os.path.exists(u'pyi-data'):
-            shutil.rmtree(u'pyi-data', ignore_errors=True)
-
-
-@with_setup(setup_func, teardown_func)
-def test_folder_layout():
-    with ChDir(u'tests'):
-        assert os.path.exists(u'pyi-data') is True
-
-    with ChDir(u'tests/pyi-data'):
-        assert os.path.exists(u'new') is True
-        assert os.path.exists(u'deploy') is True
-        assert os.path.exists(u'files') is True
+def test_setup_no_patches():
+    updater = PyiUpdaterConfig()
+    myconfig = TConfig()
+    myconfig.UPDATE_PATCHES = False
+    updater.update_config(myconfig)
+    ph = PackageHandler(updater)

@@ -1,14 +1,9 @@
 appdirs
-blinker
 bsdiff4
 certifi
-cryptography
 ed25519
-jms-utils >= 0.3
-git+git://github.com/pyinstaller/pyinstaller.git@develop#egg=pyinstaller
-PyiUpdater-s3-Plugin
-PyiUpdater-scp-Plugin
-simple-pbkdf2
+jms-utils >= 0.5.3
+Pyinstaller >= 2.1
 six
 stevedore
 urllib3

@@ -1,12 +1,16 @@
 API
 ===
 
-If you want to dive into their documentation, scroll down:
-
 .. automodule:: pyi_updater
     :members:
 
 .. automodule:: pyi_updater.client
+    :members:
+
+.. automodule:: pyi_updater.client.updates
+    :members:
+
+.. automodule:: pyi_updater.client.utils
     :members:
 
 .. automodule:: pyi_updater.config
@@ -18,10 +22,10 @@ If you want to dive into their documentation, scroll down:
 .. automodule:: pyi_updater.exceptions
     :members:
 
-.. automodule:: pyi_updater.filecrypt
+.. automodule:: pyi_updater.key_handler
     :members:
 
-.. automodule:: pyi_updater.key_handler
+.. automodule:: pyi_updater.key_handler.keydb
     :members:
 
 .. automodule:: pyi_updater.package_handler

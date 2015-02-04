@@ -1,0 +1,14 @@
+# command to install dependencies
+machine:
+  environment:
+    COVERALLS_REPO_TOKEN: T02aqvKONBtjwPW4Q4EI15qOVHTBxMkoj
+
+dependencies:
+    pre:
+        - make deps-dev-upgrade
+        - pip install python-coveralls pytest-cov pytest-xdist
+
+# command to run tests
+# test:
+    # override:
+        # - coverage run setup.py ctest

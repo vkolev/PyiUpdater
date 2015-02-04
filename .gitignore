@@ -8,32 +8,22 @@
 
 build
 
-config.data
-
-config.data.enc
-
 debug.txt
 
 dist
 
+docs/_build/
+
 MANIFEST
 
-src/*.egg-info
+.DS_Store
 
-src/PyiUpdater.egg-info/PKG-INFO
+.coverage
 
-src/PyiUpdater.egg-info/PKG-INFO
+docs/_build
 
-src/PyiUpdater.egg-info/PKG-INFO
+htmlcov
 
-pyi-data/
+htmlcov/index.html
 
-src/PyiUpdater.egg-info/entry_points.txt
-
-src/PyiUpdater.egg-info/SOURCES.txt
-
-src/PyiUpdater.egg-info/dependency_links.txt
-
-src/PyiUpdater.egg-info/requires.txt
-
-src/PyiUpdater.egg-info/top_level.txt
+htmlcov/status.dat

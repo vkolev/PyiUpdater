@@ -1,9 +1,19 @@
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from pyi_updater.config import Config
+# --------------------------------------------------------------------------
+# Copyright 2014 Digital Sapphire Development Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# --------------------------------------------------------------------------
+from pyi_updater.config import PyiUpdaterConfig
 
 
 class DevConfig(object):
@@ -24,21 +34,21 @@ class BasicCofig(object):
 
 
 def test_dev_config():
-    config = Config()
+    config = PyiUpdaterConfig()
     test_config = DevConfig()
     config.from_object(test_config)
     assert config[u'TESTING'] is True
 
 
 def test_dev_config_bad_attr():
-    config = Config()
+    config = PyiUpdaterConfig()
     test_config = DevConfig()
     config.from_object(test_config)
     assert config.get(u'BAD_ATTR', None) is None
 
 
 def test_prod_config():
-    config = Config()
+    config = PyiUpdaterConfig()
     prod_config = ProdConfig()
     config.from_object(prod_config)
     assert config[u'MORE_INFO'] == u'Yes Please'
@@ -46,13 +56,13 @@ def test_prod_config():
 
 def test_prod_bad_atter():
     test_prod_config()
-    config = Config()
+    config = PyiUpdaterConfig()
     prod_config = ProdConfig()
     config.from_object(prod_config)
     assert config.get(u'DEBUG', None) is not None
 
 
 def test_config_str():
-    config = Config()
+    config = PyiUpdaterConfig()
     config.from_object(BasicCofig())
-    assert repr(config) == u"<Config {'APP_NAME': u'Tester'}>"
+    assert repr(config) == u"<PyiUpdaterConfig {'APP_NAME': u'Tester'}>"

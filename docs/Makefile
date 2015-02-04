@@ -54,6 +54,11 @@ html:
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
+pdf:
+	$(SPHINXBUILD) -b pdf $(ALLSPHINXOPTS) _build/pdf
+	@echo
+	@echo "Build finished. The PDF files are in _build/pdf."
+
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
 	@echo
@@ -175,3 +180,9 @@ pseudoxml:
 	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
+
+move-dev: latexpdf html
+	python move.py dev
+
+move-rel: latexpdf html
+	python move.py rel

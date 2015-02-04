@@ -1,22 +1,76 @@
+# --------------------------------------------------------------------------
+# Copyright 2014 Digital Sapphire Development Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# --------------------------------------------------------------------------
 import os
 import shutil
-import sys
 
 from nose.tools import raises, with_setup
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)),
-                u'src'))
-
-from pyi_updater import PyiUpdater
+from pyi_updater import PyiUpdaterConfig
 from pyi_updater.exceptions import UploaderError
 from pyi_updater.uploader import Uploader
+from pyi_updater.uploader.common import BaseUploader
 
 from tconfig import TConfig
 
 my_config = TConfig()
 
-updater = PyiUpdater(my_config)
+updater = PyiUpdaterConfig(my_config)
 uploader = Uploader(updater)
+
+
+def test_baseuploader_variables():
+    base = BaseUploader()
+    assert len(base.failed_uploads) == 0
+    assert base.deploy_dir is None
+
+
+@raises(NotImplementedError)
+def test_baseuploader_init():
+    base = BaseUploader()
+    base.init()
+
+
+@raises(NotImplementedError)
+def test_baseuploader_connect():
+    base = BaseUploader()
+    base._connect()
+
+
+@raises(NotImplementedError)
+def test_baseuploader_upload_file():
+    base = BaseUploader()
+    base._upload_file('test')
+
+
+def test_baseuploader_upload():
+    base = BaseUploader()
+    base.file_list = []
+    base.upload() is True
+
+
+@raises(NotImplementedError)
+def test_baseuploader_upload_fail():
+    base = BaseUploader()
+    base.file_list = ['f']
+    base.upload() is True
+
+
+def test_baseuploader_retry_upload():
+    base = BaseUploader()
+    base._retry_upload() is True
 
 
 def setup_func():
@@ -57,6 +111,6 @@ def test_set_uploader_bad_settings():
     config.ACCESS_KEY_ID = None
     config.SECRET_ACCESS_KEY = u'Not an actual secret'
     config.BUCKET_NAME = u'Bucket Name'
-    s_nst = PyiUpdater(config)
-    uploader = Uploader(s_nst)
+    pyiconfig = PyiUpdaterConfig(config)
+    uploader = Uploader(pyiconfig)
     uploader.set_uploader(u's3')
